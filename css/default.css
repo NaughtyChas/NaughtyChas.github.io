@@ -12648,6 +12648,7 @@ a:hover {
 code {
   background-color: #ccc;
   color: #000;
+  border-radius: 1px;
   font-size: 0.875em;
   font-weight: normal;
   padding: 0.25em 0.5em 0.25em;
@@ -12684,7 +12685,7 @@ fieldset {
 pre {
   -webkit-overflow-scrolling: touch;
   background-color: #f0f0f0;
-  border-radius: 6px;
+  border-radius: 2px;
   color: #4a4a4a;
   font-size: 0.875em;
   overflow-x: auto;
