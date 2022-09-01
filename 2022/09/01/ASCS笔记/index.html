@@ -116,45 +116,53 @@ mjx-container[display="true"] + br {
   display: none;
 }
 </style></head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/self-talking">碎碎念</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2022-09-01  <a class="commentCountImg" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">cd3959d276fa3caf2a7f842749b93dc0</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="cd3959d276fa3caf2a7f842749b93dc0">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>6 分钟  <i class="fas fa-pencil-alt"> </i>0.9 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">ASCS笔记</h1><div class="content"><blockquote>
-<p>CS课堂笔记</p>
+<p>CS课堂笔记<br>
+<span id="more"></span></p>
 </blockquote>
-<span id="more"></span>
-<h1 id="写在前面"><a class="markdownIt-Anchor" href="#写在前面"></a> <strong>写在前面</strong></h1>
+<h1 id="写在前面"><strong>写在前面</strong></h1>
 <p>鉴于本人是个CS新手，加上这篇笔记是课上笔记，本文以下所有内容<strong>不保证完全正确</strong>，<strong>不保证覆盖所有课本内容</strong>。<br>
 本文顺序以课上老师的授课顺序为主。<br>
 我写下本文，为的是帮助自己更好的学习CS这门科目，因此，希望路过的大佬轻喷。<br>
 同时欢迎有需求的读者交流学习。</p>
 <hr>
-<p>本笔记内容基于《Computer Science for Cambridge International AS &amp; A Level》，剑桥大学出版社出版，教材为第二版，A-Level课程编号为<code>9618</code>。</p>
+<p>本笔记内容基于《Computer Science for Cambridge International AS &amp;
+A
+Level》，剑桥大学出版社出版，教材为第二版，A-Level课程编号为<code>9618</code>。</p>
 <hr>
-<h1 id="第一部分理论基础"><a class="markdownIt-Anchor" href="#第一部分理论基础"></a> <strong>第一部分：理论基础</strong></h1>
-<h2 id="第一章数据的表示"><a class="markdownIt-Anchor" href="#第一章数据的表示"></a> <strong>第一章：数据的表示</strong></h2>
-<h3 id="103-数字的内部编码"><a class="markdownIt-Anchor" href="#103-数字的内部编码"></a> <strong>1.03 数字的内部编码</strong></h3>
+<h1 id="第一部分理论基础"><strong>第一部分：理论基础</strong></h1>
+<h2 id="第一章数据的表示"><strong>第一章：数据的表示</strong></h2>
+<h3 id="数字的内部编码"><strong>1.03 数字的内部编码</strong></h3>
 <p>本章中的讨论仅涉及整数值的编码。在之后的第16章会涉及到非整数值的编码。</p>
-<h4 id="编码"><a class="markdownIt-Anchor" href="#编码"></a> 编码</h4>
+<h4 id="编码">编码</h4>
 <p>计算机出于多种目的会存储各种整数值。有时候会存储一个简单的整数，但要突出这是一个正数。<br>
 在这种情况下，<code>Signed integer</code>会被应用。<br>
 一个<code>Signed integer</code>由一段包含值的二进制编码和额外的一位用于定义符号，而这种表示方式被我们叫做<code>Sign and Magnitude representation</code>。</p>
 <p>从硬件上设计计算机，存在<code>Sign&amp;Magnitude</code>信号，用于记录和计算浮点信息。</p>
 <p><code>Sign&amp;Magnitude</code>中存在<code>One's Complement</code>和<code>Two's Complement</code>。<br>
 <code>Two's Complement</code>比<code>One's Complement</code>的优点在于更容易计算，因此我们使用<code>Two's Complement</code>在计算机内计算。</p>
-<br>  
-<h4 id="有关减法"><a class="markdownIt-Anchor" href="#有关减法"></a> <strong>有关减法</strong></h4>
+<p><br></p>
+<h4 id="有关减法"><strong>有关减法</strong></h4>
 <p>计算机为避免过度的运算，所以处理数据只做加法。但是计算机还是需要去做减法，我们这里就用到了<code>Two's Complement</code>二次补码。</p>
-<h4 id="twos-complement"><a class="markdownIt-Anchor" href="#twos-complement"></a> <strong>Two’s Complement</strong></h4>
-<p><code>Two's Complement</code>叫做二次补码，计算机可以用它来计算减法。<br>
+<h4 id="twos-complement"><strong>Two's Complement</strong></h4>
+<p><code>Two's Complement</code>叫做二次补码，计算机可以用它来计算减法。
 更多相关内容可参考<a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1719849343054359798&amp;wfr=spider&amp;for=pc">本文</a>。</p>
 <hr>
 <p>接下来举个做减法的例子：</p>
 <p>比如说 23-35</p>
 <p>0 1 0 1 1 1 - 0 1 0 0 0 1 1</p>
-<p>最高位是代表一个正数，所以加几个 leading zero数字大小都不变。（<s>前提是在前面加的是0不是1</s>）</p>
-<p>现在变成 23+(-35)，就要将正 35 变成-35，使用 <code>Two's Complement</code>作变换，转换为二次补码。</p>
-<ol>
-<li>首先，将<code>0 1 0 0 0 1 1 </code>的每一位取反,变成<code>1 0 1 1 1 0 0</code></li>
-<li>然后，在<code>1 0 1 1 1 0 0</code>的后面追加一位 1，变成<code>1 0 1 1 1 0 1 </code>，即为35的二次补码</li>
+<p>最高位是代表一个正数，所以加几个 leading
+zero数字大小都不变。（<del>前提是在前面加的是0不是1</del>）</p>
+<p>现在变成 23+(-35)，就要将正 35 变成-35，使用
+<code>Two's Complement</code>作变换，转换为二次补码。</p>
+<ol type="1">
+<li>首先，将<code>0 1 0 0 0 1 1</code>的每一位取反,变成<code>1 0 1 1 1 0 0</code><br>
+</li>
+<li>然后，在<code>1 0 1 1 1 0 0</code>的后面追加一位
+1，变成<code>1 0 1 1 1 0 1</code>，即为35的二次补码</li>
 </ol>
-<p>现在，直接令 23 加上 35 的 <code>Two's Complement</code>"<code>1 0 1 1 1 0 1 </code> "即可算出 23-35。<br>
+<p>现在，直接令 23 加上 35 的
+<code>Two's Complement</code>"<code>1 0 1 1 1 0 1</code> "即可算出
+23-35。<br>
 位数不够可以在一开始多添几个 leading zero，使得每一位对齐。<br>
 这一举动不会影响到数据的大小。</p>
 <p>   0 0 1 0 1 1 1<br>
@@ -162,14 +170,20 @@ mjx-container[display="true"] + br {
 ------------------<br>
    1 1 1 0 1 0 0</p>
 <p>现在，我们需要对于计算的结果再进行一次<code>Two's Complement</code>即可转换得到最后的计算答案。</p>
-<p><code>1 1 1 0 1 0 0 </code>-&gt; <code>0 0 0 1 0 1 1 </code>-&gt; (+1) <code>0 0 0 1 1 0 0 </code></p>
-<p>至此，<code>0 0 0 1 1 0 0 </code>（12）就是取模后的大小了。注意，<strong>这里是大小</strong>。</p>
-<p>我们还知道，第一次计算后得出的<code>1 1 1 0 1 0 0</code>，首位是 1，代表这是一个负数。 因此，原来的符号信息加上转换后的模便是最后答案(-12)。</p>
+<p><code>1 1 1 0 1 0 0</code>-&gt; <code>0 0 0 1 0 1 1</code>-&gt; (+1)
+<code>0 0 0 1 1 0 0</code></p>
+<p>至此，<code>0 0 0 1 1 0 0</code>（12）就是取模后的大小了。注意，<strong>这里是大小</strong>。</p>
+<p>我们还知道，第一次计算后得出的<code>1 1 1 0 1 0 0</code>，首位是
+1，代表这是一个负数。
+因此，原来的符号信息加上转换后的模便是最后答案(-12)。</p>
 <hr>
-<h4 id="有关数据溢出"><a class="markdownIt-Anchor" href="#有关数据溢出"></a> <strong>有关数据溢出</strong></h4>
+<h4 id="有关数据溢出"><strong>有关数据溢出</strong></h4>
 <p>当然，数据溢出的可能性还是存在的：</p>
-<p>假如说你的计算机声明的变量只有到八位。第一位是符号位，所以最大可以代表 255。<br>
-比如说 200+100，结果是 300，但是因为进位超出了计算机变量能存储的范围，部分进位信息因此丢失导致数据溢出。有一些 IDE 会报错，有一些会输出错误答案。</p>
+<p>假如说你的计算机声明的变量只有到八位。第一位是符号位，所以最大可以代表
+255。<br>
+比如说 200+100，结果是
+300，但是因为进位超出了计算机变量能存储的范围，部分进位信息因此丢失导致数据溢出。有一些
+IDE 会报错，有一些会输出错误答案。</p>
 <hr>
 <p>最后更新于：<strong>2022.9.1</strong></p>
 </div><div class="article-licensing box"><div class="licensing-title"><p>ASCS笔记</p><p><a href="http://naughtychas.github.io/2022/09/01/ASCS笔记/">http://naughtychas.github.io/2022/09/01/ASCS笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2022-09-01</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2022-09-01</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2022/08/17/2022%E5%B9%B4%E7%A7%8B%E5%AD%A3CIE%E9%83%A8%E5%88%86%E8%80%83%E8%AF%95%E6%97%B6%E9%97%B4/" target="_blank" rel="noreferrer">2022年秋季CIE部分考试时间</a><br></span><span>  4.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  5.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span><span>  6.<a class="is-size-6" href="/2022/08/23/8-23-induction-example/" target="_blank" rel="noreferrer">8.23 Induction Example</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/"><span class="level-item">LaTeX自学笔记</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
@@ -190,7 +204,7 @@ mjx-container[display="true"] + br {
             enableHotKey: true,
             isLocked: true
         })
-        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#写在前面"><span class="mr-2">1</span><span> 写在前面</span></a></li><li><a class="is-flex is-mobile" href="#第一部分理论基础"><span class="mr-2">2</span><span> 第一部分：理论基础</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#第一章数据的表示"><span class="mr-2">2.1</span><span> 第一章：数据的表示</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#有关数据溢出"><span class="mr-2">2.1.1</span><span> 有关数据溢出</span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2022 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
+        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#写在前面"><span class="mr-2">1</span><span>写在前面</span></a></li><li><a class="is-flex is-mobile" href="#第一部分理论基础"><span class="mr-2">2</span><span>第一部分：理论基础</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#第一章数据的表示"><span class="mr-2">2.1</span><span>第一章：数据的表示</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#有关数据溢出"><span class="mr-2">2.1.1</span><span>有关数据溢出</span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2022 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
             var n = new Date(time);
             now.setTime(now.getTime() + 250),
                 days = (now - n) / 1e3 / 60 / 60 / 24,
