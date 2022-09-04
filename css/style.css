@@ -5372,8 +5372,6 @@ fieldset[disabled] .button {
 .content table td,
 .content table th {
   border: 1px solid #dbdbdb;
-  border-left: 1px solid #dbdbdb;
-  border-right: 1px solid #dbdbdb;
   border-width: 0 0 1px;
   padding: 0.5em 0.75em;
   vertical-align: top;
