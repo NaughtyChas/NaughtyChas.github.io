@@ -7,7 +7,7 @@ function isNightFun() {
     // 第一次进来判断是白天还是晚上
     if (isNightTemp === null || isNightTemp === undefined) {
         if (isNightRange('00:58', '00:59') || isNightRange('01:00', '01:01')) {
-            isNightTemp = 'true';
+            isNightTemp = 'false';
         } else {
             isNightTemp = 'false';
         }
