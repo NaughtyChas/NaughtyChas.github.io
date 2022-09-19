@@ -164,15 +164,6 @@ function loadMathJax() { // 加载mathjax
     $.getScript('//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
 }
 
-const takina = SakanaWidget.getCharacter('takina');
-takina.initialState = {
-  ...takina.initialState,
-  i: 0.001,
-  d: 1,
-};
-SakanaWidget.registerCharacter('takina-slow', takina);
-new SakanaWidget({ character: 'takina-slow' }).mount('#sakana-widget');
-
 $(document).ready(() => {
     loadMainJs(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings);
 
