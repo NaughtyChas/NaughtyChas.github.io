@@ -11376,7 +11376,7 @@ figure.highlight .section {
   color: $white-invert;
 }
 #toc {
-  max-height: calc(90vh - 80px);
+  max-height: calc(87vh - 80px);
   overflow-y: scroll;
 }
 .donate {
