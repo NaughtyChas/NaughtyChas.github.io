@@ -1,16 +1,128 @@
 <!doctype html>
-<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>ASCS笔记 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="CS课堂笔记"><meta property="og:type" content="article"><meta property="og:title" content="ASCS笔记"><meta property="og:url" content="http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="CS课堂笔记"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><meta property="article:published_time" content="2022-09-01T13:33:28.000Z"><meta property="article:modified_time" content="2022-12-02T06:52:43.804Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="CIE"><meta property="article:tag" content="笔记"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"],"datePublished":"2022-09-01T13:33:28.000Z","dateModified":"2022-12-02T06:52:43.804Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"CS课堂笔记"}</script><link rel="canonical" href="http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>ASCS笔记 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="CS课堂笔记"><meta property="og:type" content="article"><meta property="og:title" content="ASCS笔记"><meta property="og:url" content="http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="CS课堂笔记"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><meta property="article:published_time" content="2022-09-01T13:33:28.000Z"><meta property="article:modified_time" content="2022-12-02T06:52:43.804Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="笔记"><meta property="article:tag" content="CIE"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"],"datePublished":"2022-09-01T13:33:28.000Z","dateModified":"2022-12-02T06:52:43.804Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"CS课堂笔记"}</script><link rel="canonical" href="http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/thumbnails/CS.jpg" alt="ASCS笔记"></span></div><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2022-09-01  <a class="commentCountImg" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">cd3959d276fa3caf2a7f842749b93dc0</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="cd3959d276fa3caf2a7f842749b93dc0">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>1 小时  <i class="fas fa-pencil-alt"> </i>8.2 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">ASCS笔记</h1><div class="content"><blockquote>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/thumbnails/CS.jpg" alt="ASCS笔记"></span></div><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2022-09-01  <a class="commentCountImg" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">cd3959d276fa3caf2a7f842749b93dc0</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="cd3959d276fa3caf2a7f842749b93dc0">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>1 小时  <i class="fas fa-pencil-alt"> </i>8.2 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">ASCS笔记</h1><div class="content"><blockquote>
 <p>CS课堂笔记<br><span id="more"></span></p>
 </blockquote>
 <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a><strong>写在前面</strong></h1><p>今日同步计划进度条：  </p>
-<p><br /></p>
+<p><br></p>
 <progress class="progress is-info" value="100" max="100"></progress>
 
-<p><br /></p>
+<p><br></p>
 <hr>
 <p>鉴于本人初入CS，加上这篇笔记是课上笔记，本文以下所有内容<strong>不保证完全正确</strong>，<strong>不保证覆盖所有课本内容</strong>。<br>本文顺序以课上老师的授课顺序为主。<br>我写下本文，为的是帮助自己更好地学习CS这门科目，因此，希望路过的大佬轻喷。<br>同时欢迎有需求的读者交流学习。  </p>
 <hr>
@@ -19,23 +131,23 @@
 <h1 id="第一章：数据的表示"><a href="#第一章：数据的表示" class="headerlink" title="第一章：数据的表示"></a><strong>第一章：数据的表示</strong></h1><h2 id="数字的内部编码"><a href="#数字的内部编码" class="headerlink" title="数字的内部编码"></a><strong>数字的内部编码</strong></h2><h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a><strong>编码</strong></h3><p>本章中的讨论仅涉及整数值的编码。在之后的第16章会涉及到非整数值的编码。  </p>
 <p>计算机出于多种目的会存储各种整数值。有时候会存储一个简单的整数，但要突出这是一个正数。<br>在这种情况下，<code>Signed integer</code>会被应用。<br>一个<code>Signed integer</code>由一段包含值的二进制编码和额外的一位用于定义符号，而这种表示方式被我们叫做<code>Sign and Magnitude representation</code>。</p>
 <p>从硬件上设计计算机，存在<code>Sign&amp;Magnitude</code>信号，用于记录和计算浮点信息。  </p>
-<p><code>Sign&amp;Magnitude</code>中存在<code>One&#39;s Complement</code>和<code>Two&#39;s Complement</code>。<br><code>Two&#39;s Complement</code>比<code>One&#39;s Complement</code>的优点在于更容易计算，因此我们使用<code>Two&#39;s Complement</code>在计算机内计算。  </p>
+<p><code>Sign&amp;Magnitude</code>中存在<code>One's Complement</code>和<code>Two's Complement</code>。<br><code>Two's Complement</code>比<code>One's Complement</code>的优点在于更容易计算，因此我们使用<code>Two's Complement</code>在计算机内计算。  </p>
 <hr>
-<h3 id="有关减法"><a href="#有关减法" class="headerlink" title="有关减法"></a><strong>有关减法</strong></h3><p>计算机为避免过度的运算，所以处理数据只做加法。但是计算机还是需要去做减法，我们这里就用到了<code>Two&#39;s Complement</code>二次补码。  </p>
-<h3 id="Two’s-Complement"><a href="#Two’s-Complement" class="headerlink" title="Two’s Complement"></a><strong>Two’s Complement</strong></h3><p><code>Two&#39;s Complement</code>叫做二次补码，计算机可以用它来计算减法。<br>更多相关内容可参考<a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1719849343054359798&amp;wfr=spider&amp;for=pc">本文</a>。  </p>
+<h3 id="有关减法"><a href="#有关减法" class="headerlink" title="有关减法"></a><strong>有关减法</strong></h3><p>计算机为避免过度的运算，所以处理数据只做加法。但是计算机还是需要去做减法，我们这里就用到了<code>Two's Complement</code>二次补码。  </p>
+<h3 id="Two’s-Complement"><a href="#Two’s-Complement" class="headerlink" title="Two’s Complement"></a><strong>Two’s Complement</strong></h3><p><code>Two's Complement</code>叫做二次补码，计算机可以用它来计算减法。<br>更多相关内容可参考<a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1719849343054359798&amp;wfr=spider&amp;for=pc">本文</a>。  </p>
 <hr>
 <p>接下来举个做减法的例子：  </p>
 <p>比如说 23-35</p>
 <p>0 1 0 1 1 1 - 0 1 0 0 0 1 1</p>
 <p>最高位是代表一个正数，所以加几个 leading zero数字大小都不变。（<del>前提是在前面加的是0不是1</del>）</p>
-<p>现在变成 23+(-35)，就要将正 35 变成-35，使用 <code>Two&#39;s Complement</code>作变换，转换为二次补码。</p>
+<p>现在变成 23+(-35)，就要将正 35 变成-35，使用 <code>Two's Complement</code>作变换，转换为二次补码。</p>
 <ol>
 <li>首先，将<code>0 1 0 0 0 1 1</code>的每一位取反,变成<code>1 0 1 1 1 0 0</code>  </li>
 <li>然后，在<code>1 0 1 1 1 0 0</code>的后面追加一位 1，变成<code>1 0 1 1 1 0 1</code>，即为35的二次补码</li>
 </ol>
-<p>现在，直接令 23 加上 35 的 <code>Two&#39;s Complement</code>“<code>1 0 1 1 1 0 1</code> “即可算出 23-35。<br>位数不够可以在一开始多添几个 leading zero，使得每一位对齐。<br>这一举动不会影响到数据的大小。</p>
-<p>&nbsp;&nbsp;&nbsp;0 0 1 0 1 1 1<br>+ 1 0 1 1 1 0 1<br>----------------------<br>&nbsp;&nbsp;&nbsp;1 1 1 0 1 0 0</p>
-<p>现在，我们需要对于计算的结果再进行一次<code>Two&#39;s Complement</code>即可转换得到最后的计算答案。</p>
+<p>现在，直接令 23 加上 35 的 <code>Two's Complement</code>“<code>1 0 1 1 1 0 1</code> “即可算出 23-35。<br>位数不够可以在一开始多添几个 leading zero，使得每一位对齐。<br>这一举动不会影响到数据的大小。</p>
+<p>   0 0 1 0 1 1 1<br>+ 1 0 1 1 1 0 1<br>----------------------<br>   1 1 1 0 1 0 0</p>
+<p>现在，我们需要对于计算的结果再进行一次<code>Two's Complement</code>即可转换得到最后的计算答案。</p>
 <p><code>1 1 1 0 1 0 0</code>-&gt; <code>0 0 0 1 0 1 1</code>-&gt; (+1) <code>0 0 0 1 1 0 0</code></p>
 <p>至此，<code>0 0 0 1 1 0 0</code>（12）就是取模后的大小了。注意，<strong>这里是大小</strong>。</p>
 <p>我们还知道，第一次计算后得出的<code>1 1 1 0 1 0 0</code>，首位是 1，代表这是一个负数。 因此，原来的符号信息加上转换后的模便是最后答案(-12)。  </p>
@@ -60,14 +172,14 @@
 <p>Unicode使用<strong>两个字节</strong>储存一个字符。</p>
 <h3 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a><strong>UTF-8</strong></h3><p>不过大多欧美国家使用Unicode有点吃亏，因为他们只用其中一个Nibble就可以胜任日常使用了。<br>因此就诞生了一种新的字符集叫做UTF-8。</p>
 <p>一个Byte之中第一个Nibble一般是占满的，<br>比如<code>0???????</code>或者<code>10??????</code>，前面的几位数字用来告诉接收端如何分组字节。    </p>
-<p><br /><br>有关于UTF-8我的评价是：不太需要理解。<br>因为现在的语言（Java，Python）什么的都可以自动选取合适的字符集。<br>而且所有的字符集都是兼容ASCII码的。  </p>
+<p><br><br>有关于UTF-8我的评价是：不太需要理解。<br>因为现在的语言（Java，Python）什么的都可以自动选取合适的字符集。<br>而且所有的字符集都是兼容ASCII码的。  </p>
 <p>中文好多字符是需要3个nibble存储的，所以对于中国来说也是不适用的。因此我国研制了自己的一套字符集叫做GBK。</p>
 <h3 id="图像"><a href="#图像" class="headerlink" title="图像"></a><strong>图像</strong></h3><p>有位图和非位图，也可以说是矢量图。  </p>
 <p>我们常见的<code>.jpg</code>,<code>.jpeg</code>格式之类的都是位图，计算机存储每一个像素位上的信息。因此文件一般较大，而且也容易失真。  </p>
 <p>而<code>.svg</code>等文件类型是矢量图。矢量图记录的是像素的一系列关系，并由计算机直接绘制上色。因此无论如何蹂躏图像都不失真。  </p>
 <p><em>简直像极了描点发作图和数学法作图的区别。</em>  </p>
 <p>位图大小可以用<strong>像素数量×颜色深度</strong>计算得出。像素数量使用<strong>长像素数×宽像素数</strong>计算得出。  </p>
-<p><br /></p>
+<p><br></p>
 <p>需要注意以下几点：  </p>
 <ul>
 <li>在这里的计算方法得出的结果单位是bit。如要计算Byte那就将结果除以8。  </li>
@@ -77,7 +189,7 @@
 <h3 id="声音"><a href="#声音" class="headerlink" title="声音"></a><strong>声音</strong></h3><p>Analogue的数据是连续的，而Digital的数据是离散的。  </p>
 <p>用多少空间来记录一个采样的比率叫做一个采样率。采样率越高，音频质量越高。  </p>
 <p>当然不是采样率越高越好的。因为人类对于特定声音不敏感，所以采样率到一定水准就已经足够使用了。  </p>
-<p><br /></p>
+<p><br></p>
 <p>音频文件的计算公式为：  <strong>数据量 (B/s)  = 采样频率(Hz) × 采样位数(bit) × 声道数 /8</strong>   </p>
 <p>在这里，单声道代入“1”，立体声即为双声道，代入“2”计算。  </p>
 <p><em>注意这里计算的是每秒的数据量</em>   </p>
@@ -95,7 +207,7 @@
 </ul>
 </li>
 </ul>
-<p><br /></p>
+<p><br></p>
 <ul>
 <li>内存包含一个“存储程序”和该程序所需的数据<ul>
 <li>‘存储程序’可以在任何时候被另一个程序替换</li>
@@ -103,44 +215,44 @@
 </ul>
 </li>
 </ul>
-<p><br /></p>
+<p><br></p>
 <hr>
 <h2 id="中央处理器（CPU）的结构"><a href="#中央处理器（CPU）的结构" class="headerlink" title="中央处理器（CPU）的结构"></a><strong>中央处理器（CPU）的结构</strong></h2><p>中央处理器 (Central Processing Unit),简称CPU。  </p>
 <p>结构图示如下：  </p>
 <p><img src="https://note.youdao.com/yws/api/personal/file/WEB07bdb35bcc4604f42d278288fd7ca8c8?method=download&amp;shareKey=0ef5ed620db555623249697d0ad7a588" alt="CPU结构图"></p>
 <p>然后我们拆开讲解：  </p>
-<p><br /></p>
+<p><br></p>
 <hr>
 <h3 id="CPU的活动部分"><a href="#CPU的活动部分" class="headerlink" title="CPU的活动部分"></a><strong>CPU的活动部分</strong></h3><p>CPU的主要活动部分有两部分：   </p>
 <p><strong>Arithmetic Logic Unit (ALU) ：算术逻辑单元</strong>  </p>
 <p>算术逻辑单元是中央处理器的执行单元，进行整数运算的结构。<br>这是个能实现多组算术运算和逻辑运算的组合逻辑电路，是所有中央处理器的核心组成部分。<br>用逻辑门构成的算数逻辑单元，主要进行二位元的算术运算，比如说加减乘。（没有整数除法）  </p>
-<p><br /></p>
+<p><br></p>
 <p><strong>Control unit : 控制单元</strong>  </p>
 <p>控制单元负责程序的流程管理，是整个CPU的指挥和控制中心。 </p>
 <p>由三个部件组成：  </p>
 <p><strong>Instruction Register (IR) ： 指令寄存器</strong><br><strong>Instruction Decoder (ID) ： 指令译码器</strong><br><strong>Operation Controller (OC) ： 操作控制器</strong>  </p>
 <p>基本功能是从内存取指令、分析指令和执行指令。  </p>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <p>在控制单元内有一个重要部分，那就是时钟。<br>控制单元通过时钟来同步处理过程。  </p>
 <p>时钟分两种： <strong>Internal clock</strong> 和 <strong>System clock</strong>  </p>
 <article class="message is-info"><div class="message-body">
 
 <b>Internal clock: controls the cycles of activity within the processor.</b>
-<br />
-<br />
+<br>
+<br>
 <b>System clock: controls the cycles of activity outside the processor.</b>
 
 </div></article> 
 
 <p>Internal clock控制处理器内活动周期。<br>System clock控制处理器外部活动。  </p>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a><strong>寄存器</strong></h3><p><strong>Register</strong>，叫做<strong>寄存器</strong>  </p>
 <p>寄存器是CPU内部用来存放数据的一些小型存储区域，用来暂时存放参与运算的数据和运算结果。<br>之前提到过，寄存器在所有的存储单位里面，与CPU的交互是最快的，造价也是最高的。<br>因为寄存器的位置挨着ALU （算术逻辑单元），所以的读写速度会比较快。<br>寄存器的存储空间都很小，差不多就16、32或者64bits。  </p>
-<p><br />  </p>
+<p><br>  </p>
 <p>寄存器有<strong>通用的(General purpose)</strong>，也有<strong>专用的(Special purpose</strong>)。<br>如果只存在一个通用寄存器，我们会称其为<strong>累加器 (Accumulator)</strong>。  </p>
 <article class="message is-info"><div class="message-body">
 
@@ -150,9 +262,9 @@
 
 <p>上面说：<strong>累加器一种通用寄存器，会在ALU（算术逻辑单元）执行指令之前和之后存储一个值。</strong><br>或者说：<strong>累加器是一种寄存器，用来储存计算产生的中间结果。</strong>  </p>
 <p>如果没有累加器的存在，在每次进行一次计算（加法，乘法，移位等）之后都会把结果写进内存，即便这个结果会马上在接下来的一个运算中直接使用。<br><em>这样就太慢了。</em>  </p>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <p>专用寄存器也各不相同。下面这张表列出了一些专用寄存器。  </p>
 <div class="table-container">
 <table>
@@ -197,23 +309,23 @@
 </tbody>
 </table>
 </div>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <h2 id="系统总线"><a href="#系统总线" class="headerlink" title="系统总线"></a><strong>系统总线</strong></h2><p><strong>System bus</strong>,又名曰<strong>系统总线</strong>。<br>不过我们需要先理解什么是<strong>总线(Bus)</strong>。  </p>
 <p><strong>总线是连接多个部件的信息传输线，是各部件共享的传输介质。</strong><br>而<strong>系统总线，是CPU、主存、I/O设备各大部件之间的信息传输线。</strong>  </p>
 <p>系统总线分为三部分：<strong>地址总线 (Address bus)</strong>， <strong>数据总线 (Data bus)</strong> 和 <strong>控制总线 (Control bus)</strong>:  </p>
-<p><br /></p>
+<p><br></p>
 <p>CPU，内存和I/O与这三部分的总线的关系如下图所示：  </p>
 <p><img src="https://note.youdao.com/yws/api/personal/file/WEB37ba6027dba5bb7a263b7296bf187d34?method=download&amp;shareKey=b9069a1484092bd4c59ef1257ce6c201" alt="System bus">  </p>
 <p>接下来一个一个说这些总线都是写啥。  </p>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <h3 id="地址总线"><a href="#地址总线" class="headerlink" title="地址总线"></a><strong>地址总线</strong></h3><p>定义：  </p>
 <article class="message is-info"><div class="message-body">
 
-<b>Address bus: a component that carries an address.</b>&nbsp;This can be to the memory controller to identify a location in memory which is to be read from or written to or it can be to the I/O system to identify the source or destination of the data.
+<b>Address bus: a component that carries an address.</b> This can be to the memory controller to identify a location in memory which is to be read from or written to or it can be to the I/O system to identify the source or destination of the data.
 
 </div></article> 
 
@@ -221,9 +333,9 @@
 <p>地址总线的唯一功能是携带地址。  </p>
 <p>当控制单元给到了一个命令后，地址会从MAR（储存器地址寄存器）中加载到总线上。<br>一个地址制定了内存中的一个位置，或者一个待接受的数据，亦或者是从中读取数据的一个I/O组件。  </p>
 <p><strong>地址总线是单向的</strong>，所以说<strong>它只能向内存控制器 (Memory controller)或者I/O控制器 (I/O Controller)发送地址，不能用于将地址传回到CPU。</strong>  </p>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <h3 id="数据总线"><a href="#数据总线" class="headerlink" title="数据总线"></a><strong>数据总线</strong></h3><article class="message is-info"><div class="message-body">
 
 <b>Data bus: a component that can carry data from the processor to the memory or to an output device or can carry data from the memory or from an input device.</b>
@@ -235,18 +347,18 @@
 <p>数据总线的功能是传送数据，传输的数据可以是指令，地址，也可以是一个确切的值。  </p>
 <p><strong>数据总线是双向的(Bidirectional)</strong>，这意味着它可以将数据从CPU传输到内存，也可以从内存传输到CPU。<br>同样的，数据总线也可以选择将数据传入I/O设备，或者从I/O设备传出数据。  </p>
 <p>在上面的那张图里面，没有明确表示出从输入设备发来的数据是先传输到CPU还是存储器里面，这么做是有依据的。<br>比如：部分计算机系统只允许数据存储在内存之前输入CPU，也有的系统允许数据直接传输到内存。  </p>
-<p><br />  </p>
+<p><br>  </p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <h3 id="控制总线"><a href="#控制总线" class="headerlink" title="控制总线"></a><strong>控制总线</strong></h3><p><strong>控制总线 (Control bus)： 用来发出各种控制信号的传输线。</strong>  </p>
 <hr>
 <h1 id="第十一章：数据库"><a href="#第十一章：数据库" class="headerlink" title="第十一章：数据库"></a><strong>第十一章：数据库</strong></h1><p>第二章到第十章中间的内容之后目前还没讲，之后再说  </p>
 <h2 id="关于数据库"><a href="#关于数据库" class="headerlink" title="关于数据库"></a><strong>关于数据库</strong></h2><p>我们所说的数据库，一般指的是数据库管理系统，又叫数据库管理软件。英文为：Database Management System (DBMS)。  </p>
 <p>常用的数据库管理软件有<code>MySQL</code>，<code>SQLite</code>等。<br>在很多大型公司里，一个数据库往往是一个项目的核心。</p>
 <p>那么数据库存在的意义是什么？既然只是为了记录数据，我为啥要使用数据库？<br>主要是因为，我们存在大批量的数据并且还需要高速有效地写入或检索出来。</p>
-<p>下面用一个例子来简单解释一下数据库的优势：<br><br /></p>
+<p>下面用一个例子来简单解释一下数据库的优势：<br><br></p>
 <hr>
-<p><br /><br>设想一下，你在一家电影院里工作，影院需要录入每一部电影的片名，上映时间，电影类型等等数据，并且使用<strong>文字处理软件</strong>进行记录。<br>在这个例子中，我们就假定使用Windows自带的“记事本”进行txt文件的编辑吧。<br>这样有专门的工作人员手动往这个txt文件里塞入一行一行有关的信息。一行写满了一部电影的数据，就像这样：  </p>
+<p><br><br>设想一下，你在一家电影院里工作，影院需要录入每一部电影的片名，上映时间，电影类型等等数据，并且使用<strong>文字处理软件</strong>进行记录。<br>在这个例子中，我们就假定使用Windows自带的“记事本”进行txt文件的编辑吧。<br>这样有专门的工作人员手动往这个txt文件里塞入一行一行有关的信息。一行写满了一部电影的数据，就像这样：  </p>
 <div class="table-container">
 <table>
 <thead>
@@ -287,9 +399,9 @@
 </tbody>
 </table>
 </div>
-<p>那么这种处理数据的方法都会出现哪些问题捏？<br><br /></p>
+<p>那么这种处理数据的方法都会出现哪些问题捏？<br><br></p>
 <hr>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>· 冗余</strong>  </p>
+<p>     <strong>· 冗余</strong>  </p>
 <p>一次换班过后，原来负责记录信息的工作人员润了。取而代之的是一个新的员工。<br>有一天，一部叫做《数据库》电影返场了。所以这一位新员工理所当然地更新了数据：  </p>
 <div class="table-container">
 <table>
@@ -339,27 +451,27 @@
 </tbody>
 </table>
 </div>
-<p>这显然是不合理的，因为新录入的信息与之前的老信息发生了重复。<br>作为一款文字处理软件，想要排查这样的错误无异于大海捞针。<br>但是使用数据库就不会出现这种问题。<br><br /></p>
+<p>这显然是不合理的，因为新录入的信息与之前的老信息发生了重复。<br>作为一款文字处理软件，想要排查这样的错误无异于大海捞针。<br>但是使用数据库就不会出现这种问题。<br><br></p>
 <hr>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>· 无法检索并汇总</strong>  </p>
+<p>     <strong>· 无法检索并汇总</strong>  </p>
 <p>假设电影院至今已经播出了114514部不同的电影，每一部电影都存在于这份文档中。<br>然后有一天你的老板让你整理出来所有票价高于80元的电影的片名，导演，电影类型等数据，汇总给老板看。  </p>
 <p>然后你打开了txt文件——</p>
 <p><strong>寄。</strong>  </p>
 <p>你会发现你无法通过限定数据来进行检索和整理输出。因此最好的方法就是滑动鼠标滚轮靠肉眼一行一行人工检索了。  </p>
-<p>同理，使用数据库就不会出现这种问题。<br><br /></p>
+<p>同理，使用数据库就不会出现这种问题。<br><br></p>
 <hr>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>· 可移带性、规范性差</strong></p>
+<p>     <strong>· 可移带性、规范性差</strong></p>
 <p>然后假如电影院记录的数据十分的完整，以至于有其他的电影院想有偿使用你的这一份txt文件。<br>然后对方付了钱，你发过去了这一份txt文件。  </p>
 <p>但是与此同时，收到这一份文件的另一家电影院已经开始痛苦面具了——因为标准或者语言的不同，使用的这一份数据无法直接部署给对方使用，导致对方需要花费大量的经历去做数据的重新整理。</p>
-<p>而数据库有一套比较统一的语言系统和语法，允许数据库方便地在不同计算机上转移数据。<br><br /></p>
+<p>而数据库有一套比较统一的语言系统和语法，允许数据库方便地在不同计算机上转移数据。<br><br></p>
 <p>当然还会有更多的问题，这里就不列举了</p>
 <hr>
 <h2 id="数据库的标准"><a href="#数据库的标准" class="headerlink" title="数据库的标准"></a><strong>数据库的标准</strong></h2><p>像TCP,UDP之类的传输协议，都是一些白纸黑字的成文标准。SQL也是如此。<br>SQL，全称 Structured Query Language。 </p>
 <h2 id="关系型数据库内容"><a href="#关系型数据库内容" class="headerlink" title="关系型数据库内容"></a><strong>关系型数据库内容</strong></h2><p>现在很多应用都需要处理对象与对象之间的关系。<br>有关数据，抽离对象，数据，以及他们的关系，就可以用面向对象的语言来进行编写。<br>但是如果要根据此类数据创建一个数据库，就可以用关系型数据库将我们现在最主流的应用的数据平滑地记录下来。  </p>
-<p><br /></p>
+<p><br></p>
 <p>下面来介绍一下数据库的成分：  </p>
 <h3 id="table"><a href="#table" class="headerlink" title="table"></a><strong>table</strong></h3><p>关系型数据库表达主体和关系，是通过<code>Relation</code>来完成的。（<del>俗话说就是表格</del>）<br><code>Attribute</code>代表在表格里面的一个列。<br>而<code>Tuple</code>就代表其中的一个行。<br>就是和Excel很像，但也仅仅是看着像了。</p>
-<p><br /></p>
+<p><br></p>
 <h3 id="key"><a href="#key" class="headerlink" title="key"></a><strong>key</strong></h3><p><strong><code>key</code>（键）代表一个专用的特征码，甄别唯一性的一串字符。</strong>    </p>
 <p><strong><code>Primary key</code> 为”主键“，代表现役判断重复性的根据。</strong><br>在作为<code>Primary key</code>的那一项，数据不能为空，也不能重复（只能唯一）。    </p>
 <p><strong>在CIE考试里，在创建数据库的时候，都必须需要一个主键存在。</strong>  </p>
@@ -437,9 +549,9 @@
 
 <p>也就是说，一个表格需要描述一类信息，一张表仅描述一件事。</p>
 <p>其实就是为了去冗余。  </p>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <p><span class="tag is-warning">Example</span>  </p>
 <p>表格：Exam  </p>
 <div class="table-container">
@@ -466,7 +578,7 @@
 </div>
 <p>在这个表格里，<code>Student_ID</code>,<code>Course_ID</code>和<code>Date</code>作联合主键。因为三者制约完全可以保证确定一个数据。  </p>
 <p><code>Student_Name</code>依赖于<code>Student_ID</code>, <code>Course_Name</code>依赖于<code>Course_ID</code>。这种情况叫做部分依赖。<br>而部分依赖，是不符合第二范式的。  </p>
-<p><br /></p>
+<p><br></p>
 <p>因此，我们可以将<code>Student_Name</code>和<code>Course_Name</code>抽离至两个新表格<code>Student</code>和<code>Course</code>。<br>在<code>Student</code>表格内，<code>Student_ID</code>为<code>Student</code>表主键。需要将<code>Student_ID</code>列抽离到学生考试表格做外键。<br>在<code>Student</code>表格内，<code>Course_ID</code>为<code>Course</code>表主键。需要将<code>Course_ID</code>列抽离到学生考试表格做外键。  </p>
 <p>如下所示：</p>
 <p>Student ( <u>Student_ID</u>, Student_Name )<br>Course ( <u>Course_ID</u>, Course_Name )<br>Exam ( <u>Student_ID, Course_ID, Date</u>, <em>Student_ID(fk)</em>, <em>Student_ID(fk)</em> )</p>
@@ -497,10 +609,10 @@
 </div>
 <p>规定<code>main</code>是主键，则<code>commits</code>,<code>branch</code>,<code>system</code>都必须与<code>main</code>有联系。  </p>
 <p>假如说<code>system</code>仅与<code>branch</code>有关系，则证明不符合第三范式。  </p>
-<p><br /></p>
+<p><br></p>
 <hr>
 <h3 id="使用三范式规范化数据库"><a href="#使用三范式规范化数据库" class="headerlink" title="使用三范式规范化数据库"></a><strong>使用三范式规范化数据库</strong></h3><p>下面是一张信息表。将其转换成数据库的形式，并符合三范式要求。  </p>
-<blockquote><p><strong>Order no:</strong> 07845<br><strong>Date:</strong> 25-06-2016<br><strong>Customer no:</strong> 056<br><strong>Customer name:</strong>  CUP<br><strong>Address:</strong> Cambridge square &nbsp;&nbsp;&nbsp;&nbsp; Cambridge<br><strong>Sales rep no:</strong> 2<br><strong>Sales Rep name:</strong>  Dylan Stoddart  </p>
+<blockquote><p><strong>Order no:</strong> 07845<br><strong>Date:</strong> 25-06-2016<br><strong>Customer no:</strong> 056<br><strong>Customer name:</strong>  CUP<br><strong>Address:</strong> Cambridge square      Cambridge<br><strong>Sales rep no:</strong> 2<br><strong>Sales Rep name:</strong>  Dylan Stoddart  </p>
 <div class="table-container">
 <table>
 <thead>
@@ -538,9 +650,9 @@
 </table>
 </div>
 </blockquote>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <p>在表格上方的数据，都具有原子性。  </p>
 <p>解释一下上半部分的数据：  </p>
 <p><strong><code>customer_name</code>：</strong>  </p>
@@ -566,9 +678,9 @@
 <li>这是一个比较纠结的问题。  <code>price/unit</code>实际上是不依赖于<code>product_id</code>的。<br>因为如果实际操作中一旦改价格，主键不允许重复的特性会导致之前的老价格丢失掉。  </li>
 <li>但是书上是学的理论知识，将<code>price</code>放到<code>product_table</code>里面也是可以的。因为没有违反任何范式。</li>
 </ul>
-<p><br /></p>
+<p><br></p>
 <hr>
-<p><br /></p>
+<p><br></p>
 <p>因为第二范式的存在，我们不得不生成一个叫做<code>product_table</code>的表格,记录产品信息：  </p>
 <p>表格： <code>product_table</code>  </p>
 <div class="table-container">
@@ -676,7 +788,7 @@
 </div>
 <p>本表格是<code>product</code>和<code>order</code>的关系表。  </p>
 <p>在此表格中，<code>product_id</code>和<code>order_id</code>构成联合主键。  </p>
-<p><br /></p>
+<p><br></p>
 <h2 id="MySQL及命令及语法"><a href="#MySQL及命令及语法" class="headerlink" title="MySQL及命令及语法"></a><strong>MySQL及命令及语法</strong></h2><h3 id="命令基本操作"><a href="#命令基本操作" class="headerlink" title="命令基本操作"></a><strong>命令基本操作</strong></h3><p>下面来实操一下：  </p>
 <p>首先我们需要创建一个数据库。<br>使用<code>create database</code>命令创建一个database。<br>比如说，下列命令：  </p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">create</span> database school_system;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -696,13 +808,13 @@
 <p>接下来，使用<code>create *参数*</code>命令是要定义数据结构。<br>此命令后面需要跟着要填入的数据以及信息。    </p>
 <p>比如说此命令：  </p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student(</span><br><span class="line">student_id <span class="type">int</span>,</span><br><span class="line">student_name <span class="type">varchar</span>(<span class="number">50</span>),</span><br><span class="line">student_gender <span class="type">char</span>(<span class="number">1</span>)</span><br><span class="line">)</span><br><span class="line">;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>命令代表创建一个叫做student的表格。<br>里面的参数为：<br><br /></p>
+<p>命令代表创建一个叫做student的表格。<br>里面的参数为：<br><br></p>
 <p><code>student_id int,</code>代表创建一个名称为<code>student_id</code>的Field。它的数据类型为整型。  </p>
-<p><br /></p>
+<p><br></p>
 <p><code>student_name varchar(50),</code>代表数据类型是<code>student_name</code>，数据类型是<code>varchar</code>，长度上限为50。<br>P.S. <code>varchar</code>代表“可变的数据长度“。  </p>
-<p><br /></p>
+<p><br></p>
 <p><code>student_gender char(1),</code>代表在<code>student_gender</code>中，数据类型是<code>char</code>，上限为1。<br><code>char</code>代表”定长数据“。  </p>
-<p><br /></p>
+<p><br></p>
 <p>输出结果为:  </p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.05</span> sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>代表表格创建成功了。</p>
@@ -712,7 +824,7 @@
 <li>如果在<code>student_gender char(1)</code>的末尾加一个逗号，会判定为错误。因为这已经是此次create命令里面最后一行参数，不需要再次使用逗号隔开参数。  </li>
 <li>多有<code>()</code>是成对出现的。括号的范围代表命令参数的范围。</li>
 </ul>
-<p><br /></p>
+<p><br></p>
 <hr>
 <p>使用<code>show tables;</code>命令展示数据库内所有的table。<br>在这里运行<code>show tables;</code>的结果为：  </p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------------------+</span></span><br><span class="line"><span class="operator">|</span> Tables_in_school_system <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------------------+</span></span><br><span class="line"><span class="operator">|</span> student                                   <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------------------+</span></span><br><span class="line"><span class="number">1</span> <span class="type">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -720,8 +832,8 @@
 <hr>
 <p>之后，我们需要写入数据。  </p>
 <p>使用<code>insert into</code>命令写入数据。<br>以下命令：  </p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> student <span class="keyword">values</span>(<span class="number">1000</span>, <span class="string">&#x27;张三&#x27;</span>,<span class="string">&#x27;M&#x27;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>代表向student表格内插入<code>(1000, &#39;张三&#39;,&#39;M&#39;)</code>三个数据。其中：<br><code>1000</code>对应<code>student_id</code><br><code>张三</code>对应<code>student_name</code><br><code>M</code>对应<code>student_gender</code>  。  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> student <span class="keyword">values</span>(<span class="number">1000</span>, <span class="string">'张三'</span>,<span class="string">'M'</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>代表向student表格内插入<code>(1000, '张三','M')</code>三个数据。其中：<br><code>1000</code>对应<code>student_id</code><br><code>张三</code>对应<code>student_name</code><br><code>M</code>对应<code>student_gender</code>  。  </p>
 <p>运行后输出为：  </p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Query OK, <span class="number">1</span> <span class="type">row</span> affected (<span class="number">0.01</span> sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>同样代表写入成功。  </p>
@@ -729,8 +841,8 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------+----------------------+-------------------------+</span></span><br><span class="line"><span class="operator">|</span> student_id <span class="operator">|</span> student_name <span class="operator">|</span> student_gender <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------+----------------------+-------------------------+</span></span><br><span class="line"><span class="operator">|</span>             <span class="number">1000</span> <span class="operator">|</span> 张三                    <span class="operator">|</span> M                             <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------+----------------------+-------------------------+</span></span><br><span class="line"><span class="number">1</span> <span class="type">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>在此命令中，<code>*</code>代表范围内的全部。  </p>
 <hr>
-<p><br /></p>
-<p><br /></p>
+<p><br></p>
+<p><br></p>
 <hr>
 <p>最后更新于：<strong>2022.9.19</strong>  </p>
 </div><div class="article-licensing box"><div class="licensing-title"><p>ASCS笔记</p><p><a href="http://naughtychas.github.io/2022/09/01/ASCS笔记/">http://naughtychas.github.io/2022/09/01/ASCS笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2022-09-01</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2022-12-02</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  4.<a class="is-size-6" href="/2022/08/17/2022%E5%B9%B4%E7%A7%8B%E5%AD%A3CIE%E9%83%A8%E5%88%86%E8%80%83%E8%AF%95%E6%97%B6%E9%97%B4/" target="_blank" rel="noreferrer">2022年秋季CIE部分考试时间</a><br></span><span>  5.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span><span>  6.<a class="is-size-6" href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/" target="_blank" rel="noreferrer">收集&quot;你说得对&quot;</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">收集&quot;你说得对&quot;</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/"><span class="level-item">LaTeX自学笔记</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
