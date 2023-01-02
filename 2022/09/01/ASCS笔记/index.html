@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>ASCS笔记 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="CS课堂笔记"><meta property="og:type" content="article"><meta property="og:title" content="ASCS笔记"><meta property="og:url" content="http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="CS课堂笔记"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><meta property="article:published_time" content="2022-09-01T13:33:28.000Z"><meta property="article:modified_time" content="2022-12-28T14:17:22.033Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="CIE"><meta property="article:tag" content="笔记"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"],"datePublished":"2022-09-01T13:33:28.000Z","dateModified":"2022-12-28T14:17:22.033Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"CS课堂笔记"}</script><link rel="canonical" href="http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>ASCS笔记 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="CS课堂笔记"><meta property="og:type" content="article"><meta property="og:title" content="ASCS笔记"><meta property="og:url" content="http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="CS课堂笔记"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><meta property="article:published_time" content="2022-09-01T13:33:28.000Z"><meta property="article:modified_time" content="2023-01-02T12:03:15.382Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="CIE"><meta property="article:tag" content="笔记"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"],"datePublished":"2022-09-01T13:33:28.000Z","dateModified":"2023-01-02T12:03:15.382Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"CS课堂笔记"}</script><link rel="canonical" href="http://naughtychas.github.io/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
@@ -115,12 +115,12 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style></head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/thumbnails/CS.jpg" alt="ASCS笔记"></span></div><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2022-09-01  <a class="commentCountImg" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">cd3959d276fa3caf2a7f842749b93dc0</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="cd3959d276fa3caf2a7f842749b93dc0">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>1 小时  <i class="fas fa-pencil-alt"> </i>13.3 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">ASCS笔记</h1><div class="content"><blockquote>
+</style></head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/thumbnails/CS.jpg" alt="ASCS笔记"></span></div><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2022-09-01  <a class="commentCountImg" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">cd3959d276fa3caf2a7f842749b93dc0</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="cd3959d276fa3caf2a7f842749b93dc0">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>2 小时  <i class="fas fa-pencil-alt"> </i>15.1 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">ASCS笔记</h1><div class="content"><blockquote>
 <p>CS课堂笔记<br><span id="more"></span></p>
 </blockquote>
 <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a><strong>写在前面</strong></h1><p>今日同步计划进度条：  </p>
 <p><br></p>
-<progress class="progress is-info" value="100" max="100"></progress>
+<progress class="progress is-info" value="26" max="100"></progress>
 
 <p><br></p>
 <hr>
@@ -554,7 +554,8 @@ mjx-container[display="true"] + br {
 <hr>
 <h2 id="寻址类型"><a href="#寻址类型" class="headerlink" title="寻址类型"></a><strong>寻址类型</strong></h2><p>有如下几种寻址类型：  </p>
 <p><strong>Symbolic addressing: 符号寻址</strong><br><strong>Relative addressing: 相对寻址</strong><br><strong>Absolute addressing: 绝对寻址</strong>  </p>
-<p>当考虑汇编程序是如何将汇编语言程序转换为机器码是，我们很有必要去了解下他们之间的区别。<br>我们假设有这样一个汇编程序，它的目的就是把键盘上输入的单个数字相加。<br>下表左侧分步骤描述了一个使用符号寻址编写的汇编程序，以及对每条指令的解释：  </p>
+<p>当考虑汇编程序是如何将汇编语言程序转换为机器码是，我们很有必要去了解下他们之间的区别。<br>我们假设有这样一个汇编程序，它的目的就是把键盘上输入的单个数字相加。<br><strong>我们会在接下来的文章内反复使用这个例子！</strong>所以说好好看看这个程序是很有必要的（  </p>
+<p>下表左侧分步骤描述了一个使用符号寻址编写的汇编程序，以及对每条指令的解释：  </p>
 <div class="table-container">
 <table>
 <thead>
@@ -646,7 +647,172 @@ mjx-container[display="true"] + br {
 <hr>
 <p><br></p>
 <p>使用符号寻址可以让程序员使用汇编语言代码，而不需要担心程序运行的时候代码在内存中的位置。<br>编写汇编代码也可以将符号寻址替换为相对寻址或绝对寻址。  </p>
-<p>表下显示了上面那个表格中使用这些替代方法转换后的简单代码：  </p>
+<p>下表显示了上面那个表格中使用这些替代方法转换后的简单代码：  </p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEB38e3562e28832957b60b19339bbc7068?method=download&amp;shareKey=b8c26385c454c64539b9dd9707f054f5" alt="Table"></p>
+<p>你可能发现在相对寻址改写的程序中，有<code>[BR]</code>这个东西。<br>这里我们假设有一个基址寄存器 (base register)，包含程序基址。<br><strong>程序基址是程序中第一条指令的地址。</strong> 查看上图的例子：使用绝对寻址的程序的第一行代码的地址是200，所以BR中存储的基址为200。<br>调用基址寄存器中的内容，可以使用<code>[BR]</code>。  </p>
+<p><br></p>
+<hr>
+<h2 id="两步汇编程序的汇编过程"><a href="#两步汇编程序的汇编过程" class="headerlink" title="两步汇编程序的汇编过程"></a><strong>两步汇编程序的汇编过程</strong></h2><p>对于任何汇编程序，在进行任何转换之前，都必须对汇编语言代码进行许多处理。比如说：  </p>
+<ul>
+<li>移除注释  </li>
+<li>用构成宏定义的指令列表替换指令中使用的宏名称  </li>
+<li>删除和存储稍后要执行的指令</li>
+</ul>
+<p><br></p>
+<hr>
+<p><br>  </p>
+<p>我们在<strong>寻址类型</strong>章节里面设计了一个汇编程序，这个程序内包括了向前引用。<br>有些指令有操作数的符号地址，但在程序的那个阶段，我们不知道这个地址的位置。需要一个两遍汇编程序，以便在第一遍中确定前向引用的地址的位置。  </p>
+<p>为了在第一次传递期间实现这一点，汇编程序使用了一个符号表。<br>代码是逐行读取的。当一个符号地址第一次遇到时，这个名字就会被输入到一张符号表中。<br>在名称旁边，必须尽快添加一个相应的地址，以便识别。<br>下表给出了针对<strong>寻址类型</strong>章节中那个程序创建的符号表。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Symbol</th>
+<th style="text-align:center">Offset</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>MAX</code></td>
+<td style="text-align:center">+15</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>TOTAL</code></td>
+<td style="text-align:center">+16</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>COUNT</code></td>
+<td style="text-align:center">+17</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>STRTLP</code></td>
+<td style="text-align:center">+7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>请注意，汇编程序在读取代码时必须对指令进行计数。当它遇到一个标签时，汇编程序可以将偏移值(offset)输入到符号表中。<br>在这个例子中，偏移量列中的第一个项是<code>STRPLP</code>的+7。  </p>
+<p><br>  </p>
+<hr>
+<p><br></p>
+<p>在第二步中，汇编程序会使用符号表(symbol table)和一个查找表(lookup table)，表格中包含每个操作码的二进制代码。<br>每一个处理器定义过的操作码，在这个表里都可以找到对应的信息。  </p>
+<p>下表列出了我们举的例子中使用的指令对应的条目。需要注意的是：这里的二进制代码是对于待使用代码的一个建议。</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEBf3650c45807785f33ac93b368fa88b62?method=download&amp;shareKey=df38fda7b2a948a32f27df18fe2e4990" alt="Table"></p>
+<p>如果不出意外的话（比如说汇编发生错误），那么第二遍的输出就是机器码程序了。<br>下面这个表格将原始汇编代码和编译好的机器码程序列在了一起，我们可以简单比较一下：  </p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEBab306e5096e4bc745cbe01207487e10b?method=download&amp;shareKey=8375e8b3c421e667241633a2d4e187a3" alt="Table"></p>
+<p><br></p>
+<p>有以下几点需要简单注意下：  </p>
+<ul>
+<li>大多数的指令都有一个16位二进制数的操作数。  </li>
+<li>通常来说这表示一个地址，但对于<code>SUB</code>和<code>LDM</code>指令，操作数会被用作一个值。  </li>
+<li><code>IN</code>和<code>END</code>指令没有操作数。  </li>
+<li><code>INC</code>指令是一个特例。汇编语言代码中存在操作数，但它只用来定义寄存器。在机器码中，寄存器是在操作码中标识的，因此就不需要操作数了。</li>
+<li>在编译机器码的时候，第一个步骤会占用第零个地址。</li>
+<li>像这种形式的代码是不可执行的，但它却是汇编程序的一个有效输出。</li>
+<li>当程序加载到内存中准备执行时，就需要把地址稍微改改了。</li>
+<li>程序代码之后的三个内存位置将会分配为零，以确保程序执行后可以正常使用它们。</li>
+</ul>
+<p><br></p>
+<hr>
+<h2 id="寻址模式"><a href="#寻址模式" class="headerlink" title="寻址模式"></a><strong>寻址模式</strong></h2><p>当一条指令需要将一个值加载到寄存器中时，我们有不同的方法来识别该值。其中的每一种都被称为寻址模式 (Addressing mode)。  </p>
+<p><em>顺带附上寻址模式的定义：</em>  </p>
+<article class="message is-info"><div class="message-body">
+
+<b>Addressing mode: when the instruction uses a value this defines how the operand must be used to find the value.</b> 
+
+</div></article>
+
+<p>*<em>当指令需要使用一个值时，寻址模式定义了如何使用操作数来查找这个值。</em></p>
+<p>在本单元的开始就说过：对于一个简单处理器，机器码指令中的操作码位将用于定义寻址模式。加起来一共允许有4种不同的寻址模式，如下表所示。  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">寻址模式</th>
+<th style="text-align:left">操作数的使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Immediate</strong><br>（立即寻址）</td>
+<td style="text-align:left">在这种情况中，操作数是<strong>要在指令中使用的值</strong>；<br><code>SUB #48</code><br>就是一个很好的例子。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Direct</strong><br>（直接寻址）</td>
+<td style="text-align:left">在这种情况中，操作数是<strong>保存要在指令中使用的值的地址</strong>；<br><code>ADD TOTAL</code><br>是其中的一种情况。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Indirect</strong><br>（间接寻址）</td>
+<td style="text-align:left">在这种情况中，操作数是<strong>一个地址</strong>，该地址包含<strong>要在指令中使用的值</strong>。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Indexed</strong><br>（变址寻址）</td>
+<td style="text-align:left">在这种情况中，操作数是<strong>一个地址</strong>，但是<strong>必须将当前变址寄存器(IX)中的值加到该地址上</strong>，才可以获得要在指令中使用的值的地址。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于立即寻址，有三种定义值的选项:  </p>
+<ul>
+<li><code>#48</code>指定了十进制值48  </li>
+<li><code>#B00110000</code>指定等价的二进制内容  </li>
+<li><code>#&amp;30</code>指定了等价的十六进制内容  </li>
+</ul>
+<p><br></p>
+<hr>
+<h2 id="汇编语言指令"><a href="#汇编语言指令" class="headerlink" title="汇编语言指令"></a><strong>汇编语言指令</strong></h2><p>继续回到具有有限指令集的简单处理器上。<br>我们在这里举出的所有例子，都不会与特定处理器的汇编所匹配。<br>每一个指令都需要基于平台，针对性的设计汇编程序。  </p>
+<p><br></p>
+<hr>
+<h3 id="数据的移动"><a href="#数据的移动" class="headerlink" title="数据的移动"></a><strong>数据的移动</strong></h3><p>这些指令种类各不一样。有些可以将数据加载到寄存器中，有一些可以将数据存储在内存里。<br>下面这个表格举出了一些例子：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令操作码</th>
+<th style="text-align:center">指令操作数</th>
+<th style="text-align:left">简单的解释(<del>但愿吧</del>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>LDM</code></td>
+<td style="text-align:center"><code>#n</code></td>
+<td style="text-align:left">立即寻址，将数字“n”加载到累加器(ACC)中。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>LDR</code></td>
+<td style="text-align:center"><code>#n</code></td>
+<td style="text-align:left">立即寻址，将数字“n”加载到变址寄存器(IX)中。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>LDD</code></td>
+<td style="text-align:center"><code>&lt;address&gt;</code></td>
+<td style="text-align:left">直接寻址，将给定地址的内容加载到累加器中。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>LDI</code></td>
+<td style="text-align:center"><code>&lt;address&gt;</code></td>
+<td style="text-align:left">间接寻址，给定的地址将会被使用，而第二个地址的内容会加载到累加器中。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>LDX</code></td>
+<td style="text-align:center"><code>&lt;address&gt;</code></td>
+<td style="text-align:left">变址寻址，地址由<code>&lt;address&gt;</code>+变址寄存器中的内容组成，然后将计算出来的地址中的内容加载到累加器中。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>MOV</code></td>
+<td style="text-align:center"><code>&lt;register&gt;</code></td>
+<td style="text-align:left">将累加器中的内容移动至一个指定的寄存器中(IX)。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>STO</code></td>
+<td style="text-align:center"><code>&lt;address&gt;</code></td>
+<td style="text-align:left">将寄存器中的内容储存到一个指定的地址。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>目前还没更完</em></p>
 <p><br></p>
 <hr>
 <h1 id="第十一章：数据库"><a href="#第十一章：数据库" class="headerlink" title="第十一章：数据库"></a><strong>第十一章：数据库</strong></h1><p>第二章到第十章中间的内容之后目前还没讲，之后再说  </p>
@@ -1152,7 +1318,7 @@ mjx-container[display="true"] + br {
 <p><br></p>
 <hr>
 <p>最后更新于：<strong>2022.12.4</strong>  </p>
-</div><div class="article-licensing box"><div class="licensing-title"><p>ASCS笔记</p><p><a href="http://naughtychas.github.io/2022/09/01/ASCS笔记/">http://naughtychas.github.io/2022/09/01/ASCS笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2022-09-01</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2022-12-28</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  4.<a class="is-size-6" href="/2022/08/17/2022%E5%B9%B4%E7%A7%8B%E5%AD%A3CIE%E9%83%A8%E5%88%86%E8%80%83%E8%AF%95%E6%97%B6%E9%97%B4/" target="_blank" rel="noreferrer">2022年秋季CIE部分考试时间</a><br></span><span>  5.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span><span>  6.<a class="is-size-6" href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/" target="_blank" rel="noreferrer">收集&quot;你说得对&quot;</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">收集&quot;你说得对&quot;</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/"><span class="level-item">LaTeX自学笔记</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
+</div><div class="article-licensing box"><div class="licensing-title"><p>ASCS笔记</p><p><a href="http://naughtychas.github.io/2022/09/01/ASCS笔记/">http://naughtychas.github.io/2022/09/01/ASCS笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2022-09-01</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-01-02</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  4.<a class="is-size-6" href="/2022/08/17/2022%E5%B9%B4%E7%A7%8B%E5%AD%A3CIE%E9%83%A8%E5%88%86%E8%80%83%E8%AF%95%E6%97%B6%E9%97%B4/" target="_blank" rel="noreferrer">2022年秋季CIE部分考试时间</a><br></span><span>  5.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span><span>  6.<a class="is-size-6" href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/" target="_blank" rel="noreferrer">收集&quot;你说得对&quot;</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">收集&quot;你说得对&quot;</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/"><span class="level-item">LaTeX自学笔记</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
             var gitalk = new Gitalk({
             language:'zh-CN',
             id: 'cd3959d276fa3caf2a7f842749b93dc0',
@@ -1170,7 +1336,7 @@ mjx-container[display="true"] + br {
             enableHotKey: true,
             isLocked: false
         })
-        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#写在前面"><span class="mr-2">1</span><span>写在前面</span></a></li><li><a class="is-flex is-mobile" href="#第一章：数据的表示"><span class="mr-2">2</span><span>第一章：数据的表示</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#数字的内部编码"><span class="mr-2">2.1</span><span>数字的内部编码</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#编码"><span class="mr-2">2.1.1</span><span>编码</span></a></li><li><a class="is-flex is-mobile" href="#有关减法"><span class="mr-2">2.1.2</span><span>有关减法</span></a></li><li><a class="is-flex is-mobile" href="#Two’s-Complement"><span class="mr-2">2.1.3</span><span>Two’s Complement</span></a></li><li><a class="is-flex is-mobile" href="#有关数据溢出"><span class="mr-2">2.1.4</span><span>有关数据溢出</span></a></li><li><a class="is-flex is-mobile" href="#单位转换"><span class="mr-2">2.1.5</span><span>单位转换</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#字符集"><span class="mr-2">2.2</span><span>字符集</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#BCD"><span class="mr-2">2.2.1</span><span>BCD</span></a></li><li><a class="is-flex is-mobile" href="#ASCII-Code"><span class="mr-2">2.2.2</span><span>ASCII Code</span></a></li><li><a class="is-flex is-mobile" href="#Unicode"><span class="mr-2">2.2.3</span><span>Unicode</span></a></li><li><a class="is-flex is-mobile" href="#UTF-8"><span class="mr-2">2.2.4</span><span>UTF-8</span></a></li><li><a class="is-flex is-mobile" href="#图像"><span class="mr-2">2.2.5</span><span>图像</span></a></li><li><a class="is-flex is-mobile" href="#File-Header"><span class="mr-2">2.2.6</span><span>File Header</span></a></li><li><a class="is-flex is-mobile" href="#声音"><span class="mr-2">2.2.7</span><span>声音</span></a></li><li><a class="is-flex is-mobile" href="#压缩"><span class="mr-2">2.2.8</span><span>压缩</span></a></li></ul></li></ul></li><li><a class="is-flex is-mobile" href="#第五章：处理器基本原理"><span class="mr-2">3</span><span>第五章：处理器基本原理</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#冯·诺依曼结构"><span class="mr-2">3.1</span><span>冯·诺依曼结构</span></a></li><li><a class="is-flex is-mobile" href="#中央处理器（CPU）的结构"><span class="mr-2">3.2</span><span>中央处理器（CPU）的结构</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#CPU的活动部分"><span class="mr-2">3.2.1</span><span>CPU的活动部分</span></a></li><li><a class="is-flex is-mobile" href="#寄存器"><span class="mr-2">3.2.2</span><span>寄存器</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#系统总线"><span class="mr-2">3.3</span><span>系统总线</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#地址总线"><span class="mr-2">3.3.1</span><span>地址总线</span></a></li><li><a class="is-flex is-mobile" href="#数据总线"><span class="mr-2">3.3.2</span><span>数据总线</span></a></li><li><a class="is-flex is-mobile" href="#控制总线"><span class="mr-2">3.3.3</span><span>控制总线</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#左右系统性能的因素"><span class="mr-2">3.4</span><span>左右系统性能的因素</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#字"><span class="mr-2">3.4.1</span><span>字</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#I-O"><span class="mr-2">3.5</span><span>I/O</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#USB"><span class="mr-2">3.5.1</span><span>USB</span></a></li><li><a class="is-flex is-mobile" href="#专用多媒体端口"><span class="mr-2">3.5.2</span><span>专用多媒体端口</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#指令周期"><span class="mr-2">3.6</span><span>指令周期</span></a></li><li><a class="is-flex is-mobile" href="#寄存器传输语言"><span class="mr-2">3.7</span><span>寄存器传输语言</span></a></li><li><a class="is-flex is-mobile" href="#中断处理"><span class="mr-2">3.8</span><span>中断处理</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#第六章：汇编语言程序设计"><span class="mr-2">4</span><span>第六章：汇编语言程序设计</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#机器码"><span class="mr-2">4.1</span><span>机器码</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#操作码与操作数"><span class="mr-2">4.1.1</span><span>操作码与操作数</span></a></li><li><a class="is-flex is-mobile" href="#机器码-1"><span class="mr-2">4.1.2</span><span>机器码</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#汇编语言"><span class="mr-2">4.2</span><span>汇编语言</span></a></li><li><a class="is-flex is-mobile" href="#寻址类型"><span class="mr-2">4.3</span><span>寻址类型</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#第十一章：数据库"><span class="mr-2">5</span><span>第十一章：数据库</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#关于数据库"><span class="mr-2">5.1</span><span>关于数据库</span></a></li><li><a class="is-flex is-mobile" href="#数据库的标准"><span class="mr-2">5.2</span><span>数据库的标准</span></a></li><li><a class="is-flex is-mobile" href="#关系型数据库内容"><span class="mr-2">5.3</span><span>关系型数据库内容</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#table"><span class="mr-2">5.3.1</span><span>table</span></a></li><li><a class="is-flex is-mobile" href="#key"><span class="mr-2">5.3.2</span><span>key</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#三范式"><span class="mr-2">5.4</span><span>三范式</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#第一范式-1NF"><span class="mr-2">5.4.1</span><span>第一范式(1NF)</span></a></li><li><a class="is-flex is-mobile" href="#第二范式-2NF"><span class="mr-2">5.4.2</span><span>第二范式(2NF)</span></a></li><li><a class="is-flex is-mobile" href="#第三范式-3NF"><span class="mr-2">5.4.3</span><span>第三范式(3NF)</span></a></li><li><a class="is-flex is-mobile" href="#使用三范式规范化数据库"><span class="mr-2">5.4.4</span><span>使用三范式规范化数据库</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#MySQL及命令及语法"><span class="mr-2">5.5</span><span>MySQL及命令及语法</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#命令基本操作"><span class="mr-2">5.5.1</span><span>命令基本操作</span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2022 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
+        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#写在前面"><span class="mr-2">1</span><span>写在前面</span></a></li><li><a class="is-flex is-mobile" href="#第一章：数据的表示"><span class="mr-2">2</span><span>第一章：数据的表示</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#数字的内部编码"><span class="mr-2">2.1</span><span>数字的内部编码</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#编码"><span class="mr-2">2.1.1</span><span>编码</span></a></li><li><a class="is-flex is-mobile" href="#有关减法"><span class="mr-2">2.1.2</span><span>有关减法</span></a></li><li><a class="is-flex is-mobile" href="#Two’s-Complement"><span class="mr-2">2.1.3</span><span>Two’s Complement</span></a></li><li><a class="is-flex is-mobile" href="#有关数据溢出"><span class="mr-2">2.1.4</span><span>有关数据溢出</span></a></li><li><a class="is-flex is-mobile" href="#单位转换"><span class="mr-2">2.1.5</span><span>单位转换</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#字符集"><span class="mr-2">2.2</span><span>字符集</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#BCD"><span class="mr-2">2.2.1</span><span>BCD</span></a></li><li><a class="is-flex is-mobile" href="#ASCII-Code"><span class="mr-2">2.2.2</span><span>ASCII Code</span></a></li><li><a class="is-flex is-mobile" href="#Unicode"><span class="mr-2">2.2.3</span><span>Unicode</span></a></li><li><a class="is-flex is-mobile" href="#UTF-8"><span class="mr-2">2.2.4</span><span>UTF-8</span></a></li><li><a class="is-flex is-mobile" href="#图像"><span class="mr-2">2.2.5</span><span>图像</span></a></li><li><a class="is-flex is-mobile" href="#File-Header"><span class="mr-2">2.2.6</span><span>File Header</span></a></li><li><a class="is-flex is-mobile" href="#声音"><span class="mr-2">2.2.7</span><span>声音</span></a></li><li><a class="is-flex is-mobile" href="#压缩"><span class="mr-2">2.2.8</span><span>压缩</span></a></li></ul></li></ul></li><li><a class="is-flex is-mobile" href="#第五章：处理器基本原理"><span class="mr-2">3</span><span>第五章：处理器基本原理</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#冯·诺依曼结构"><span class="mr-2">3.1</span><span>冯·诺依曼结构</span></a></li><li><a class="is-flex is-mobile" href="#中央处理器（CPU）的结构"><span class="mr-2">3.2</span><span>中央处理器（CPU）的结构</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#CPU的活动部分"><span class="mr-2">3.2.1</span><span>CPU的活动部分</span></a></li><li><a class="is-flex is-mobile" href="#寄存器"><span class="mr-2">3.2.2</span><span>寄存器</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#系统总线"><span class="mr-2">3.3</span><span>系统总线</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#地址总线"><span class="mr-2">3.3.1</span><span>地址总线</span></a></li><li><a class="is-flex is-mobile" href="#数据总线"><span class="mr-2">3.3.2</span><span>数据总线</span></a></li><li><a class="is-flex is-mobile" href="#控制总线"><span class="mr-2">3.3.3</span><span>控制总线</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#左右系统性能的因素"><span class="mr-2">3.4</span><span>左右系统性能的因素</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#字"><span class="mr-2">3.4.1</span><span>字</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#I-O"><span class="mr-2">3.5</span><span>I/O</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#USB"><span class="mr-2">3.5.1</span><span>USB</span></a></li><li><a class="is-flex is-mobile" href="#专用多媒体端口"><span class="mr-2">3.5.2</span><span>专用多媒体端口</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#指令周期"><span class="mr-2">3.6</span><span>指令周期</span></a></li><li><a class="is-flex is-mobile" href="#寄存器传输语言"><span class="mr-2">3.7</span><span>寄存器传输语言</span></a></li><li><a class="is-flex is-mobile" href="#中断处理"><span class="mr-2">3.8</span><span>中断处理</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#第六章：汇编语言程序设计"><span class="mr-2">4</span><span>第六章：汇编语言程序设计</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#机器码"><span class="mr-2">4.1</span><span>机器码</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#操作码与操作数"><span class="mr-2">4.1.1</span><span>操作码与操作数</span></a></li><li><a class="is-flex is-mobile" href="#机器码-1"><span class="mr-2">4.1.2</span><span>机器码</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#汇编语言"><span class="mr-2">4.2</span><span>汇编语言</span></a></li><li><a class="is-flex is-mobile" href="#寻址类型"><span class="mr-2">4.3</span><span>寻址类型</span></a></li><li><a class="is-flex is-mobile" href="#两步汇编程序的汇编过程"><span class="mr-2">4.4</span><span>两步汇编程序的汇编过程</span></a></li><li><a class="is-flex is-mobile" href="#寻址模式"><span class="mr-2">4.5</span><span>寻址模式</span></a></li><li><a class="is-flex is-mobile" href="#汇编语言指令"><span class="mr-2">4.6</span><span>汇编语言指令</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#数据的移动"><span class="mr-2">4.6.1</span><span>数据的移动</span></a></li></ul></li></ul></li><li><a class="is-flex is-mobile" href="#第十一章：数据库"><span class="mr-2">5</span><span>第十一章：数据库</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#关于数据库"><span class="mr-2">5.1</span><span>关于数据库</span></a></li><li><a class="is-flex is-mobile" href="#数据库的标准"><span class="mr-2">5.2</span><span>数据库的标准</span></a></li><li><a class="is-flex is-mobile" href="#关系型数据库内容"><span class="mr-2">5.3</span><span>关系型数据库内容</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#table"><span class="mr-2">5.3.1</span><span>table</span></a></li><li><a class="is-flex is-mobile" href="#key"><span class="mr-2">5.3.2</span><span>key</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#三范式"><span class="mr-2">5.4</span><span>三范式</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#第一范式-1NF"><span class="mr-2">5.4.1</span><span>第一范式(1NF)</span></a></li><li><a class="is-flex is-mobile" href="#第二范式-2NF"><span class="mr-2">5.4.2</span><span>第二范式(2NF)</span></a></li><li><a class="is-flex is-mobile" href="#第三范式-3NF"><span class="mr-2">5.4.3</span><span>第三范式(3NF)</span></a></li><li><a class="is-flex is-mobile" href="#使用三范式规范化数据库"><span class="mr-2">5.4.4</span><span>使用三范式规范化数据库</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#MySQL及命令及语法"><span class="mr-2">5.5</span><span>MySQL及命令及语法</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#命令基本操作"><span class="mr-2">5.5.1</span><span>命令基本操作</span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2023 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
             var n = new Date(time);
             now.setTime(now.getTime() + 250),
                 days = (now - n) / 1e3 / 60 / 60 / 24,
