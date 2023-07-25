@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>A2CS笔记 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="CS课堂笔记 (A2)"><meta property="og:type" content="article"><meta property="og:title" content="A2CS笔记"><meta property="og:url" content="http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="CS课堂笔记 (A2)"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><meta property="article:published_time" content="2023-07-01T09:18:28.000Z"><meta property="article:modified_time" content="2023-07-06T02:18:56.912Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="笔记"><meta property="article:tag" content="计算机"><meta property="article:tag" content="CIE"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"],"datePublished":"2023-07-01T09:18:28.000Z","dateModified":"2023-07-06T02:18:56.912Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"CS课堂笔记 (A2)"}</script><link rel="canonical" href="http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>A2CS笔记 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="CS课堂笔记 (A2)"><meta property="og:type" content="article"><meta property="og:title" content="A2CS笔记"><meta property="og:url" content="http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="CS课堂笔记 (A2)"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><meta property="article:published_time" content="2023-07-01T09:18:28.000Z"><meta property="article:modified_time" content="2023-07-25T08:04:49.561Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="CIE"><meta property="article:tag" content="笔记"><meta property="article:tag" content="计算机"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"],"datePublished":"2023-07-01T09:18:28.000Z","dateModified":"2023-07-25T08:04:49.561Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"CS课堂笔记 (A2)"}</script><link rel="canonical" href="http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
@@ -115,7 +115,7 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style></head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/thumbnails/CS.jpg" alt="A2CS笔记"></span></div><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2023-07-01  <a class="commentCountImg" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">f4fef354d440d79d973c2bf25f8e464b</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="f4fef354d440d79d973c2bf25f8e464b">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>25 分钟  <i class="fas fa-pencil-alt"> </i>3.7 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">A2CS笔记</h1><div class="content"><blockquote>
+</style></head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/thumbnails/CS.jpg" alt="A2CS笔记"></span></div><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2023-07-01  <a class="commentCountImg" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">f4fef354d440d79d973c2bf25f8e464b</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="f4fef354d440d79d973c2bf25f8e464b">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>36 分钟  <i class="fas fa-pencil-alt"> </i>5.3 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">A2CS笔记</h1><div class="content"><blockquote>
 <p>CS课堂笔记 (A2)<br><span id="more"></span></p>
 </blockquote>
 <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a><strong>写在前面</strong></h1><p>学了一段时间的计算机，觉得继续写这些笔记还是蛮有用的，于是乎就打算继续下去。<br>这次是A2阶段的计算机笔记。<br>和AS部分一样，写下本文的目的是帮助自己更好地学习CS这门科目，因此，希望路过的大佬轻喷。  </p>
@@ -295,7 +295,298 @@ mjx-container[display="true"] + br {
 <p>就对于’25.3’来说，直接表达是最好的存储方案。<br>但如果数字非常大或非常小，就需要尽可能地使用科学计数法。  </p>
 <p><br></p>
 <hr>
-<h3 id="浮点-amp-顶点表示法"><a href="#浮点-amp-顶点表示法" class="headerlink" title="浮点&顶点表示法"></a><strong>浮点&amp;顶点表示法</strong></h3></div><div class="article-licensing box"><div class="licensing-title"><p>A2CS笔记</p><p><a href="http://naughtychas.github.io/2023/07/01/A2CS笔记/">http://naughtychas.github.io/2023/07/01/A2CS笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-07-01</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-07-06</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 相关文章</span><br><span>  1.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span></div><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">A2CS笔记</a><br></span><span>  4.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  5.<a class="is-size-6" href="/2023/06/10/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" target="_blank" rel="noreferrer">有关深度学习</a><br></span><span>  6.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/06/10/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><span class="level-item">有关深度学习</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
+<h3 id="浮点-amp-定点表示法"><a href="#浮点-amp-定点表示法" class="headerlink" title="浮点&定点表示法"></a><strong>浮点&amp;定点表示法</strong></h3><p>在计算机系统中，我们只能是有二进制码来存储实数。其中的一种方法就是使用<strong>定点表示法 (Fixed-point representation)</strong>。  </p>
+<p>在定点表示法中，首先需要确定总位数。其中总位数中的一部分位来表示整数部分，其余的位表示小数部分。  </p>
+<p>另一种方法就是使用<strong>浮点表示法 (Floating-point representation)</strong>。所有使用浮数都可以改写成下面这种形式：  </p>
+<p>         <code>±M × R^E</code></p>
+<p>其中，有效的位数由<code>±M</code>表示，<code>E</code>表示指数。一般来说基数<code>R</code>不会存储进这个浮点数内，因为<code>R</code>有一个隐含值“2”。  </p>
+<article class="message is-info"><div class="message-body">
+
+<b>Floating-point representation: a representation of real numbers that stores a value for the mantissa and a value for the exponent.</b>
+
+</div></article> 
+
+<p><br></p>
+<p><em>p.s. mantissa是尾数的意思。</em></p>
+<p><br></p>
+<hr>
+<p>我们来举例子了解一下两种表示法之间的区别：  </p>
+<p>对于定点表示法来说，我们可以使用最高的有效位作为符号位，然后再使用接下来的五位表示整数部分。这就会为小数部分的表示留下两个位。  </p>
+<p>下表给出了一些比较重要的非零值：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">描述</th>
+<th style="text-align:center">二进制码</th>
+<th style="text-align:center">(对应的)十进制数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">最大的正值</td>
+<td style="text-align:center"><code>011111 11</code></td>
+<td style="text-align:center">31.75</td>
+</tr>
+<tr>
+<td style="text-align:left">最小的正值</td>
+<td style="text-align:center"><code>000000 01</code></td>
+<td style="text-align:center">0.25</td>
+</tr>
+<tr>
+<td style="text-align:left">绝对值最小的负值</td>
+<td style="text-align:center"><code>100000 01</code></td>
+<td style="text-align:center">-0.25</td>
+</tr>
+<tr>
+<td style="text-align:left">绝对值最大的负值</td>
+<td style="text-align:center"><code>111111 11</code></td>
+<td style="text-align:center">-31.75</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<p>浮点表示法的话，我们可以使用4个位来表示尾数，然后再使用另外的4位表示指数。每一个位都使用2的补码来表示。<br>其中，指数存储为有符号的整数，尾数存储为定点实数。  </p>
+<p>那么我们应该如何确定哪一位是二进制点。</p>
+<p>下面的表格给出了使用4位来表示尾数的两个选项：<br>在每种情况下，我们都选择了等价的二进制点，</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">First bit pattern</th>
+<th style="text-align:center">Real value in denary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>011 1</code></td>
+<td style="text-align:center"><code>3.5</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>011 0</code></td>
+<td style="text-align:center"><code>3.0</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>010 1</code></td>
+<td style="text-align:center"><code>2.5</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>101 0</code></td>
+<td style="text-align:center"><code>-3.0</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>100 1</code></td>
+<td style="text-align:center"><code>-3.5</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>100 0</code></td>
+<td style="text-align:center"><code>-4.0</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">First bit pattern</th>
+<th style="text-align:center">Real value in denary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>0 111</code></td>
+<td style="text-align:center"><code>0.875</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>0 110</code></td>
+<td style="text-align:center"><code>0.75</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>0 101</code></td>
+<td style="text-align:center"><code>0.625</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>1 010</code></td>
+<td style="text-align:center"><code>-0.75</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>1 001</code></td>
+<td style="text-align:center"><code>-0.875</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>1 000</code></td>
+<td style="text-align:center"><code>-1.0</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">First bit pattern</th>
+<th style="text-align:center">Real value in denary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>0111</code></td>
+<td style="text-align:center"><code>7</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>0110</code></td>
+<td style="text-align:center"><code>6</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>0101</code></td>
+<td style="text-align:center"><code>5</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>1010</code></td>
+<td style="text-align:center"><code>-6</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>1001</code></td>
+<td style="text-align:center"><code>-7</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>1000</code></td>
+<td style="text-align:center"><code>-8</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<p>浮点表示法的特殊值如下表所示：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">描述</th>
+<th style="text-align:center">二进制码</th>
+<th style="text-align:center">(对应的)十进制数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">最大的正值</td>
+<td style="text-align:center"><code>0 111 0111</code></td>
+<td style="text-align:center">0.875 × 2^7 = <strong>112</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">最小的正值</td>
+<td style="text-align:center"><code>0 001 1000</code></td>
+<td style="text-align:center">0.125 × 2^(-8) = <strong>1/2048</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">绝对值最小的负值</td>
+<td style="text-align:center"><code>1 111 1000</code></td>
+<td style="text-align:center">-0.125 × 2^(-8) = <strong>-1/2048</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">绝对值最大的负值</td>
+<td style="text-align:center"><code>1 000 0111</code></td>
+<td style="text-align:center">-1 × 2^7 = <strong>-128</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<hr>
+<h3 id="精度与标准化"><a href="#精度与标准化" class="headerlink" title="精度与标准化"></a><strong>精度与标准化</strong></h3><p>当使用浮点表示法表示数据时，需要从两个方面着重考虑。  </p>
+<p>首先需要决定使用的总位数，然后还要决定分割线的位置 <em>(尾数的位数和指数的位数之间的分割线)</em><br>然而在我们使用的时候只需要选择使用的总位数就可以了。具体的位数分割就会交给浮点处理器来决定。  </p>
+<p>当然这也不代表你没法决定尾数和指数位数的数量了：一般来说，增加尾数位数可以提供更高的精度，但是同样会减少指数位数。如此一来就会减少可以表示的值的范围。  </p>
+<p>所以说为了获取最大精度，我们就必须要标准化浮点数。因为越多的尾数位数代表着更高的精准度，所以在考虑提升精度时，要尽可能对表示尾数的位数使用多的位数。  </p>
+<p><br></p>
+<p>我们可以使用八位浮点表示一个数值。因为要表示正数，十进制表示以2进位。<br>比如说：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">十进制表示</th>
+<th style="text-align:center">浮点二进制表示法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>0.125 × 2^4</code></td>
+<td style="text-align:center"><code>0 001 0100</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>0.25 × 2^3</code></td>
+<td style="text-align:center"><code>0 010 0011</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>0.5 × 2^2</code></td>
+<td style="text-align:center"><code>0 100 0010</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<p>表示负数也没有问题。这里用-4作为十进制表示的底数：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">十进制表示</th>
+<th style="text-align:center">浮点二进制表示法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-0.25 × 2^4</code></td>
+<td style="text-align:center"><code>1 110 0100</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-0.5 × 2^3</code></td>
+<td style="text-align:center"><code>1 100 0011</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-1.0 × 2^2</code></td>
+<td style="text-align:center"><code>1 000 0010</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<hr>
+<h3 id="表示法的转换"><a href="#表示法的转换" class="headerlink" title="表示法的转换"></a><strong>表示法的转换</strong></h3><p>在AS部分的第一章，我们讨论了多种将数字转换为不同形式的方法。</p>
+<p>先来看定点二进制表示法。举个例子：4.75转换为顶点二进制表示法  </p>
+<p>打眼一看挺简单的：4可以转换为<code>100</code>，.75转化为二进制的<code>.11</code>，所以4.75的定点二进制表示法大概是<code>100.11</code>。但是别忘了正数的首位需要以0开头。这样的话就只添加一个符号位就可以解决问题了。这样，4.75就可以以定点二进制表示法写成<code>0100.11</code>。  </p>
+<p>那么负数怎么办呢？比如说-4.75，就可以先从4.75的表示开始，然后再将它转换成对应的二进制补码：  </p>
+<p>     <code>0100.11</code> 转换为： <code>1011.00</code>（一次补码）<br>     <code>1011.01</code>就是-4.75的二次补码。</p>
+<p>有关于二次补码的内容，可以去AS部分的第一张扒翻一下。  </p>
+<p><br></p>
+<hr>
+<p><br></p>
+<p>转换成浮点就有一些复杂了。在转换之前，我们应该注意：大多数小数部分无法精确地转换为浮点数值。因为二进制小数部分的因数有1/2， 1/4， 1/8， 1/16等等。所以说除非被转换的值正好是这些因数的和，否则无法进行精确的转换。<br>比如说，从0.1到0.9之间的的值中，只有0.5可以被精确的转换。</p>
+<p><br></p>
+<p>转换正值的方法如下：  </p>
+<ol>
+<li>使用我们在AS第一章中描述的方法转换整数部分。</li>
+<li>添加在开头添加符号位</li>
+<li>使用下面的方法转换小数位  </li>
+<li>将整数和小数部分组合起来，并将它们输入到分配用于表示尾数的最高有效位中。</li>
+<li>用零填充尾数的剩余位和指数的位。</li>
+<li>通过改变指数值来调整二进制小数点的位置，以实现归一化的表示。</li>
+</ol>
+<p><br></p>
+<p>第三步提到的方法如下：  </p>
+<p>我们试着转化一下8.75：  </p>
+<ol>
+<li>整数位8转换成<code>1000</code>，然后添加符号位。这样就变成了<code>01000</code></li>
+<li>小数部分“.75”可以在二进制中表示为<code>.11</code></li>
+</ol>
+<p>将小数转换为二进制时，可以将小数部分乘以2，然后观察得到的整数部分和小数部分。然后再乘以2直到得到的小数部分等于0。稍后需要将每次乘法结果的整数部分写成等价的二进制数。0.75十进制到二进制的答案是0.11</p>
+<ol>
+<li></li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>A2CS笔记</p><p><a href="http://naughtychas.github.io/2023/07/01/A2CS笔记/">http://naughtychas.github.io/2023/07/01/A2CS笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-07-01</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-07-25</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 相关文章</span><br><span>  1.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span></div><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">A2CS笔记</a><br></span><span>  4.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  5.<a class="is-size-6" href="/2023/06/10/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" target="_blank" rel="noreferrer">有关深度学习</a><br></span><span>  6.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/06/10/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><span class="level-item">有关深度学习</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
             var gitalk = new Gitalk({
             language:'zh-CN',
             id: 'f4fef354d440d79d973c2bf25f8e464b',
@@ -313,7 +604,7 @@ mjx-container[display="true"] + br {
             enableHotKey: true,
             isLocked: false
         })
-        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#写在前面"><span class="mr-2">1</span><span>写在前面</span></a></li><li><a class="is-flex is-mobile" href="#PART-THREE-进阶理论"><span class="mr-2">2</span><span>PART THREE: 进阶理论</span></a></li><li><a class="is-flex is-mobile" href="#第十六章：数据的表示"><span class="mr-2">3</span><span>第十六章：数据的表示</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#数据类型"><span class="mr-2">3.1</span><span>数据类型</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#内置数据类型"><span class="mr-2">3.1.1</span><span>内置数据类型</span></a></li><li><a class="is-flex is-mobile" href="#用户定义的数据类型"><span class="mr-2">3.1.2</span><span>用户定义的数据类型</span></a></li><li><a class="is-flex is-mobile" href="#非复合数据类型"><span class="mr-2">3.1.3</span><span>非复合数据类型</span></a></li><li><a class="is-flex is-mobile" href="#枚举数据类型"><span class="mr-2">3.1.4</span><span>枚举数据类型</span></a></li><li><a class="is-flex is-mobile" href="#复合用户定义数据类型"><span class="mr-2">3.1.5</span><span>复合用户定义数据类型</span></a></li><li><a class="is-flex is-mobile" href="#指针数据类型"><span class="mr-2">3.1.6</span><span>指针数据类型</span></a></li><li><a class="is-flex is-mobile" href="#集合数据类型"><span class="mr-2">3.1.7</span><span>集合数据类型</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#文件管理"><span class="mr-2">3.2</span><span>文件管理</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#串行文件"><span class="mr-2">3.2.1</span><span>串行文件</span></a></li><li><a class="is-flex is-mobile" href="#顺序文件"><span class="mr-2">3.2.2</span><span>顺序文件</span></a></li><li><a class="is-flex is-mobile" href="#直接访问文件"><span class="mr-2">3.2.3</span><span>直接访问文件</span></a></li><li><a class="is-flex is-mobile" href="#文件访问"><span class="mr-2">3.2.4</span><span>文件访问</span></a></li><li><a class="is-flex is-mobile" href="#文件类型的选择"><span class="mr-2">3.2.5</span><span>文件类型的选择</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#实数"><span class="mr-2">3.3</span><span>实数</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#浮点-amp-顶点表示法"><span class="mr-2">3.3.1</span><span>浮点&amp;顶点表示法</span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2023 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
+        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#写在前面"><span class="mr-2">1</span><span>写在前面</span></a></li><li><a class="is-flex is-mobile" href="#PART-THREE-进阶理论"><span class="mr-2">2</span><span>PART THREE: 进阶理论</span></a></li><li><a class="is-flex is-mobile" href="#第十六章：数据的表示"><span class="mr-2">3</span><span>第十六章：数据的表示</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#数据类型"><span class="mr-2">3.1</span><span>数据类型</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#内置数据类型"><span class="mr-2">3.1.1</span><span>内置数据类型</span></a></li><li><a class="is-flex is-mobile" href="#用户定义的数据类型"><span class="mr-2">3.1.2</span><span>用户定义的数据类型</span></a></li><li><a class="is-flex is-mobile" href="#非复合数据类型"><span class="mr-2">3.1.3</span><span>非复合数据类型</span></a></li><li><a class="is-flex is-mobile" href="#枚举数据类型"><span class="mr-2">3.1.4</span><span>枚举数据类型</span></a></li><li><a class="is-flex is-mobile" href="#复合用户定义数据类型"><span class="mr-2">3.1.5</span><span>复合用户定义数据类型</span></a></li><li><a class="is-flex is-mobile" href="#指针数据类型"><span class="mr-2">3.1.6</span><span>指针数据类型</span></a></li><li><a class="is-flex is-mobile" href="#集合数据类型"><span class="mr-2">3.1.7</span><span>集合数据类型</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#文件管理"><span class="mr-2">3.2</span><span>文件管理</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#串行文件"><span class="mr-2">3.2.1</span><span>串行文件</span></a></li><li><a class="is-flex is-mobile" href="#顺序文件"><span class="mr-2">3.2.2</span><span>顺序文件</span></a></li><li><a class="is-flex is-mobile" href="#直接访问文件"><span class="mr-2">3.2.3</span><span>直接访问文件</span></a></li><li><a class="is-flex is-mobile" href="#文件访问"><span class="mr-2">3.2.4</span><span>文件访问</span></a></li><li><a class="is-flex is-mobile" href="#文件类型的选择"><span class="mr-2">3.2.5</span><span>文件类型的选择</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#实数"><span class="mr-2">3.3</span><span>实数</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#浮点-amp-定点表示法"><span class="mr-2">3.3.1</span><span>浮点&amp;定点表示法</span></a></li><li><a class="is-flex is-mobile" href="#精度与标准化"><span class="mr-2">3.3.2</span><span>精度与标准化</span></a></li><li><a class="is-flex is-mobile" href="#表示法的转换"><span class="mr-2">3.3.3</span><span>表示法的转换</span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2023 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
             var n = new Date(time);
             now.setTime(now.getTime() + 250),
                 days = (now - n) / 1e3 / 60 / 60 / 24,
