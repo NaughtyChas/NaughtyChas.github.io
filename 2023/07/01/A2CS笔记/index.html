@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>A2CS笔记 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="CS课堂笔记 (A2)"><meta property="og:type" content="article"><meta property="og:title" content="A2CS笔记"><meta property="og:url" content="http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="CS课堂笔记 (A2)"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><meta property="article:published_time" content="2023-07-01T09:18:28.000Z"><meta property="article:modified_time" content="2023-09-20T01:16:12.875Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="笔记"><meta property="article:tag" content="CIE"><meta property="article:tag" content="计算机"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"],"datePublished":"2023-07-01T09:18:28.000Z","dateModified":"2023-09-20T01:16:12.875Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"CS课堂笔记 (A2)"}</script><link rel="canonical" href="http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>A2CS笔记 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="CS课堂笔记 (A2)"><meta property="og:type" content="article"><meta property="og:title" content="A2CS笔记"><meta property="og:url" content="http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="CS课堂笔记 (A2)"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><meta property="article:published_time" content="2023-07-01T09:18:28.000Z"><meta property="article:modified_time" content="2023-09-22T07:43:28.640Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="笔记"><meta property="article:tag" content="CIE"><meta property="article:tag" content="计算机"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/%5Cthumbnails%5CCS.jpg"],"datePublished":"2023-07-01T09:18:28.000Z","dateModified":"2023-09-22T07:43:28.640Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"CS课堂笔记 (A2)"}</script><link rel="canonical" href="http://naughtychas.github.io/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
@@ -116,7 +116,7 @@ mjx-container[display="true"] + br {
   display: none;
 }
 </style><link rel="alternate" href="/atom.xml" title="ntcs' blog" type="application/atom+xml">
-</head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/thumbnails/CS.jpg" alt="A2CS笔记"></span></div><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2023-07-01  <a class="commentCountImg" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">f4fef354d440d79d973c2bf25f8e464b</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="f4fef354d440d79d973c2bf25f8e464b">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>2 小时  <i class="fas fa-pencil-alt"> </i>21.3 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">A2CS笔记</h1><div class="content"><blockquote>
+</head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/thumbnails/CS.jpg" alt="A2CS笔记"></span></div><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2023-07-01  <a class="commentCountImg" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/#comment-container"><span class="display-none-class">f4fef354d440d79d973c2bf25f8e464b</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="f4fef354d440d79d973c2bf25f8e464b">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>3 小时  <i class="fas fa-pencil-alt"> </i>23.7 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">A2CS笔记</h1><div class="content"><blockquote>
 <p>CS课堂笔记 (A2)<br><span id="more"></span></p>
 </blockquote>
 <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a><strong>写在前面</strong></h1><p>学了一段时间的计算机，觉得继续写这些笔记还是蛮有用的，于是乎就打算继续下去。<br>这次是A2阶段的计算机笔记。<br>和AS部分一样，写下本文的目的是帮助自己更好地学习CS这门科目，因此，希望路过的大佬轻喷。  </p>
@@ -1347,7 +1347,312 @@ mjx-container[display="true"] + br {
 <li>Q = 0</li>
 </ol>
 <p>如果J的输入变成了1，时钟的输入也变成了1，那么就会发生下面这些事情：  </p>
-</div><div class="article-licensing box"><div class="licensing-title"><p>A2CS笔记</p><p><a href="http://naughtychas.github.io/2023/07/01/A2CS笔记/">http://naughtychas.github.io/2023/07/01/A2CS笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-07-01</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-09-20</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 相关文章</span><br><span>  1.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span></div><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  4.<a class="is-size-6" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">A2CS笔记</a><br></span><span>  5.<a class="is-size-6" href="/2023/06/10/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" target="_blank" rel="noreferrer">有关深度学习</a><br></span><span>  6.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/06/10/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><span class="level-item">有关深度学习</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
+<ol>
+<li>左上角的NAND门就会接受两个为1的值的输入</li>
+<li>所以它的输出为0</li>
+<li>这就会导致右上角的NAND门以1的值输出Q</li>
+<li>这样一来，右下角的NAND门就会接受两个为1的值的输入。 </li>
+<li>所以Q’的输出为0</li>
+</ol>
+<p><br></p>
+<hr>
+<p>JK触发器的真值表如下： </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>J</strong></th>
+<th><strong>K</strong></th>
+<th><strong>Clock</strong></th>
+<th><strong>Q</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>↑</td>
+<td>Q unchanged</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>↑</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>↑</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>↑</td>
+<td>Q toggles</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>由此可见，当J和K的输入均为1的时候，Q与Q’的值会发生变换。</p>
+<p>J可以被称作为“集合输入”。当J被设置为1，并K被设置为0的时候，它会导致输出Q也被设置为1。<br>K可以被叫做“清除输入”。当K被设置为1，J被设置为0的时候，会导致Q被清除（设置为0）。  </p>
+<p>JK与SR触发器不一样的是，每两个输入任意发生组合都会产生一个有效的输出，输入J和K的每一个组合都对Q和Q’产生明确定义的影响，而不像SR触发器一样，包含一个无效输出。这个特性导致JK触发器更加可靠，更有预测性，因为没有导致任何不确定因素或者未定义输出的情况出现。</p>
+<p><br></p>
+<hr>
+<h2 id="布尔代数基础"><a href="#布尔代数基础" class="headerlink" title="布尔代数基础"></a><strong>布尔代数基础</strong></h2><p>本书的第四章讲过了如何使用逻辑命题来使用布尔运算符来组合成逻辑表达式。而布尔代数为编写简洁的逻辑表达式提供了方法，并提供了一种简化表达式的“公式”。  </p>
+<p>当使用一种代数形式的时候，理解它的含义是十分重要的。举个简单的例子，1+1可以被解释成很多不同的情况： </p>
+<p>1 + 1 = 2<br>1 + 1 = 10<br>1 + 1 = 0<br>1 + 1 = 1</p>
+<p>一式表示的是十进制算术，二式表示二进制算术，三式表示位算术，而四式可以表示布尔代数。这是因为在布尔代数中，1表示为<code>TRUE</code>，0表示为<code>FALSE</code>，而<code>+</code>可以表示或。因此，第四个计算式可以以下面这种形式表示出来：  </p>
+<p>                         <code>TRUE OR TRUE is TRUE</code></p>
+<p>布尔代数的表示有它的专有符号。比如说<code>AND</code>可以表示为∧，<code>OR</code>可以表示为∨。或者，<code>A AND B</code>可以写成<code>A.B</code>或者<code>AB</code>。在本章中，我们会使用这种类似“点乘”的<code>AND</code>表示方法。<code>NOT</code>的具体方式是在字母上面加一个横线。比如说<code>NOT A</code>可以表示为<code>Ā</code>。  </p>
+<p><br></p>
+<hr>
+<p>在建立了基本的表示法之后，我们就需要考虑我们的计算规则了。<br>下表中的内容可以被叫做“法则”或者“定义式”：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Identity / Law</th>
+<th style="text-align:center">AND form</th>
+<th style="text-align:center">OR form</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Identity</td>
+<td style="text-align:center"><code>1.A = A</code></td>
+<td style="text-align:center"><code>0 + A = A</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Null</td>
+<td style="text-align:center"><code>0.A = 0</code></td>
+<td style="text-align:center"><code>1 + A = 1</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Idempotent</td>
+<td style="text-align:center"><code>A.A = A</code></td>
+<td style="text-align:center"><code>A + A = A</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Inverse</td>
+<td style="text-align:center"><code>A.Ā = 0</code></td>
+<td style="text-align:center"><code>A + Ā = 1</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Commutative</td>
+<td style="text-align:center"><code>A.B = B.A</code></td>
+<td style="text-align:center"><code>A + B = B + A</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Associative</td>
+<td style="text-align:center"><code>(A.B).C = A.(B.C)</code></td>
+<td style="text-align:center"><code>(A + B) + C = A + (B + C)</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Distributive</td>
+<td style="text-align:center"><code>A + B.C = (A + B).(A + C)</code></td>
+<td style="text-align:center"><code>A.(B + C) = A.B + A.C</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Absorption</td>
+<td style="text-align:center"><code>A.(A + B) = A</code></td>
+<td style="text-align:center"><code>A + A.B = A</code></td>
+</tr>
+<tr>
+<td style="text-align:center">De Morgan’s</td>
+<td style="text-align:center"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="13.617ex" height="2.523ex" role="img" focusable="false" viewBox="0 -1033 6018.7 1115"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mover"><g data-mml-node="mrow"><g data-mml-node="mi"><path data-c="1D434" d="M208 74Q208 50 254 46Q272 46 272 35Q272 34 270 22Q267 8 264 4T251 0Q249 0 239 0T205 1T141 2Q70 2 50 0H42Q35 7 35 11Q37 38 48 46H62Q132 49 164 96Q170 102 345 401T523 704Q530 716 547 716H555H572Q578 707 578 706L606 383Q634 60 636 57Q641 46 701 46Q726 46 726 36Q726 34 723 22Q720 7 718 4T704 0Q701 0 690 0T651 1T578 2Q484 2 455 0H443Q437 6 437 9T439 27Q443 40 445 43L449 46H469Q523 49 533 63L521 213H283L249 155Q208 86 208 74ZM516 260Q516 271 504 416T490 562L463 519Q447 492 400 412L310 260L413 259Q516 259 516 260Z"></path></g><g data-mml-node="mo" transform="translate(750,0)"><path data-c="2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path></g><g data-mml-node="mi" transform="translate(1194.7,0)"><path data-c="1D435" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path></g></g><g data-mml-node="mo" transform="translate(0,648)"><svg width="1953.7" height="237" x="0" y="148" viewBox="488.4 148 1953.7 237"><path data-c="2013" d="M0 248V285H499V248H0Z" transform="scale(5.861,1)"></path></svg></g></g><g data-mml-node="mo" transform="translate(2231.4,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mover" transform="translate(3287.2,0)"><g data-mml-node="mi"><path data-c="1D434" d="M208 74Q208 50 254 46Q272 46 272 35Q272 34 270 22Q267 8 264 4T251 0Q249 0 239 0T205 1T141 2Q70 2 50 0H42Q35 7 35 11Q37 38 48 46H62Q132 49 164 96Q170 102 345 401T523 704Q530 716 547 716H555H572Q578 707 578 706L606 383Q634 60 636 57Q641 46 701 46Q726 46 726 36Q726 34 723 22Q720 7 718 4T704 0Q701 0 690 0T651 1T578 2Q484 2 455 0H443Q437 6 437 9T439 27Q443 40 445 43L449 46H469Q523 49 533 63L521 213H283L249 155Q208 86 208 74ZM516 260Q516 271 504 416T490 562L463 519Q447 492 400 412L310 260L413 259Q516 259 516 260Z"></path></g><g data-mml-node="mo" transform="translate(0,648)"><svg width="750" height="237" x="0" y="148" viewBox="187.5 148 750 237"><path data-c="2013" d="M0 248V285H499V248H0Z" transform="scale(2.25,1)"></path></svg></g></g><g data-mml-node="mo" transform="translate(4259.4,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mover" transform="translate(5259.7,0)"><g data-mml-node="mi"><path data-c="1D435" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path></g><g data-mml-node="mo" transform="translate(0,615)"><svg width="759" height="237" x="0" y="148" viewBox="189.8 148 759 237"><path data-c="2013" d="M0 248V285H499V248H0Z" transform="scale(2.277,1)"></path></svg></g></g></g></g></svg></mjx-container></td>
+<td style="text-align:center"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="13.617ex" height="2.523ex" role="img" focusable="false" viewBox="0 -1033 6018.7 1115"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mover"><g data-mml-node="mrow"><g data-mml-node="mi"><path data-c="1D434" d="M208 74Q208 50 254 46Q272 46 272 35Q272 34 270 22Q267 8 264 4T251 0Q249 0 239 0T205 1T141 2Q70 2 50 0H42Q35 7 35 11Q37 38 48 46H62Q132 49 164 96Q170 102 345 401T523 704Q530 716 547 716H555H572Q578 707 578 706L606 383Q634 60 636 57Q641 46 701 46Q726 46 726 36Q726 34 723 22Q720 7 718 4T704 0Q701 0 690 0T651 1T578 2Q484 2 455 0H443Q437 6 437 9T439 27Q443 40 445 43L449 46H469Q523 49 533 63L521 213H283L249 155Q208 86 208 74ZM516 260Q516 271 504 416T490 562L463 519Q447 492 400 412L310 260L413 259Q516 259 516 260Z"></path></g><g data-mml-node="mo" transform="translate(972.2,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mi" transform="translate(1972.4,0)"><path data-c="1D435" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path></g></g><g data-mml-node="mo" transform="translate(0,648)"><svg width="2731.4" height="237" x="0" y="148" viewBox="682.9 148 2731.4 237"><path data-c="2013" d="M0 248V285H499V248H0Z" transform="scale(8.194,1)"></path></svg></g></g><g data-mml-node="mo" transform="translate(3009.2,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mover" transform="translate(4065,0)"><g data-mml-node="mi"><path data-c="1D434" d="M208 74Q208 50 254 46Q272 46 272 35Q272 34 270 22Q267 8 264 4T251 0Q249 0 239 0T205 1T141 2Q70 2 50 0H42Q35 7 35 11Q37 38 48 46H62Q132 49 164 96Q170 102 345 401T523 704Q530 716 547 716H555H572Q578 707 578 706L606 383Q634 60 636 57Q641 46 701 46Q726 46 726 36Q726 34 723 22Q720 7 718 4T704 0Q701 0 690 0T651 1T578 2Q484 2 455 0H443Q437 6 437 9T439 27Q443 40 445 43L449 46H469Q523 49 533 63L521 213H283L249 155Q208 86 208 74ZM516 260Q516 271 504 416T490 562L463 519Q447 492 400 412L310 260L413 259Q516 259 516 260Z"></path></g><g data-mml-node="mo" transform="translate(0,648)"><svg width="750" height="237" x="0" y="148" viewBox="187.5 148 750 237"><path data-c="2013" d="M0 248V285H499V248H0Z" transform="scale(2.25,1)"></path></svg></g></g><g data-mml-node="mo" transform="translate(4815,0)"><path data-c="2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path></g><g data-mml-node="mover" transform="translate(5259.7,0)"><g data-mml-node="mi"><path data-c="1D435" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path></g><g data-mml-node="mo" transform="translate(0,615)"><svg width="759" height="237" x="0" y="148" viewBox="189.8 148 759 237"><path data-c="2013" d="M0 248V285H499V248H0Z" transform="scale(2.277,1)"></path></svg></g></g></g></g></svg></mjx-container></td>
+</tr>
+<tr>
+<td style="text-align:center">Double Complement</td>
+<td style="text-align:center"><code>̿A = A</code></td>
+<td style="text-align:center"><code>̿A = A</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>\</em>打表格太费劲了，下次直接截图算了*  </p>
+<p><em>\</em>下文中出现的<code>Ā</code>或者<code>A'</code>都代表<code>NOT A</code>*</p>
+<p>上面的表格展示了在布尔代数中的一系列恒等式。就拿德摩根定律举例子：德摩根定律允许我们交换<code>FALSE</code>和<code>TRUE</code>，或者交换<code>AND</code>和<code>OR</code>来将形式变换掉。  </p>
+<p>比如说这里有一个表达式：<code>0.A = 0</code>，读作”FALSE AND A is FALSE”。根据德摩根定律，我们可以将<code>AND</code>换成<code>OR</code>,并将所有元素取反。这样就能得到另一个相等的形式：<code>1 + A = 1</code>。总结一下，德摩根定律的变化法则是：  </p>
+<ol>
+<li><strong>变换时交换<code>TRUE</code>和<code>FALSE</code>（0和1）</strong>  </li>
+<li><strong>变换时交换<code>AND</code>和<code>OR</code>（<code>.</code>和<code>+</code>）</strong>  </li>
+</ol>
+<p><br></p>
+<hr>
+<p><span class="tag is-warning">Example</span></p>
+<p>来做个例题。  </p>
+<p>考虑一下这个表达式：<code>A + Ā.B</code>。我们如何化简它？  </p>
+<p>有意思的是，要化简这个式子，我们首先需要将式子先变得更复杂。<br>表中提到了有这样一个公式：<code>A + A.B = A</code>。可以通过这一点把原式中的A换掉，就变成了这样：  </p>
+<p>                <code>A + A.B + Ā.B</code>  </p>
+<p>下一步我们暂时忽略<code>A</code>，然后对<code>A.B + Ā.B</code>使用交换律。步骤如下：  </p>
+<p>                <code>A.B + Ā.B = B.A + B.Ā = B.(A + Ā)</code>  </p>
+<p>                <code>B.(A + Ā) = B.1</code>    </p>
+<p>这一步应用了公式<code>A + Ā = 1</code>。  </p>
+<p>将结果带回原式，即可得到化简最终答案：<code>A + B.1</code>。  </p>
+<p><br></p>
+<hr>
+<h2 id="布尔代数运用"><a href="#布尔代数运用" class="headerlink" title="布尔代数运用"></a><strong>布尔代数运用</strong></h2><h3 id="从真值表中创建布尔表达式"><a href="#从真值表中创建布尔表达式" class="headerlink" title="从真值表中创建布尔表达式"></a><strong>从真值表中创建布尔表达式</strong></h3><p>为特定问题创建布尔表达式，有时可以以真值表作为切入点。  </p>
+<p>直接上例子把：  </p>
+<p><br></p>
+<hr>
+<p><span class="tag is-warning">Example</span></p>
+<p>我们来举一个两个输出的AND门的例子。真值表如下所示：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们即将使用的”Sum of product”的方法是为真值表中的每一行创建一个最小项，输出为1。然后再对这些最小和求和，得到最终的布尔表达式。  </p>
+<p><strong>最小项 (Minterm)</strong>是输出为1的特定组合。<br>在这个真值表里，只有一个最小项，那就是当<code>A = 1</code>或者<code>B = 1</code>时。我们将这个最小项记为<code>A.B</code>。<br>因为这个真值表只有一个最小项，所以说这个真值表的最终布尔表达式就是<code>A.B</code>。  </p>
+<p><br></p>
+<p>但是如果不只有一个最小项怎么办？或者，表中不只有一个输出项怎么办？  </p>
+<p>下面是一个半加法器的真值表：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Input</th>
+<th style="text-align:center">Input</th>
+<th style="text-align:center">Output</th>
+<th style="text-align:center">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>A</strong></td>
+<td style="text-align:center"><strong>B</strong></td>
+<td style="text-align:center"><strong>Sum</strong></td>
+<td style="text-align:center"><strong>Carry</strong></td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>首先，我们对”Sum”这一列输出创建最小项：  </p>
+<ul>
+<li>第二行 (<code>A = 0</code>, <code>B = 1</code>)，最小项是<code>Ā.B</code> (NOT A AND B)</li>
+<li>第三行 (<code>A = 1</code>, <code>B = 0</code>)，最小项是<code>A.B'</code> (A AND NOT B)</li>
+</ul>
+<p>我们使用<code>OR</code>将所有的最小项连接在一起，这样的话就形成了Sum的布尔表达式：   </p>
+<p>                <code>Sum = A'.B + A.B'</code>  </p>
+<p>同理可得，<code>Carry = A.B</code>  </p>
+<p>化简只能够将两列输出分别对应一个布尔表达式，所以最终的答案是：  </p>
+<p><code>Sum = A'.B + A.B'</code><br><code>Carry = A.B</code> </p>
+<p><br></p>
+<hr>
+<h3 id="逻辑电路的布尔代数式"><a href="#逻辑电路的布尔代数式" class="headerlink" title="逻辑电路的布尔代数式"></a><strong>逻辑电路的布尔代数式</strong></h3><p><span class="tag is-warning">Example</span></p>
+<p>有时候我们需要通过一个逻辑电路来写出布尔代数式。那这个半加法器电路举例子：  </p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEB64571bca6b2aebf3bf9e4ad5d2645fcc?method=download&amp;shareKey=418cfa3d73daa608b02e026411a220d2" alt=""></p>
+<p>我们跟着A和B两个输入项，来到了第一个NAND门。根据NAND的真值表：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>NAND真值表的前三行都为1，所以我们需要为此构建三个最小项。结合起来如下：  </p>
+<p><code>W = A'.B' + A'.B + A.B'</code></p>
+<p>下一步，W的输出会去到三个NAND门里进行运算。我们这里以X门举例子。如果要画出X的真值表不是很容易，因此我们会考虑NAND门的本质计算方法，那就是先进行一个AND运算，然后将结果取反，也就是跟一个NOT运算。而AND的结果正式两个值的乘积。  </p>
+<p>我们先来进行AND运算：  </p>
+<p>                <code>A.(A'.B' + A'.B + A.B')</code>  </p>
+<p>接着应用布尔分配式，也就是<code>A.(B + C) = A.B + A.C</code>：  </p>
+<p>                <code>A.A'.B' + A.A'.B + A.A.B'</code></p>
+<p><code>A.A'</code>的结果是0。在AND运算中，只要输入有0，那么输出必然为0。所以我们可以简化成：  </p>
+<p>                <code>A.A.B'</code></p>
+<p>因为<code>A.A = A</code>，所以最后化简出来的式子就是：  </p>
+<p>                <code>A.B'</code></p>
+<p>然而事情到这里还没有结束。因为我们只完成了NAND运算里的AND部分，接下来我们会执行NOT运算，也就是将上面的表达式求逆。根据德摩根定律 (元素取反，AND和OR交换)，我们可以得到原式的逆式：  </p>
+<p>                <code>A' + B</code>  </p>
+<p>到这一步就可以出X的结果了。同样的流程也可以适用于Y的结果：  </p>
+<p>                <code>X = A' + B</code>  , <code>Y = A + B'</code>  </p>
+<p>这两位合起来，就是S的输出。同样，我们需要先执行AND运算，再通过德摩根定律执行NOT运算：   </p>
+<p>                <code>(A + B').(A' + B)</code> (AND执行后)</p>
+<p>                <code>S = A'.B + A.B'</code> (NOT执行后)</p>
+<p>C的结论，也可以通过这样的流程算出来了。  </p>
+<p><br></p>
+<hr>
+<h2 id="卡诺图-Karnaugh-map"><a href="#卡诺图-Karnaugh-map" class="headerlink" title="卡诺图 (Karnaugh map)"></a><strong>卡诺图 (Karnaugh map)</strong></h2></div><div class="article-licensing box"><div class="licensing-title"><p>A2CS笔记</p><p><a href="http://naughtychas.github.io/2023/07/01/A2CS笔记/">http://naughtychas.github.io/2023/07/01/A2CS笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-07-01</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-09-22</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 相关文章</span><br><span>  1.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span></div><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  4.<a class="is-size-6" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">A2CS笔记</a><br></span><span>  5.<a class="is-size-6" href="/2023/06/10/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" target="_blank" rel="noreferrer">有关深度学习</a><br></span><span>  6.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/06/10/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><span class="level-item">有关深度学习</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
             var gitalk = new Gitalk({
             language:'zh-CN',
             id: 'f4fef354d440d79d973c2bf25f8e464b',
@@ -1365,7 +1670,7 @@ mjx-container[display="true"] + br {
             enableHotKey: true,
             isLocked: false
         })
-        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#写在前面"><span class="mr-2">1</span><span>写在前面</span></a></li><li><a class="is-flex is-mobile" href="#PART-THREE-进阶理论"><span class="mr-2">2</span><span>PART THREE: 进阶理论</span></a></li><li><a class="is-flex is-mobile" href="#第十六章：数据的表示"><span class="mr-2">3</span><span>第十六章：数据的表示</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#数据类型"><span class="mr-2">3.1</span><span>数据类型</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#内置数据类型"><span class="mr-2">3.1.1</span><span>内置数据类型</span></a></li><li><a class="is-flex is-mobile" href="#用户定义的数据类型"><span class="mr-2">3.1.2</span><span>用户定义的数据类型</span></a></li><li><a class="is-flex is-mobile" href="#非复合数据类型"><span class="mr-2">3.1.3</span><span>非复合数据类型</span></a></li><li><a class="is-flex is-mobile" href="#枚举数据类型"><span class="mr-2">3.1.4</span><span>枚举数据类型</span></a></li><li><a class="is-flex is-mobile" href="#复合用户定义数据类型"><span class="mr-2">3.1.5</span><span>复合用户定义数据类型</span></a></li><li><a class="is-flex is-mobile" href="#指针数据类型"><span class="mr-2">3.1.6</span><span>指针数据类型</span></a></li><li><a class="is-flex is-mobile" href="#集合数据类型"><span class="mr-2">3.1.7</span><span>集合数据类型</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#文件管理"><span class="mr-2">3.2</span><span>文件管理</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#串行文件"><span class="mr-2">3.2.1</span><span>串行文件</span></a></li><li><a class="is-flex is-mobile" href="#顺序文件"><span class="mr-2">3.2.2</span><span>顺序文件</span></a></li><li><a class="is-flex is-mobile" href="#直接访问文件"><span class="mr-2">3.2.3</span><span>直接访问文件</span></a></li><li><a class="is-flex is-mobile" href="#文件访问"><span class="mr-2">3.2.4</span><span>文件访问</span></a></li><li><a class="is-flex is-mobile" href="#文件类型的选择"><span class="mr-2">3.2.5</span><span>文件类型的选择</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#实数"><span class="mr-2">3.3</span><span>实数</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#浮点-amp-定点表示法"><span class="mr-2">3.3.1</span><span>浮点&amp;定点表示法</span></a></li><li><a class="is-flex is-mobile" href="#精度与标准化"><span class="mr-2">3.3.2</span><span>精度与标准化</span></a></li><li><a class="is-flex is-mobile" href="#表示法的转换"><span class="mr-2">3.3.3</span><span>表示法的转换</span></a></li><li><a class="is-flex is-mobile" href="#使用浮点数的问题"><span class="mr-2">3.3.4</span><span>使用浮点数的问题</span></a></li></ul></li></ul></li><li><a class="is-flex is-mobile" href="#第十七章：通讯及互联网技术"><span class="mr-2">4</span><span>第十七章：通讯及互联网技术</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#传输方式"><span class="mr-2">4.1</span><span>传输方式</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#电路交换"><span class="mr-2">4.1.1</span><span>电路交换</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#分组交换"><span class="mr-2">4.2</span><span>分组交换</span></a></li><li><a class="is-flex is-mobile" href="#传输协议"><span class="mr-2">4.3</span><span>传输协议</span></a></li><li><a class="is-flex is-mobile" href="#协议栈"><span class="mr-2">4.4</span><span>协议栈</span></a></li><li><a class="is-flex is-mobile" href="#TCP-IP-协议套件"><span class="mr-2">4.5</span><span>TCP/IP 协议套件</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#TCP-传输控制协议"><span class="mr-2">4.5.1</span><span>TCP (传输控制协议)</span></a></li><li><a class="is-flex is-mobile" href="#IP-互联网协议"><span class="mr-2">4.5.2</span><span>IP (互联网协议)</span></a></li><li><a class="is-flex is-mobile" href="#路由器"><span class="mr-2">4.5.3</span><span>路由器</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#以太网-Ethernet-协议栈"><span class="mr-2">4.6</span><span>以太网(Ethernet)协议栈</span></a></li><li><a class="is-flex is-mobile" href="#—"><span class="mr-2">4.7</span><span>—-</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#MAC地址"><span class="mr-2">4.7.1</span><span>MAC地址</span></a></li><li><a class="is-flex is-mobile" href="#MAC地址-1"><span class="mr-2">4.7.2</span><span>MAC地址</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#—-1"><span class="mr-2">4.8</span><span>—-</span></a></li><li><a class="is-flex is-mobile" href="#与TCP-IP有关的应用层协议"><span class="mr-2">4.9</span><span>与TCP/IP有关的应用层协议</span></a></li><li><a class="is-flex is-mobile" href="#与TCP-IP有关的应用层协议-1"><span class="mr-2">4.10</span><span>与TCP/IP有关的应用层协议</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#HTTP-HyperText-Transfer-Protocol"><span class="mr-2">4.10.1</span><span>HTTP (HyperText Transfer Protocol)</span></a></li><li><a class="is-flex is-mobile" href="#HTTP-HyperText-Transfer-Protocol-1"><span class="mr-2">4.10.2</span><span>HTTP (HyperText Transfer Protocol)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#—-2"><span class="mr-2">4.11</span><span>—-</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#电子邮件协议"><span class="mr-2">4.11.1</span><span>电子邮件协议</span></a></li><li><a class="is-flex is-mobile" href="#电子邮件协议-1"><span class="mr-2">4.11.2</span><span>电子邮件协议</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#—-3"><span class="mr-2">4.12</span><span>—-</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#FTP-文件传输协议"><span class="mr-2">4.12.1</span><span>FTP (文件传输协议)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#P2P文件共享"><span class="mr-2">4.13</span><span>P2P文件共享</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#第十八章：硬件与虚拟机"><span class="mr-2">5</span><span>第十八章：硬件与虚拟机</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#控制单元"><span class="mr-2">5.1</span><span>控制单元</span></a></li><li><a class="is-flex is-mobile" href="#CISC和RISC处理器"><span class="mr-2">5.2</span><span>CISC和RISC处理器</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#流水线作业-Pipelining"><span class="mr-2">5.2.1</span><span>流水线作业 (Pipelining)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#基本计算机架构"><span class="mr-2">5.3</span><span>基本计算机架构</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#单指令流单数据流-SISD"><span class="mr-2">5.3.1</span><span>单指令流单数据流 (SISD)</span></a></li><li><a class="is-flex is-mobile" href="#单指令流多数据流-SIMD"><span class="mr-2">5.3.2</span><span>单指令流多数据流 (SIMD)</span></a></li><li><a class="is-flex is-mobile" href="#多指令流单数据流-MISD"><span class="mr-2">5.3.3</span><span>多指令流单数据流 (MISD)</span></a></li><li><a class="is-flex is-mobile" href="#多指令流多数据流-MIMD"><span class="mr-2">5.3.4</span><span>多指令流多数据流 (MIMD)</span></a></li><li><a class="is-flex is-mobile" href="#大规模并行计算机系统"><span class="mr-2">5.3.5</span><span>大规模并行计算机系统</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#虚拟机"><span class="mr-2">5.4</span><span>虚拟机</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#第十九章：逻辑门与布尔代数"><span class="mr-2">6</span><span>第十九章：逻辑门与布尔代数</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#逻辑电路"><span class="mr-2">6.1</span><span>逻辑电路</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#半加法器-The-half-adder"><span class="mr-2">6.1.1</span><span>半加法器 (The half adder)</span></a></li><li><a class="is-flex is-mobile" href="#全加法器-The-full-adder"><span class="mr-2">6.1.2</span><span>全加法器 (The full adder)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#时序电路"><span class="mr-2">6.2</span><span>时序电路</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#SR-触发器-SR-Flip-flop"><span class="mr-2">6.2.1</span><span>SR 触发器 (SR Flip-flop)</span></a></li><li><a class="is-flex is-mobile" href="#JK-触发器-JK-Flip-flop"><span class="mr-2">6.2.2</span><span>JK 触发器 (JK Flip-flop)</span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2023 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
+        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#写在前面"><span class="mr-2">1</span><span>写在前面</span></a></li><li><a class="is-flex is-mobile" href="#PART-THREE-进阶理论"><span class="mr-2">2</span><span>PART THREE: 进阶理论</span></a></li><li><a class="is-flex is-mobile" href="#第十六章：数据的表示"><span class="mr-2">3</span><span>第十六章：数据的表示</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#数据类型"><span class="mr-2">3.1</span><span>数据类型</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#内置数据类型"><span class="mr-2">3.1.1</span><span>内置数据类型</span></a></li><li><a class="is-flex is-mobile" href="#用户定义的数据类型"><span class="mr-2">3.1.2</span><span>用户定义的数据类型</span></a></li><li><a class="is-flex is-mobile" href="#非复合数据类型"><span class="mr-2">3.1.3</span><span>非复合数据类型</span></a></li><li><a class="is-flex is-mobile" href="#枚举数据类型"><span class="mr-2">3.1.4</span><span>枚举数据类型</span></a></li><li><a class="is-flex is-mobile" href="#复合用户定义数据类型"><span class="mr-2">3.1.5</span><span>复合用户定义数据类型</span></a></li><li><a class="is-flex is-mobile" href="#指针数据类型"><span class="mr-2">3.1.6</span><span>指针数据类型</span></a></li><li><a class="is-flex is-mobile" href="#集合数据类型"><span class="mr-2">3.1.7</span><span>集合数据类型</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#文件管理"><span class="mr-2">3.2</span><span>文件管理</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#串行文件"><span class="mr-2">3.2.1</span><span>串行文件</span></a></li><li><a class="is-flex is-mobile" href="#顺序文件"><span class="mr-2">3.2.2</span><span>顺序文件</span></a></li><li><a class="is-flex is-mobile" href="#直接访问文件"><span class="mr-2">3.2.3</span><span>直接访问文件</span></a></li><li><a class="is-flex is-mobile" href="#文件访问"><span class="mr-2">3.2.4</span><span>文件访问</span></a></li><li><a class="is-flex is-mobile" href="#文件类型的选择"><span class="mr-2">3.2.5</span><span>文件类型的选择</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#实数"><span class="mr-2">3.3</span><span>实数</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#浮点-amp-定点表示法"><span class="mr-2">3.3.1</span><span>浮点&amp;定点表示法</span></a></li><li><a class="is-flex is-mobile" href="#精度与标准化"><span class="mr-2">3.3.2</span><span>精度与标准化</span></a></li><li><a class="is-flex is-mobile" href="#表示法的转换"><span class="mr-2">3.3.3</span><span>表示法的转换</span></a></li><li><a class="is-flex is-mobile" href="#使用浮点数的问题"><span class="mr-2">3.3.4</span><span>使用浮点数的问题</span></a></li></ul></li></ul></li><li><a class="is-flex is-mobile" href="#第十七章：通讯及互联网技术"><span class="mr-2">4</span><span>第十七章：通讯及互联网技术</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#传输方式"><span class="mr-2">4.1</span><span>传输方式</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#电路交换"><span class="mr-2">4.1.1</span><span>电路交换</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#分组交换"><span class="mr-2">4.2</span><span>分组交换</span></a></li><li><a class="is-flex is-mobile" href="#传输协议"><span class="mr-2">4.3</span><span>传输协议</span></a></li><li><a class="is-flex is-mobile" href="#协议栈"><span class="mr-2">4.4</span><span>协议栈</span></a></li><li><a class="is-flex is-mobile" href="#TCP-IP-协议套件"><span class="mr-2">4.5</span><span>TCP/IP 协议套件</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#TCP-传输控制协议"><span class="mr-2">4.5.1</span><span>TCP (传输控制协议)</span></a></li><li><a class="is-flex is-mobile" href="#IP-互联网协议"><span class="mr-2">4.5.2</span><span>IP (互联网协议)</span></a></li><li><a class="is-flex is-mobile" href="#路由器"><span class="mr-2">4.5.3</span><span>路由器</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#以太网-Ethernet-协议栈"><span class="mr-2">4.6</span><span>以太网(Ethernet)协议栈</span></a></li><li><a class="is-flex is-mobile" href="#—"><span class="mr-2">4.7</span><span>—-</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#MAC地址"><span class="mr-2">4.7.1</span><span>MAC地址</span></a></li><li><a class="is-flex is-mobile" href="#MAC地址-1"><span class="mr-2">4.7.2</span><span>MAC地址</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#—-1"><span class="mr-2">4.8</span><span>—-</span></a></li><li><a class="is-flex is-mobile" href="#与TCP-IP有关的应用层协议"><span class="mr-2">4.9</span><span>与TCP/IP有关的应用层协议</span></a></li><li><a class="is-flex is-mobile" href="#与TCP-IP有关的应用层协议-1"><span class="mr-2">4.10</span><span>与TCP/IP有关的应用层协议</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#HTTP-HyperText-Transfer-Protocol"><span class="mr-2">4.10.1</span><span>HTTP (HyperText Transfer Protocol)</span></a></li><li><a class="is-flex is-mobile" href="#HTTP-HyperText-Transfer-Protocol-1"><span class="mr-2">4.10.2</span><span>HTTP (HyperText Transfer Protocol)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#—-2"><span class="mr-2">4.11</span><span>—-</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#电子邮件协议"><span class="mr-2">4.11.1</span><span>电子邮件协议</span></a></li><li><a class="is-flex is-mobile" href="#电子邮件协议-1"><span class="mr-2">4.11.2</span><span>电子邮件协议</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#—-3"><span class="mr-2">4.12</span><span>—-</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#FTP-文件传输协议"><span class="mr-2">4.12.1</span><span>FTP (文件传输协议)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#P2P文件共享"><span class="mr-2">4.13</span><span>P2P文件共享</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#第十八章：硬件与虚拟机"><span class="mr-2">5</span><span>第十八章：硬件与虚拟机</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#控制单元"><span class="mr-2">5.1</span><span>控制单元</span></a></li><li><a class="is-flex is-mobile" href="#CISC和RISC处理器"><span class="mr-2">5.2</span><span>CISC和RISC处理器</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#流水线作业-Pipelining"><span class="mr-2">5.2.1</span><span>流水线作业 (Pipelining)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#基本计算机架构"><span class="mr-2">5.3</span><span>基本计算机架构</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#单指令流单数据流-SISD"><span class="mr-2">5.3.1</span><span>单指令流单数据流 (SISD)</span></a></li><li><a class="is-flex is-mobile" href="#单指令流多数据流-SIMD"><span class="mr-2">5.3.2</span><span>单指令流多数据流 (SIMD)</span></a></li><li><a class="is-flex is-mobile" href="#多指令流单数据流-MISD"><span class="mr-2">5.3.3</span><span>多指令流单数据流 (MISD)</span></a></li><li><a class="is-flex is-mobile" href="#多指令流多数据流-MIMD"><span class="mr-2">5.3.4</span><span>多指令流多数据流 (MIMD)</span></a></li><li><a class="is-flex is-mobile" href="#大规模并行计算机系统"><span class="mr-2">5.3.5</span><span>大规模并行计算机系统</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#虚拟机"><span class="mr-2">5.4</span><span>虚拟机</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#第十九章：逻辑门与布尔代数"><span class="mr-2">6</span><span>第十九章：逻辑门与布尔代数</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#逻辑电路"><span class="mr-2">6.1</span><span>逻辑电路</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#半加法器-The-half-adder"><span class="mr-2">6.1.1</span><span>半加法器 (The half adder)</span></a></li><li><a class="is-flex is-mobile" href="#全加法器-The-full-adder"><span class="mr-2">6.1.2</span><span>全加法器 (The full adder)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#时序电路"><span class="mr-2">6.2</span><span>时序电路</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#SR-触发器-SR-Flip-flop"><span class="mr-2">6.2.1</span><span>SR 触发器 (SR Flip-flop)</span></a></li><li><a class="is-flex is-mobile" href="#JK-触发器-JK-Flip-flop"><span class="mr-2">6.2.2</span><span>JK 触发器 (JK Flip-flop)</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#布尔代数基础"><span class="mr-2">6.3</span><span>布尔代数基础</span></a></li><li><a class="is-flex is-mobile" href="#布尔代数运用"><span class="mr-2">6.4</span><span>布尔代数运用</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#从真值表中创建布尔表达式"><span class="mr-2">6.4.1</span><span>从真值表中创建布尔表达式</span></a></li><li><a class="is-flex is-mobile" href="#逻辑电路的布尔代数式"><span class="mr-2">6.4.2</span><span>逻辑电路的布尔代数式</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#卡诺图-Karnaugh-map"><span class="mr-2">6.5</span><span>卡诺图 (Karnaugh map)</span></a></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2023 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
             var n = new Date(time);
             now.setTime(now.getTime() + 250),
                 days = (now - n) / 1e3 / 60 / 60 / 24,
