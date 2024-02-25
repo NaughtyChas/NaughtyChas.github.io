@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>AL CS 题目总结 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="记录A-Level CS真题中的知识点与总结"><meta property="og:type" content="article"><meta property="og:title" content="AL CS 题目总结"><meta property="og:url" content="http://naughtychas.github.io/2024/02/25/AL%20CS%20%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="记录A-Level CS真题中的知识点与总结"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/img/og_image.png"><meta property="article:published_time" content="2024-02-25T01:35:28.000Z"><meta property="article:modified_time" content="2024-02-25T08:03:09.280Z"><meta property="article:author" content="MXK"><meta property="article:tag" content="笔记"><meta property="article:tag" content="CIE"><meta property="article:tag" content="计算机"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2024/02/25/AL%20CS%20%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/img/og_image.png"],"datePublished":"2024-02-25T01:35:28.000Z","dateModified":"2024-02-25T08:03:09.280Z","author":{"@type":"Person","name":"MXK"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"记录A-Level CS真题中的知识点与总结"}</script><link rel="canonical" href="http://naughtychas.github.io/2024/02/25/AL%20CS%20%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="ntcs' blog" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/message">留言</a><a class="navbar-item" href="/friend">友链</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2024-02-25  <a class="commentCountImg" href="/2024/02/25/AL%20CS%20%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/#comment-container"><span class="display-none-class">55c17e2257e89b76880926ef165a3ce4</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="55c17e2257e89b76880926ef165a3ce4">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>8 分钟  <i class="fas fa-pencil-alt"> </i>1.2 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div><div class="pin-icon"><i class="fas fa-thumbtack"></i></div></div><h1 class="title is-3 is-size-4-mobile">AL CS 题目总结</h1><div class="content"><blockquote>
+<p>记录A-Level CS真题中的知识点与总结<br><span id="more"></span></p>
+</blockquote>
+<h1 id="PART-ONE：理论基础"><a href="#PART-ONE：理论基础" class="headerlink" title="PART ONE：理论基础"></a><strong>PART ONE：理论基础</strong></h1><h1 id="第一章：数据的表示"><a href="#第一章：数据的表示" class="headerlink" title="第一章：数据的表示"></a><strong>第一章：数据的表示</strong></h1><blockquote>
+<ul>
+<li>File header of a bitmapped image is:<ul>
+<li><strong>Data about the bitmap image</strong></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><br></p>
+<p>扩展到所有file header的题目：file header可以是 “<strong>Data about the [file type here]</strong>“.</p>
+<p><br></p>
+<hr>
+<blockquote>
+<ul>
+<li><p>The image is scanned with an image resolution of 1024 × 512 pixels and a colour depth of 8 bits per pixel.<br>Calculate an estimate for the file size, giving your answer in <u>mebibytes</u>. Show your working</p>
+<ul>
+<li><p>1024 × 512 × 8  = 524288 × 8 = 4194304 bit</p>
+<p>4194304 bit = 524288 byte = 512 KiB = 0.5 MiB</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><br></p>
+<p>byte, kilobyte, megabyte, gigabyte (或者Byte, KB, MB, GB)以<strong>1000</strong>一进位。</p>
+<p>而byte, kibibyte, mebibyte, gibibyte (或者Byte, KiB, MiB, GiB)以<strong>1024</strong>一进位。</p>
+<p>上题中的换算过程中，除的就是1024。</p>
+<p><br></p>
+<hr>
+<blockquote>
+<ul>
+<li><p>Identify one method of lossless compression that can be used to compress the bitmap image and describe how the method will &gt; reduce the file size.</p>
+<ul>
+<li><p>Use <strong>Run-length coding</strong></p>
+</li>
+<li><p>Replace <strong>sequences</strong> of the <strong>same colour pixel</strong> with colour code and number of identical pixels.</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><br></p>
+<p>后来发现实际上Run-length coding也可以被用于压缩位图。  </p>
+<p>拓展到所有的题目，run-length coding就可以这样作答：  </p>
+<p><strong>Replace sequences of the same [element] with that character and a number of identical [elements].</strong></p>
+<p>其中的[element]替换为文件中重复的内容。比如重复的字符。</p>
+<p><br></p>
+<hr>
+<h1 id="第二章：通信与网络技术"><a href="#第二章：通信与网络技术" class="headerlink" title="第二章：通信与网络技术"></a><strong>第二章：通信与网络技术</strong></h1><blockquote>
+<ul>
+<li><p>Describe the key features of a peer-to-peer network</p>
+<ul>
+<li>All computers are of equal status</li>
+<li><p>Each computer provides access to resources and data<br>…or / data is distributed</p>
+</li>
+<li><p>Computers can communicate and share resources</p>
+</li>
+<li>Each computer is responsible for its own security</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><br></p>
+<blockquote>
+<ul>
+<li><p>Describe drawbacks of the peer-to-peer network:</p>
+<ul>
+<li><p><strong>Reduced security / no central management of security</strong><br>…only as secure as the weakest computer on the network<br>…each computer is at risk from viruses from other computers</p>
+</li>
+<li><p><strong>No central management of backup</strong><br>…if the data from one computer is not backed up it is lost to all of the computers</p>
+</li>
+<li><p><strong>No central management of files/software</strong><br>…consistency may be difficult to maintain<br>…each computer may have different software from the others</p>
+</li>
+<li><p><strong>Individual computers may respond slower</strong><br>…because they can be accessed by other computers</p>
+</li>
+<li><p>The connection can only be established if <strong>all the involved computers has to be switched on</strong>.<br>…so the files may not be always available</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><br></p>
+<hr>
+<p><br></p>
+<p><strong>Hub</strong> directs each packet to all devices attached to it.</p>
+<p><br></p>
+<hr>
+<h1 id="第三章：硬件"><a href="#第三章：硬件" class="headerlink" title="第三章：硬件"></a><strong>第三章：硬件</strong></h1><blockquote>
+<ul>
+<li><p>Describe what is meant by an embedded system.</p>
+<ul>
+<li>Microcontroller <strong>within a larger system</strong> which performs <strong>one specific task</strong>.</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><br></p>
+<hr>
+<h1 id="第四章：逻辑门与逻辑电路"><a href="#第四章：逻辑门与逻辑电路" class="headerlink" title="第四章：逻辑门与逻辑电路"></a><strong>第四章：逻辑门与逻辑电路</strong></h1><h1 id="第五章：处理器基本原理"><a href="#第五章：处理器基本原理" class="headerlink" title="第五章：处理器基本原理"></a><strong>第五章：处理器基本原理</strong></h1><h1 id="第六章：汇编语言程序设计"><a href="#第六章：汇编语言程序设计" class="headerlink" title="第六章：汇编语言程序设计"></a><strong>第六章：汇编语言程序设计</strong></h1><p><br></p>
+<p>LSR 和 LSL 分别是向右和向左逻辑移位。</p>
+<p>假设我们逻辑移位的位数为n：</p>
+<p>向右逻辑移位会使得值变小，或者说：<strong>The value will be divided by 2<sup>n</sup></strong>.<br>向左逻辑移位会使得值变大，或者说：<strong>The value will be multiply by 2<sup>n</sup></strong>.</p>
+<p><br></p>
+<h1 id="第七章：控制与监控系统"><a href="#第七章：控制与监控系统" class="headerlink" title="第七章：控制与监控系统"></a><strong>第七章：控制与监控系统</strong></h1><blockquote>
+<ul>
+<li><p>A fridge has to control the temperature of a chamber between 4 to 6 degree Celsius.<br>Explain why the system in the refrigerator is a control and not a monitoring system.</p>
+<ul>
+<li><em>Control system is</em> <strong>system uses feedback</strong>.</li>
+<li>Since the microcontroller has to turn on the cooling system depending on the environment, the system is a control system &gt; because <strong>it causes action</strong>.</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h1 id="第八章：系统软件"><a href="#第八章：系统软件" class="headerlink" title="第八章：系统软件"></a><strong>第八章：系统软件</strong></h1><blockquote>
+<ul>
+<li>Identify key management tasks that the &gt; Operating System will perform.<ul>
+<li>Memory management</li>
+<li>File management</li>
+<li>Security management</li>
+<li>Hardware / device / resources management</li>
+<li>Input/Output management</li>
+<li>Process management</li>
+<li>error checking and recovery</li>
+<li>provision of a platform for software</li>
+<li>provision of a user interface</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h1 id="第九章：安全、隐私和数据完整性"><a href="#第九章：安全、隐私和数据完整性" class="headerlink" title="第九章：安全、隐私和数据完整性"></a><strong>第九章：安全、隐私和数据完整性</strong></h1><p><br></p>
+<p>Types of validation check:</p>
+<ul>
+<li><strong>Presence check:</strong> 样式检查，用来检查输入的内容是否是空的。  </li>
+<li><strong>Format check:</strong> 格式检查，来检查输入的数据是否符合要求的格式(比如日期的格式就必须是 dd/mm/yyyy )。</li>
+<li><strong>Length check:</strong> 长度检查，用来检查数据是否符合应有的长度。比如说用来检查输入的电话号码是否是11位。</li>
+<li><strong>Range check:</strong> 范围检查，用来检查输入的数据是否在合法范围内。</li>
+<li><strong>Limit check:</strong> 限制检查，检查输入的数据是否突破了一个阈值。</li>
+<li><strong>Type check:</strong> 数据形式检查，用来检查输入的数据形式是否合法。(比如说构成日期的每一位数据都必须是正整数，不能是小数。)</li>
+<li><strong>Existence check:</strong> 存在性检查，检查输入的内容是否已经出现过。比如说在同一个文件夹下将一个文件重命名成另一个文件的样子会报错，是因为存在Existence check。</li>
+</ul>
+<p><br></p>
+<hr>
+<h1 id="第十章：道德与所有权"><a href="#第十章：道德与所有权" class="headerlink" title="第十章：道德与所有权"></a><strong>第十章：道德与所有权</strong></h1><blockquote>
+<ul>
+<li><p>Describe what is meant by copyright.</p>
+<ul>
+<li>The <strong>formal and legal rights</strong> to ownership.</li>
+<li>Protects against <strong>unauthorised</strong> reproduction of work.</li>
+<li>Provides for legal right of redress</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><br></p>
+<hr>
+<h1 id="第十一章：数据库"><a href="#第十一章：数据库" class="headerlink" title="第十一章：数据库"></a><strong>第十一章：数据库</strong></h1><blockquote>
+<ul>
+<li><p>Explain why relational database is usually better than a file-based database.</p>
+<ul>
+<li><p>Flat file has <strong>more data redundancy</strong>.<br>…because the same data is stored many times.</p>
+</li>
+<li><p>Flat file has <strong>worst data integrity</strong>.<br>…because duplicate data might be stored differently.<br>(when data is updated in one place, it is not updated everywhere)</p>
+</li>
+<li><p>Hard to perform <strong>complex searches</strong>.<br>…because a new program built for searching data has to be written each time depending on searching requirement.</p>
+</li>
+<li><p>Flat-file could have <strong>lack of privacy</strong>.<br>…as user views cannot easily be implemented.</p>
+</li>
+<li><p>There is a <strong>program-data dependency</strong> with flat-files.<br>…because any changes to the structure of the flat-files means the program that access to the data has to be re-written.</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><br></p>
+<hr>
+<blockquote>
+<ul>
+<li><p>List items that are stored in a data dictionary.</p>
+<ul>
+<li>table name</li>
+<li>field name</li>
+<li>data type</li>
+<li>type of validation</li>
+<li>Primary key</li>
+<li>Foreign key</li>
+<li>relationships</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h1 id="PART-TWO：基本问题的解决与编程技能"><a href="#PART-TWO：基本问题的解决与编程技能" class="headerlink" title="PART TWO：基本问题的解决与编程技能"></a><strong>PART TWO：基本问题的解决与编程技能</strong></h1><h1 id="第十二章：算法设计与解决问题"><a href="#第十二章：算法设计与解决问题" class="headerlink" title="第十二章：算法设计与解决问题"></a><strong>第十二章：算法设计与解决问题</strong></h1><h1 id="第十三章：数据类型与结构"><a href="#第十三章：数据类型与结构" class="headerlink" title="第十三章：数据类型与结构"></a><strong>第十三章：数据类型与结构</strong></h1><h1 id="第十四章：编程与数据的表示"><a href="#第十四章：编程与数据的表示" class="headerlink" title="第十四章：编程与数据的表示"></a><strong>第十四章：编程与数据的表示</strong></h1><h1 id="第十五章：软件开发"><a href="#第十五章：软件开发" class="headerlink" title="第十五章：软件开发"></a><strong>第十五章：软件开发</strong></h1></div><div class="article-licensing box"><div class="licensing-title"><p>AL CS 题目总结</p><p><a href="http://naughtychas.github.io/2024/02/25/AL CS 题目总结/">http://naughtychas.github.io/2024/02/25/AL CS 题目总结/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>MXK</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-02-25</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-02-25</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 相关文章</span><br><span>  1.<a class="is-size-6" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">A2CS笔记</a><br></span><span>  2.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span></div><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2022/08/24/Latex%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">LaTeX自学笔记</a><br></span><span>  3.<a class="is-size-6" href="/2024/02/25/AL%20CS%20%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/" target="_blank" rel="noreferrer">AL CS 题目总结</a><br></span><span>  4.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  5.<a class="is-size-6" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">A2CS笔记</a><br></span><span>  6.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><span class="level-item">A2CS笔记</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
+            var gitalk = new Gitalk({
+            language:'zh-CN',
+            id: '55c17e2257e89b76880926ef165a3ce4',
+            repo: 'Blog-Comment',
+            owner: 'NaughtyChas',
+            clientID: 'b602cb01d4c2668b35ae',
+            clientSecret: '0a26ed5993551a9754281410ba3aa5f772dfbdf2',
+            admin: ["NaughtyChas"],
+            createIssueManually: true,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: 'last',
+            proxy: 'https://shielded-brushlands-08810.herokuapp.com/https://github.com/login/oauth/access_token',
+            
+            enableHotKey: true,
+            isLocked: false
+        })
+        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#PART-ONE：理论基础"><span class="mr-2">1</span><span>PART ONE：理论基础</span></a></li><li><a class="is-flex is-mobile" href="#第一章：数据的表示"><span class="mr-2">2</span><span>第一章：数据的表示</span></a></li><li><a class="is-flex is-mobile" href="#第二章：通信与网络技术"><span class="mr-2">3</span><span>第二章：通信与网络技术</span></a></li><li><a class="is-flex is-mobile" href="#第三章：硬件"><span class="mr-2">4</span><span>第三章：硬件</span></a></li><li><a class="is-flex is-mobile" href="#第四章：逻辑门与逻辑电路"><span class="mr-2">5</span><span>第四章：逻辑门与逻辑电路</span></a></li><li><a class="is-flex is-mobile" href="#第五章：处理器基本原理"><span class="mr-2">6</span><span>第五章：处理器基本原理</span></a></li><li><a class="is-flex is-mobile" href="#第六章：汇编语言程序设计"><span class="mr-2">7</span><span>第六章：汇编语言程序设计</span></a></li><li><a class="is-flex is-mobile" href="#第七章：控制与监控系统"><span class="mr-2">8</span><span>第七章：控制与监控系统</span></a></li><li><a class="is-flex is-mobile" href="#第八章：系统软件"><span class="mr-2">9</span><span>第八章：系统软件</span></a></li><li><a class="is-flex is-mobile" href="#第九章：安全、隐私和数据完整性"><span class="mr-2">10</span><span>第九章：安全、隐私和数据完整性</span></a></li><li><a class="is-flex is-mobile" href="#第十章：道德与所有权"><span class="mr-2">11</span><span>第十章：道德与所有权</span></a></li><li><a class="is-flex is-mobile" href="#第十一章：数据库"><span class="mr-2">12</span><span>第十一章：数据库</span></a></li><li><a class="is-flex is-mobile" href="#PART-TWO：基本问题的解决与编程技能"><span class="mr-2">13</span><span>PART TWO：基本问题的解决与编程技能</span></a></li><li><a class="is-flex is-mobile" href="#第十二章：算法设计与解决问题"><span class="mr-2">14</span><span>第十二章：算法设计与解决问题</span></a></li><li><a class="is-flex is-mobile" href="#第十三章：数据类型与结构"><span class="mr-2">15</span><span>第十三章：数据类型与结构</span></a></li><li><a class="is-flex is-mobile" href="#第十四章：编程与数据的表示"><span class="mr-2">16</span><span>第十四章：编程与数据的表示</span></a></li><li><a class="is-flex is-mobile" href="#第十五章：软件开发"><span class="mr-2">17</span><span>第十五章：软件开发</span></a></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2024 MXK</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
+            var n = new Date(time);
+            now.setTime(now.getTime() + 250),
+                days = (now - n) / 1e3 / 60 / 60 / 24,
+                dnum = Math.floor(days),
+                hours = (now - n) / 1e3 / 60 / 60 - 24 * dnum,
+                hnum = Math.floor(hours),
+            1 == String(hnum).length && (hnum = "0" + hnum),
+                minutes = (now - n) / 1e3 / 60 - 1440 * dnum - 60 * hnum,
+                mnum = Math.floor(minutes),
+            1 == String(mnum).length && (mnum = "0" + mnum),
+                seconds = (now - n) / 1e3 - 86400 * dnum - 3600 * hnum - 60 * mnum,
+                snum = Math.round(seconds),
+            1 == String(snum).length && (snum = "0" + snum),
+                document.getElementById("statistic-times").innerHTML = "❤️本站自 <strong>"+time.split(" ")[0].replace(/\//g,".")+"</strong> 已运行 <strong>" + dnum + "</strong> 天 <strong>" + hnum + "</strong> 小时 <strong>" + mnum + "</strong> 分 <strong>" + snum + "</strong> 秒！❤️";
+        }var now = new Date();setInterval("createTime('2022.8.11 17:07:12')", 250,"");</script><br></span><div class="size-small"><span>❤️感谢 <strong><span id="busuanzi_value_site_uv">99+</span></strong> 小伙伴的 <strong><span id="busuanzi_value_site_pv">99+</span></strong> 次光临！❤️</span></div></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/LittleYe233/hexo-theme-amazingremake"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    enabled: true,
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><script src="/js/main.js" defer></script><script>$.getScript('/js/comment-issue-data.js',function(){loadIssueData('b602cb01d4c2668b35ae','0a26ed5993551a9754281410ba3aa5f772dfbdf2','NaughtyChas','Blog-Comment',false);})</script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script><script type="text/javascript">var pjax = new Pjax({
+            elements: "a",//代表点击链接就更新
+            selectors: [  //代表要更新的节点
+                ".section",
+                "title"
+            ],
+            cache: true,
+            cacheBust:false
+        })
+
+        function loadBusuanzi(){
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js", function () {});
+        }
+
+        function loadMathJax() { // 加载mathjax
+            window.MathJax = {
+                tex: {
+                    inlineMath: [['$', '$']],
+                    autoload: {
+                        color: [],
+                        colorv2: ['color']
+                    },
+                    packages: {'[+]': ['noerrors']}
+                },
+                options: {
+                    ignoreHtmlClass: 'tex2jax_ignore',
+                    processHtmlClass: 'tex2jax_process'
+                },
+                loader: {
+                    load: ['input/asciimath', '[tex]/noerrors']
+                }
+            };
+            $.getScript('//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
+        };
+
+        // 开始 PJAX 执行的函数
+        document.addEventListener('pjax:send', function () {
+        });
+        
+        // PJAX 完成之后执行的函数，可以和上面的重载放在一起
+        document.addEventListener('pjax:complete', function () {
+            $(".section").css({opacity:1});
+            if(true){
+                $.getScript('/js/comment-issue-data.js',function(){loadIssueData('b602cb01d4c2668b35ae','0a26ed5993551a9754281410ba3aa5f772dfbdf2','NaughtyChas','Blog-Comment',false);});
+            }
+            if('undefined' === 'mathjax'){
+                loadMathJax();
+            }
+            loadMainJs(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings);
+            loadBackTop();
+            loadBusuanzi();
+            if(typeof loadBanner == 'function'){
+                loadBanner();
+            }
+        });</script></body></html>
