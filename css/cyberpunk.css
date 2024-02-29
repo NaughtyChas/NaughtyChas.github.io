@@ -10766,7 +10766,7 @@ body > .section {
 }
 .card {
   overflow: visible;
-  border-radius: 0;
+  border-radius: 25px;
 }
 .card + .card,
 .card + .column-right-shadow {
@@ -10774,8 +10774,8 @@ body > .section {
 }
 .card .card-image {
   overflow: hidden;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
 }
 .card .media + .media {
   border: none;
@@ -10840,8 +10840,10 @@ article.article .content pre {
   font-size: 0.85em;
 }
 article.article .content code {
-  padding: 0;
-  background: transparent;
+  padding: 1;
+  border-radius: 8px;
+  background: #f0f0f0;
+  color: #000;
   overflow-wrap: break-word;
 }
 article.article .content blockquote.pullquote {
@@ -10854,7 +10856,7 @@ article.article .content blockquote footer strong + cite {
   margin-left: 0.5em;
 }
 article.article .content .message.message-immersive {
-  border-radius: 0;
+  border-radius: 2;
   margin: 0 -1.5rem 1.5rem -1.5rem;
 }
 article.article .content .message.message-immersive .message-body {
@@ -11381,7 +11383,7 @@ figure.highlight .section {
   line-height: 0;
   overflow: hidden;
   box-shadow: none, 0 0 1px rgba(0,0,0,0.1);
-  border-radius: 0;
+  border-radius: 25px;
 }
 .donate .qrcode img {
   max-width: 280px;
@@ -11485,7 +11487,7 @@ figure.highlight .section {
   outline: none;
   padding: 8px 0;
   line-height: 24px;
-  border-radius: 0;
+  border-radius: 25px;
   transform: translateY(120px);
   transition: 0.4s ease opacity, 0.4s ease width, 0.4s ease transform, 0.4s ease border-radius;
 }
@@ -11589,7 +11591,7 @@ figure.highlight .section {
   background-color: #000 !important;
 }
 .cc-window.cc-floating {
-  border-radius: 0;
+  border-radius: 25px;
   box-shadow: none, 0 0 1px rgba(0,0,0,0.1);
 }
 .cc-window.cc-banner {
