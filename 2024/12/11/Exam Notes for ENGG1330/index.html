@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Exam Notes for ENGG 1330 - ntcs&#039; blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ntcs&#039; blog"><meta name="msapplication-TileImage" content="img/icon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ntcs&#039; blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Exam notes for ENGG 1330"><meta property="og:type" content="article"><meta property="og:title" content="Exam Notes for ENGG 1330"><meta property="og:url" content="http://naughtychas.github.io/2024/12/11/Exam%20Notes%20for%20ENGG1330/"><meta property="og:site_name" content="ntcs&#039; blog"><meta property="og:description" content="Exam notes for ENGG 1330"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://naughtychas.github.io/img/og_image.png"><meta property="article:published_time" content="2024-12-11T08:11:05.000Z"><meta property="article:modified_time" content="2024-12-11T08:17:07.747Z"><meta property="article:author" content="ntcs"><meta property="article:tag" content="笔记"><meta property="article:tag" content="计算机"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://naughtychas.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://naughtychas.github.io/2024/12/11/Exam%20Notes%20for%20ENGG1330/"},"headline":"ntcs' blog","image":["http://naughtychas.github.io/img/og_image.png"],"datePublished":"2024-12-11T08:11:05.000Z","dateModified":"2024-12-11T08:17:07.747Z","author":{"@type":"Person","name":"ntcs"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject"}},"description":"Exam notes for ENGG 1330"}</script><link rel="canonical" href="http://naughtychas.github.io/2024/12/11/Exam%20Notes%20for%20ENGG1330/"><link rel="icon" href="/img/icon.ico"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.2/css/&gt; all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="/js/globalUtils.js"></script><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="ntcs' blog" type="application/atom+xml">
+</head><body class="is-3-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2024-12-11  <a class="commentCountImg" href="/2024/12/11/Exam%20Notes%20for%20ENGG1330/#comment-container"><span class="display-none-class">ce25715f48fcba7f562a0cde62de8720</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="ce25715f48fcba7f562a0cde62de8720">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>15 分钟  <i class="fas fa-pencil-alt"> </i>2.2 k</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">Exam Notes for ENGG 1330</h1><div class="content"><blockquote>
+<p>Exam notes for ENGG 1330<br><span id="more"></span></p>
+</blockquote>
+<h1 id="ENGG-1330-Exam-Notes"><a href="#ENGG-1330-Exam-Notes" class="headerlink" title="ENGG 1330 Exam Notes"></a>ENGG 1330 Exam Notes</h1><h2 id="Lecture-2"><a href="#Lecture-2" class="headerlink" title="Lecture 2"></a>Lecture 2</h2><h3 id="Variable-and-Identifiers"><a href="#Variable-and-Identifiers" class="headerlink" title="Variable and Identifiers"></a>Variable and Identifiers</h3><ul>
+<li><p>To get a type of a variable, use <code>type(&lt;variable&gt;)</code>. The output would be: <code>&lt;class '&lt;typeclass&gt;'&gt;</code>, like <code>&lt;class 'int'&gt;</code> indicating integers.</p>
+</li>
+<li><p>Identifiers cannot:</p>
+<ul>
+<li><strong>Begin with numbers</strong></li>
+<li><strong>Be keywords</strong></li>
+<li>include characters other than <strong>underscore, numbers and letters</strong></li>
+</ul>
+</li>
+<li><p>Identifiers are: <strong>Case sensitive</strong></p>
+</li>
+</ul>
+<hr>
+<h3 id="Operators"><a href="#Operators" class="headerlink" title="Operators"></a>Operators</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Operator</th>
+<th style="text-align:center">Name</th>
+<th style="text-align:center">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">+</td>
+<td style="text-align:center">Addition</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">-</td>
+<td style="text-align:center">Subtraction</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">*</td>
+<td style="text-align:center">Multiplication</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">/</td>
+<td style="text-align:center">Division</td>
+<td style="text-align:center">Regular division.</td>
+</tr>
+<tr>
+<td style="text-align:center">%</td>
+<td style="text-align:center">Modulo</td>
+<td style="text-align:center">return remainder</td>
+</tr>
+<tr>
+<td style="text-align:center">**</td>
+<td style="text-align:center">Exponent</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">//</td>
+<td style="text-align:center">Floor Division</td>
+<td style="text-align:center">return rounded result</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="Lecture-3"><a href="#Lecture-3" class="headerlink" title="Lecture 3"></a>Lecture 3</h2><h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><ul>
+<li><p>Method <code>list.insert(&lt;index&gt;, &lt;content&gt;)</code>, which:</p>
+<ul>
+<li>\<index\> position count as the position of the available slot, starting from the 1 slot before the 1st element in the list as index 0.</index\></li>
+<li>\<content\> content will be inserted.</content\></li>
+</ul>
+</li>
+<li><p>Method <code>list.remove(&lt;index&gt;)</code>, which:</p>
+<ul>
+<li><index> position of the element will be removed.</index></li>
+</ul>
+</li>
+<li><p>Method <code>list.clear()</code>, which will clear the list.</p>
+</li>
+</ul>
+<hr>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>Used to store elements which has no redundancy. Elements inside set has no order, and unique.</p>
+<ul>
+<li><p>Method <code>set.add(&lt;element&gt;)</code>, which:</p>
+<ul>
+<li><element> element to be added to the set.</element></li>
+</ul>
+</li>
+<li><p>Method <code>set.remove(&lt;element&gt;)</code>, which:</p>
+<ul>
+<li><element> element to be deleted.</element></li>
+<li><em>If <element> does not exist, using <code>set.remove()</code> will raise KeyError.</element></em></li>
+</ul>
+</li>
+<li><p>Method <code>set.discard(&lt;element&gt;)</code>, which:</p>
+<ul>
+<li><element> element to be deleted.</element></li>
+<li><em>If <element> does not exist, using <code>set.discard()</code> will NOT raise KeyError.</element></em></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Lecture-4"><a href="#Lecture-4" class="headerlink" title="Lecture 4"></a>Lecture 4</h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p>Strings are <strong>Immutable datatypes</strong>. A string, once created, can never be changed.</p>
+<h4 id="Workarounds-to-“modify”-a-string"><a href="#Workarounds-to-“modify”-a-string" class="headerlink" title="Workarounds to “modify” a string:"></a>Workarounds to “modify” a string:</h4><ol>
+<li><p><strong>Convert to a list, modify, and convert back to a string</strong>:</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"hello"</span></span><br><span class="line">s_list = <span class="built_in">list</span>(s)  <span class="comment"># Convert string to list</span></span><br><span class="line">s_list[<span class="number">0</span>] = <span class="string">'H'</span>  <span class="comment"># Modify the list</span></span><br><span class="line">s = <span class="string">''</span>.join(s_list)  <span class="comment"># Convert list back to string</span></span><br><span class="line"><span class="built_in">print</span>(s)  <span class="comment"># Output: 'Hello'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>Use string slicing and concatenation</strong>:</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"hello"</span></span><br><span class="line">s = <span class="string">'H'</span> + s[<span class="number">1</span>:]  <span class="comment"># Modify the first character</span></span><br><span class="line"><span class="built_in">print</span>(s)  <span class="comment"># Output: 'Hello'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>Use string methods to create a new string</strong>:</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"hello"</span></span><br><span class="line">s = s.replace(<span class="string">'h'</span>, <span class="string">'H'</span>)  <span class="comment"># Use replace method to create a new string</span></span><br><span class="line"><span class="built_in">print</span>(s)  <span class="comment"># Output: 'Hello'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="Strings-Escape-characters"><a href="#Strings-Escape-characters" class="headerlink" title="Strings Escape characters"></a>Strings Escape characters</h3><p>Strings are immutable data types.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Characters</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>\n</code></td>
+<td style="text-align:left">Newline</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\t</code></td>
+<td style="text-align:left">Horizontal Tab</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\'</code></td>
+<td style="text-align:left">Single Quote (转义)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\"</code></td>
+<td style="text-align:left">Double Quote  (转义)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\\</code></td>
+<td style="text-align:left">Backslash</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="String-Operations"><a href="#String-Operations" class="headerlink" title="String Operations"></a>String Operations</h3><ul>
+<li>Use <code>+</code> to add two string together.</li>
+<li><p>Two text literals next to each other will be automatically combined:</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = (<span class="string">'Combining'</span> <span class="string">'literals'</span>)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br></pre></td></tr></table></figure></li>
+<li><em>Or it’s totally fine if these two literals has no space between them.</em></li>
+</ul>
+</li>
+<li><p>Multiplying a string by 0 or a negative integer results in an empty string:</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello"</span> * <span class="number">0</span></span><br><span class="line"><span class="built_in">print</span>(s)  <span class="comment"># Output: ''</span></span><br></pre></td></tr></table></figure></li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello"</span> * -<span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(s)  <span class="comment"># Output: ''</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Membership Test in strings:</p>
+<ul>
+<li>Use <code>in</code> to check if a substring exists in a string.<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line">result = <span class="string">"Hello"</span> <span class="keyword">in</span> s</span><br><span class="line"><span class="built_in">print</span>(result)  <span class="comment"># Output: True</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>Use <code>not in</code> to check if a substring does not exist in a string.<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">      s = <span class="string">"Hello, World!"</span></span><br><span class="line">      result = <span class="string">"Hi"</span> <span class="keyword">not</span> <span class="keyword">in</span> s</span><br><span class="line">      <span class="built_in">print</span>(result)  <span class="comment"># Output: True</span></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="comment">### String Comparison</span></span><br><span class="line"></span><br><span class="line">- You can use `&gt;`, `&lt;`, `&lt;=`, `&gt;=`, `==`, `!=` to compare two strings. Python compares strings lexicographically based on the Unicode code points of characters. For example:</span><br><span class="line"></span><br><span class="line">- Comparing the size of strings:</span><br><span class="line">  ```python</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"apple"</span> &gt; <span class="string">"banana"</span>)  <span class="comment"># Output: False, because 'a' has a lower Unicode code point than 'b'</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"apple"</span> &lt; <span class="string">"banana"</span>)  <span class="comment"># Output: True</span></span><br><span class="line"></span><br><span class="line">- Comparing the equality of strings:</span><br><span class="line">  ```python</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"apple"</span> == <span class="string">"apple"</span>)  <span class="comment"># Output: True</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"apple"</span> != <span class="string">"banana"</span>)  <span class="comment"># Output: True</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Comparing the size and equality of strings:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">"apple"</span> &lt;= <span class="string">"banana"</span>)  <span class="comment"># Output: True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"apple"</span> &gt;= <span class="string">"apple"</span>)  <span class="comment"># Output: True</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>If one string is a prefix of another, the shorter string is considered smaller:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">"app"</span> &lt; <span class="string">"apple"</span>)  <span class="comment"># Output: True, because "app" is a prefix of "apple"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="String-Functions"><a href="#String-Functions" class="headerlink" title="String Functions"></a>String Functions</h3><ul>
+<li><p><code>len(str)</code>: Returns the length of the string.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(s))  <span class="comment"># Output: 13</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.lower()</code>: Converts the string to lowercase.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line"><span class="built_in">print</span>(s.lower())  <span class="comment"># Output: hello, world!</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.upper()</code>: Converts the string to uppercase.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line"><span class="built_in">print</span>(s.upper())  <span class="comment"># Output: HELLO, WORLD!</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.strip()</code>: Removes whitespace from both ends of the string.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"   Hello, World!   "</span></span><br><span class="line"><span class="built_in">print</span>(s.strip())  <span class="comment"># Output: Hello, World!</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.split()</code>: Splits the string into a list.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line"><span class="built_in">print</span>(s.split())  <span class="comment"># Output: ['Hello,', 'World!']</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.join(iterable)</code>: Joins the elements of the iterable into a single string.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">words = [<span class="string">'Hello'</span>, <span class="string">'World'</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">' '</span>.join(words))  <span class="comment"># Output: Hello World</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.replace(old, new)</code>: Replaces occurrences of a substring.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line"><span class="built_in">print</span>(s.replace(<span class="string">"World"</span>, <span class="string">"Python"</span>))  <span class="comment"># Output: Hello, Python!</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.find(sub)</code>: Finds the position of a substring, returns -1 if not found.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line"><span class="built_in">print</span>(s.find(<span class="string">"World"</span>))  <span class="comment"># Output: 7</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.startswith(prefix)</code>: Checks if the string starts with the specified prefix.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line"><span class="built_in">print</span>(s.startswith(<span class="string">"Hello"</span>))  <span class="comment"># Output: True</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.endswith(suffix)</code>: Checks if the string ends with the specified suffix.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"Hello, World!"</span></span><br><span class="line"><span class="built_in">print</span>(s.endswith(<span class="string">"World!"</span>))  <span class="comment"># Output: True</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>ord(char)</code>: Returns the Unicode code point for a given character.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">ord</span>(<span class="string">'A'</span>))  <span class="comment"># Output: 65</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">ord</span>(<span class="string">'a'</span>))  <span class="comment"># Output: 97</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">ord</span>(<span class="string">'0'</span>))  <span class="comment"># Output: 48</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>chr(code)</code>: Returns the character that represents the specified Unicode code point.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(<span class="number">65</span>))  <span class="comment"># Output: 'A'</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(<span class="number">97</span>))  <span class="comment"># Output: 'a'</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(<span class="number">48</span>))  <span class="comment"># Output: '0'</span></span><br><span class="line"></span><br><span class="line">- `<span class="built_in">str</span>.isalnum()`: Checks <span class="keyword">if</span> <span class="built_in">all</span> characters <span class="keyword">in</span> the string are alphanumeric.</span><br><span class="line">  - Example:</span><br><span class="line">    ```python</span><br><span class="line">    s1 = <span class="string">"Hello123"</span></span><br><span class="line">    s2 = <span class="string">"Hello 123"</span></span><br><span class="line">    <span class="built_in">print</span>(s1.isalnum())  <span class="comment"># Output: True</span></span><br><span class="line">    <span class="built_in">print</span>(s2.isalnum())  <span class="comment"># Output: False</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.isalpha()</code>: Checks if all characters in the string are alphabetic.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">"Hello"</span></span><br><span class="line">s2 = <span class="string">"Hello123"</span></span><br><span class="line"><span class="built_in">print</span>(s1.isalpha())  <span class="comment"># Output: True</span></span><br><span class="line"><span class="built_in">print</span>(s2.isalpha())  <span class="comment"># Output: False</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.isdecimal()</code>: Checks if all characters in the string are decimal characters.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">"123"</span></span><br><span class="line">s2 = <span class="string">"123.45"</span></span><br><span class="line"><span class="built_in">print</span>(s1.isdecimal())  <span class="comment"># Output: True</span></span><br><span class="line"><span class="built_in">print</span>(s2.isdecimal())  <span class="comment"># Output: False</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>str.capitalize()</code>: Capitalizes the first character of the string and converts the rest to lowercase.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"hello, world!"</span></span><br><span class="line"><span class="built_in">print</span>(s.capitalize())  <span class="comment"># Output: 'Hello, world!'</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">"PYTHON programming"</span></span><br><span class="line"><span class="built_in">print</span>(s.capitalize())  <span class="comment"># Output: 'Python programming'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Lecture-5"><a href="#Lecture-5" class="headerlink" title="Lecture 5"></a>Lecture 5</h2><h3 id="Id"><a href="#Id" class="headerlink" title="Id"></a>Id</h3><p>In Python, the <code>id()</code> function is used to get the unique identifier of an object. This identifier is unique and constant for the object during its lifetime.</p>
+<ul>
+<li><strong>Description</strong>: Returns the unique identifier of an object.</li>
+<li><strong>Return Value</strong>: An integer representing the unique identifier of the object.</li>
+</ul>
+<h4 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h4><ul>
+<li>Getting the id of an object:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  a = <span class="number">10</span></span><br><span class="line">  b = <span class="number">10</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="built_in">id</span>(a))  <span class="comment"># Output: Unique identifier of object a</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="built_in">id</span>(b))  <span class="comment"># Output: Unique identifier of object b, usually the same as a because integers are immutable and cached</span></span><br><span class="line"></span><br><span class="line">**Important Concepts**</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> Uniqueness of Objects:</span><br><span class="line"></span><br><span class="line">  - The identifier returned by <span class="built_in">id</span>() <span class="keyword">is</span> unique <span class="keyword">and</span> constant <span class="keyword">for</span> the <span class="built_in">object</span> during its lifetime.</span><br><span class="line">  - Example:</span><br><span class="line">    ```python</span><br><span class="line">    a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">id</span>(a))  <span class="comment"># Output: Unique identifier of object a</span></span><br><span class="line">    a.append(<span class="number">4</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">id</span>(a))  <span class="comment"># Output: Same unique identifier, because a is still the same object</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol>
+<li><p>Mutability and Immutability:</p>
+<ul>
+<li>For immutable objects (like integers, strings, tuples), Python may return the same identifier for new objects with the same value because these objects are cached and reused.</li>
+<li>For mutable objects (like lists, dictionaries), even if the content is the same, new objects will have different identifiers.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">10</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(a) == <span class="built_in">id</span>(b))  <span class="comment"># Output: True, because the integer object 10 is cached and reused</span></span><br><span class="line"></span><br><span class="line">c = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">d = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(c) == <span class="built_in">id</span>(d))  <span class="comment"># Output: False, because c and d are different list objects</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Object Lifetime:</p>
+<ul>
+<li>The identifier of an object is unique and constant during its lifetime. When the object is destroyed, its identifier may be reassigned to a new object.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">id_a = <span class="built_in">id</span>(a)</span><br><span class="line"><span class="keyword">del</span> a</span><br><span class="line">b = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(b) == id_a)  <span class="comment"># May output True, because id_a may be reassigned to the new object b</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p><strong>Common Pitfalls</strong></p>
+<ol>
+<li><p>Immutable Object Caching:</p>
+<ul>
+<li>For immutable objects (like integers, strings, tuples), Python caches and reuses some common values, which means that two objects with the same value may have the same id.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">10</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(a) == <span class="built_in">id</span>(b))  <span class="comment"># Output: True, because the integer 10 is cached and reused</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Small Integer Caching:</p>
+<ul>
+<li>Python caches and reuses small integers (usually between -5 and 256), so their id values are always the same.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">256</span></span><br><span class="line">b = <span class="number">256</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(a) == <span class="built_in">id</span>(b))  <span class="comment"># Output: True, because 256 is within the cache range</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">257</span></span><br><span class="line">d = <span class="number">257</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(c) == <span class="built_in">id</span>(d))  <span class="comment"># Output: False, because 257 is outside the cache range</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>String Interning:</p>
+<ul>
+<li>Python caches and reuses short and common strings.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">"hello"</span></span><br><span class="line">s2 = <span class="string">"hello"</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(s1) == <span class="built_in">id</span>(s2))  <span class="comment"># Output: True, because the string "hello" is cached and reused</span></span><br><span class="line"></span><br><span class="line">s3 = <span class="string">"hello, world!"</span></span><br><span class="line">s4 = <span class="string">"hello, world!"</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(s3) == <span class="built_in">id</span>(s4))  <span class="comment"># Output: May be True or False, depending on the implementation</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Different id for Mutable Objects:</p>
+<ul>
+<li>For mutable objects (like lists, dictionaries), even if the content is the same, new objects will have different id values.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">list2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(list1) == <span class="built_in">id</span>(list2))  <span class="comment"># Output: False, because list1 and list2 are different objects</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Object Lifetime:</p>
+<ul>
+<li>When an object is destroyed, its id may be reassigned to a new object.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">id_a = <span class="built_in">id</span>(a)</span><br><span class="line"><span class="keyword">del</span> a</span><br><span class="line">b = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(b) == id_a)  <span class="comment"># May output True, because id_a may be reassigned to the new object b</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="Value-Assignment-and-Aliasing"><a href="#Value-Assignment-and-Aliasing" class="headerlink" title="Value Assignment and Aliasing"></a>Value Assignment and Aliasing</h3><ul>
+<li>When you assign a mutable object (like a list, dictionary, or set) to another variable, both variables will reference the same object. This is called aliasing.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">list2 = list1  <span class="comment"># list2 is an alias for list1</span></span><br><span class="line">list2.append(<span class="number">4</span>)</span><br><span class="line"><span class="built_in">print</span>(list1)  <span class="comment"># Output: [1, 2, 3, 4]</span></span><br><span class="line"><span class="built_in">print</span>(list2)  <span class="comment"># Output: [1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="FileIO"><a href="#FileIO" class="headerlink" title="FileIO"></a>FileIO</h3><p>Python provides a set of built-in functions for file operations, including opening files, reading files, writing files, and closing files.</p>
+<h4 id="Opening-a-File"><a href="#Opening-a-File" class="headerlink" title="Opening a File"></a>Opening a File</h4><p>Use the <code>open()</code> function to open a file. The <code>open()</code> function returns a file object and takes two main parameters: the filename and the mode.</p>
+<ul>
+<li><p><strong>Modes</strong>:</p>
+<ul>
+<li><code>'r'</code>: Read mode (default).</li>
+<li><code>'w'</code>: Write mode. If the file exists, it will be overwritten; if the file does not exist, a new file will be created.</li>
+<li><code>'a'</code>: Append mode. If the file exists, new data will be appended to the end; if the file does not exist, a new file will be created.</li>
+<li><code>'b'</code>: Binary mode.</li>
+<li><code>'t'</code>: Text mode (default).</li>
+<li><p><code>'+'</code>: Read and write mode.</p>
+</li>
+<li><p>Example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Open a file for writing</span></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">'example.txt'</span>, <span class="string">'w'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Writing-to-a-File"><a href="#Writing-to-a-File" class="headerlink" title="Writing to a File"></a>Writing to a File</h4><p>Use the file object’s <code>write()</code> method or <code>writelines()</code> method to write content to the file.</p>
+<ul>
+<li><p><code>write()</code> method: Writes a single string to the file.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file.write(<span class="string">'Hello, World!\n'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>writelines()</code> method: Writes a list of strings to the file.</p>
+<ul>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lines = [<span class="string">'First line\n'</span>, <span class="string">'Second line\n'</span>, <span class="string">'Third line\n'</span>]</span><br><span class="line">file.writelines(lines)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="Closing-a-File"><a href="#Closing-a-File" class="headerlink" title="Closing a File"></a>Closing a File</h4><p>Use the file object’s <code>close()</code> method to close the file. Closing the file ensures that all buffered content is written to the file and releases the file resource.</p>
+<p>Example: <code>file.close()</code></p>
+<p>Using the <code>with</code> statement can automatically handle opening and closing files, ensuring that the file is properly closed after its suite finishes.</p>
+<p>For instance:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">'example.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> file:</span><br><span class="line">    file.write(<span class="string">'Hello, World!\n'</span>)</span><br><span class="line">    lines = [<span class="string">'First line\n'</span>, <span class="string">'Second line\n'</span>, <span class="string">'Third line\n'</span>]</span><br><span class="line">    file.writelines(lines)</span><br><span class="line"><span class="comment"># The file is automatically closed here</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="Random-Module"><a href="#Random-Module" class="headerlink" title="Random Module"></a>Random Module</h3><p>The <code>random</code> module in Python provides functions to generate random numbers and perform random operations.</p>
+<ol>
+<li><p><strong><code>random.random()</code></strong>:</p>
+<ul>
+<li>Returns a random float number between 0.0 and 1.0.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="built_in">print</span>(random.random())  <span class="comment"># Output: A random float between 0.0 and 1.0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong><code>random.randint(a, b)</code></strong>:</p>
+<ul>
+<li>Returns a random integer N such that <code>a &lt;= N &lt;= b</code>.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(random.randint(<span class="number">1</span>, <span class="number">10</span>))  <span class="comment"># Output: A random integer between 1 and 10 (inclusive)</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong><code>random.choice(seq)</code></strong>:</p>
+<ul>
+<li>Returns a random element from the non-empty sequence <code>seq</code>.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">choices = [<span class="string">'apple'</span>, <span class="string">'banana'</span>, <span class="string">'cherry'</span>]</span><br><span class="line"><span class="built_in">print</span>(random.choice(choices))  <span class="comment"># Output: A random element from the list</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong><code>random.shuffle(seq)</code></strong>:</p>
+<ul>
+<li>Shuffles the sequence <code>seq</code> in place.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">deck = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">random.shuffle(deck)</span><br><span class="line"><span class="built_in">print</span>(deck)  <span class="comment"># Output: The list shuffled in place</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong><code>random.sample(population, k)</code></strong>:</p>
+<ul>
+<li>Returns a list of <code>k</code> unique elements chosen from the population sequence or set.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">1</span>, <span class="number">11</span>))</span><br><span class="line"><span class="built_in">print</span>(random.sample(numbers, <span class="number">3</span>))  <span class="comment"># Output: A list of 3 unique random elements from the list</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong><code>random.uniform(a, b)</code></strong>:</p>
+<ul>
+<li>Returns a random float number N such that <code>a &lt;= N &lt;= b</code>.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(random.uniform(<span class="number">1.0</span>, <span class="number">10.0</span>))  <span class="comment"># Output: A random float between 1.0 and 10.0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong><code>random.gauss(mu, sigma)</code></strong>:</p>
+<ul>
+<li>Returns a random float number from a Gaussian distribution with mean <code>mu</code> and standard deviation <code>sigma</code>.</li>
+<li>Example:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(random.gauss(<span class="number">0</span>, <span class="number">1</span>))  <span class="comment"># Output: A random float from a Gaussian distribution with mean 0 and standard deviation 1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="Built-ins"><a href="#Built-ins" class="headerlink" title="Built-ins"></a>Built-ins</h3><p><strong><code>sorted()</code> Function</strong></p>
+<p>The <code>sorted()</code> function in Python is used to sort an iterable and return a new sorted list. The <code>sorted()</code> function does not modify the original object but returns a new sorted list.</p>
+<ul>
+<li><strong>Description</strong>: Sorts an iterable and returns a new sorted list.</li>
+<li><strong>Syntax</strong>: <code>sorted(iterable, key=None, reverse=False)</code><ul>
+<li><code>iterable</code>: The iterable to be sorted (e.g., list, tuple, string, etc.).</li>
+<li><code>key</code>: A function to extract a comparison key from each element (default is <code>None</code>).</li>
+<li><code>reverse</code>: A boolean value. If <code>True</code>, the sorted list is reversed (or sorted in descending order). Default is <code>False</code>.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Examples-1"><a href="#Examples-1" class="headerlink" title="Examples"></a>Examples</h4><ol>
+<li><p><strong>Sorting a list</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">   numbers = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">5</span>]</span><br><span class="line">   sorted_numbers = <span class="built_in">sorted</span>(numbers)</span><br><span class="line">   <span class="built_in">print</span>(sorted_numbers)  <span class="comment"># Output: [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]</span></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> **Sorting <span class="keyword">in</span> descending order**:</span><br><span class="line"></span><br><span class="line">    ```python</span><br><span class="line">    sorted_numbers_desc = <span class="built_in">sorted</span>(numbers, reverse=<span class="literal">True</span>)</span><br><span class="line">    <span class="built_in">print</span>(sorted_numbers_desc)  <span class="comment"># Output: [9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Sorting a string</strong>:</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"hello"</span></span><br><span class="line">sorted_s = <span class="built_in">sorted</span>(s)</span><br><span class="line"><span class="built_in">print</span>(sorted_s)  <span class="comment"># Output: ['e', 'h', 'l', 'l', 'o']</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Sorting using the <code>key</code> parameter</strong>:</p>
+<ul>
+<li><p>Sorting by string length:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">words = [<span class="string">"banana"</span>, <span class="string">"pie"</span>, <span class="string">"Washington"</span>, <span class="string">"book"</span>]</span><br><span class="line">sorted_words = <span class="built_in">sorted</span>(words, key=<span class="built_in">len</span>)</span><br><span class="line"><span class="built_in">print</span>(sorted_words)  <span class="comment"># Output: ['pie', 'book', 'banana', 'Washington']</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Sorting by a dictionary key:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">students = [</span><br><span class="line">    {<span class="string">'name'</span>: <span class="string">'John'</span>, <span class="string">'age'</span>: <span class="number">25</span>},</span><br><span class="line">    {<span class="string">'name'</span>: <span class="string">'Jane'</span>, <span class="string">'age'</span>: <span class="number">22</span>},</span><br><span class="line">    {<span class="string">'name'</span>: <span class="string">'Dave'</span>, <span class="string">'age'</span>: <span class="number">23</span>}</span><br><span class="line">]</span><br><span class="line">sorted_students = <span class="built_in">sorted</span>(students, key=<span class="keyword">lambda</span> x: x[<span class="string">'age'</span>])</span><br><span class="line"><span class="built_in">print</span>(sorted_students)</span><br><span class="line"><span class="comment"># Output: [{'name': 'Jane', 'age': 22}, {'name': 'Dave', 'age': 23}, {'name': 'John', 'age': 25}]</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Exam Notes for ENGG 1330</p><p><a href="http://naughtychas.github.io/2024/12/11/Exam Notes for ENGG1330/">http://naughtychas.github.io/2024/12/11/Exam Notes for ENGG1330/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><a href="http://NaughtyChas.github.io"><p>ntcs</p></a></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-12-11</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-12-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="recommend-area"><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 推荐文章</span><br><span>  1.<a class="is-size-6" href="/2022/08/12/%E9%82%88%E6%83%B3%E6%97%A5%E9%9B%86/" target="_blank" rel="noreferrer">邈想日集</a><br></span><span>  2.<a class="is-size-6" href="/2024/02/25/AL%20CS%20%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/" target="_blank" rel="noreferrer">AL CS 题目总结</a><br></span><span>  3.<a class="is-size-6" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">ASCS笔记</a><br></span><span>  4.<a class="is-size-6" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/" target="_blank" rel="noreferrer">A2CS笔记</a><br></span><span>  5.<a class="is-size-6" href="/2022/08/12/%E6%B5%85%E8%B0%88%E4%BB%8A%E5%B9%B4CAIE%E7%9A%84POE%E8%80%83%E8%AF%95/" target="_blank" rel="noreferrer">浅谈今年CAIE的POE考试</a><br></span><span>  6.<a class="is-size-6" href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/" target="_blank" rel="noreferrer">收集&quot;你说得对&quot;</a><br></span></div></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/02/25/AL%20CS%20%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/"><span class="level-item">AL CS 题目总结</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css"><script> $.getScript('/js/gitalk.min.js', function () { 
+            var gitalk = new Gitalk({
+            language:'zh-CN',
+            id: 'ce25715f48fcba7f562a0cde62de8720',
+            repo: 'Blog-Comment',
+            owner: 'NaughtyChas',
+            clientID: 'b602cb01d4c2668b35ae',
+            clientSecret: '0a26ed5993551a9754281410ba3aa5f772dfbdf2',
+            admin: ["","NaughtyChas"],
+            createIssueManually: true,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: 'last',
+            proxy: 'https://shielded-brushlands-08810.herokuapp.com/https://github.com/login/oauth/access_token',
+            
+            enableHotKey: true,
+            isLocked: false
+        })
+        gitalk.render('comment-container')});</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="is-flex is-mobile" href="#ENGG-1330-Exam-Notes"><span class="mr-2">1</span><span>ENGG 1330 Exam Notes</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#Lecture-2"><span class="mr-2">1.1</span><span>Lecture 2</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#Variable-and-Identifiers"><span class="mr-2">1.1.1</span><span>Variable and Identifiers</span></a></li><li><a class="is-flex is-mobile" href="#Operators"><span class="mr-2">1.1.2</span><span>Operators</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#Lecture-3"><span class="mr-2">1.2</span><span>Lecture 3</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#List"><span class="mr-2">1.2.1</span><span>List</span></a></li><li><a class="is-flex is-mobile" href="#Set"><span class="mr-2">1.2.2</span><span>Set</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#Lecture-4"><span class="mr-2">1.3</span><span>Lecture 4</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#Workarounds-to-“modify”-a-string"><span class="mr-2">1.3.1</span><span>Workarounds to “modify” a string:</span></a></li><li><a class="is-flex is-mobile" href="#Strings-Escape-characters"><span class="mr-2">1.3.2</span><span>Strings Escape characters</span></a></li><li><a class="is-flex is-mobile" href="#String-Operations"><span class="mr-2">1.3.3</span><span>String Operations</span></a></li><li><a class="is-flex is-mobile" href="#String-Functions"><span class="mr-2">1.3.4</span><span>String Functions</span></a></li></ul></li><li><a class="is-flex is-mobile" href="#Lecture-5"><span class="mr-2">1.4</span><span>Lecture 5</span></a><ul class="menu-list"><li><a class="is-flex is-mobile" href="#Examples"><span class="mr-2">1.4.1</span><span>Examples:</span></a></li><li><a class="is-flex is-mobile" href="#Value-Assignment-and-Aliasing"><span class="mr-2">1.4.2</span><span>Value Assignment and Aliasing</span></a></li><li><a class="is-flex is-mobile" href="#Closing-a-File"><span class="mr-2">1.4.3</span><span>Closing a File</span></a></li><li><a class="is-flex is-mobile" href="#Random-Module"><span class="mr-2">1.4.4</span><span>Random Module</span></a></li><li><a class="is-flex is-mobile" href="#Examples-1"><span class="mr-2">1.4.5</span><span>Examples</span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="ntcs&#039; blog" height="28"></a><p class="size-small"><span>&copy; 2024 ntcs</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noreferrer">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noreferrer">Icarus</a> &amp; <a href="https://github.com/LittleYe233/hexo-theme-amazingremake" target="_blank" rel="noreferrer">Amazing-Remake</a> <br><span>© 版权说明：[本网站所有内容均收集于互联网或自己创作,<br />&nbsp;&nbsp;&nbsp;&nbsp;方便于网友与自己学习交流，如有侵权，请<a href="/message" target="_blank">留言</a>，立即处理]<br /></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
+            var n = new Date(time);
+            now.setTime(now.getTime() + 250),
+                days = (now - n) / 1e3 / 60 / 60 / 24,
+                dnum = Math.floor(days),
+                hours = (now - n) / 1e3 / 60 / 60 - 24 * dnum,
+                hnum = Math.floor(hours),
+            1 == String(hnum).length && (hnum = "0" + hnum),
+                minutes = (now - n) / 1e3 / 60 - 1440 * dnum - 60 * hnum,
+                mnum = Math.floor(minutes),
+            1 == String(mnum).length && (mnum = "0" + mnum),
+                seconds = (now - n) / 1e3 - 86400 * dnum - 3600 * hnum - 60 * mnum,
+                snum = Math.round(seconds),
+            1 == String(snum).length && (snum = "0" + snum),
+                document.getElementById("statistic-times").innerHTML = "❤️本站自 <strong>"+time.split(" ")[0].replace(/\//g,".")+"</strong> 已运行 <strong>" + dnum + "</strong> 天 <strong>" + hnum + "</strong> 小时 <strong>" + mnum + "</strong> 分 <strong>" + snum + "</strong> 秒！❤️";
+        }var now = new Date();setInterval("createTime('2022.8.11 17:07:12')", 250,"");</script><br></span><div class="size-small"><span>❤️感谢 <strong><span id="busuanzi_value_site_uv">99+</span></strong> 小伙伴的 <strong><span id="busuanzi_value_site_pv">99+</span></strong> 次光临！❤️</span></div></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/LittleYe233/hexo-theme-amazingremake"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    enabled: true,
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><script src="/js/main.js" defer></script><script>$.getScript('/js/comment-issue-data.js',function(){loadIssueData('b602cb01d4c2668b35ae','0a26ed5993551a9754281410ba3aa5f772dfbdf2','NaughtyChas','Blog-Comment',false);})</script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script><script type="text/javascript">var pjax = new Pjax({
+            elements: "a",//代表点击链接就更新
+            selectors: [  //代表要更新的节点
+                ".section",
+                "title"
+            ],
+            cache: true,
+            cacheBust:false
+        })
+
+        function loadBusuanzi(){
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js", function () {});
+        }
+
+        function loadMathJax() { // 加载mathjax
+            window.MathJax = {
+                tex: {
+                    inlineMath: [['$', '$']],
+                    autoload: {
+                        color: [],
+                        colorv2: ['color']
+                    },
+                    packages: {'[+]': ['noerrors']}
+                },
+                options: {
+                    ignoreHtmlClass: 'tex2jax_ignore',
+                    processHtmlClass: 'tex2jax_process'
+                },
+                loader: {
+                    load: ['input/asciimath', '[tex]/noerrors']
+                }
+            };
+            $.getScript('//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
+        };
+
+        // 开始 PJAX 执行的函数
+        document.addEventListener('pjax:send', function () {
+        });
+        
+        // PJAX 完成之后执行的函数，可以和上面的重载放在一起
+        document.addEventListener('pjax:complete', function () {
+            $(".section").css({opacity:1});
+            if(true){
+                $.getScript('/js/comment-issue-data.js',function(){loadIssueData('b602cb01d4c2668b35ae','0a26ed5993551a9754281410ba3aa5f772dfbdf2','NaughtyChas','Blog-Comment',false);});
+            }
+            if('undefined' === 'mathjax'){
+                loadMathJax();
+            }
+            loadMainJs(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings);
+            loadBackTop();
+            loadBusuanzi();
+            if(typeof loadBanner == 'function'){
+                loadBanner();
+            }
+        });</script></body></html>
