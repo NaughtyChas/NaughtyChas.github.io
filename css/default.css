@@ -10840,6 +10840,7 @@ article.article .content pre {
 }
 article.article .content code {
   padding: 1;
+  font-family: 'JetBrains Mono', 'Source Code Pro', monospace;
   border-radius: 8px;
   background: #f0f0f0;
   color: #000;
@@ -12266,7 +12267,10 @@ button,
 input,
 select,
 textarea {
-  font-family: 'Monda', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Torus', 'HarmonyOS Sans', 'Microsoft YaHei', sans-serif;
+}
+code {
+  font-family: 'Fira Code', 'Source Code Pro', monospace, 'Microsoft YaHei';
 }
 body {
   background: url("/img/background.png");
@@ -12611,6 +12615,7 @@ pre {
   word-wrap: normal;
 }
 pre code {
+  font-family: 'Torus';
   background-color: transparent;
   color: currentColor;
   font-size: 1em;
