@@ -412,13 +412,13 @@ button,
 input,
 select,
 textarea {
-  font-family: 'Noto Serif SC', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif;
+  font-family: 'Torus', 'HarmonyOS Sans', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif;
 }
 code,
 pre {
   -moz-osx-font-smoothing: auto;
   -webkit-font-smoothing: auto;
-  font-family: 'Fira Code', 'Source Code Pro', monospace, 'Microsoft YaHei';
+  font-family: 'Consolas', 'Source Code Pro', monospace, 'Microsoft YaHei';
 }
 body {
   color: #4a4a4a;
@@ -1064,19 +1064,19 @@ a.has-text-grey-lightest:focus {
   font-weight: 700 !important;
 }
 .is-family-primary {
-  font-family: 'Noto Serif SC', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
+  font-family: 'Torus', 'HarmonyOS Sans', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
 }
 .is-family-secondary {
-  font-family: 'Noto Serif SC', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
+  font-family: 'Torus', 'HarmonyOS Sans', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
 }
 .is-family-sans-serif {
-  font-family: 'Noto Serif SC', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
+  font-family: 'Torus', 'HarmonyOS Sans', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
 }
 .is-family-monospace {
   font-family: monospace !important;
 }
 .is-family-code {
-  font-family: 'Fira Code', 'Source Code Pro', monospace, 'Microsoft YaHei' !important;
+  font-family: 'Consolas', 'Source Code Pro', monospace, 'Microsoft YaHei' !important;
 }
 .is-block {
   display: block !important;
@@ -10822,29 +10822,39 @@ article.article .content {
 }
 article.article .content h1 {
   font-size: 1.75em;
+  font-weight: bold;
 }
 article.article .content h2 {
   font-size: 1.5em;
+  font-weight: bold;
 }
 article.article .content h3 {
   font-size: 1.25em;
+  font-weight: bold;
 }
 article.article .content h4 {
   font-size: 1.125em;
+  font-weight: bold;
 }
 article.article .content h5 {
   font-size: 1em;
+  font-weight: bold;
 }
 article.article .content pre {
   font-size: 0.85em;
 }
 article.article .content code {
   padding: 1;
-  font-family: 'JetBrains Mono', 'Source Code Pro', monospace;
+  font-family: 'Consolas', 'Source Code Pro', monospace;
   border-radius: 8px;
   background: #f0f0f0;
   color: #000;
   overflow-wrap: break-word;
+}
+article.article .content code,
+article.article .content pre {
+  font-family: 'Consolas', 'Source Code Pro', monospace;
+  font-weight: 300;
 }
 article.article .content blockquote.pullquote {
   float: right;
@@ -11294,7 +11304,7 @@ figure.highlight figcaption * {
 }
 figure.highlight figcaption span {
   font-weight: 500;
-  font-family: 'Fira Code', 'Source Code Pro', monospace, 'Microsoft YaHei';
+  font-family: 'Consolas', 'Source Code Pro', monospace, 'Microsoft YaHei';
 }
 figure.highlight figcaption .level-left *:not(:last-child) {
   margin-right: 0.5em;
@@ -11584,7 +11594,7 @@ figure.highlight .section {
 .cc-window,
 .cc-revoke {
   font-size: 1.1rem !important;
-  font-family: 'Noto Serif SC', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
+  font-family: 'Torus', 'HarmonyOS Sans', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
 }
 .cc-window {
   color: #4a4a4a !important;
@@ -12270,7 +12280,7 @@ textarea {
   font-family: 'Torus', 'HarmonyOS Sans', 'Microsoft YaHei', sans-serif;
 }
 code {
-  font-family: 'Fira Code', 'Source Code Pro', monospace, 'Microsoft YaHei';
+  font-family: 'Consolas', 'Source Code Pro', monospace, 'Microsoft YaHei';
 }
 body {
   background: url("/img/background.png");
@@ -12496,7 +12506,7 @@ body {
   text-align: center;
 }
 .markdown-body {
-  font-family: 'Noto Serif SC', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
+  font-family: 'Torus', 'HarmonyOS Sans', 'Microsoft YaHei', Ubuntu, Roboto, 'Open Sans', sans-serif !important;
 }
 .markdown-body img {
   max-width: 30% !important;
@@ -12615,7 +12625,6 @@ pre {
   word-wrap: normal;
 }
 pre code {
-  font-family: 'Torus';
   background-color: transparent;
   color: currentColor;
   font-size: 1em;
