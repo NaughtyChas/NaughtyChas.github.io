@@ -17,6 +17,8 @@ function isNightFun() {
 }
 
 let isNight = isNightFun();
+isNight = true
+
 // 参考自 https://www.imaegoo.com/
 let nightNav,
     nightIcon,
