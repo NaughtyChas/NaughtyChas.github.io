@@ -8526,16 +8526,16 @@ details.toc[open] >div.body section .header+.doc_tree {
   font-weight: 500;
 }
 .l_body[type='tech'] article.content h2 >a:first-child:before {
-  content: '#2';
+  content: '#';
 }
 .l_body[type='tech'] article.content h3 >a:first-child:before {
-  content: '#3';
+  content: '=';
 }
 .l_body[type='tech'] article.content h4 >a:first-child:before {
-  content: '#4';
+  content: '-';
 }
 .l_body[type='tech'] article.content h5 >a:first-child:before {
-  content: '#5';
+  content: '•';
 }
 .md-text.error-page {
   text-align: center;
