@@ -1,5 +1,21 @@
 @import url("https://fonts.cdnfonts.com/css/torus");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web/style.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap");
+html h1,
+html h2,
+html h3,
+html h4,
+html h5,
+html h6,
+html .h1,
+html .h2,
+html .h3,
+html .h4,
+html .h5,
+html .h6 {
+  font-family: 'Torus', "LXGW WenKai GB", system-ui, "Microsoft Yahei", sans-serif;
+}
 :root {
   --width-main: 950px;
   --fsp: 17px;
@@ -34,6 +50,9 @@
 }
 :root {
   --gap-max: calc(var(--gap-margin) + var(--gap-padding));
+}
+.post-list .post-card .cover-info .headline {
+  font-family: 'Torus', "LXGW WenKai GB", system-ui, "Microsoft Yahei", sans-serif;
 }
 :root {
   --hue: 192deg;
@@ -1876,7 +1895,7 @@ table:not([class]) {
   outline: none;
 }
 html {
-  font-family: Nunito, "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
+  font-family: "Nunito", "Noto Sans SC", "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -7095,7 +7114,7 @@ details.toc[open] >div.body section .header+.doc_tree {
 .search-wrapper .search-input {
   width: 100%;
   box-sizing: border-box;
-  font-family: Nunito, "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
+  font-family: "Nunito", "Noto Sans SC", "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
   font-size: 0.875rem;
   padding: 12px 0;
   color: var(--text);
@@ -8986,7 +9005,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   font-size: 0.8125rem;
 }
 .post-list .post-card.post.photo .cover .cover-info .headline {
-  font-weight: 500;
+  font-weight: 600;
   font-size: calc(17px + 7px);
 }
 .post-list .post-card.post.photo .cover .cover-info .caption {
