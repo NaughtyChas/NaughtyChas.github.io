@@ -53,6 +53,7 @@ html .h6 {
 }
 .post-list .post-card .cover-info .headline {
   font-family: 'Torus', "LXGW WenKai GB", system-ui, "Microsoft Yahei", sans-serif;
+  font-weight: bold;
 }
 :root {
   --hue: 192deg;
@@ -7263,18 +7264,18 @@ details.toc[open] >div.body section .header+.doc_tree {
   right: var(--inset);
   border-radius: 24px;
   --saturate: 400%;
-  --blur-px: 100px;
+  --blur-px: 250px;
   --background-opacity: 1;
   background-position: center;
   background-size: cover;
   --inset: 32px;
-  --background-opacity: 0.3;
+  --background-opacity: 0.5;
   background-image: url("/imgs/site/bg.png");
   filter: saturate(var(--saturate)) blur(var(--blur-px)) opacity(var(--background-opacity));
 }
 @media screen and (prefers-color-scheme: dark) {
   .l_left .sidebg {
-    --background-opacity: 0.225;
+    --background-opacity: 0.375;
   }
 }
 .l_left .leftbar-container {
@@ -9121,8 +9122,8 @@ body>.sitebg .siteblur {
   --blur-px: 0;
   --blur-sat: 200%;
   background-color: var(--blur-bg);
-  --blur-sat: 100%;
-  --blur-px: 600px;
+  --blur-sat: 200%;
+  --blur-px: 300px;
   --blur-bg: var(--bg-a75);
 }
 @supports ((-webkit-backdrop-filter: blur(var(--blur-px))) or (backdrop-filter: blur(var(--blur-px)))) {
