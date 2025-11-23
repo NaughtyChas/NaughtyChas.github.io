@@ -7091,41 +7091,76 @@ details.toc[open] >div.body section .header+.doc_tree {
   font-weight: 500;
   color: var(--text-p3);
   text-align: center;
-  background: var(--bg-a50);
-  transition: background 0.2s ease-out;
-  -moz-transition: background 0.2s ease-out;
-  -webkit-transition: background 0.2s ease-out;
-  -o-transition: background 0.2s ease-out;
+  background: transparent;
   position: relative;
   display: flex;
+  padding: 0;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 1;
+  overflow: visible;
+}
+.nav-area .menu .nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-a50);
+  border-radius: 8px;
+  transition: all 0.2s ease-out;
+  z-index: -1;
 }
 .nav-area .menu .nav-item img,
 .nav-area .menu .nav-item svg {
-  height: 28px;
+  height: 24px;
   object-fit: contain;
   filter: grayscale(50%) brightness(0.8) opacity(0.5);
   transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -webkit-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
+  margin-bottom: 0;
+  z-index: 2;
 }
 .nav-area .menu .nav-item span {
+  position: absolute;
+  bottom: 6px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 1;
   text-overflow: ellipsis;
   word-break: keep-all;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.22s ease-out;
+  z-index: 2;
+  pointer-events: none;
 }
 .nav-area .menu .nav-item.active,
 .nav-area .menu .nav-item:hover {
   color: var(--text-p1);
-  background: var(--bg-a100);
+  z-index: 10;
 }
 .nav-area .menu .nav-item.active img,
 .nav-area .menu .nav-item:hover img,
 .nav-area .menu .nav-item.active svg,
 .nav-area .menu .nav-item:hover svg {
   filter: unset;
+}
+.nav-area .menu .nav-item.active::before,
+.nav-area .menu .nav-item:hover::before {
+  background: var(--bg-a100);
+}
+.nav-area .menu .nav-item:hover::before {
+  top: -6px;
+}
+.nav-area .menu .nav-item:hover img,
+.nav-area .menu .nav-item:hover svg {
+  transform: translateY(-10px);
+}
+.nav-area .menu .nav-item:hover span {
+  opacity: 1;
+  transform: translateY(0);
 }
 .nav-area .menu .nav-item.active:after {
   content: '';
@@ -7137,6 +7172,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   border-radius: 2px;
   bottom: 2px;
   background: currentColor;
+  z-index: 3;
 }
 .nav-area {
   margin: 1rem var(--gap-margin) 0;
