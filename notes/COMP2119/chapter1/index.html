@@ -17,29 +17,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>Naucha</title>
+  <title>递归与递推 - Naucha</title>
 
   
-    <meta name="description" content="testing">
+    <meta name="description" content="递归递归的思路基本就是把一个大问题拆分成相同分量的小问题。 我们来举一个例子吧。 假设你是一个非常懒的总监，你上司给了你100份文件去处理。与其说你自己把所有的文件都处理了，你的做法是：  从100张纸最上面抽一张来处理，然后把剩下的99张推给你的助理。  然后你的助理也跟你一样懒。他采取了与你一样的策略：处理最上面的文件，然后把剩下的所有交给他的助理。 这样的一个链式反应到最后一位实习生，他发现">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Naucha">
-<meta property="og:url" content="https://naughtychas.github.io/notebooks/COMP2119/">
+<meta property="og:title" content="递归与递推">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP2119/chapter1/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="testing">
+<meta property="og:description" content="递归递归的思路基本就是把一个大问题拆分成相同分量的小问题。 我们来举一个例子吧。 假设你是一个非常懒的总监，你上司给了你100份文件去处理。与其说你自己把所有的文件都处理了，你的做法是：  从100张纸最上面抽一张来处理，然后把剩下的99张推给你的助理。  然后你的助理也跟你一样懒。他采取了与你一样的策略：处理最上面的文件，然后把剩下的所有交给他的助理。 这样的一个链式反应到最后一位实习生，他发现">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2025-11-24T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-24T14:14:53.928Z">
 <meta property="article:author" content="Naucha">
+<meta property="article:tag" content="递归">
+<meta property="article:tag" content="递归&#x2F;回溯算法">
+<meta property="article:tag" content="递归&#x2F;基准条件">
+<meta property="article:tag" content="递归&#x2F;调用栈">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
   
   
   
-  
+  <meta name="keywords" content=",,,">
 
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1763993705924">
+  <link rel="stylesheet" href="/css/main.css?v=1763993705891">
 
 
   
@@ -48,12 +54,12 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Naucha","description":"testing","url":"https://naughtychas.github.io"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP2119/chapter1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"递归与递推","description":"递归递归的思路基本就是把一个大问题拆分成相同分量的小问题。\n我们来举一个例子吧。\n假设你是一个非常懒的总监，你上司给了你100份文件去处理。与其说你自己把所有的文件都处理了，你的做法是：\n\n从100张纸最上面抽一张来处理，然后把剩下的99张推给你的助理。\n\n然后你的助理也跟你一样懒。他采取了与你一样的策略：处理最上面的文件，然后把剩下的所有交给他的助理。\n这样的一个链式反应到最后一位实习生，...","url":"https://naughtychas.github.io/notes/COMP2119/chapter1/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
 
-<div class="l_body index" id="start" layout="notes" type="undefined" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
@@ -87,10 +93,10 @@
   
   
   
-  <div class="tag-subtree leaf-tag expanded" data-tag="">
+  <div class="tag-subtree leaf-tag" data-tag="">
     
   
-  <a class="link active" href="/notebooks/COMP2119/">
+  <a class="link" href="/notebooks/COMP2119/">
     <span class="toc-text">
       
         所有笔记
@@ -218,100 +224,144 @@
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
 
-<div class="post-list post">
-  
-    <a
-      class="post-card post"
-      href="/notes/COMP2119/begin/"
-    >
-      
-<article class="md-text">
-  
-  <h2 class="post-title">COMP2119 序言</h2>
-  <div class="excerpt">
-    <p>
-      
-        欢迎！
-这是一个记录了HKU的COMP2119：数据结构与算法课程内容的笔记本。
-由于本博客重构时间较晚，因此当记录笔记的一切工具准备就绪后，已经进入学期末了。事实上只剩下不到三周就要考这科了。因此本笔记本中的内容会相较于详细记录来讲更有“速通”的感...
-      
-    </p>
-  </div>
-  <div class="meta cap">
-    
-      <span class="pin"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path d="m15.9894 4.9502.5306-.53006zm3.0822 3.08542-.5306.53006zm-10.33323 11.39338-.5306.5301zm-4.11668-4.1209.5306-.53zm12.94521-.3138-.2637-.7021zm-1.9171.7203.2638.7021zm-7.3176-7.33283-.70422-.25802zm.69445-1.89541.70422.25802zm-3.18161 4.18714.19934.723zm1.45663-.5384-.43821-.60864zm.37415-.34472.57083.48642zm6.57518 6.59012.491.567zm-.8704 1.8207-.7232-.199zm.5363-1.4546-.6094-.4372zm-11.19844-3.9914-.74998.0048zm.21199-.8031-.64992-.3743zm8.37475 9.391.0012-.75zm.7881-.2084-.3718-.6514zm-.396-19.09864.1615.73239zm-10.2279 19.43384c-.29274.2931-.2925.768.00054 1.0607s.76792.2925 1.06066-.0005zm5.71443-3.5978c.29274-.293.2925-.7679-.00054-1.0607-.29305-.2927-.76792-.2925-1.06066.0006zm8.27497-12.39184 3.0822 3.08542 1.0612-1.06012-3.0822-3.08542zm-6.18983 13.41864-4.11668-4.1208-1.0612 1.0601 4.11668 4.1209zm8.03423-4.6067-1.9172.7203.5276 1.4042 1.9171-.7203zm-8.26678-5.65241.69445-1.89541-1.40844-.51604-.69445 1.89541zm-2.99204 2.75671c.71145-.1962 1.25281-.334 1.69549-.6527l-.87641-1.21734c-.17293.12451-.39745.19782-1.21776.42398zm1.5836-3.27275c-.29296.79957-.3846 1.01778-.52299 1.18016l1.14166.97289c.35376-.41505.53565-.94343.78977-1.63701zm.11189 2.62005c.18709-.1347.35725-.2915.50678-.467l-1.14166-.97289c-.07129.08366-.15239.15838-.24153.22255zm7.64613 4.2687c-.689.2589-1.2144.4446-1.626.801l.982 1.134c.1608-.1393.3772-.2323 1.1716-.5308zm-1.2823 3.3876c.2253-.8188.2984-1.0432.4226-1.2163l-1.2188-.8744c-.3173.4423-.4546.9825-.6501 1.6928zm-.3437-2.5866c-.1697.147-.3216.3134-.4525.4959l1.2188.8744c.0624-.087.1348-.1663.2157-.2363zm-8.60771-1.0354c-.64614-.6468-1.0843-1.0871-1.36863-1.4443-.28531-.3585-.31477-.5137-.31521-.5833l-1.49997.0095c.00367.5822.29279 1.0697.64154 1.5079.34974.4394.86113.9497 1.48107 1.5703zm.49341-4.82766c-.84522.23306-1.54174.42386-2.06274.63306-.51955.2085-1.0118.4897-1.30243.9943l1.29985.7486c.03462-.0601.13655-.1804.56142-.3509.42343-.17 1.02157-.3361 1.90258-.579zm-2.17725 2.80006c-.00094-.1489.03771-.2952.11193-.4241l-1.29985-.7486c-.20699.3594-.31467.7674-.31205 1.1822zm4.73932 7.2086c.62387.6245 1.13687 1.1396 1.5787 1.4915.44053.3509.93143.6416 1.51763.6425l.0023-1.5c-.0695-.0001-.225-.0287-.5854-.3158-.3592-.2861-.80177-.7274-1.45203-1.3784zm4.44963-1.9569c-.2441.8875-.4112 1.4902-.5823 1.9166-.1718.4279-.293.5299-.3536.5645l.7435 1.3028c.509-.2905.7923-.7857 1.0021-1.3086.2105-.5243.4023-1.2259.6366-2.0774zm-1.3533 4.0909c.4071.0006.8073-.1052 1.1609-.307l-.7435-1.3028c-.1265.0722-.2696.11-.4151.1098zm7.2369-13.52742c1.0635 1.06454 1.7993 1.80382 2.2507 2.41312.4436.5986.4946.9171.4404 1.1676l1.4661.317c.1899-.878-.16-1.6472-.7013-2.3777-.5334-.71978-1.3664-1.55084-2.3947-2.58014zm-.7103 7.13072c1.3614-.5115 2.4633-.9234 3.2464-1.358.7947-.4411 1.4312-.9968 1.6211-1.875l-1.4661-.317c-.0541.2504-.232.5191-.883.8804-.6626.3678-1.6379.7364-3.0459 1.2654zm-1.3107-11.27626c-1.0359-1.03694-1.8719-1.87661-2.5954-2.41376-.7338-.54473-1.5071-.89726-2.3889-.70271l.3231 1.46478c.2498-.0551.5689-.00515 1.1716.4423.6129.45504 1.3572 1.19726 2.4284 2.26951zm-6.78913 2.32424c.52163-1.42363.88523-2.41035 1.25033-3.08123.359-.65977.6278-.83958.8776-.8947l-.3231-1.46478c-.8817.19452-1.4352.83965-1.87208 1.64251-.43084.79175-.83674 1.90536-1.34119 3.28216zm-7.20027 15.78572 4.65323-4.658-1.0612-1.0601-4.65323 4.6579z" fill="currentColor"/></svg></span>
-    
-    <span class="cap" id="post-meta">
-      <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
-      <time datetime="2025-11-23T14:28:22.602Z">2025-11-23</time>
-    </span>
-    
-      
-    
-  </div>
-</article>
 
-    </a>
-  
-    <a
-      class="post-card post"
-      href="/notes/COMP2119/chapter1/"
-    >
-      
-<article class="md-text">
-  
-  <h2 class="post-title">递归与递推</h2>
-  <div class="excerpt">
-    <p>
-      
-        递归递归的思路基本就是把一个大问题拆分成相同分量的小问题。
-我们来举一个例子吧。
-假设你是一个非常懒的总监，你上司给了你100份文件去处理。与其说你自己把所有的文件都处理了，你的做法是：
 
-从100张纸最上面抽一张来处理，然后把剩下的99张推给你的助...
-      
-    </p>
-  </div>
-  <div class="meta cap">
-    
-    <span class="cap" id="post-meta">
-      <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
-      <time datetime="2025-11-24T14:14:53.928Z">2025-11-24</time>
-    </span>
-    
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">递归</span>
-        </span>
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">递归/调用栈</span>
-        </span>
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">递归/回溯算法</span>
-        </span>
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">递归/基准条件</span>
-        </span>
-      
-    
-  </div>
-</article>
 
-    </a>
-  
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP2119/">COMP2119</a>
+
 </div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-11-24T14:14:53.928Z">2025-11-24</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-11-24T02:00:00.000Z">2025-11-24</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>递归与递推</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><p>递归的思路基本就是把一个大问题拆分成相同分量的小问题。</p>
+<p>我们来举一个例子吧。</p>
+<p>假设你是一个非常懒的总监，你上司给了你100份文件去处理。与其说你自己把所有的文件都处理了，你的做法是：</p>
+<blockquote>
+<p>从100张纸最上面抽一张来处理，然后把剩下的99张推给你的助理。</p>
+</blockquote>
+<p>然后你的助理也跟你一样懒。他采取了与你一样的策略：处理最上面的文件，然后把剩下的所有交给他的助理。</p>
+<p>这样的一个链式反应到最后一位实习生，他发现他的上司给了他0份文件处理。这位实习生说“我手里没有文件了”，于是文件的处理结果就从后往前层层上报给你。到最后答案传给你的时候，100份文件的结果就已经全部累加给你了。</p>
+<p>这样一番操作就叫做<strong>递归</strong>。我们可以用这样一个公式来表示：</p>
+<p>$$f(n) &#x3D; f(n-1) + n$$</p>
+<p>其中，$n$就是你负责的那份文件，而$f(n-1)$就是你推给你助理的工作。</p>
+<hr>
+<h3 id="基准条件"><a href="#基准条件" class="headerlink" title="基准条件"></a>基准条件</h3><p>后文都用Base Case来指代这个名词，因为基准条件听起来很怪。</p>
+<p>递归的危险之处就是，你的问题可能永远不会结束。例如在上面的例子中如果在0份文件之后出现了-1份文件，那么你就别想着得到最后的结果了。</p>
+<p>在编程的世界中，我们管这样的情况叫做<strong>栈溢出 (Stack Overflow)</strong>。</p>
+<p>这就是为什么在递归编程中，我们要选择一个合适的Base Case，来告诉计算机我们什么时候开始向前返回结果。递归的每个子循环前，我们都需要根据Base Case来检查一下：这个子问题到底够不够简单，导致我能直接知道这个子问题的结果？</p>
+<p>人话讲在刚才的例子中，Base Case就是：$n &#x3D; 0$。</p>
+<div class="tag-plugin colorful note" color="cyan"><div class="title">编程范式</div><div class="body"><p>当你在编写递归代码的时候，永远将你的Base Case写在最前面。这样你就在最大限度上避免了栈溢出问题。</p></div></div>
+
+
+<hr>
+<h3 id="调用栈"><a href="#调用栈" class="headerlink" title="调用栈"></a>调用栈</h3><p><strong>调用栈 (Call Stack)</strong> 是追踪递归程序运行的栈——一种数据结构。</p>
+<p>每次你在递归中调用了一个子进程，例如$f(2)$调用了$f(1)$，计算机就需要先暂停$f(2)$的计算，把它的计算过程“暂存”起来，放在一边（放在栈里）。随后，我们进行$f(1)$的计算。</p>
+<p>如果你的递归函数需要1000个子进程，那么你的调用栈里就存放了1000个进程，能吃掉你不少内存。即便我们不创建新的数组变量，递归也需要$O(n)$的内存复杂度来跟踪这些“暂停”的进程。</p>
+<p><em>$O(n)$是复杂度的表示。有关复杂度的内容会放在后面去讲。</em></p>
+<hr>
+<h3 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h3><p>回溯 (Backtracking)，或者有些教材叫做排列 (Permutations)，是递归的一个进阶使用场景：</p>
+<div class="tag-plugin colorful note" ><div class="title">例Cpt1.1</div><div class="body"><p>给定了一个数组<code>[a, b, c]</code>，你的目标是输出数组中所有元素可能的排列样式：<code>abc</code>, <code>acb</code>, <code>bac</code>, <code>bca</code>, <code>cab</code>, <code>cba</code>。</p></div></div>
+
+<p>我们可以按照这样的思路来解决问题：</p>
+<ol>
+<li>将<code>a</code>的位置固定在数组的最前面，随后找出<code>[b,c]</code>的所有排列</li>
+<li>同理固定<code>b</code>的位置，然后找出<code>[a,c]</code>的所有排列</li>
+<li>固定<code>c</code>找<code>[a,b]</code></li>
+</ol>
+<p>与其使用基础的递归算法，我们需要在某处重置外层程序的状态。我们的程序大概要按照这样的方式去运行：</p>
+<ul>
+<li>将<code>a</code>换到前面，然后调用递归</li>
+<li>递归被调用后，下一步就是将<code>b</code>换到前面。不过需要注意的是在将<code>b</code>置顶之前，我们需要<strong>撤回我们在第一步中做的动作</strong>，也就是将<code>a</code>的位置重置，将数组状态归零。</li>
+</ul>
+<p><strong>像这样的步骤，我们管它叫回溯 (Backtracking)</strong>：这是一个计算-递归-归位的逻辑。</p>
+<hr>
+<h3 id="自测"><a href="#自测" class="headerlink" title="自测"></a>自测</h3><p>读者不妨来尝试一下下面的几个问题，来测试自己对该章节的理解是否到位：</p>
+<div class="tag-plugin colorful note" ><div class="title">例Cpt1.2</div><div class="body"><p>有这样一个递归程序，作用是反转任何输入数组。例如: <br><br> 输入：<code>[5, 3, 1, 4, 8]</code> <br> 输出: <code>[8, 4, 1, 3, 5]</code> <br><br> a) 设计该递归程序 <br> b) 如果数组有100个元素，那么调用栈里面会堆积多少子进程？</p></div></div>
+
+<details class="tag-plugin colorful folding" ><summary><p>a) 题解</p>
+</summary><div class="body"><p>首先交换首位两个元素。<code>[5, 3, 1, 4, 8]</code> → <code>[**8**, 3, 1, 4, **5**]</code><br>下一步对中间的元素使用递归。</p> <p>不妨设两个指针：$p$为头指针，$q$是尾指针。$A$是输入数组。<br>Base Case：当$p \geq q$时，代表指针在中间相遇。出现这个情况就代表我们应该终止程序了。<br>Base Case检查后，我们就可以交换<code>A[p]</code>和<code>A[q]</code>的位置了。<br>交换后，我们移动指针：将$p &#x3D; p + 1, q &#x3D; q - 1$，然后对指针内的元素调用递归。</p> </div></details>
+
+
+<details class="tag-plugin colorful folding" ><summary><p>b) 题解</p>
+</summary><div class="body"><p>因为每次子进程会在数列中减去首尾两个元素，因此深度为$n&#x2F;2$。答案是50。</p> </div></details>
+
+<hr>
+<p>继续使用例Cpt.1.1：</p>
+<div class="tag-plugin colorful note" ><div class="title">例Cpt1.1</div><div class="body"><p>给定了一个数组<code>[a, b, c]</code>，你的目标是输出数组中所有元素可能的排列样式：<code>abc</code>, <code>acb</code>, <code>bac</code>, <code>bca</code>, <code>cab</code>, <code>cba</code>。</p></div></div>
+
+<p>如果我们在回溯阶段，忘了做关键的回溯步骤，那么输出行数将会更多，还是程序会输出相同行数的输出，但是内容完全错误？</p>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>输出同样数量的行数，但是结果错误。</p> </div></details>
+
+  <div class="tag-list">
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E9%80%92%E5%BD%92/">递归</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E9%80%92%E5%BD%92/%E8%B0%83%E7%94%A8%E6%A0%88/">递归/调用栈</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E9%80%92%E5%BD%92/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">递归/回溯算法</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E9%80%92%E5%BD%92/%E5%9F%BA%E5%87%86%E6%9D%A1%E4%BB%B6/">递归/基准条件</a>
+    
+  </div>
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
 
 
 
 <footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92"><span class="toc-text">递归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E5%87%86%E6%9D%A1%E4%BB%B6"><span class="toc-text">基准条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%A0%88"><span class="toc-text">调用栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95"><span class="toc-text">回溯算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E6%B5%8B"><span class="toc-text">自测</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -733,7 +783,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1763993705924" defer></script>
+<script src="/js/main.js?v=1763993705893" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -805,6 +855,30 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
 
 
 
@@ -1006,6 +1080,29 @@
     }
   });
 </script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     window.codeElements = document.querySelectorAll('.code');
