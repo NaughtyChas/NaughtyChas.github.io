@@ -1,0 +1,2897 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Chapter 8: 平衡树 - Naucha</title>
+
+  
+    <meta name="description" content="还记得如果我们将数据按顺序插入BST会出现什么问题吗？我们的结果会变成一个链表，所有操作退化为 $O(n)$。 本章我们引入平衡树——这些树会在插入或删除过程中自动调整结构，强制保持平衡，从而保证操作复杂度始终是 $O(\log n)$。  AVL 树AVL 树是一种自平衡二叉搜索树，由 Adelson-Velsky 和 Landis 在 1962 年发明（AVL 就是他们名字的首字母）。它通过维">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chapter 8: 平衡树">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP2119/chapter8/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="还记得如果我们将数据按顺序插入BST会出现什么问题吗？我们的结果会变成一个链表，所有操作退化为 $O(n)$。 本章我们引入平衡树——这些树会在插入或删除过程中自动调整结构，强制保持平衡，从而保证操作复杂度始终是 $O(\log n)$。  AVL 树AVL 树是一种自平衡二叉搜索树，由 Adelson-Velsky 和 Landis 在 1962 年发明（AVL 就是他们名字的首字母）。它通过维">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2025-11-28T12:26:01.000Z">
+<meta property="article:modified_time" content="2025-11-29T10:27:32.562Z">
+<meta property="article:author" content="Naucha">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="数据结构&#x2F;树">
+<meta property="article:tag" content="数据结构&#x2F;树&#x2F;AVL树">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="算法&#x2F;搜索">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  <meta name="keywords" content=",,,,">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1764412438874">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP2119/chapter8/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 8: 平衡树","description":"还记得如果我们将数据按顺序插入BST会出现什么问题吗？我们的结果会变成一个链表，所有操作退化为 $O(n)$。\n本章我们引入平衡树——这些树会在插入或删除过程中自动调整结构，强制保持平衡，从而保证操作复杂度始终是 $O(\\log n)$。\n\nAVL 树AVL 树是一种自平衡二叉搜索树，由 Adelson-Velsky 和 Landis 在 1962 年发明（AVL 就是他们名字的首字母）。它...","url":"https://naughtychas.github.io/notes/COMP2119/chapter8/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP2119" placeholder="在 COMP2119 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="数据结构">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        数据结构
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/优先队列">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        优先队列
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/哈希函数">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        哈希函数
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/哈希表">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%93%88%E5%B8%8C%E8%A1%A8/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        哈希表
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/图">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9B%BE/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        图
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/堆">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        堆
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/抽象数据类型">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        抽象数据类型
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/数据结构复杂度">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        数据结构复杂度
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/数组">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        数组
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/栈">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%88/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        栈
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="数据结构/树">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        树
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/树/avl树">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/avl%E6%A0%91/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        AVL树
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/树/二叉搜索树">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        二叉搜索树
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/树/二叉树">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        二叉树
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/链表">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        链表
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/队列">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%98%9F%E5%88%97/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        队列
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="算法">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        算法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/复杂度">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        复杂度
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="算法/排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/冒泡排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        冒泡排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/基数排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        基数排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/堆排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%A0%86%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        堆排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/快速排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        快速排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/插入排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        插入排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/计数排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        计数排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/选择排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        选择排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="算法/搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/二分搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        二分搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/广度优先搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        广度优先搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/插值搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E6%8F%92%E5%80%BC%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        插值搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/线性搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E7%BA%BF%E6%80%A7%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        线性搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/范围搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E8%8C%83%E5%9B%B4%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        范围搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/跳转搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E8%B7%B3%E8%BD%AC%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        跳转搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/树遍历">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%A0%91%E9%81%8D%E5%8E%86/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        树遍历
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="算法/递归">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        递归
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/递归/回溯算法">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        回溯算法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/递归/基准条件">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/%E5%9F%BA%E5%87%86%E6%9D%A1%E4%BB%B6/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        基准条件
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/递归/调用栈">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/%E8%B0%83%E7%94%A8%E6%A0%88/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        调用栈
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP2119/chapter1/"><span class="title">Chapter 1: 递归与递推</span></a><a class="item title" href="/notes/COMP2119/chapter6/"><span class="title">Chapter 6: 搜索</span></a><a class="item title" href="/notes/COMP2119/chapter3/"><span class="title">Chapter 3: 基础数据结构</span></a><a class="item title" href="/notes/COMP2119/chapter8/"><span class="title">Chapter 8: 平衡树</span></a><a class="item title" href="/notes/COMP2119/chapter7/"><span class="title">Chapter 7: 二叉搜索树</span></a><a class="item title" href="/notes/COMP2119/chapter9/"><span class="title">Chapter 9 & 10: 排序算法</span></a><a class="item title" href="/notes/COMP2119/chapter5/"><span class="title">Chapter 5: 树</span></a><a class="item title" href="/notes/COMP2119/chapter4/"><span class="title">Chapter 4: 哈希表</span></a><a class="item title" href="/notes/COMP2119/chapter2/"><span class="title">Chapter 2: 算法基础</span></a><a class="item title" href="/notes/COMP2119/begin/"><span class="title">COMP2119 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP2119/">COMP2119</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-11-29T10:27:32.562Z">2025-11-29</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-11-28T12:26:01.000Z">2025-11-28</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 8: 平衡树</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>还记得如果我们将数据按顺序插入BST会出现什么问题吗？我们的结果会变成一个链表，所有操作退化为 $O(n)$。</p>
+<p>本章我们引入<strong>平衡树</strong>——这些树会在插入或删除过程中<strong>自动调整结构</strong>，强制保持平衡，从而保证操作复杂度始终是 $O(\log n)$。</p>
+<hr>
+<h2 id="AVL-树"><a href="#AVL-树" class="headerlink" title="AVL 树"></a>AVL 树</h2><p><strong>AVL 树</strong>是一种<strong>自平衡二叉搜索树</strong>，由 Adelson-Velsky 和 Landis 在 1962 年发明（AVL 就是他们名字的首字母）。它通过维护<strong>平衡因子</strong>来保证树的高度始终保持在 $O(\log n)$。  </p>
+<h3 id="平衡因子"><a href="#平衡因子" class="headerlink" title="平衡因子"></a>平衡因子</h3><p>每个节点都有一个<strong>平衡因子 (Balance Factor)</strong>，定义为：</p>
+<p>$$\text{BF}(node) &#x3D; \text{Height}(\text{左子树}) - \text{Height}(\text{右子树})$$</p>
+<p>AVL 树的核心约束是：<strong>每个节点的平衡因子只能是 -1, 0, 或 1</strong>。</p>
+<p>不同的平衡因子能够代表当前树的状态：</p>
+<ul>
+<li>BF &#x3D; -1 :  右子树比左子树高 1</li>
+<li>BF &#x3D;  0 :  左右子树一样高</li>
+<li>BF &#x3D; +1 :  左子树比右子树高 1</li>
+<li>BF &#x3D; ±2 :  失衡！需要旋转修复</li>
+</ul>
+<p>举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    10 (BF=1)          10 (BF=2) ← 失衡！</span><br><span class="line">   /  \               /</span><br><span class="line">  5    15            5</span><br><span class="line"> /                  /</span><br><span class="line">3                  3</span><br><span class="line">                  /</span><br><span class="line">                 1</span><br></pre></td></tr></table></figure>
+
+<p>如果插入或删除操作导致某个节点的平衡因子变成 <strong>-2 或 +2</strong>，就需要通过<strong>旋转</strong>来恢复平衡。   </p>
+<p>实现一个AVL树相比BST,我们需要额外存储当前节点的高度。这是我们需要存储的字段：</p>
+<ul>
+<li><code>key</code>：当前节点的值</li>
+<li><code>left</code>：指向左子节点的指针</li>
+<li><code>right</code>：指向右子节点的指针</li>
+<li><code>height</code>: 当前节点的高度。</li>
+<li><code>parent</code>：与BST一样，这是一个指向父节点的可选指针。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">AVLNode</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> key;</span><br><span class="line">    AVLNode* left;</span><br><span class="line">    AVLNode* right;</span><br><span class="line">    <span class="type">int</span> height;</span><br><span class="line">    AVLNode* parent; <span class="comment">// 可选</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由于AVL树存在实时平衡需求，因此只要存储了高度，我们就可以使用公式来计算平衡因子了。</p>
+<hr>
+<h3 id="AVL-树的高度与斐波那契数"><a href="#AVL-树的高度与斐波那契数" class="headerlink" title="AVL 树的高度与斐波那契数"></a>AVL 树的高度与斐波那契数</h3><p>那么知道了这些，AVL树在数学上有哪些特征？</p>
+<p>一个关键问题是：<strong>高度为 h 的 AVL 树，最少需要多少个节点？</strong></p>
+<p>设 $N(h)$ 为高度为 $h$ 的 AVL 树的最少节点数。为了让节点数最少，我们要让树”尽可能不平衡但又刚好满足 AVL 条件”——也就是让两棵子树的高度差恰好为 1。</p>
+<p>这样就得到递推公式：</p>
+<p>$$N(h) &#x3D; N(h-1) + N(h-2) + 1$$</p>
+<ul>
+<li>$N(h-1)$：较高的子树（高度 $h-1$）的最少节点数</li>
+<li>$N(h-2)$：较矮的子树（高度 $h-2$）的最少节点数  </li>
+<li>$+1$：根节点自己</li>
+</ul>
+<p>初始条件：$N(0) &#x3D; 1$（只有根），$N(1) &#x3D; 2$（根 + 一个子节点）</p>
+<table>
+<thead>
+<tr>
+<th align="left">h</th>
+<th align="left">0</th>
+<th align="left">1</th>
+<th align="left">2</th>
+<th align="left">3</th>
+<th align="left">4</th>
+<th align="left">5</th>
+<th align="left">6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">N(h)</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">4</td>
+<td align="left">7</td>
+<td align="left">12</td>
+<td align="left">20</td>
+<td align="left">33</td>
+</tr>
+</tbody></table>
+<p>这个数列和斐波那契数列密切相关：$N(h) &#x3D; F_{h+3} - 1$（其中 $F$ 是斐波那契数列）</p>
+<p>由于斐波那契数列增长是指数级的（$F_n \approx \phi^n &#x2F; \sqrt{5}$，$\phi \approx 1.618$），所以：</p>
+<p>$$h &#x3D; O(\log n)$$</p>
+<p>这就证明了 <strong>AVL 树的高度一定是 $O(\log n)$</strong>，从而保证所有操作都是 $O(\log n)$！</p>
+<div class="tag-plugin colorful note" color="cyan"><div class="title">例Cpt8.1</div><div class="body"><p>在一个高度为5的AVL树中，可能最少包含几个节点？</p></div></div>
+
+<p>使用刚才讲过的公式：</p>
+<p>$$N(h) &#x3D; N(h-1) + N(h-2) + 1$$</p>
+<p>在基准情况时，$N(0) &#x3D; 1$，因为一个节点的树高度为0。<br>$N(1) &#x3D; 2$，包含一个根和两个子节点</p>
+<p>你只需要继续往下推进就可以算出来第五层有多少节点了！</p>
+<h3 id="AVL-的旋转操作"><a href="#AVL-的旋转操作" class="headerlink" title="AVL 的旋转操作"></a>AVL 的旋转操作</h3><p>当 AVL 树失衡时，我们需要通过<strong>旋转</strong>来恢复平衡。旋转的本质是<strong>在保持 BST 性质的前提下，重新组织节点的父子关系</strong>。</p>
+<p>我们用右旋来解释一下什么叫旋转。<br>右旋的核心思想：把左子节点”提上来”当新的根。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">右旋前：           右旋后：</span><br><span class="line">    y                 x</span><br><span class="line">   / \               / \</span><br><span class="line">  x   C    →        A   y</span><br><span class="line"> / \                   / \</span><br><span class="line">A   B                 B   C</span><br></pre></td></tr></table></figure>
+
+<p>不难观察到这几点：</p>
+<ul>
+<li>x 原来是 y 的左子节点，现在 x 变成新的根</li>
+<li>x 的右子树 B 原来在 x 右边，现在要”让给” y 当左子树</li>
+<li>最关键的 BST 性质仍然保持：A &lt; x &lt; B &lt; y &lt; C</li>
+</ul>
+<p>如果左子树过高，我们就会在对应的子树来执行右旋。右旋的规则是：</p>
+<ol>
+<li>将失衡节点的左子节点提升为新的根</li>
+<li>让失衡节点变为它左子节点的右子节点</li>
+<li>让原本失衡节点的左子节点的右子树悬挂在失衡节点的左子树位置</li>
+</ol>
+<p>如果还是很抽象就看看代码吧：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 右旋：把 y 的左孩子 x 提升为新根</span></span><br><span class="line">TreeNode* <span class="title function_">rightRotate</span><span class="params">(TreeNode *y)</span> &#123;</span><br><span class="line">    TreeNode *x = y-&gt;left;</span><br><span class="line">    TreeNode *B = x-&gt;right;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行旋转</span></span><br><span class="line">    x-&gt;right = y;</span><br><span class="line">    y-&gt;left = B;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 更新高度（先更新 y，再更新 x）</span></span><br><span class="line">    y-&gt;height = max(height(y-&gt;left), height(y-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    x-&gt;height = max(height(x-&gt;left), height(x-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> x;  <span class="comment">// x 是新的根</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>左旋与右旋是对称操作。最后的结果会把右子节点”提上来”。过程是：</p>
+<ol>
+<li>将失衡节点的右子节点提升为新的根</li>
+<li>将失衡节点变为它右子节点的左子节点</li>
+<li>让原本失衡节点的右子节点的左子树悬挂在失衡节点的右子树位置。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 左旋：把 x 的右孩子 y 提升为新根</span></span><br><span class="line">TreeNode* <span class="title function_">leftRotate</span><span class="params">(TreeNode *x)</span> &#123;</span><br><span class="line">    TreeNode *y = x-&gt;right;</span><br><span class="line">    TreeNode *B = y-&gt;left;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行旋转</span></span><br><span class="line">    y-&gt;left = x;</span><br><span class="line">    x-&gt;right = B;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 更新高度</span></span><br><span class="line">    x-&gt;height = max(height(x-&gt;left), height(x-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    y-&gt;height = max(height(y-&gt;left), height(y-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> y;  <span class="comment">// y 是新的根</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="四种失衡类型与对应旋转"><a href="#四种失衡类型与对应旋转" class="headerlink" title="四种失衡类型与对应旋转"></a>四种失衡类型与对应旋转</h3><p>根据失衡的位置，一共有四种情况可以对号入座进行处理：</p>
+<p><strong>1. LL 型（左左）→ 右旋一次</strong></p>
+<p>失衡节点的<strong>左子树的左子树</strong>过高。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    z (BF=2)                y</span><br><span class="line">   /                      /   \</span><br><span class="line">  y          右旋 z      x     z</span><br><span class="line"> /            →</span><br><span class="line">x</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. RR 型（右右）→ 左旋一次</strong></p>
+<p>失衡节点的<strong>右子树的右子树</strong>过高。（LL 的镜像）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">z (BF=-2)                  y</span><br><span class="line"> \                       /   \</span><br><span class="line">  y        左旋 z       z     x</span><br><span class="line">   \         →</span><br><span class="line">    x</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. LR 型（左右）→ 先左旋后右旋</strong></p>
+<p>失衡节点的<strong>左子树的右子树</strong>过高。这时单次旋转解决不了问题！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  z (BF=2)             z                  y</span><br><span class="line"> /                    /                 /   \</span><br><span class="line">x         先左旋 x   y       再右旋 z   x     z</span><br><span class="line"> \          →       /          →</span><br><span class="line">  y                x</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. RL 型（右左）→ 先右旋后左旋</strong></p>
+<p>失衡节点的<strong>右子树的左子树</strong>过高。（LR 的镜像）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">z (BF=-2)          z                    y</span><br><span class="line"> \                  \                 /   \</span><br><span class="line">  x     先右旋 x     y    再左旋 z   z     x</span><br><span class="line"> /        →          \       →</span><br><span class="line">y                     x</span><br></pre></td></tr></table></figure>
+
+<p>这里有一些判断旋转类型的技巧：</p>
+<ol>
+<li>找到<strong>最近的失衡节点</strong>（从插入点往上找第一个 $|BF| &#x3D; 2$ 的节点）</li>
+<li>从失衡节点出发，沿着<strong>较高的子树</strong>方向走两步 </li>
+<li>两步的方向决定类型：LL、LR、RL、RR </li>
+<li>随后进行相对应的旋转即可。也就是：</li>
+</ol>
+<ul>
+<li>LL：单次右旋</li>
+<li>RR: 单次左旋</li>
+<li>LR：先左旋再右旋</li>
+<li>RL：先右旋在左旋</li>
+</ul>
+<p>我不知道为啥我又重复了一遍。  </p>
+<p>那么我们怎么确定在每个节点的哪边是较高子树呢？还记得AVL树的每个节点额外存储了高度信息吗？你现在要做的就是访问左右子节点，抓取他们的高度值，然后通过左子节点高度减去右子节点高度计算当前节点的平衡因子。  </p>
+<p>如果BF是正数，则证明左边比右边高，你就应该在这个节点往左边走，反之亦然。</p>
+<h3 id="AVL-旋转可视化"><a href="#AVL-旋转可视化" class="headerlink" title="AVL 旋转可视化"></a>AVL 旋转可视化</h3><p>下面的可视化可以帮助你直观理解四种旋转操作：</p>
+<style>
+#avl-viz {
+  font-family: inherit;
+}
+#avl-viz .controls {
+  margin: 12px 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+#avl-viz button {
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid var(--text-p3);
+  background: var(--bg-a50);
+  color: var(--text-p1);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+#avl-viz button:hover {
+  background: var(--bg-a100);
+}
+#avl-viz button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#avl-viz button.active {
+  background: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+#avl-svg-container {
+  margin: 16px 0;
+  padding: 16px;
+  background: var(--bg-a50);
+  border-radius: 8px;
+  min-height: 320px;
+  position: relative;
+  overflow: hidden;
+}
+#avl-svg {
+  display: block;
+  margin: 0 auto;
+}
+/* 节点动画 */
+.avl-node {
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.avl-node circle {
+  transition: fill 0.4s ease, stroke 0.4s ease, r 0.3s ease;
+}
+.avl-node text {
+  font-weight: bold;
+  font-size: 13px;
+  transition: fill 0.4s ease;
+}
+.avl-node.highlight circle {
+  fill: #FF5722;
+  stroke: #E64A19;
+}
+.avl-node.normal circle {
+  fill: #4CAF50;
+  stroke: #388E3C;
+}
+.avl-node.pivot circle {
+  fill: #2196F3;
+  stroke: #1976D2;
+}
+.avl-node.subtree circle {
+  fill: #9C27B0;
+  stroke: #7B1FA2;
+}
+.avl-node.moving circle {
+  fill: #FF9800;
+  stroke: #F57C00;
+}
+/* 边的动画 */
+.avl-edge {
+  stroke: var(--text-p3);
+  stroke-width: 2;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.avl-edge.highlight {
+  stroke: #FF9800;
+  stroke-width: 3;
+}
+.avl-edge.fading {
+  opacity: 0.3;
+  stroke-dasharray: 5,5;
+}
+/* 进度条 */
+.avl-progress {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  justify-content: center;
+}
+.avl-progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-p3);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.avl-progress-dot:hover {
+  transform: scale(1.2);
+}
+.avl-progress-dot.active {
+  background: #2196F3;
+  transform: scale(1.3);
+}
+.avl-progress-dot.completed {
+  background: #4CAF50;
+}
+#avl-info {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--bg-a100);
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+#avl-info .step-title {
+  font-weight: bold;
+  color: var(--text-p1);
+  margin-bottom: 8px;
+}
+#avl-info .step-desc {
+  color: var(--text-p2);
+}
+.rotation-type-btns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.avl-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  font-size: 12px;
+}
+.avl-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.avl-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+/* 动画提示 */
+.avl-animating {
+  pointer-events: none;
+}
+</style>
+
+<div id="avl-viz">
+  <div class="rotation-type-btns">
+    <button id="btn-ll" class="active">LL 型 (右旋)</button>
+    <button id="btn-rr">RR 型 (左旋)</button>
+    <button id="btn-lr">LR 型 (左旋+右旋)</button>
+    <button id="btn-rl">RL 型 (右旋+左旋)</button>
+  </div>
+  
+  <div class="controls">
+    <button id="avl-reset">🔄 重置</button>
+    <button id="avl-prev">⏮ 上一步</button>
+    <button id="avl-step">下一步 ⏭</button>
+    <button id="avl-auto">▶ 自动播放</button>
+  </div>
+  
+  <div id="avl-svg-container">
+    <svg id="avl-svg" width="100%" height="300" viewBox="0 0 500 300"></svg>
+  </div>
+  
+  <div class="avl-progress" id="avl-progress"></div>
+  
+  <div class="avl-legend">
+    <div class="avl-legend-item"><div class="avl-legend-dot" style="background:#FF5722"></div>失衡节点</div>
+    <div class="avl-legend-item"><div class="avl-legend-dot" style="background:#2196F3"></div>旋转轴心</div>
+    <div class="avl-legend-item"><div class="avl-legend-dot" style="background:#FF9800"></div>移动的子树</div>
+    <div class="avl-legend-item"><div class="avl-legend-dot" style="background:#4CAF50"></div>普通节点</div>
+  </div>
+  
+  <div id="avl-info">
+    <div class="step-title">选择旋转类型，点击「下一步」开始演示</div>
+    <div class="step-desc">观察节点和子树如何通过旋转重新排列（带平滑动画）</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const svg = document.getElementById('avl-svg');
+  const infoTitle = document.querySelector('#avl-info .step-title');
+  const infoDesc = document.querySelector('#avl-info .step-desc');
+  const progressContainer = document.getElementById('avl-progress');
+  
+  let currentType = 'LL';
+  let currentStep = 0;
+  let autoInterval = null;
+  let isAnimating = false;
+  let nodeElements = {};  // 存储节点元素用于动画
+  let edgeElements = [];  // 存储边元素用于动画
+  
+  // 更复杂的树结构，展示子树如何移动
+  const rotationData = {
+    LL: {
+      name: 'LL 型（右旋）',
+      steps: [
+        {
+          title: '初始状态：LL 型失衡',
+          desc: '插入节点 5 后，节点 40 的 BF=2（左子树高度3，右子树高度1）。从 40 出发走两步：左→左，确定为 LL 型。',
+          nodes: [
+            { id: '40', x: 350, y: 40, type: 'highlight' },
+            { id: '20', x: 200, y: 100, type: 'pivot' },
+            { id: '50', x: 430, y: 100, type: 'normal' },
+            { id: '10', x: 120, y: 170, type: 'normal' },
+            { id: '30', x: 270, y: 170, type: 'moving' },
+            { id: '5', x: 80, y: 240, type: 'normal' },
+            { id: '15', x: 160, y: 240, type: 'normal' }
+          ],
+          edges: [['40', '20'], ['40', '50'], ['20', '10'], ['20', '30'], ['10', '5'], ['10', '15']]
+        },
+        {
+          title: '右旋：20 上升，40 下降',
+          desc: '将 20 提升为新根，40 变成 20 的右子节点。关键：20 的右子树 30 需要"让给" 40 当左子树！',
+          nodes: [
+            { id: '20', x: 250, y: 40, type: 'pivot' },
+            { id: '10', x: 120, y: 110, type: 'normal' },
+            { id: '40', x: 370, y: 110, type: 'normal' },
+            { id: '5', x: 70, y: 180, type: 'normal' },
+            { id: '15', x: 170, y: 180, type: 'normal' },
+            { id: '30', x: 310, y: 180, type: 'moving' },
+            { id: '50', x: 430, y: 180, type: 'normal' }
+          ],
+          edges: [['20', '10'], ['20', '40'], ['10', '5'], ['10', '15'], ['40', '30'], ['40', '50']]
+        },
+        {
+          title: '旋转完成！',
+          desc: '树恢复平衡。注意 30 从 20 的右子树变成了 40 的左子树，但 BST 性质保持：5<10<15<20<30<40<50',
+          nodes: [
+            { id: '20', x: 250, y: 40, type: 'normal' },
+            { id: '10', x: 120, y: 110, type: 'normal' },
+            { id: '40', x: 370, y: 110, type: 'normal' },
+            { id: '5', x: 70, y: 180, type: 'normal' },
+            { id: '15', x: 170, y: 180, type: 'normal' },
+            { id: '30', x: 310, y: 180, type: 'normal' },
+            { id: '50', x: 430, y: 180, type: 'normal' }
+          ],
+          edges: [['20', '10'], ['20', '40'], ['10', '5'], ['10', '15'], ['40', '30'], ['40', '50']]
+        }
+      ]
+    },
+    RR: {
+      name: 'RR 型（左旋）',
+      steps: [
+        {
+          title: '初始状态：RR 型失衡',
+          desc: '插入节点 55 后，节点 20 的 BF=-2（右子树过高）。从 20 出发走两步：右→右，确定为 RR 型。',
+          nodes: [
+            { id: '20', x: 120, y: 40, type: 'highlight' },
+            { id: '10', x: 60, y: 100, type: 'normal' },
+            { id: '40', x: 250, y: 100, type: 'pivot' },
+            { id: '30', x: 180, y: 170, type: 'moving' },
+            { id: '50', x: 330, y: 170, type: 'normal' },
+            { id: '45', x: 280, y: 240, type: 'normal' },
+            { id: '55', x: 380, y: 240, type: 'normal' }
+          ],
+          edges: [['20', '10'], ['20', '40'], ['40', '30'], ['40', '50'], ['50', '45'], ['50', '55']]
+        },
+        {
+          title: '左旋：40 上升，20 下降',
+          desc: '将 40 提升为新根，20 变成 40 的左子节点。关键：40 的左子树 30 需要"让给" 20 当右子树！',
+          nodes: [
+            { id: '40', x: 250, y: 40, type: 'pivot' },
+            { id: '20', x: 120, y: 110, type: 'normal' },
+            { id: '50', x: 370, y: 110, type: 'normal' },
+            { id: '10', x: 60, y: 180, type: 'normal' },
+            { id: '30', x: 180, y: 180, type: 'moving' },
+            { id: '45', x: 320, y: 180, type: 'normal' },
+            { id: '55', x: 420, y: 180, type: 'normal' }
+          ],
+          edges: [['40', '20'], ['40', '50'], ['20', '10'], ['20', '30'], ['50', '45'], ['50', '55']]
+        },
+        {
+          title: '旋转完成！',
+          desc: '树恢复平衡。注意 30 从 40 的左子树变成了 20 的右子树，但 BST 性质保持：10<20<30<40<45<50<55',
+          nodes: [
+            { id: '40', x: 250, y: 40, type: 'normal' },
+            { id: '20', x: 120, y: 110, type: 'normal' },
+            { id: '50', x: 370, y: 110, type: 'normal' },
+            { id: '10', x: 60, y: 180, type: 'normal' },
+            { id: '30', x: 180, y: 180, type: 'normal' },
+            { id: '45', x: 320, y: 180, type: 'normal' },
+            { id: '55', x: 420, y: 180, type: 'normal' }
+          ],
+          edges: [['40', '20'], ['40', '50'], ['20', '10'], ['20', '30'], ['50', '45'], ['50', '55']]
+        }
+      ]
+    },
+    LR: {
+      name: 'LR 型（先左旋后右旋）',
+      steps: [
+        {
+          title: '初始状态：LR 型失衡',
+          desc: '插入 25 后，节点 40 的 BF=2。从 40 出发：先左到 20，再右到 30，确定为 LR 型。单次旋转无法解决！',
+          nodes: [
+            { id: '40', x: 350, y: 40, type: 'highlight' },
+            { id: '20', x: 180, y: 100, type: 'normal' },
+            { id: '50', x: 430, y: 100, type: 'normal' },
+            { id: '10', x: 100, y: 170, type: 'normal' },
+            { id: '30', x: 270, y: 170, type: 'pivot' },
+            { id: '25', x: 220, y: 240, type: 'moving' },
+            { id: '35', x: 320, y: 240, type: 'moving' }
+          ],
+          edges: [['40', '20'], ['40', '50'], ['20', '10'], ['20', '30'], ['30', '25'], ['30', '35']]
+        },
+        {
+          title: '第一步：对 20 左旋',
+          desc: '先把 30 提升到 20 的位置。30 的左子树 25 让给 20 当右子树。',
+          nodes: [
+            { id: '40', x: 350, y: 40, type: 'highlight' },
+            { id: '30', x: 200, y: 100, type: 'pivot' },
+            { id: '50', x: 430, y: 100, type: 'normal' },
+            { id: '20', x: 120, y: 170, type: 'normal' },
+            { id: '35', x: 280, y: 170, type: 'moving' },
+            { id: '10', x: 70, y: 240, type: 'normal' },
+            { id: '25', x: 170, y: 240, type: 'moving' }
+          ],
+          edges: [['40', '30'], ['40', '50'], ['30', '20'], ['30', '35'], ['20', '10'], ['20', '25']]
+        },
+        {
+          title: '第二步：对 40 右旋',
+          desc: '现在变成 LL 型了！将 30 提升为根，30 的右子树 35 让给 40 当左子树。',
+          nodes: [
+            { id: '30', x: 250, y: 40, type: 'pivot' },
+            { id: '20', x: 120, y: 110, type: 'normal' },
+            { id: '40', x: 370, y: 110, type: 'normal' },
+            { id: '10', x: 60, y: 180, type: 'normal' },
+            { id: '25', x: 180, y: 180, type: 'normal' },
+            { id: '35', x: 310, y: 180, type: 'normal' },
+            { id: '50', x: 430, y: 180, type: 'normal' }
+          ],
+          edges: [['30', '20'], ['30', '40'], ['20', '10'], ['20', '25'], ['40', '35'], ['40', '50']]
+        },
+        {
+          title: '旋转完成！',
+          desc: '两次旋转后恢复平衡。BST 性质保持：10<20<25<30<35<40<50 ',
+          nodes: [
+            { id: '30', x: 250, y: 40, type: 'normal' },
+            { id: '20', x: 120, y: 110, type: 'normal' },
+            { id: '40', x: 370, y: 110, type: 'normal' },
+            { id: '10', x: 60, y: 180, type: 'normal' },
+            { id: '25', x: 180, y: 180, type: 'normal' },
+            { id: '35', x: 310, y: 180, type: 'normal' },
+            { id: '50', x: 430, y: 180, type: 'normal' }
+          ],
+          edges: [['30', '20'], ['30', '40'], ['20', '10'], ['20', '25'], ['40', '35'], ['40', '50']]
+        }
+      ]
+    },
+    RL: {
+      name: 'RL 型（先右旋后左旋）',
+      steps: [
+        {
+          title: '初始状态：RL 型失衡',
+          desc: '插入 35 后，节点 20 的 BF=-2。从 20 出发：先右到 40，再左到 30，确定为 RL 型。',
+          nodes: [
+            { id: '20', x: 120, y: 40, type: 'highlight' },
+            { id: '10', x: 60, y: 100, type: 'normal' },
+            { id: '40', x: 280, y: 100, type: 'normal' },
+            { id: '30', x: 200, y: 170, type: 'pivot' },
+            { id: '50', x: 360, y: 170, type: 'normal' },
+            { id: '25', x: 150, y: 240, type: 'moving' },
+            { id: '35', x: 250, y: 240, type: 'moving' }
+          ],
+          edges: [['20', '10'], ['20', '40'], ['40', '30'], ['40', '50'], ['30', '25'], ['30', '35']]
+        },
+        {
+          title: '第一步：对 40 右旋',
+          desc: '先把 30 提升到 40 的位置。30 的右子树 35 让给 40 当左子树。',
+          nodes: [
+            { id: '20', x: 120, y: 40, type: 'highlight' },
+            { id: '10', x: 60, y: 100, type: 'normal' },
+            { id: '30', x: 260, y: 100, type: 'pivot' },
+            { id: '25', x: 180, y: 170, type: 'moving' },
+            { id: '40', x: 350, y: 170, type: 'normal' },
+            { id: '35', x: 300, y: 240, type: 'moving' },
+            { id: '50', x: 400, y: 240, type: 'normal' }
+          ],
+          edges: [['20', '10'], ['20', '30'], ['30', '25'], ['30', '40'], ['40', '35'], ['40', '50']]
+        },
+        {
+          title: '第二步：对 20 左旋',
+          desc: '现在变成 RR 型了！将 30 提升为根，30 的左子树 25 让给 20 当右子树。',
+          nodes: [
+            { id: '30', x: 250, y: 40, type: 'pivot' },
+            { id: '20', x: 120, y: 110, type: 'normal' },
+            { id: '40', x: 370, y: 110, type: 'normal' },
+            { id: '10', x: 60, y: 180, type: 'normal' },
+            { id: '25', x: 180, y: 180, type: 'normal' },
+            { id: '35', x: 310, y: 180, type: 'normal' },
+            { id: '50', x: 430, y: 180, type: 'normal' }
+          ],
+          edges: [['30', '20'], ['30', '40'], ['20', '10'], ['20', '25'], ['40', '35'], ['40', '50']]
+        },
+        {
+          title: '旋转完成！',
+          desc: '两次旋转后恢复平衡。BST 性质保持：10<20<25<30<35<40<50 ',
+          nodes: [
+            { id: '30', x: 250, y: 40, type: 'normal' },
+            { id: '20', x: 120, y: 110, type: 'normal' },
+            { id: '40', x: 370, y: 110, type: 'normal' },
+            { id: '10', x: 60, y: 180, type: 'normal' },
+            { id: '25', x: 180, y: 180, type: 'normal' },
+            { id: '35', x: 310, y: 180, type: 'normal' },
+            { id: '50', x: 430, y: 180, type: 'normal' }
+          ],
+          edges: [['30', '20'], ['30', '40'], ['20', '10'], ['20', '25'], ['40', '35'], ['40', '50']]
+        }
+      ]
+    }
+  };
+  
+  // 初始化绘制（无动画）
+  function drawTreeInitial(stepData) {
+    svg.innerHTML = '';
+    nodeElements = {};
+    edgeElements = [];
+    
+    const nodeMap = {};
+    stepData.nodes.forEach(n => { nodeMap[n.id] = n; });
+    
+    // Draw edges
+    stepData.edges.forEach(([from, to]) => {
+      const n1 = nodeMap[from], n2 = nodeMap[to];
+      if (!n1 || !n2) return;
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', n1.x);
+      line.setAttribute('y1', n1.y);
+      line.setAttribute('x2', n2.x);
+      line.setAttribute('y2', n2.y);
+      line.setAttribute('class', 'avl-edge');
+      line.setAttribute('data-from', from);
+      line.setAttribute('data-to', to);
+      svg.appendChild(line);
+      edgeElements.push({ element: line, from, to });
+    });
+    
+    // Draw nodes
+    stepData.nodes.forEach(node => {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', `avl-node ${node.type}`);
+      g.setAttribute('data-id', node.id);
+      
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', 0);
+      circle.setAttribute('cy', 0);
+      circle.setAttribute('r', '20');
+      circle.setAttribute('stroke-width', '3');
+      
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', 0);
+      text.setAttribute('y', 5);
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('fill', 'white');
+      text.textContent = node.id;
+      
+      g.appendChild(circle);
+      g.appendChild(text);
+      g.style.transform = `translate(${node.x}px, ${node.y}px)`;
+      svg.appendChild(g);
+      
+      nodeElements[node.id] = { element: g, x: node.x, y: node.y };
+    });
+  }
+  
+  // 动画过渡到新状态
+  function animateToStep(stepData, callback) {
+    isAnimating = true;
+    svg.classList.add('avl-animating');
+    
+    const nodeMap = {};
+    stepData.nodes.forEach(n => { nodeMap[n.id] = n; });
+    
+    // 更新节点位置和类型（带动画）
+    stepData.nodes.forEach(node => {
+      if (nodeElements[node.id]) {
+        const el = nodeElements[node.id].element;
+        el.style.transform = `translate(${node.x}px, ${node.y}px)`;
+        el.setAttribute('class', `avl-node ${node.type}`);
+        nodeElements[node.id].x = node.x;
+        nodeElements[node.id].y = node.y;
+      }
+    });
+    
+    // 更新边（先清除旧边，再画新边）
+    // 为了更好的动画效果，我们标记需要删除的边
+    const newEdgeSet = new Set(stepData.edges.map(e => e.join('-')));
+    const oldEdgeSet = new Set(edgeElements.map(e => `${e.from}-${e.to}`));
+    
+    // 淡出要删除的边
+    edgeElements.forEach(edge => {
+      const key = `${edge.from}-${edge.to}`;
+      if (!newEdgeSet.has(key)) {
+        edge.element.classList.add('fading');
+      }
+    });
+    
+    // 延迟后更新边的位置和添加新边
+    setTimeout(() => {
+      // 移除旧边
+      edgeElements.forEach(edge => {
+        edge.element.remove();
+      });
+      edgeElements = [];
+      
+      // 添加新边
+      stepData.edges.forEach(([from, to]) => {
+        const n1 = nodeMap[from], n2 = nodeMap[to];
+        if (!n1 || !n2) return;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', n1.x);
+        line.setAttribute('y1', n1.y);
+        line.setAttribute('x2', n2.x);
+        line.setAttribute('y2', n2.y);
+        line.setAttribute('class', 'avl-edge');
+        line.setAttribute('data-from', from);
+        line.setAttribute('data-to', to);
+        // 插入到节点之前，这样节点会在上面
+        svg.insertBefore(line, svg.firstChild);
+        edgeElements.push({ element: line, from, to });
+      });
+    }, 400);
+    
+    // 动画完成后的回调
+    setTimeout(() => {
+      isAnimating = false;
+      svg.classList.remove('avl-animating');
+      if (callback) callback();
+    }, 850);
+  }
+  
+  // 更新进度条
+  function updateProgress() {
+    const steps = rotationData[currentType].steps;
+    progressContainer.innerHTML = '';
+    
+    for (let i = 0; i < steps.length; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'avl-progress-dot';
+      if (i === currentStep) dot.classList.add('active');
+      else if (i < currentStep) dot.classList.add('completed');
+      dot.addEventListener('click', () => goToStep(i));
+      progressContainer.appendChild(dot);
+    }
+  }
+  
+  // 更新按钮状态
+  function updateButtons() {
+    const steps = rotationData[currentType].steps;
+    document.getElementById('avl-prev').disabled = currentStep === 0 || isAnimating;
+    document.getElementById('avl-step').disabled = currentStep >= steps.length - 1 || isAnimating;
+  }
+  
+  function renderStep(animate = true) {
+    const steps = rotationData[currentType].steps;
+    if (currentStep >= steps.length) currentStep = steps.length - 1;
+    if (currentStep < 0) currentStep = 0;
+    
+    const step = steps[currentStep];
+    
+    if (animate && Object.keys(nodeElements).length > 0) {
+      animateToStep(step, () => {
+        updateButtons();
+      });
+    } else {
+      drawTreeInitial(step);
+      updateButtons();
+    }
+    
+    infoTitle.textContent = `步骤 ${currentStep + 1}/${steps.length}: ${step.title}`;
+    infoDesc.textContent = step.desc;
+    updateProgress();
+  }
+  
+  function goToStep(step) {
+    if (isAnimating) return;
+    currentStep = step;
+    renderStep(true);
+  }
+  
+  function nextStep() {
+    if (isAnimating) return;
+    const steps = rotationData[currentType].steps;
+    if (currentStep < steps.length - 1) {
+      currentStep++;
+      renderStep(true);
+    } else {
+      stopAuto();
+    }
+  }
+  
+  function prevStep() {
+    if (isAnimating) return;
+    if (currentStep > 0) {
+      currentStep--;
+      renderStep(true);
+    }
+  }
+  
+  function reset() {
+    stopAuto();
+    currentStep = 0;
+    renderStep(false);  // 重置时不要动画
+  }
+  
+  function startAuto() {
+    document.getElementById('avl-auto').textContent = '⏸ 暂停';
+    autoInterval = setInterval(() => {
+      const steps = rotationData[currentType].steps;
+      if (currentStep < steps.length - 1 && !isAnimating) {
+        nextStep();
+      } else if (currentStep >= steps.length - 1) {
+        stopAuto();
+      }
+    }, 2000);
+  }
+  
+  function stopAuto() {
+    document.getElementById('avl-auto').textContent = '▶ 自动播放';
+    if (autoInterval) {
+      clearInterval(autoInterval);
+      autoInterval = null;
+    }
+  }
+  
+  function toggleAuto() {
+    if (autoInterval) stopAuto();
+    else startAuto();
+  }
+  
+  function setType(type) {
+    if (isAnimating) return;
+    currentType = type;
+    document.querySelectorAll('.rotation-type-btns button').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-' + type.toLowerCase()).classList.add('active');
+    reset();
+  }
+  
+  document.getElementById('btn-ll').addEventListener('click', () => setType('LL'));
+  document.getElementById('btn-rr').addEventListener('click', () => setType('RR'));
+  document.getElementById('btn-lr').addEventListener('click', () => setType('LR'));
+  document.getElementById('btn-rl').addEventListener('click', () => setType('RL'));
+  document.getElementById('avl-reset').addEventListener('click', reset);
+  document.getElementById('avl-prev').addEventListener('click', prevStep);
+  document.getElementById('avl-step').addEventListener('click', nextStep);
+  document.getElementById('avl-auto').addEventListener('click', toggleAuto);
+  
+  // Initialize
+  reset();
+})();
+</script>
+
+<div class="tag-plugin colorful note" color="cyan"><div class="title">例Cpt8.1</div><div class="body"><p>依次插入 30, 20, 10 到一棵空的 AVL 树，描述每次插入后的旋转操作。</p></div></div>
+
+<ol>
+<li>插入 30：树只有根节点，平衡</li>
+<li>插入 20：20 &lt; 30，插入为左子节点，平衡因子 &#x3D; 1，仍然平衡</li>
+<li>插入 10：10 &lt; 20，插入为 20 的左子节点<ul>
+<li>此时 30 的平衡因子 &#x3D; 2（左子树高度2，右子树高度0）</li>
+<li>失衡类型：从 30 出发，先走到 20（左），再走到 10（左）→ <strong>LL 型</strong></li>
+<li>执行<strong>右旋</strong>：20 成为新的根，30 成为 20 的右子节点</li>
+</ul>
+</li>
+</ol>
+<p>最终结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  20</span><br><span class="line"> /  \</span><br><span class="line">10   30</span><br></pre></td></tr></table></figure>
+
+<h3 id="AVL-树的性能"><a href="#AVL-树的性能" class="headerlink" title="AVL 树的性能"></a>AVL 树的性能</h3><p>由于 AVL 树始终保持平衡，所有操作的时间复杂度都是 $O(\log n)$：</p>
+<table>
+<thead>
+<tr>
+<th align="center">操作</th>
+<th align="center">时间复杂度</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">查找</td>
+<td align="center">$O(\log n)$</td>
+<td align="left">与普通 BST 相同</td>
+</tr>
+<tr>
+<td align="center">插入</td>
+<td align="center">$O(\log n)$</td>
+<td align="left">最多需要 $O(\log n)$ 次旋转回溯</td>
+</tr>
+<tr>
+<td align="center">删除</td>
+<td align="center">$O(\log n)$</td>
+<td align="left">可能需要多次旋转（比插入复杂）</td>
+</tr>
+</tbody></table>
+<h3 id="AVL-树的插入完整流程"><a href="#AVL-树的插入完整流程" class="headerlink" title="AVL 树的插入完整流程"></a>AVL 树的插入完整流程</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">TreeNode* <span class="title function_">insertAVL</span><span class="params">(TreeNode *node, <span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 正常 BST 插入</span></span><br><span class="line">    <span class="keyword">if</span> (node == <span class="literal">NULL</span>) <span class="keyword">return</span> createNode(key);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (key &lt; node-&gt;data)</span><br><span class="line">        node-&gt;left = insertAVL(node-&gt;left, key);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (key &gt; node-&gt;data)</span><br><span class="line">        node-&gt;right = insertAVL(node-&gt;right, key);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> node;  <span class="comment">// 不允许重复</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 2. 更新高度</span></span><br><span class="line">    node-&gt;height = <span class="number">1</span> + max(height(node-&gt;left), height(node-&gt;right));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3. 计算平衡因子</span></span><br><span class="line">    <span class="type">int</span> balance = getBalance(node);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 4. 根据失衡类型执行旋转</span></span><br><span class="line">    <span class="comment">// LL 型</span></span><br><span class="line">    <span class="keyword">if</span> (balance &gt; <span class="number">1</span> &amp;&amp; key &lt; node-&gt;left-&gt;data)</span><br><span class="line">        <span class="keyword">return</span> rightRotate(node);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// RR 型</span></span><br><span class="line">    <span class="keyword">if</span> (balance &lt; <span class="number">-1</span> &amp;&amp; key &gt; node-&gt;right-&gt;data)</span><br><span class="line">        <span class="keyword">return</span> leftRotate(node);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// LR 型</span></span><br><span class="line">    <span class="keyword">if</span> (balance &gt; <span class="number">1</span> &amp;&amp; key &gt; node-&gt;left-&gt;data) &#123;</span><br><span class="line">        node-&gt;left = leftRotate(node-&gt;left);</span><br><span class="line">        <span class="keyword">return</span> rightRotate(node);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// RL 型</span></span><br><span class="line">    <span class="keyword">if</span> (balance &lt; <span class="number">-1</span> &amp;&amp; key &lt; node-&gt;right-&gt;data) &#123;</span><br><span class="line">        node-&gt;right = rightRotate(node-&gt;right);</span><br><span class="line">        <span class="keyword">return</span> leftRotate(node);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> node;  <span class="comment">// 无需旋转</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<details class="tag-plugin colorful folding"  open><summary><p>AVL 树的删除</p>
+</summary><div class="body"><p>删除比插入更复杂，因为删除后可能需要<strong>多次旋转</strong>，具体来讲是$O(\log(n))$次，而插入<strong>最多只需一次</strong>。  </p> <p>基本流程：</p> <ol> <li>像普通 BST 一样删除节点</li> <li>从删除位置向上回溯，更新每个祖先节点的高度</li> <li>检查每个祖先节点的平衡因子，如果失衡则旋转</li> <li>继续向上检查，直到根节点</li> </ol> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">TreeNode* <span class="title function_">deleteAVL</span><span class="params">(TreeNode *node, <span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 正常 BST 删除</span></span><br><span class="line">    <span class="keyword">if</span> (node == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (key &lt; node-&gt;data)</span><br><span class="line">        node-&gt;left = deleteAVL(node-&gt;left, key);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (key &gt; node-&gt;data)</span><br><span class="line">        node-&gt;right = deleteAVL(node-&gt;right, key);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 找到要删除的节点</span></span><br><span class="line">        <span class="keyword">if</span> (node-&gt;left == <span class="literal">NULL</span> || node-&gt;right == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            TreeNode *temp = node-&gt;left ? node-&gt;left : node-&gt;right;</span><br><span class="line">            <span class="built_in">free</span>(node);</span><br><span class="line">            <span class="keyword">return</span> temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 有两个子节点，用后继替换</span></span><br><span class="line">        TreeNode *succ = findMin(node-&gt;right);</span><br><span class="line">        node-&gt;data = succ-&gt;data;</span><br><span class="line">        node-&gt;right = deleteAVL(node-&gt;right, succ-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (node == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 2. 更新高度</span></span><br><span class="line">    node-&gt;height = <span class="number">1</span> + max(height(node-&gt;left), height(node-&gt;right));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3. 检查平衡并旋转（与插入类似，但判断条件略有不同）</span></span><br><span class="line">    <span class="type">int</span> balance = getBalance(node);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// LL</span></span><br><span class="line">    <span class="keyword">if</span> (balance &gt; <span class="number">1</span> &amp;&amp; getBalance(node-&gt;left) &gt;= <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> rightRotate(node);</span><br><span class="line">    <span class="comment">// LR</span></span><br><span class="line">    <span class="keyword">if</span> (balance &gt; <span class="number">1</span> &amp;&amp; getBalance(node-&gt;left) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        node-&gt;left = leftRotate(node-&gt;left);</span><br><span class="line">        <span class="keyword">return</span> rightRotate(node);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// RR</span></span><br><span class="line">    <span class="keyword">if</span> (balance &lt; <span class="number">-1</span> &amp;&amp; getBalance(node-&gt;right) &lt;= <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> leftRotate(node);</span><br><span class="line">    <span class="comment">// RL</span></span><br><span class="line">    <span class="keyword">if</span> (balance &lt; <span class="number">-1</span> &amp;&amp; getBalance(node-&gt;right) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        node-&gt;right = rightRotate(node-&gt;right);</span><br><span class="line">        <span class="keyword">return</span> leftRotate(node);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></details>
+
+<hr>
+<h2 id="AVL-树-vs-普通-BST"><a href="#AVL-树-vs-普通-BST" class="headerlink" title="AVL 树 vs 普通 BST"></a>AVL 树 vs 普通 BST</h2><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">普通 BST</th>
+<th align="left">AVL 树</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">平均查找</td>
+<td align="left">$O(\log n)$</td>
+<td align="left">$O(\log n)$</td>
+</tr>
+<tr>
+<td align="left">最坏查找</td>
+<td align="left">$O(n)$</td>
+<td align="left">$O(\log n)$</td>
+</tr>
+<tr>
+<td align="left">插入复杂度</td>
+<td align="left">$O(h)$</td>
+<td align="left">$O(\log n)$ + 旋转开销</td>
+</tr>
+<tr>
+<td align="left">实现复杂度</td>
+<td align="left">简单</td>
+<td align="left">较复杂（需要维护高度、旋转）</td>
+</tr>
+<tr>
+<td align="left">适用场景</td>
+<td align="left">数据随机分布</td>
+<td align="left">需要稳定性能保证</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="考试要点总结"><a href="#考试要点总结" class="headerlink" title="考试要点总结"></a>考试要点总结</h2><p>这些概念一定要记住！  </p>
+<table>
+<thead>
+<tr>
+<th align="left">概念</th>
+<th align="left">要点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">平衡因子</td>
+<td align="left">BF &#x3D; 左子树高度 - 右子树高度，必须是 -1, 0, 1</td>
+</tr>
+<tr>
+<td align="left">最少节点数</td>
+<td align="left">$N(h) &#x3D; N(h-1) + N(h-2) + 1$（斐波那契相关）</td>
+</tr>
+<tr>
+<td align="left">高度保证</td>
+<td align="left">$h &#x3D; O(\log n)$，所有操作 $O(\log n)$</td>
+</tr>
+<tr>
+<td align="left">LL&#x2F;RR 型</td>
+<td align="left">单次旋转（同向）</td>
+</tr>
+<tr>
+<td align="left">LR&#x2F;RL 型</td>
+<td align="left">两次旋转（异向）</td>
+</tr>
+</tbody></table>
+<p>常见考察范围：</p>
+<ol>
+<li><strong>手动模拟插入序列</strong>：给一串数字，要求画出每一步的 AVL 树</li>
+<li><strong>判断旋转类型</strong>：给出失衡的树，判断是 LL&#x2F;RR&#x2F;LR&#x2F;RL 哪种</li>
+<li><strong>计算平衡因子</strong>：给一棵树，计算每个节点的 BF</li>
+<li><strong>证明高度界</strong>：为什么 AVL 树高度是 $O(\log n)$？（用斐波那契递推）</li>
+<li><strong>比较 BST 和 AVL</strong>：什么时候选择用哪个？</li>
+</ol>
+<div class="tag-plugin colorful note" color="cyan"><div class="title">例Cpt8.2</div><div class="body"><p>依次插入 50, 25, 75, 10, 30, 60, 80, 5, 15, 27, 55 到空的 AVL 树，画出最终的树结构。</p></div></div>
+
+<p><strong>解题技巧</strong>：每插入一个节点后，从插入点往上检查平衡因子。遇到 |BF| &#x3D; 2 的节点就执行相应旋转。</p>
+<p>这道题中，插入 5 后会触发一次旋转（在节点 25 处）。其他插入都保持平衡。</p>
+<p>最终结构（供参考）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">         50</span><br><span class="line">       /    \</span><br><span class="line">     25      75</span><br><span class="line">    /  \    /  \</span><br><span class="line">  10   30  60   80</span><br><span class="line"> /  \  /   /</span><br><span class="line">5  15 27  55</span><br></pre></td></tr></table></figure>
+
+<hr>
+
+
+  <div class="tag-list">
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/">算法/搜索</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/">数据结构/树</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/avl%E6%A0%91/">数据结构/树/AVL树</a>
+    
+  </div>
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AVL-%E6%A0%91"><span class="toc-text">AVL 树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%A1%E5%9B%A0%E5%AD%90"><span class="toc-text">平衡因子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVL-%E6%A0%91%E7%9A%84%E9%AB%98%E5%BA%A6%E4%B8%8E%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0"><span class="toc-text">AVL 树的高度与斐波那契数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVL-%E7%9A%84%E6%97%8B%E8%BD%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">AVL 的旋转操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E7%A7%8D%E5%A4%B1%E8%A1%A1%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%AF%B9%E5%BA%94%E6%97%8B%E8%BD%AC"><span class="toc-text">四种失衡类型与对应旋转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVL-%E6%97%8B%E8%BD%AC%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">AVL 旋转可视化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVL-%E6%A0%91%E7%9A%84%E6%80%A7%E8%83%BD"><span class="toc-text">AVL 树的性能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVL-%E6%A0%91%E7%9A%84%E6%8F%92%E5%85%A5%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">AVL 树的插入完整流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AVL-%E6%A0%91-vs-%E6%99%AE%E9%80%9A-BST"><span class="toc-text">AVL 树 vs 普通 BST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%80%83%E8%AF%95%E8%A6%81%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-text">考试要点总结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1764412438876" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

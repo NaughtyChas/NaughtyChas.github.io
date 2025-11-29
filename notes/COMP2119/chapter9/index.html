@@ -1,0 +1,4028 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Chapter 9 & 10: 排序算法 - Naucha</title>
+
+  
+    <meta name="description" content="排序是计算机科学中最基础也是最重要的问题之一。本章我们将探讨从基础的 $O(n^2)$ 算法到高效的 $O(n \log n)$ 算法，最后再看看神奇的线性排序 $O(n)$。 基础排序算法 ($O(n^2)$)这些算法虽然效率不高，但逻辑简单直观，是理解排序的起点。   &#x2F;* 通用可视化容器样式 *&#x2F; .sort-demo {   font-family: &#39;Segoe UI&#39;, system-">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chapter 9 &amp; 10: 排序算法">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP2119/chapter9/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="排序是计算机科学中最基础也是最重要的问题之一。本章我们将探讨从基础的 $O(n^2)$ 算法到高效的 $O(n \log n)$ 算法，最后再看看神奇的线性排序 $O(n)$。 基础排序算法 ($O(n^2)$)这些算法虽然效率不高，但逻辑简单直观，是理解排序的起点。   &#x2F;* 通用可视化容器样式 *&#x2F; .sort-demo {   font-family: &#39;Segoe UI&#39;, system-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2025-11-28T13:55:00.000Z">
+<meta property="article:modified_time" content="2025-11-28T16:00:00.000Z">
+<meta property="article:author" content="Naucha">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="算法&#x2F;排序">
+<meta property="article:tag" content="算法&#x2F;排序&#x2F;冒泡排序">
+<meta property="article:tag" content="算法&#x2F;排序&#x2F;基数排序">
+<meta property="article:tag" content="算法&#x2F;排序&#x2F;堆排序">
+<meta property="article:tag" content="算法&#x2F;排序&#x2F;归并排序">
+<meta property="article:tag" content="算法&#x2F;排序&#x2F;快速排序">
+<meta property="article:tag" content="算法&#x2F;排序&#x2F;插入排序">
+<meta property="article:tag" content="算法&#x2F;排序&#x2F;计数排序">
+<meta property="article:tag" content="算法&#x2F;排序&#x2F;选择排序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  <meta name="keywords" content=",,,,,,,,,">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1764412438880">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP2119/chapter9/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 9 & 10: 排序算法","description":"排序是计算机科学中最基础也是最重要的问题之一。本章我们将探讨从基础的 $O(n^2)$ 算法到高效的 $O(n \\log n)$ 算法，最后再看看神奇的线性排序 $O(n)$。\n基础排序算法 ($O(n^2)$)这些算法虽然效率不高，但逻辑简单直观，是理解排序的起点。\n\n\n/* 通用可视化容器样式 */\n.sort-demo {\n  font-family: 'Segoe UI', syst...","url":"https://naughtychas.github.io/notes/COMP2119/chapter9/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP2119" placeholder="在 COMP2119 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="数据结构">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        数据结构
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/优先队列">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        优先队列
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/哈希函数">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        哈希函数
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/哈希表">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%93%88%E5%B8%8C%E8%A1%A8/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        哈希表
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/图">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9B%BE/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        图
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/堆">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        堆
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/抽象数据类型">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        抽象数据类型
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/数据结构复杂度">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        数据结构复杂度
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/数组">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        数组
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/栈">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%88/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        栈
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="数据结构/树">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        树
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/树/avl树">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/avl%E6%A0%91/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        AVL树
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/树/二叉搜索树">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        二叉搜索树
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/树/二叉树">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        二叉树
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/链表">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        链表
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="数据结构/队列">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%98%9F%E5%88%97/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        队列
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="算法">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        算法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/复杂度">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        复杂度
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="算法/排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/冒泡排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        冒泡排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/基数排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        基数排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/堆排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%A0%86%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        堆排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/快速排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        快速排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/插入排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        插入排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/计数排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        计数排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/排序/选择排序">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        选择排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="算法/搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/二分搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        二分搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/广度优先搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        广度优先搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/插值搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E6%8F%92%E5%80%BC%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        插值搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/线性搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E7%BA%BF%E6%80%A7%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        线性搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/范围搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E8%8C%83%E5%9B%B4%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        范围搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/跳转搜索">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E8%B7%B3%E8%BD%AC%E6%90%9C%E7%B4%A2/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        跳转搜索
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/树遍历">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%A0%91%E9%81%8D%E5%8E%86/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        树遍历
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="算法/递归">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        递归
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/递归/回溯算法">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        回溯算法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/递归/基准条件">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/%E5%9F%BA%E5%87%86%E6%9D%A1%E4%BB%B6/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        基准条件
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="算法/递归/调用栈">
+    
+  
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/%E8%B0%83%E7%94%A8%E6%A0%88/">
+    <span class="toc-text" style="padding-left: 1.75rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        调用栈
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP2119/chapter1/"><span class="title">Chapter 1: 递归与递推</span></a><a class="item title" href="/notes/COMP2119/chapter6/"><span class="title">Chapter 6: 搜索</span></a><a class="item title" href="/notes/COMP2119/chapter3/"><span class="title">Chapter 3: 基础数据结构</span></a><a class="item title" href="/notes/COMP2119/chapter8/"><span class="title">Chapter 8: 平衡树</span></a><a class="item title" href="/notes/COMP2119/chapter7/"><span class="title">Chapter 7: 二叉搜索树</span></a><a class="item title" href="/notes/COMP2119/chapter9/"><span class="title">Chapter 9 & 10: 排序算法</span></a><a class="item title" href="/notes/COMP2119/chapter5/"><span class="title">Chapter 5: 树</span></a><a class="item title" href="/notes/COMP2119/chapter4/"><span class="title">Chapter 4: 哈希表</span></a><a class="item title" href="/notes/COMP2119/chapter2/"><span class="title">Chapter 2: 算法基础</span></a><a class="item title" href="/notes/COMP2119/begin/"><span class="title">COMP2119 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP2119/">COMP2119</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-11-28T16:00:00.000Z">2025-11-29</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-11-28T13:55:00.000Z">2025-11-28</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 9 & 10: 排序算法</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>排序是计算机科学中最基础也是最重要的问题之一。本章我们将探讨从基础的 $O(n^2)$ 算法到高效的 $O(n \log n)$ 算法，最后再看看神奇的线性排序 $O(n)$。</p>
+<h2 id="基础排序算法-O-n-2"><a href="#基础排序算法-O-n-2" class="headerlink" title="基础排序算法 ($O(n^2)$)"></a>基础排序算法 ($O(n^2)$)</h2><p>这些算法虽然效率不高，但逻辑简单直观，是理解排序的起点。</p>
+<!-- ==================== 全局排序可视化引擎 ==================== -->
+<style>
+/* 通用可视化容器样式 */
+.sort-demo {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(135deg, var(--bg-a50) 0%, var(--bg-a100) 100%);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.sort-demo .demo-title {
+  font-size: 14px;
+  color: var(--text-p2);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sort-demo .demo-title::before {
+  content: '🔬';
+}
+
+/* 数组可视化 */
+.sort-demo .array-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 4px;
+  min-height: 180px;
+  padding: 15px;
+  background: var(--bg-a100);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  position: relative;
+}
+.sort-demo .array-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.sort-demo .bar-visual {
+  width: 36px;
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.sort-demo .bar-value {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+  color: var(--text-p1);
+}
+.sort-demo .bar-index {
+  font-size: 10px;
+  color: var(--text-p3);
+}
+
+/* 状态颜色 */
+.sort-demo .bar-visual.default { background: linear-gradient(180deg, #90CAF9 0%, #64B5F6 100%); }
+.sort-demo .bar-visual.comparing { background: linear-gradient(180deg, #FF8A65 0%, #FF5722 100%); box-shadow: 0 0 12px rgba(255,87,34,0.5); }
+.sort-demo .bar-visual.swapping { background: linear-gradient(180deg, #CE93D8 0%, #9C27B0 100%); box-shadow: 0 0 12px rgba(156,39,176,0.5); animation: pulse 0.3s ease; }
+.sort-demo .bar-visual.sorted { background: linear-gradient(180deg, #81C784 0%, #4CAF50 100%); }
+.sort-demo .bar-visual.pivot { background: linear-gradient(180deg, #FFD54F 0%, #FFC107 100%); box-shadow: 0 0 12px rgba(255,193,7,0.5); }
+.sort-demo .bar-visual.current { background: linear-gradient(180deg, #4FC3F7 0%, #03A9F4 100%); box-shadow: 0 0 12px rgba(3,169,244,0.5); }
+.sort-demo .bar-visual.minimum { background: linear-gradient(180deg, #F06292 0%, #E91E63 100%); box-shadow: 0 0 12px rgba(233,30,99,0.5); }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* 控制面板 */
+.sort-demo .controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.sort-demo .btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sort-demo .btn-primary {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+}
+.sort-demo .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(33,150,243,0.4); }
+.sort-demo .btn-secondary {
+  background: var(--bg-a100);
+  color: var(--text-p1);
+  border: 1px solid var(--text-p3);
+}
+.sort-demo .btn-secondary:hover { background: var(--bg-a50); }
+.sort-demo .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+/* 信息面板 */
+.sort-demo .info-panel {
+  background: var(--bg-a100);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 12px;
+  border-left: 4px solid #2196F3;
+}
+.sort-demo .step-info {
+  font-size: 14px;
+  color: var(--text-p1);
+  line-height: 1.6;
+}
+.sort-demo .step-counter {
+  font-size: 12px;
+  color: var(--text-p3);
+  margin-top: 8px;
+}
+
+/* 图例 */
+.sort-demo .legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--text-p2);
+  margin-top: 12px;
+}
+.sort-demo .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sort-demo .legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+/* 堆排序专用：树形结构 */
+.heap-tree-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: var(--bg-a100);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  overflow-x: auto;
+}
+.heap-tree-level {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
+}
+.heap-node {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.heap-node.default { background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%); color: #1565C0; }
+.heap-node.comparing { background: linear-gradient(135deg, #FF8A65 0%, #FF5722 100%); color: white; }
+.heap-node.swapping { background: linear-gradient(135deg, #CE93D8 0%, #9C27B0 100%); color: white; }
+.heap-node.sorted { background: linear-gradient(135deg, #A5D6A7 0%, #66BB6A 100%); color: #2E7D32; opacity: 0.6; }
+.heap-node.root { box-shadow: 0 0 0 3px #FFC107; }
+
+/* 归并排序专用：分治可视化 */
+.merge-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.merge-level {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.merge-group {
+  display: flex;
+  gap: 2px;
+  padding: 8px 12px;
+  background: var(--bg-a50);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+.merge-group.active { border-color: #2196F3; background: rgba(33,150,243,0.1); }
+.merge-group.merging { border-color: #9C27B0; background: rgba(156,39,176,0.1); }
+.merge-item {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+/* 快排专用：分区可视化 */
+.partition-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.partition-marker {
+  position: absolute;
+  top: -20px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.partition-marker.i-marker { background: #E91E63; color: white; }
+.partition-marker.j-marker { background: #2196F3; color: white; }
+
+/* 计数排序专用：桶可视化 */
+.bucket-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 15px;
+  background: var(--bg-a100);
+  border-radius: 8px;
+  margin: 10px 0;
+}
+.bucket {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40px;
+}
+.bucket-label {
+  font-size: 11px;
+  color: var(--text-p3);
+  margin-bottom: 4px;
+}
+.bucket-bar {
+  width: 30px;
+  background: linear-gradient(180deg, #B39DDB 0%, #7E57C2 100%);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.bucket-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  padding-bottom: 2px;
+}
+
+/* 进度条 */
+.sort-demo .progress-bar {
+  height: 4px;
+  background: var(--bg-a100);
+  border-radius: 2px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+.sort-demo .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2196F3 0%, #4CAF50 100%);
+  transition: width 0.3s ease;
+}
+</style>
+
+<script>
+// ==================== 全局排序可视化引擎 ====================
+const SortEngine = (function() {
+  // 工具函数
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  
+  // 创建可视化实例
+  function createInstance(containerId, config = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return null;
+    
+    const state = {
+      array: [],
+      history: [],      // 历史步骤栈
+      currentStep: -1,
+      isPlaying: false,
+      speed: config.speed || 500,
+      size: config.size || 8
+    };
+    
+    // 生成随机数组
+    function generateArray(customArr) {
+      state.array = customArr || Array.from({length: state.size}, () => Math.floor(Math.random() * 90) + 10);
+      state.history = [{
+        array: [...state.array],
+        states: Array(state.size).fill('default'),
+        info: '初始数组',
+        extra: null
+      }];
+      state.currentStep = 0;
+      render();
+      return state.array;
+    }
+    
+    // 添加历史步骤
+    function addStep(array, states, info, extra = null) {
+      state.history.push({
+        array: [...array],
+        states: [...states],
+        info,
+        extra: extra ? JSON.parse(JSON.stringify(extra)) : null
+      });
+    }
+    
+    // 渲染当前步骤
+    function render() {
+      if (state.currentStep < 0 || state.currentStep >= state.history.length) return;
+      
+      const step = state.history[state.currentStep];
+      const arrayContainer = container.querySelector('.array-container');
+      const infoPanel = container.querySelector('.step-info');
+      const stepCounter = container.querySelector('.step-counter');
+      const progressFill = container.querySelector('.progress-fill');
+      
+      // 渲染数组
+      if (arrayContainer) {
+        arrayContainer.innerHTML = step.array.map((val, i) => `
+          <div class="array-bar">
+            <div class="bar-visual ${step.states[i]}" style="height: ${val * 1.5 + 20}px"></div>
+            <span class="bar-value">${val}</span>
+            <span class="bar-index">[${i}]</span>
+          </div>
+        `).join('');
+      }
+      
+      // 更新信息
+      if (infoPanel) infoPanel.textContent = step.info;
+      if (stepCounter) stepCounter.textContent = `步骤 ${state.currentStep} / ${state.history.length - 1}`;
+      if (progressFill) progressFill.style.width = `${(state.currentStep / Math.max(1, state.history.length - 1)) * 100}%`;
+      
+      // 调用自定义渲染器（用于堆树等额外可视化）
+      if (config.extraRender) {
+        config.extraRender(step, container);
+      }
+      
+      updateButtons();
+    }
+    
+    // 更新按钮状态
+    function updateButtons() {
+      const prevBtn = container.querySelector('.btn-prev');
+      const nextBtn = container.querySelector('.btn-next');
+      const playBtn = container.querySelector('.btn-play');
+      
+      if (prevBtn) prevBtn.disabled = state.currentStep <= 0 || state.isPlaying;
+      if (nextBtn) nextBtn.disabled = state.currentStep >= state.history.length - 1 || state.isPlaying;
+      if (playBtn) {
+        playBtn.textContent = state.isPlaying ? '⏸ 暂停' : '▶ 播放';
+        playBtn.disabled = state.currentStep >= state.history.length - 1 && !state.isPlaying;
+      }
+    }
+    
+    // 步骤控制
+    function prevStep() {
+      if (state.currentStep > 0) {
+        state.currentStep--;
+        render();
+      }
+    }
+    
+    function nextStep() {
+      if (state.currentStep < state.history.length - 1) {
+        state.currentStep++;
+        render();
+      }
+    }
+    
+    async function play() {
+      if (state.isPlaying) {
+        state.isPlaying = false;
+        return;
+      }
+      state.isPlaying = true;
+      updateButtons();
+      
+      while (state.isPlaying && state.currentStep < state.history.length - 1) {
+        state.currentStep++;
+        render();
+        await sleep(state.speed);
+      }
+      state.isPlaying = false;
+      updateButtons();
+    }
+    
+    function reset() {
+      state.isPlaying = false;
+      state.currentStep = 0;
+      render();
+    }
+    
+    // 执行排序算法并记录步骤
+    function runAlgorithm(algorithmFn) {
+      state.isPlaying = false;
+      const arr = [...state.array];
+      const states = Array(arr.length).fill('default');
+      state.history = [{
+        array: [...arr],
+        states: [...states],
+        info: '初始数组',
+        extra: null
+      }];
+      
+      algorithmFn(arr, states, addStep);
+      
+      state.currentStep = 0;
+      render();
+    }
+    
+    return {
+      generateArray,
+      addStep,
+      render,
+      prevStep,
+      nextStep,
+      play,
+      reset,
+      runAlgorithm,
+      getState: () => state,
+      setSpeed: (s) => state.speed = s
+    };
+  }
+  
+  return { createInstance };
+})();
+</script>
+
+<h3 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序 (Bubble Sort)"></a>冒泡排序 (Bubble Sort)</h3><p>想象一下水底的气泡，轻的气泡会一点点往上冒。冒泡排序也是这个道理：<strong>让大的元素像气泡一样，通过一次次交换，”浮”到数组的顶端（末尾）。</strong></p>
+<p>冒泡排序的流程是：</p>
+<ol>
+<li>从头开始，比较相邻的两个元素。</li>
+<li>如果前一个比后一个大，就交换它们。目标是让大的元素往后跑。</li>
+<li>这样一轮下来，最大的元素一定会被交换到数组的最后面。</li>
+<li>重复这个过程，只是下一轮不用管最后一个元素了（因为它已经排好了）。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="type">int</span> swapped = <span class="number">0</span>; <span class="comment">// 优化标志：如果一轮没发生交换，说明已经排好了</span></span><br><span class="line">        <span class="comment">// 每一轮将最大的元素冒到 n-1-i 的位置</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; n - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="comment">// 发现逆序就执行交换</span></span><br><span class="line">                <span class="type">int</span> temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">                swapped = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!swapped) <span class="keyword">break</span>; <span class="comment">// 提前下班</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="bubble-demo" class="sort-demo">
+  <div class="demo-title">冒泡排序</div>
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="bubbleViz.generateArray()">🔄 重置</button>
+    <button class="btn btn-secondary btn-prev" onclick="bubbleViz.prevStep()">◀ 上一步</button>
+    <button class="btn btn-primary btn-play" onclick="bubbleViz.play()">▶ 播放</button>
+    <button class="btn btn-secondary btn-next" onclick="bubbleViz.nextStep()">下一步 ▶</button>
+  </div>
+  <div class="array-container"></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FF8A65, #FF5722)"></div>正在比较</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #CE93D8, #9C27B0)"></div>交换中</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #81C784, #4CAF50)"></div>已排序</div>
+  </div>
+  <div class="info-panel">
+    <div class="step-info">点击"播放"开始演示，或使用"上一步/下一步"逐步观察</div>
+    <div class="step-counter">步骤 0 / 0</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<script>
+const bubbleViz = (function() {
+  const instance = SortEngine.createInstance('bubble-demo');
+  
+  function bubbleSortSteps(arr, states, addStep) {
+    const n = arr.length;
+    const sorted = Array(n).fill(false);
+    
+    for (let i = 0; i < n - 1; i++) {
+      let swapped = false;
+      
+      for (let j = 0; j < n - 1 - i; j++) {
+        // 比较两个相邻元素
+        states.fill('default');
+        for (let k = n - 1; k >= n - i; k--) if (sorted[k]) states[k] = 'sorted';
+        states[j] = 'comparing';
+        states[j + 1] = 'comparing';
+        addStep(arr, states, `第 ${i+1} 轮，比较 arr[${j}]=${arr[j]} 和 arr[${j+1}]=${arr[j+1]}`);
+        
+        if (arr[j] > arr[j + 1]) {
+          // 需要交换
+          states[j] = 'swapping';
+          states[j + 1] = 'swapping';
+          addStep(arr, states, `${arr[j]} > ${arr[j+1]}，需要交换！`);
+          
+          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+          addStep(arr, states, `交换完成：arr[${j}]=${arr[j]}, arr[${j+1}]=${arr[j+1]}`);
+          swapped = true;
+        } else {
+          addStep(arr, states, `${arr[j]} ≤ ${arr[j+1]}，不需要交换`);
+        }
+      }
+      
+      // 这一轮结束，最后一个位置已排序
+      sorted[n - 1 - i] = true;
+      states.fill('default');
+      for (let k = 0; k < n; k++) if (sorted[k]) states[k] = 'sorted';
+      addStep(arr, states, `第 ${i+1} 轮结束，${arr[n-1-i]} 已冒泡到正确位置`);
+      
+      if (!swapped) {
+        states.fill('sorted');
+        addStep(arr, states, `没有发生交换，数组已经有序，提前结束！`);
+        break;
+      }
+    }
+    
+    states.fill('sorted');
+    addStep(arr, states, `✅ 排序完成！`);
+  }
+  
+  function init() {
+    instance.generateArray([64, 34, 25, 12, 22, 11, 90]);
+    instance.runAlgorithm(bubbleSortSteps);
+  }
+  
+  init();
+  
+  return {
+    generateArray: () => { instance.generateArray(); instance.runAlgorithm(bubbleSortSteps); },
+    prevStep: () => instance.prevStep(),
+    nextStep: () => instance.nextStep(),
+    play: () => instance.play()
+  };
+})();
+</script>
+
+<h3 id="选择排序-Selection-Sort"><a href="#选择排序-Selection-Sort" class="headerlink" title="选择排序 (Selection Sort)"></a>选择排序 (Selection Sort)</h3><p>选择排序的逻辑非常符合人类直觉：<strong>每次从乱堆里挑一个最小的，放到已排好序的队伍后面。</strong></p>
+<p>那么符合人类直觉的排序流程就是：  </p>
+<ol>
+<li>在整个数组中扫描，找到最小的那个元素。</li>
+<li>把它和数组第一个元素交换位置（现在第一个元素就是最小的了）。</li>
+<li>接着在剩下的元素里再找最小的，放到第二个位置。</li>
+<li>如此往复，直到所有元素都排好。</li>
+</ol>
+<p>选择排序比较老实。不管数组是不是已经有序了，它都要从头到尾扫描一遍，所以复杂度永远是 $O(n^2)$。但它的优点是<strong>交换次数最少</strong>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">selectionSort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="type">int</span> min_idx = i;</span><br><span class="line">        <span class="comment">// 在 [i, n-1] 区间里找最小值的下标</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = i + <span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[min_idx])</span><br><span class="line">                min_idx = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 找到后，把它换到当前位置 i</span></span><br><span class="line">        <span class="keyword">if</span> (min_idx != i) &#123;</span><br><span class="line">            <span class="type">int</span> temp = arr[min_idx];</span><br><span class="line">            arr[min_idx] = arr[i];</span><br><span class="line">            arr[i] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="selection-demo" class="sort-demo">
+  <div class="demo-title">选择排序</div>
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="selectionViz.generateArray()">🔄 重置</button>
+    <button class="btn btn-secondary btn-prev" onclick="selectionViz.prevStep()">◀ 上一步</button>
+    <button class="btn btn-primary btn-play" onclick="selectionViz.play()">▶ 播放</button>
+    <button class="btn btn-secondary btn-next" onclick="selectionViz.nextStep()">下一步 ▶</button>
+  </div>
+  <div class="array-container"></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #4FC3F7, #03A9F4)"></div>当前位置 i</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #F06292, #E91E63)"></div>当前最小值</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FF8A65, #FF5722)"></div>正在比较</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #81C784, #4CAF50)"></div>已排序</div>
+  </div>
+  <div class="info-panel">
+    <div class="step-info">选择排序：每轮从未排序部分找出最小元素，放到已排序部分的末尾</div>
+    <div class="step-counter">步骤 0 / 0</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<script>
+const selectionViz = (function() {
+  const instance = SortEngine.createInstance('selection-demo');
+  
+  function selectionSortSteps(arr, states, addStep) {
+    const n = arr.length;
+    
+    for (let i = 0; i < n - 1; i++) {
+      // 标记当前位置
+      states.fill('default');
+      for (let k = 0; k < i; k++) states[k] = 'sorted';
+      states[i] = 'current';
+      addStep(arr, states, `第 ${i+1} 轮：从位置 ${i} 开始寻找最小值`);
+      
+      let minIdx = i;
+      states[minIdx] = 'minimum';
+      addStep(arr, states, `假设 arr[${i}]=${arr[i]} 是最小值`);
+      
+      for (let j = i + 1; j < n; j++) {
+        states.fill('default');
+        for (let k = 0; k < i; k++) states[k] = 'sorted';
+        states[minIdx] = 'minimum';
+        states[j] = 'comparing';
+        addStep(arr, states, `比较 arr[${j}]=${arr[j]} 和当前最小值 arr[${minIdx}]=${arr[minIdx]}`);
+        
+        if (arr[j] < arr[minIdx]) {
+          minIdx = j;
+          states[j] = 'minimum';
+          addStep(arr, states, `发现更小的值！更新最小值位置为 ${j}`);
+        }
+      }
+      
+      // 交换
+      if (minIdx !== i) {
+        states.fill('default');
+        for (let k = 0; k < i; k++) states[k] = 'sorted';
+        states[i] = 'swapping';
+        states[minIdx] = 'swapping';
+        addStep(arr, states, `将最小值 ${arr[minIdx]} 交换到位置 ${i}`);
+        
+        [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+        addStep(arr, states, `交换完成`);
+      } else {
+        addStep(arr, states, `arr[${i}] 已经是最小值，无需交换`);
+      }
+      
+      states[i] = 'sorted';
+      addStep(arr, states, `位置 ${i} 已排序，值为 ${arr[i]}`);
+    }
+    
+    states.fill('sorted');
+    addStep(arr, states, `✅ 排序完成！`);
+  }
+  
+  function init() {
+    instance.generateArray([64, 25, 12, 22, 11, 34, 90]);
+    instance.runAlgorithm(selectionSortSteps);
+  }
+  
+  init();
+  
+  return {
+    generateArray: () => { instance.generateArray(); instance.runAlgorithm(selectionSortSteps); },
+    prevStep: () => instance.prevStep(),
+    nextStep: () => instance.nextStep(),
+    play: () => instance.play()
+  };
+})();
+</script>
+
+<h3 id="插入排序-Insertion-Sort"><a href="#插入排序-Insertion-Sort" class="headerlink" title="插入排序 (Insertion Sort)"></a>插入排序 (Insertion Sort)</h3><p>这就好比我们在打扑克牌理牌。你手里已经有一把排好序的牌，现在摸了一张新牌，你需要从后往前比对，找到合适的位置把它插进去。</p>
+<p>首先：  </p>
+<ol>
+<li>假设第一个元素已经排好了</li>
+<li>从未排序部分拿出一个元素，并从右往左与已排序的元素逐一比较，找到合适的位置。在这个情况下我们就看这个元素应该插在第一个的前面还是后面</li>
+<li>每次执行上面插入元素的操作时，比它大的元素都要往后挪一位，直到我们将所有的元素完成插入操作，结束排序流程。</li>
+</ol>
+<p>如果数组本身就是基本有序的，插入排序会飞快（接近 $O(n)$），因为它几乎不需要挪动元素。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">insertionSort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="type">int</span> key = arr[i]; <span class="comment">// 摸到的新牌</span></span><br><span class="line">        <span class="type">int</span> j = i - <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 在已排序的手牌里从后往前找位置</span></span><br><span class="line">        <span class="comment">// 如果手牌比新牌大，就往后挪一位</span></span><br><span class="line">        <span class="keyword">while</span> (j &gt;= <span class="number">0</span> &amp;&amp; arr[j] &gt; key) &#123;</span><br><span class="line">            arr[j + <span class="number">1</span>] = arr[j];</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[j + <span class="number">1</span>] = key; <span class="comment">// 插入</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="insertion-demo" class="sort-demo">
+  <div class="demo-title">插入排序</div>
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="insertionViz.generateArray()">🔄 重置</button>
+    <button class="btn btn-secondary btn-prev" onclick="insertionViz.prevStep()">◀ 上一步</button>
+    <button class="btn btn-primary btn-play" onclick="insertionViz.play()">▶ 播放</button>
+    <button class="btn btn-secondary btn-next" onclick="insertionViz.nextStep()">下一步 ▶</button>
+  </div>
+  <div class="array-container"></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FFD54F, #FFC107)"></div>待插入的"新牌" (key)</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FF8A65, #FF5722)"></div>正在比较</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #CE93D8, #9C27B0)"></div>向后移动</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #81C784, #4CAF50)"></div>已排序区域</div>
+  </div>
+  <div class="info-panel">
+    <div class="step-info">插入排序：像打扑克理牌，拿起新牌，从右往左找合适位置插入</div>
+    <div class="step-counter">步骤 0 / 0</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<script>
+const insertionViz = (function() {
+  const instance = SortEngine.createInstance('insertion-demo');
+  
+  function insertionSortSteps(arr, states, addStep) {
+    const n = arr.length;
+    
+    // 第一个元素默认已排序
+    states[0] = 'sorted';
+    addStep(arr, states, `arr[0]=${arr[0]} 单独成为"已排序"区域`);
+    
+    for (let i = 1; i < n; i++) {
+      const key = arr[i];
+      
+      // 拿起新牌
+      states.fill('default');
+      for (let k = 0; k < i; k++) states[k] = 'sorted';
+      states[i] = 'pivot';
+      addStep(arr, states, `🃏 拿起新牌 arr[${i}]=${key}，准备插入到前面的有序区域`);
+      
+      let j = i - 1;
+      
+      // 从右往左比较
+      while (j >= 0) {
+        states.fill('default');
+        for (let k = 0; k < i; k++) states[k] = 'sorted';
+        states[i] = 'pivot';
+        states[j] = 'comparing';
+        addStep(arr, states, `比较 key=${key} 和 arr[${j}]=${arr[j]}`);
+        
+        if (arr[j] > key) {
+          // 需要移动
+          states[j] = 'swapping';
+          states[j + 1] = 'swapping';
+          addStep(arr, states, `${arr[j]} > ${key}，将 arr[${j}] 向后移动到 arr[${j+1}]`);
+          
+          arr[j + 1] = arr[j];
+          j--;
+        } else {
+          addStep(arr, states, `${arr[j]} ≤ ${key}，找到插入位置！`);
+          break;
+        }
+      }
+      
+      // 插入
+      arr[j + 1] = key;
+      states.fill('default');
+      for (let k = 0; k <= i; k++) states[k] = 'sorted';
+      states[j + 1] = 'pivot';
+      addStep(arr, states, `将 ${key} 插入到位置 ${j + 1}`);
+      
+      states[j + 1] = 'sorted';
+      addStep(arr, states, `插入完成，已排序区域扩展到 [0, ${i}]`);
+    }
+    
+    states.fill('sorted');
+    addStep(arr, states, `✅ 排序完成！`);
+  }
+  
+  function init() {
+    instance.generateArray([12, 11, 13, 5, 6, 7, 34]);
+    instance.runAlgorithm(insertionSortSteps);
+  }
+  
+  init();
+  
+  return {
+    generateArray: () => { instance.generateArray(); instance.runAlgorithm(insertionSortSteps); },
+    prevStep: () => instance.prevStep(),
+    nextStep: () => instance.nextStep(),
+    play: () => instance.play()
+  };
+})();
+</script>
+
+<h3 id="为什么它们都是-O-n-2-？-The-Inversion-Argument"><a href="#为什么它们都是-O-n-2-？-The-Inversion-Argument" class="headerlink" title="为什么它们都是 $O(n^2)$？(The Inversion Argument)"></a>为什么它们都是 $O(n^2)$？(The Inversion Argument)</h3><p>这里有个很重要的理论概念：<strong>逆序对 (Inversion)</strong>。<br>如果 $i &lt; j$ 但 $A[i] &gt; A[j]$，这就叫一个逆序对。排序的本质就是<strong>消除所有的逆序对</strong>。</p>
+<p>交换两个<strong>相邻</strong>元素，最多只能消除 <strong>1</strong> 个逆序对。而一个乱序数组平均有 $O(n^2)$ 个逆序对。<br>所以，任何只通过<strong>交换相邻元素</strong>来排序的算法（如冒泡、插入），平均都需要 $O(n^2)$ 次操作。</p>
+<p>要想突破这个限制，必须进行<strong>远距离交换</strong>，这就是高级排序算法的秘诀。</p>
+<hr>
+<h2 id="堆排序-Heap-Sort"><a href="#堆排序-Heap-Sort" class="headerlink" title="堆排序 (Heap Sort)"></a>堆排序 (Heap Sort)</h2><p>堆排序利用<strong>二叉堆 (Binary Heap)</strong> 这种数据结构来实现 $O(n \log n)$ 的排序。</p>
+<h3 id="什么是大根堆？"><a href="#什么是大根堆？" class="headerlink" title="什么是大根堆？"></a>什么是大根堆？</h3><p>想象一个金字塔，<strong>大根堆</strong>要求金字塔的每一个”父亲”都要比他的”儿子”们大（或者相等）。<br>这样一来，<strong>塔尖（根节点）永远是最大的</strong>。</p>
+<p>我们在内存里通常用<strong>数组</strong>来模拟这个金字塔：</p>
+<ul>
+<li>塔尖在数组下标 <code>0</code>。</li>
+<li>对于任意一个在 <code>i</code> 位置的节点：<ul>
+<li>它的左子节点在 <code>2*i + 1</code></li>
+<li>它的右子节点在 <code>2*i + 2</code></li>
+<li>它的父节点在 <code>(i-1)/2</code>，必要时向下取整。</li>
+</ul>
+</li>
+</ul>
+<h3 id="向下堆化-Heapify"><a href="#向下堆化-Heapify" class="headerlink" title="向下堆化 (Heapify)"></a>向下堆化 (Heapify)</h3><p>这是维护金字塔规则的关键。假设有一个节点，它的左右子树都是合格的堆，但它自己可能太小了，配不上”父亲”这个位置。这时候我们就需要把它<strong>往下沉</strong>：  </p>
+<ol>
+<li>看看它和两个子节点谁最大。</li>
+<li>如果某个子节点比它大，就和最大的这个子节点交换位置。</li>
+<li>交换后，它到了新的位置，可能还是比新子节点小，那就继续往下沉，直到它比子节点大，或者沉到底为止。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 维护以 i 为根的子树的堆性质，n 是堆的大小</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">heapify</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> n, <span class="type">int</span> i)</span> &#123;</span><br><span class="line">    <span class="type">int</span> largest = i;       <span class="comment">// 假设当前节点是最大的</span></span><br><span class="line">    <span class="type">int</span> l = <span class="number">2</span> * i + <span class="number">1</span>;     <span class="comment">// 左子节点</span></span><br><span class="line">    <span class="type">int</span> r = <span class="number">2</span> * i + <span class="number">2</span>;     <span class="comment">// 右子节点</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果左子节点比我大，记录下来</span></span><br><span class="line">    <span class="keyword">if</span> (l &lt; n &amp;&amp; arr[l] &gt; arr[largest])</span><br><span class="line">        largest = l;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果右子节点比目前最大的还大，记录下来</span></span><br><span class="line">    <span class="keyword">if</span> (r &lt; n &amp;&amp; arr[r] &gt; arr[largest])</span><br><span class="line">        largest = r;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果需要执行交换</span></span><br><span class="line">    <span class="keyword">if</span> (largest != i) &#123;</span><br><span class="line">        swap(&amp;arr[i], &amp;arr[largest]);</span><br><span class="line">        heapify(arr, n, largest); <span class="comment">// 继续调用递归来往下继续检测下沉</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="堆排序流程"><a href="#堆排序流程" class="headerlink" title="堆排序流程"></a>堆排序流程</h3><p>有了上面的工具，排序就很简单了：</p>
+<ol>
+<li><p>首先要<strong>建堆</strong>：先把乱序数组整理成一个大根堆。</p>
+<ul>
+<li>技巧：从最后一个非叶子节点开始，倒着往前一个个做 <code>heapify</code>。这样保证了每个小金字塔都是合规的，最后整个大金字塔就合规了。</li>
+</ul>
+</li>
+<li><p><strong>排序</strong>：</p>
+<ul>
+<li>现在堆顶是最大的元素，把它和数组最后一个元素交换（相当于把最大值扔到最后排好序）。</li>
+<li>此时堆顶换上来一个小节点，破坏了大根堆规则。</li>
+<li>对堆顶做一次 <code>heapify</code>，让它沉下去，新的老大浮上来。</li>
+<li>重复这个过程，直到堆空了就结束排序</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">heapSort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 建堆：从最后一个非叶子节点开始倒序堆化</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = n / <span class="number">2</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        heapify(arr, n, i);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 排序：不断把堆顶（最大值）交换到末尾</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = n - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">        swap(&amp;arr[<span class="number">0</span>], &amp;arr[i]); <span class="comment">// 把老大请到最后面去</span></span><br><span class="line">        heapify(arr, i, <span class="number">0</span>);     <span class="comment">// 剩下的元素重新选老大</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="heap-demo" class="sort-demo">
+  <div class="demo-title">堆排序</div>
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="heapViz.generateArray()">🔄 重置</button>
+    <button class="btn btn-secondary btn-prev" onclick="heapViz.prevStep()">◀ 上一步</button>
+    <button class="btn btn-primary btn-play" onclick="heapViz.play()">▶ 播放</button>
+    <button class="btn btn-secondary btn-next" onclick="heapViz.nextStep()">下一步 ▶</button>
+  </div>
+  
+  <div class="heap-tree-container" id="heap-tree"></div>
+  
+  <div class="array-container"></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FF8A65, #FF5722)"></div>正在比较</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #CE93D8, #9C27B0)"></div>交换中</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FFD54F, #FFC107)"></div>当前处理节点</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #81C784, #4CAF50)"></div>已排序（移出堆）</div>
+  </div>
+  <div class="info-panel">
+    <div class="step-info">堆排序分两步：1. 建堆  2. 不断取出堆顶最大值</div>
+    <div class="step-counter">步骤 0 / 0</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<script>
+const heapViz = (function() {
+  // 额外渲染器：绘制堆的树形结构
+  function renderHeapTree(step, container) {
+    const treeContainer = container.querySelector('#heap-tree');
+    if (!treeContainer) return;
+    
+    const arr = step.array;
+    const states = step.states;
+    const heapSize = step.extra?.heapSize ?? arr.length;
+    
+    // 计算树的层数
+    const levels = Math.ceil(Math.log2(arr.length + 1));
+    let html = '';
+    let idx = 0;
+    
+    for (let level = 0; level < levels && idx < arr.length; level++) {
+      const nodesInLevel = Math.pow(2, level);
+      html += '<div class="heap-tree-level" style="gap: ' + (Math.pow(2, levels - level - 1) * 20) + 'px;">';
+      
+      for (let i = 0; i < nodesInLevel && idx < arr.length; i++, idx++) {
+        let nodeClass = 'heap-node ';
+        if (idx >= heapSize) {
+          nodeClass += 'sorted';
+        } else {
+          nodeClass += states[idx] || 'default';
+        }
+        if (idx === 0) nodeClass += ' root';
+        
+        html += `<div class="${nodeClass}">${arr[idx]}</div>`;
+      }
+      
+      html += '</div>';
+    }
+    
+    treeContainer.innerHTML = html;
+  }
+  
+  const instance = SortEngine.createInstance('heap-demo', {
+    extraRender: renderHeapTree
+  });
+  
+  function heapSortSteps(arr, states, addStep) {
+    const n = arr.length;
+    let heapSize = n;
+    
+    // 辅助函数：记录堆化过程
+    function heapifySteps(size, i, phase) {
+      let largest = i;
+      const l = 2 * i + 1;
+      const r = 2 * i + 2;
+      
+      states.fill('default');
+      for (let k = size; k < n; k++) states[k] = 'sorted';
+      states[i] = 'pivot';
+      addStep(arr, states, `${phase}：检查节点 ${i}（值=${arr[i]}）`, { heapSize: size });
+      
+      // 比较左子节点
+      if (l < size) {
+        states[l] = 'comparing';
+        addStep(arr, states, `比较左子节点 arr[${l}]=${arr[l]} 和 arr[${largest}]=${arr[largest]}`, { heapSize: size });
+        if (arr[l] > arr[largest]) {
+          largest = l;
+          addStep(arr, states, `左子节点更大，largest = ${l}`, { heapSize: size });
+        }
+      }
+      
+      // 比较右子节点
+      if (r < size) {
+        states[r] = 'comparing';
+        addStep(arr, states, `比较右子节点 arr[${r}]=${arr[r]} 和 arr[${largest}]=${arr[largest]}`, { heapSize: size });
+        if (arr[r] > arr[largest]) {
+          largest = r;
+          addStep(arr, states, `右子节点更大，largest = ${r}`, { heapSize: size });
+        }
+      }
+      
+      if (largest !== i) {
+        states[i] = 'swapping';
+        states[largest] = 'swapping';
+        addStep(arr, states, `节点 ${i} 不是最大，与 ${largest} 交换`, { heapSize: size });
+        
+        [arr[i], arr[largest]] = [arr[largest], arr[i]];
+        addStep(arr, states, `交换完成：arr[${i}]=${arr[i]}, arr[${largest}]=${arr[largest]}`, { heapSize: size });
+        
+        // 递归
+        heapifySteps(size, largest, phase);
+      } else {
+        addStep(arr, states, `节点 ${i} 已满足堆性质`, { heapSize: size });
+      }
+    }
+    
+    // 阶段1：建堆
+    addStep(arr, states, `🔨 阶段1：建堆 - 从最后一个非叶子节点开始`, { heapSize: n });
+    
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      heapifySteps(n, i, '建堆');
+    }
+    
+    states.fill('default');
+    addStep(arr, states, `✅ 建堆完成！现在 arr[0]=${arr[0]} 是最大值`, { heapSize: n });
+    
+    // 阶段2：排序
+    addStep(arr, states, `📊 阶段2：排序 - 不断将堆顶移到末尾`, { heapSize: n });
+    
+    for (let i = n - 1; i > 0; i--) {
+      states.fill('default');
+      for (let k = i + 1; k < n; k++) states[k] = 'sorted';
+      states[0] = 'swapping';
+      states[i] = 'swapping';
+      addStep(arr, states, `将堆顶 ${arr[0]} 与末尾 ${arr[i]} 交换`, { heapSize: i + 1 });
+      
+      [arr[0], arr[i]] = [arr[i], arr[0]];
+      heapSize = i;
+      states[i] = 'sorted';
+      addStep(arr, states, `${arr[i]} 移出堆，剩余堆大小 = ${heapSize}`, { heapSize });
+      
+      if (heapSize > 1) {
+        heapifySteps(heapSize, 0, '重新堆化');
+      }
+    }
+    
+    states.fill('sorted');
+    addStep(arr, states, `✅ 堆排序完成！`, { heapSize: 0 });
+  }
+  
+  function init() {
+    instance.generateArray([4, 10, 3, 5, 1, 8, 7]);
+    instance.runAlgorithm(heapSortSteps);
+  }
+  
+  init();
+  
+  return {
+    generateArray: () => { instance.generateArray(); instance.runAlgorithm(heapSortSteps); },
+    prevStep: () => instance.prevStep(),
+    nextStep: () => instance.nextStep(),
+    play: () => instance.play()
+  };
+})();
+</script>
+
+<hr>
+<h2 id="高级排序算法-O-n-log-n"><a href="#高级排序算法-O-n-log-n" class="headerlink" title="高级排序算法 ($O(n \log n)$)"></a>高级排序算法 ($O(n \log n)$)</h2><h3 id="归并排序-Merge-Sort"><a href="#归并排序-Merge-Sort" class="headerlink" title="归并排序 (Merge Sort)"></a>归并排序 (Merge Sort)</h3><p>归并排序的核心思想是<strong>分治 (Divide and Conquer)</strong>。  </p>
+<p>想象你有一堆乱序的扑克牌：</p>
+<p><strong>分</strong>：把这堆牌一分为二，分给两个人。两个人再分，直到每个人手里只有一张牌（一张牌自然是有序的）。<br><strong>治</strong>：两个人把手里的有序牌堆，一张张比对，合并成一个更大的有序牌堆。</p>
+<p>那么说得好。我们该如何实现呢？  </p>
+<ol>
+<li>准备两个指针，分别指向两个有序数组的开头。</li>
+<li>比较两个指针指向的数，谁小就取谁，放到结果数组里，然后指针后移。</li>
+<li>就像拉链一样，把两个有序序列”拉”在一起。</li>
+</ol>
+<p>归并排序非常稳健，不管数据多乱都是 $O(n \log n)$。而且它是<strong>稳定</strong>的（相等的元素顺序不会变）。缺点是需要额外的空间$O(n)$来存临时数组。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 合并两个有序子数组 arr[l..m] 和 arr[m+1..r]</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">merge</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> l, <span class="type">int</span> m, <span class="type">int</span> r)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这边省略创建临时数组L,R，和赋值的代码</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, k = l;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) &#123;</span><br><span class="line">        <span class="comment">// 谁小取谁。注意 &lt;= 保证了稳定性（左边的先取）</span></span><br><span class="line">        <span class="keyword">if</span> (L[i] &lt;= R[j]) arr[k++] = L[i++]; </span><br><span class="line">        <span class="keyword">else</span> arr[k++] = R[j++];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 把剩下的元素接在后面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="merge-demo" class="sort-demo">
+  <div class="demo-title">归并排序</div>
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="mergeViz.generateArray()">🔄 重置</button>
+    <button class="btn btn-secondary btn-prev" onclick="mergeViz.prevStep()">◀ 上一步</button>
+    <button class="btn btn-primary btn-play" onclick="mergeViz.play()">▶ 播放</button>
+    <button class="btn btn-secondary btn-next" onclick="mergeViz.nextStep()">下一步 ▶</button>
+  </div>
+  
+  <div class="array-container"></div>
+  
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #4FC3F7, #03A9F4)"></div>左子数组 L</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FFD54F, #FFC107)"></div>右子数组 R</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #CE93D8, #9C27B0)"></div>正在合并</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #81C784, #4CAF50)"></div>已合并完成</div>
+  </div>
+  <div class="info-panel">
+    <div class="step-info">归并排序：先"分"成单个元素，再"治"（合并）成有序序列</div>
+    <div class="step-counter">步骤 0 / 0</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<script>
+const mergeViz = (function() {
+  const instance = SortEngine.createInstance('merge-demo');
+  
+  function mergeSortSteps(arr, states, addStep) {
+    const n = arr.length;
+    
+    function mergeSort(l, r, depth) {
+      if (l >= r) {
+        states.fill('default');
+        states[l] = 'sorted';
+        addStep(arr, states, `递归到底：arr[${l}]=${arr[l]} 单独就是有序的`);
+        return;
+      }
+      
+      const m = Math.floor((l + r) / 2);
+      
+      // 标记当前处理的范围
+      states.fill('default');
+      for (let i = l; i <= m; i++) states[i] = 'current';
+      for (let i = m + 1; i <= r; i++) states[i] = 'pivot';
+      addStep(arr, states, `分解 [${l}, ${r}]：左半 [${l}, ${m}]，右半 [${m+1}, ${r}]`);
+      
+      // 递归左半
+      mergeSort(l, m, depth + 1);
+      // 递归右半
+      mergeSort(m + 1, r, depth + 1);
+      
+      // 合并
+      merge(l, m, r);
+    }
+    
+    function merge(l, m, r) {
+      const L = arr.slice(l, m + 1);
+      const R = arr.slice(m + 1, r + 1);
+      
+      states.fill('default');
+      for (let i = l; i <= m; i++) states[i] = 'current';
+      for (let i = m + 1; i <= r; i++) states[i] = 'pivot';
+      addStep(arr, states, `开始合并：L=[${L.join(',')}]，R=[${R.join(',')}]`);
+      
+      let i = 0, j = 0, k = l;
+      
+      while (i < L.length && j < R.length) {
+        states.fill('default');
+        for (let x = l; x < k; x++) states[x] = 'sorted';
+        states[l + i] = 'comparing';
+        states[m + 1 + j] = 'comparing';
+        
+        if (L[i] <= R[j]) {
+          addStep(arr, states, `比较 L[${i}]=${L[i]} ≤ R[${j}]=${R[j]}，取左边`);
+          arr[k] = L[i];
+          states[k] = 'swapping';
+          addStep(arr, states, `将 ${L[i]} 放入位置 ${k}`);
+          i++;
+        } else {
+          addStep(arr, states, `比较 L[${i}]=${L[i]} > R[${j}]=${R[j]}，取右边`);
+          arr[k] = R[j];
+          states[k] = 'swapping';
+          addStep(arr, states, `将 ${R[j]} 放入位置 ${k}`);
+          j++;
+        }
+        k++;
+      }
+      
+      // 剩余元素
+      while (i < L.length) {
+        arr[k] = L[i];
+        states[k] = 'swapping';
+        addStep(arr, states, `左边剩余：将 ${L[i]} 放入位置 ${k}`);
+        i++; k++;
+      }
+      while (j < R.length) {
+        arr[k] = R[j];
+        states[k] = 'swapping';
+        addStep(arr, states, `右边剩余：将 ${R[j]} 放入位置 ${k}`);
+        j++; k++;
+      }
+      
+      for (let x = l; x <= r; x++) states[x] = 'sorted';
+      addStep(arr, states, `✅ 合并完成：[${l}, ${r}] = [${arr.slice(l, r+1).join(', ')}]`);
+    }
+    
+    addStep(arr, states, `开始归并排序，数组长度 = ${n}`);
+    mergeSort(0, n - 1, 0);
+    
+    states.fill('sorted');
+    addStep(arr, states, `✅ 归并排序完成！`);
+  }
+  
+  function init() {
+    instance.generateArray([38, 27, 43, 3, 9, 82, 10]);
+    instance.runAlgorithm(mergeSortSteps);
+  }
+  
+  init();
+  
+  return {
+    generateArray: () => { instance.generateArray(); instance.runAlgorithm(mergeSortSteps); },
+    prevStep: () => instance.prevStep(),
+    nextStep: () => instance.nextStep(),
+    play: () => instance.play()
+  };
+})();
+</script>
+
+<h3 id="快速排序-Quick-Sort"><a href="#快速排序-Quick-Sort" class="headerlink" title="快速排序 (Quick Sort)"></a>快速排序 (Quick Sort)</h3><p>快速排序也是分治，但它的策略更暴力。</p>
+<p>首先<strong>挑选基准</strong>。这一步我们随便找个人来当基准(Pivot)。<br>随后你要求所有人<strong>站队</strong>，比基准小的站左边，比基准大的站右边。<br>最后你对左边的队伍和右边的队伍调用<strong>递归</strong>，重复上面的过程。</p>
+<ol>
+<li>选定一个 pivot（比如最后一个元素）。</li>
+<li>用一个指针 <code>i</code> 记录”小于区”的边界。</li>
+<li>扫描数组，只要发现比 pivot 小的数，就把它换到 <code>i</code> 的位置，然后 <code>i</code> 前进。</li>
+<li>最后把 pivot 放到 <code>i+1</code> 的位置，这样 pivot 左边全比它小，右边全比它大。</li>
+</ol>
+<p>快速排序的平均速度最快，是很多标准库排序的首选。但如果运气不好（比如数组本来就有序，你还每次选第一个当基准），它会退化成 $O(n^2)$。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">partition</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> low, <span class="type">int</span> high)</span> &#123;</span><br><span class="line">    <span class="type">int</span> pivot = arr[high]; <span class="comment">// 选最后一个当基准</span></span><br><span class="line">    <span class="type">int</span> i = (low - <span class="number">1</span>);     <span class="comment">// 小于区的边界</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = low; j &lt;= high - <span class="number">1</span>; j++) &#123;</span><br><span class="line">        <span class="comment">// 如果当前数比基准小，就把它扔到小于区去</span></span><br><span class="line">        <span class="keyword">if</span> (arr[j] &lt; pivot) &#123;</span><br><span class="line">            i++;</span><br><span class="line">            swap(&amp;arr[i], &amp;arr[j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最后把基准放到中间</span></span><br><span class="line">    swap(&amp;arr[i + <span class="number">1</span>], &amp;arr[high]);</span><br><span class="line">    <span class="keyword">return</span> (i + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="quick-demo" class="sort-demo">
+  <div class="demo-title">快速排序</div>
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="quickViz.generateArray()">🔄 重置</button>
+    <button class="btn btn-secondary btn-prev" onclick="quickViz.prevStep()">◀ 上一步</button>
+    <button class="btn btn-primary btn-play" onclick="quickViz.play()">▶ 播放</button>
+    <button class="btn btn-secondary btn-next" onclick="quickViz.nextStep()">下一步 ▶</button>
+  </div>
+  
+  <div class="array-container"></div>
+  
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FFD54F, #FFC107)"></div>基准 (pivot)</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #F06292, #E91E63)"></div>指针 i（小于区边界）</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #4FC3F7, #03A9F4)"></div>指针 j（扫描中）</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #81C784, #4CAF50)"></div>已归位</div>
+  </div>
+  <div class="info-panel">
+    <div class="step-info">快速排序：选基准 → 分区（小的左边，大的右边）→ 递归</div>
+    <div class="step-counter">步骤 0 / 0</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<script>
+const quickViz = (function() {
+  const instance = SortEngine.createInstance('quick-demo');
+  
+  function quickSortSteps(arr, states, addStep) {
+    const n = arr.length;
+    const sorted = new Set();
+    
+    function quickSort(low, high) {
+      if (low < high) {
+        const pi = partition(low, high);
+        quickSort(low, pi - 1);
+        quickSort(pi + 1, high);
+      } else if (low === high && low >= 0 && low < n) {
+        sorted.add(low);
+        updateSorted();
+        addStep(arr, states, `单个元素 arr[${low}]=${arr[low]} 已归位`);
+      }
+    }
+    
+    function updateSorted() {
+      for (let i = 0; i < n; i++) {
+        if (sorted.has(i)) states[i] = 'sorted';
+      }
+    }
+    
+    function partition(low, high) {
+      const pivot = arr[high];
+      
+      states.fill('default');
+      updateSorted();
+      states[high] = 'pivot';
+      addStep(arr, states, `选择基准 pivot = arr[${high}] = ${pivot}`);
+      
+      let i = low - 1;
+      
+      for (let j = low; j <= high - 1; j++) {
+        states.fill('default');
+        updateSorted();
+        states[high] = 'pivot';
+        if (i >= low) states[i] = 'minimum'; // i 指针
+        states[j] = 'current'; // j 指针
+        // 标记小于区
+        for (let k = low; k <= i; k++) if (!sorted.has(k)) states[k] = 'comparing';
+        
+        addStep(arr, states, `j=${j}：比较 arr[${j}]=${arr[j]} 和 pivot=${pivot}，i=${i}`);
+        
+        if (arr[j] < pivot) {
+          i++;
+          addStep(arr, states, `${arr[j]} < ${pivot}，i++ = ${i}，交换 arr[${i}] 和 arr[${j}]`);
+          
+          if (i !== j) {
+            states[i] = 'swapping';
+            states[j] = 'swapping';
+            addStep(arr, states, `交换 ${arr[i]} ↔ ${arr[j]}`);
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+            addStep(arr, states, `交换完成`);
+          } else {
+            addStep(arr, states, `i === j，无需交换`);
+          }
+        } else {
+          addStep(arr, states, `${arr[j]} ≥ ${pivot}，不交换，j 继续前进`);
+        }
+      }
+      
+      // 将 pivot 放到正确位置
+      const pivotPos = i + 1;
+      states.fill('default');
+      updateSorted();
+      states[pivotPos] = 'swapping';
+      states[high] = 'swapping';
+      addStep(arr, states, `扫描完毕，将 pivot 放到位置 ${pivotPos}`);
+      
+      [arr[pivotPos], arr[high]] = [arr[high], arr[pivotPos]];
+      sorted.add(pivotPos);
+      states[pivotPos] = 'sorted';
+      addStep(arr, states, `✅ pivot ${pivot} 归位到 ${pivotPos}，左边都比它小，右边都比它大`);
+      
+      return pivotPos;
+    }
+    
+    addStep(arr, states, `开始快速排序`);
+    quickSort(0, n - 1);
+    
+    states.fill('sorted');
+    addStep(arr, states, `✅ 快速排序完成！`);
+  }
+  
+  function init() {
+    instance.generateArray([10, 7, 8, 9, 1, 5, 6]);
+    instance.runAlgorithm(quickSortSteps);
+  }
+  
+  init();
+  
+  return {
+    generateArray: () => { instance.generateArray(); instance.runAlgorithm(quickSortSteps); },
+    prevStep: () => instance.prevStep(),
+    nextStep: () => instance.nextStep(),
+    play: () => instance.play()
+  };
+})();
+</script>
+
+<hr>
+<h2 id="线性排序-Linear-Sorts"><a href="#线性排序-Linear-Sorts" class="headerlink" title="线性排序 (Linear Sorts)"></a>线性排序 (Linear Sorts)</h2><p>前面讲的排序都是基于<strong>比较</strong>的（比大小）。数学上证明了，基于比较的排序最快也只能是 $O(n \log n)$。<br>那有没有更快的？有！如果我们不比大小，而是利用数字本身的特性，就能达到 $O(n)$。</p>
+<h3 id="计数排序-Counting-Sort"><a href="#计数排序-Counting-Sort" class="headerlink" title="计数排序 (Counting Sort)"></a>计数排序 (Counting Sort)</h3><p>假设你要给全校同学按年龄排序。年龄的范围很小（比如 0-100 岁）。这个时候使用计数排序就很不赖。  </p>
+<p>在这个情景内，计数排序的逻辑大概是：  </p>
+<ol>
+<li>准备 101 个桶（数组），标号 0 到 100。</li>
+<li>遍历所有同学。假如遍历到一个 19 岁的同学，就在 19 号桶里放个豆子（计数 +1）。</li>
+<li>最后，从 0 号桶开始，桶里有几个豆子，就直接在结果上写几个对应的年龄出来。</li>
+</ol>
+<p>非常有意思的解决方案。  </p>
+<p>计数排序的速度极快 $O(n+k)$，其中 $k$ 是数据范围。而计数排序的问题在于几乎只能排整数，且范围不能太大，否则桶太多内存超级大爆。</p>
+<div id="counting-demo" class="sort-demo">
+  <div class="demo-title">计数排序</div>
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="countingViz.generateArray()">🔄 重置</button>
+    <button class="btn btn-secondary btn-prev" onclick="countingViz.prevStep()">◀ 上一步</button>
+    <button class="btn btn-primary btn-play" onclick="countingViz.play()">▶ 播放</button>
+    <button class="btn btn-secondary btn-next" onclick="countingViz.nextStep()">下一步 ▶</button>
+  </div>
+  
+  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 250px;">
+      <div style="font-size: 13px; color: var(--text-p2); margin-bottom: 8px;">📥 原始数组</div>
+      <div class="array-container" style="min-height: 120px;"></div>
+    </div>
+    <div style="flex: 1; min-width: 250px;">
+      <div style="font-size: 13px; color: var(--text-p2); margin-bottom: 8px;">🪣 计数桶 (count[])</div>
+      <div class="bucket-container" id="counting-buckets"></div>
+    </div>
+  </div>
+  
+  <div style="margin-top: 15px;">
+    <div style="font-size: 13px; color: var(--text-p2); margin-bottom: 8px;">📤 输出数组</div>
+    <div class="array-container" id="counting-output" style="min-height: 100px;"></div>
+  </div>
+  
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #4FC3F7, #03A9F4)"></div>正在处理</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #B39DDB, #7E57C2)"></div>计数桶</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #81C784, #4CAF50)"></div>已输出</div>
+  </div>
+  <div class="info-panel">
+    <div class="step-info">计数排序：统计每个值出现的次数，然后按顺序输出</div>
+    <div class="step-counter">步骤 0 / 0</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<script>
+const countingViz = (function() {
+  // 自定义渲染器
+  function renderBucketsAndOutput(step, container) {
+    const bucketContainer = container.querySelector('#counting-buckets');
+    const outputContainer = container.querySelector('#counting-output');
+    
+    if (step.extra) {
+      const { count, maxVal, output, outputStates } = step.extra;
+      
+      // 渲染桶
+      if (bucketContainer && count) {
+        let html = '';
+        for (let i = 0; i <= maxVal; i++) {
+          const height = count[i] * 25;
+          html += `
+            <div class="bucket">
+              <div class="bucket-bar" style="height: ${height}px;">
+                ${count[i] > 0 ? `<span class="bucket-count">${count[i]}</span>` : ''}
+              </div>
+              <span class="bucket-label">${i}</span>
+            </div>
+          `;
+        }
+        bucketContainer.innerHTML = html;
+      }
+      
+      // 渲染输出数组
+      if (outputContainer && output) {
+        outputContainer.innerHTML = output.map((val, i) => `
+          <div class="array-bar">
+            <div class="bar-visual ${outputStates?.[i] || 'default'}" style="height: ${val ? val * 1.5 + 20 : 20}px"></div>
+            <span class="bar-value">${val !== null ? val : '-'}</span>
+            <span class="bar-index">[${i}]</span>
+          </div>
+        `).join('');
+      }
+    }
+  }
+  
+  const instance = SortEngine.createInstance('counting-demo', {
+    extraRender: renderBucketsAndOutput,
+    size: 8
+  });
+  
+  function countingSortSteps(arr, states, addStep) {
+    const n = arr.length;
+    const maxVal = Math.max(...arr);
+    const count = Array(maxVal + 1).fill(0);
+    const output = Array(n).fill(null);
+    const outputStates = Array(n).fill('default');
+    
+    addStep(arr, states, `开始计数排序，数据范围 0-${maxVal}`, { count: [...count], maxVal, output: [...output], outputStates: [...outputStates] });
+    
+    // 阶段1：计数
+    addStep(arr, states, `📊 阶段1：统计每个值出现的次数`, { count: [...count], maxVal, output: [...output], outputStates: [...outputStates] });
+    
+    for (let i = 0; i < n; i++) {
+      states.fill('default');
+      states[i] = 'current';
+      const val = arr[i];
+      count[val]++;
+      addStep(arr, states, `读取 arr[${i}]=${val}，count[${val}]++，现在 count[${val}]=${count[val]}`, { count: [...count], maxVal, output: [...output], outputStates: [...outputStates] });
+    }
+    
+    states.fill('default');
+    addStep(arr, states, `统计完成！`, { count: [...count], maxVal, output: [...output], outputStates: [...outputStates] });
+    
+    // 阶段2：输出
+    addStep(arr, states, `📤 阶段2：按顺序从桶中取出元素`, { count: [...count], maxVal, output: [...output], outputStates: [...outputStates] });
+    
+    let outputIdx = 0;
+    for (let i = 0; i <= maxVal; i++) {
+      while (count[i] > 0) {
+        output[outputIdx] = i;
+        outputStates[outputIdx] = 'sorted';
+        count[i]--;
+        addStep(arr, states, `从桶 ${i} 取出一个，放入 output[${outputIdx}]=${i}`, { count: [...count], maxVal, output: [...output], outputStates: [...outputStates] });
+        outputIdx++;
+      }
+    }
+    
+    // 复制回原数组
+    for (let i = 0; i < n; i++) {
+      arr[i] = output[i];
+      states[i] = 'sorted';
+    }
+    addStep(arr, states, `✅ 计数排序完成！`, { count: [...count], maxVal, output: [...output], outputStates: [...outputStates] });
+  }
+  
+  function init() {
+    instance.generateArray([4, 2, 2, 8, 3, 3, 1, 7]);
+    instance.runAlgorithm(countingSortSteps);
+  }
+  
+  init();
+  
+  return {
+    generateArray: () => { instance.generateArray([
+      Math.floor(Math.random() * 9) + 1,
+      Math.floor(Math.random() * 9) + 1,
+      Math.floor(Math.random() * 9) + 1,
+      Math.floor(Math.random() * 9) + 1,
+      Math.floor(Math.random() * 9) + 1,
+      Math.floor(Math.random() * 9) + 1,
+      Math.floor(Math.random() * 9) + 1,
+      Math.floor(Math.random() * 9) + 1
+    ]); instance.runAlgorithm(countingSortSteps); },
+    prevStep: () => instance.prevStep(),
+    nextStep: () => instance.nextStep(),
+    play: () => instance.play()
+  };
+})();
+</script>
+
+<h3 id="基数排序-Radix-Sort"><a href="#基数排序-Radix-Sort" class="headerlink" title="基数排序 (Radix Sort)"></a>基数排序 (Radix Sort)</h3><p>那么如果要排很大的数字（比如手机号），或者字符串，计数排序的桶就太多了。这时候就可以使用基数排序。</p>
+<ol>
+<li>先按<strong>个位</strong>数字，把数据分到 0-9 号桶里，然后按顺序倒出来。</li>
+<li>再按<strong>十位</strong>数字，分桶，倒出来。</li>
+<li>… 直到最高位。</li>
+<li>随后你惊讶的发现，现在数组已经完全有序了（</li>
+</ol>
+<p>这样做的道理在于因为每一次分桶收集，都是一次稳定的排序。当我们排高位时，由于稳定性，低位的相对顺序被保留了下来。</p>
+<div id="radix-demo" class="sort-demo">
+  <div class="demo-title">基数排序</div>
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="radixViz.generateArray()">🔄 重置</button>
+    <button class="btn btn-secondary btn-prev" onclick="radixViz.prevStep()">◀ 上一步</button>
+    <button class="btn btn-primary btn-play" onclick="radixViz.play()">▶ 播放</button>
+    <button class="btn btn-secondary btn-next" onclick="radixViz.nextStep()">下一步 ▶</button>
+  </div>
+  
+  <div class="array-container"></div>
+  
+  <div style="margin-top: 15px;">
+    <div style="font-size: 13px; color: var(--text-p2); margin-bottom: 8px;" id="radix-digit-label">🔢 按位分桶（0-9）</div>
+    <div id="radix-buckets" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; background: var(--bg-a100); padding: 15px; border-radius: 8px;"></div>
+  </div>
+  
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #4FC3F7, #03A9F4)"></div>当前处理</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #FFD54F, #FFC107)"></div>当前位高亮</div>
+    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(180deg, #81C784, #4CAF50)"></div>完成</div>
+  </div>
+  <div class="info-panel">
+    <div class="step-info">基数排序：从低位到高位，依次按每一位进行稳定排序</div>
+    <div class="step-counter">步骤 0 / 0</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<script>
+const radixViz = (function() {
+  function renderRadixBuckets(step, container) {
+    const bucketsContainer = container.querySelector('#radix-buckets');
+    const digitLabel = container.querySelector('#radix-digit-label');
+    
+    if (step.extra && bucketsContainer) {
+      const { buckets, digitName } = step.extra;
+      
+      if (digitLabel && digitName) {
+        digitLabel.textContent = `🔢 按 ${digitName} 分桶`;
+      }
+      
+      if (buckets) {
+        let html = '';
+        for (let i = 0; i <= 9; i++) {
+          const items = buckets[i] || [];
+          html += `
+            <div style="min-width: 50px; text-align: center;">
+              <div style="font-size: 11px; color: var(--text-p3); margin-bottom: 4px;">桶 ${i}</div>
+              <div style="min-height: 60px; background: var(--bg-a50); border-radius: 4px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                ${items.map(v => `<div style="background: linear-gradient(135deg, #B39DDB 0%, #7E57C2 100%); color: white; padding: 2px 6px; border-radius: 3px; font-size: 12px; font-weight: 600;">${v}</div>`).join('')}
+              </div>
+            </div>
+          `;
+        }
+        bucketsContainer.innerHTML = html;
+      }
+    }
+  }
+  
+  const instance = SortEngine.createInstance('radix-demo', {
+    extraRender: renderRadixBuckets
+  });
+  
+  function radixSortSteps(arr, states, addStep) {
+    const n = arr.length;
+    const maxVal = Math.max(...arr);
+    const maxDigits = String(maxVal).length;
+    
+    addStep(arr, states, `开始基数排序，最大值 ${maxVal}，需要处理 ${maxDigits} 位`, { buckets: {}, digitName: '个位' });
+    
+    let exp = 1; // 1, 10, 100, ...
+    const digitNames = ['个位', '十位', '百位', '千位', '万位'];
+    
+    for (let d = 0; d < maxDigits; d++) {
+      const digitName = digitNames[d] || `第${d+1}位`;
+      const buckets = {};
+      for (let i = 0; i <= 9; i++) buckets[i] = [];
+      
+      addStep(arr, states, `📊 第 ${d + 1} 轮：按 ${digitName} 分桶`, { buckets: JSON.parse(JSON.stringify(buckets)), digitName });
+      
+      // 分配到桶
+      for (let i = 0; i < n; i++) {
+        states.fill('default');
+        states[i] = 'current';
+        const digit = Math.floor(arr[i] / exp) % 10;
+        buckets[digit].push(arr[i]);
+        addStep(arr, states, `arr[${i}]=${arr[i]}，${digitName}=${digit}，放入桶 ${digit}`, { buckets: JSON.parse(JSON.stringify(buckets)), digitName });
+      }
+      
+      addStep(arr, states, `分配完成，开始收集`, { buckets: JSON.parse(JSON.stringify(buckets)), digitName });
+      
+      // 从桶收集
+      let idx = 0;
+      for (let i = 0; i <= 9; i++) {
+        for (const val of buckets[i]) {
+          arr[idx] = val;
+          states[idx] = 'pivot';
+          addStep(arr, states, `从桶 ${i} 收集 ${val} 到位置 ${idx}`, { buckets: JSON.parse(JSON.stringify(buckets)), digitName });
+          states[idx] = 'sorted';
+          idx++;
+        }
+        buckets[i] = []; // 清空桶的视觉效果
+      }
+      
+      states.fill('default');
+      addStep(arr, states, `✅ 第 ${d + 1} 轮完成，数组：[${arr.join(', ')}]`, { buckets: {}, digitName: digitNames[d + 1] || '完成' });
+      
+      exp *= 10;
+    }
+    
+    states.fill('sorted');
+    addStep(arr, states, `✅ 基数排序完成！`, { buckets: {}, digitName: '完成' });
+  }
+  
+  function init() {
+    instance.generateArray([170, 45, 75, 90, 802, 24, 2, 66]);
+    instance.runAlgorithm(radixSortSteps);
+  }
+  
+  init();
+  
+  return {
+    generateArray: () => { 
+      const newArr = Array.from({length: 8}, () => Math.floor(Math.random() * 900) + 10);
+      instance.generateArray(newArr); 
+      instance.runAlgorithm(radixSortSteps); 
+    },
+    prevStep: () => instance.prevStep(),
+    nextStep: () => instance.nextStep(),
+    play: () => instance.play()
+  };
+})();
+</script>
+
+<hr>
+<h2 id="总结与考试重点"><a href="#总结与考试重点" class="headerlink" title="总结与考试重点"></a>总结与考试重点</h2><table>
+<thead>
+<tr>
+<th align="left">算法</th>
+<th align="center">平均时间</th>
+<th align="center">空间</th>
+<th align="center">稳定性</th>
+<th align="left">一句话特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>冒泡</strong></td>
+<td align="center">$O(n^2)$</td>
+<td align="center">$O(1)$</td>
+<td align="center">稳</td>
+<td align="left">像气泡一样上浮，简单但慢</td>
+</tr>
+<tr>
+<td align="left"><strong>插入</strong></td>
+<td align="center">$O(n^2)$</td>
+<td align="center">$O(1)$</td>
+<td align="center">稳</td>
+<td align="left">像理扑克牌，基本有序时最快</td>
+</tr>
+<tr>
+<td align="left"><strong>选择</strong></td>
+<td align="center">$O(n^2)$</td>
+<td align="center">$O(1)$</td>
+<td align="center">不稳</td>
+<td align="left">每次挑最小的，交换次数最少</td>
+</tr>
+<tr>
+<td align="left"><strong>堆排</strong></td>
+<td align="center">$O(n \log n)$</td>
+<td align="center">$O(1)$</td>
+<td align="center">不稳</td>
+<td align="left">利用堆结构，空间最省的高级排序</td>
+</tr>
+<tr>
+<td align="left"><strong>归并</strong></td>
+<td align="center">$O(n \log n)$</td>
+<td align="center">$O(n)$</td>
+<td align="center">稳</td>
+<td align="left">分治合并，稳定但费空间</td>
+</tr>
+<tr>
+<td align="left"><strong>快排</strong></td>
+<td align="center">$O(n \log n)$</td>
+<td align="center">$O(\log n)$</td>
+<td align="center">不稳</td>
+<td align="left">选基准分区，平均最快</td>
+</tr>
+<tr>
+<td align="left"><strong>计数</strong></td>
+<td align="center">$O(n+k)$</td>
+<td align="center">$O(k)$</td>
+<td align="center">稳</td>
+<td align="left">不比大小，利用统计，范围要小</td>
+</tr>
+</tbody></table>
+<p>有关稳定性：记住”快选堆”（快排、选择、堆排）是不稳定的，其他的基本都稳定。<br>最坏情况：快排最坏是 $O(n^2)$，归并和堆排最坏依然是 $O(n \log n)$。<br>应用场景：</p>
+<ul>
+<li>数据量小且基本有序 -&gt; <strong>插入排序</strong></li>
+<li>数据量大且要求稳定 -&gt; <strong>归并排序</strong></li>
+<li>数据量大且内存紧张 -&gt; <strong>堆排序</strong></li>
+<li>一般情况下的最快选择 -&gt; <strong>快速排序</strong></li>
+</ul>
+<h2 id="排序算法可视化实验室"><a href="#排序算法可视化实验室" class="headerlink" title="排序算法可视化实验室"></a>排序算法可视化实验室</h2><p>在这里你可以直观地对比不同排序算法的执行过程。</p>
+<style>
+#sort-viz {
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg-a50);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+#sort-viz .controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+#sort-viz button {
+  padding: 8px 16px;
+  border: 1px solid var(--text-p3);
+  background: var(--bg-a100);
+  color: var(--text-p1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+#sort-viz button:hover {
+  background: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+#sort-viz button.active {
+  background: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+#sort-viz button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#sort-container {
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  background: var(--bg-a100);
+  padding: 10px;
+  border-radius: 4px;
+  position: relative;
+}
+.sort-bar {
+  flex: 1;
+  background: #90CAF9;
+  transition: height 0.1s ease;
+  border-radius: 2px 2px 0 0;
+}
+.sort-bar.compare {
+  background: #FF5722 !important; /* 比较中：红色 */
+}
+.sort-bar.swap {
+  background: #9C27B0 !important; /* 交换中：紫色 */
+}
+.sort-bar.sorted {
+  background: #4CAF50 !important; /* 已排序：绿色 */
+}
+.sort-bar.pivot {
+  background: #FFC107 !important; /* 基准值：黄色 */
+}
+#sort-stats {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-p2);
+  display: flex;
+  justify-content: space-between;
+}
+</style>
+
+<div id="sort-viz">
+  <div class="controls">
+    <button onclick="sortViz.generateArray()">🔄 生成新数组</button>
+    <button onclick="sortViz.run('bubble')">冒泡排序</button>
+    <button onclick="sortViz.run('selection')">选择排序</button>
+    <button onclick="sortViz.run('insertion')">插入排序</button>
+    <button onclick="sortViz.run('quick')">快速排序</button>
+    <button onclick="sortViz.run('merge')">归并排序</button>
+    <button onclick="sortViz.run('heap')">堆排序</button>
+  </div>
+  <div id="sort-container"></div>
+  <div id="sort-stats">
+    <span id="sort-status">准备就绪</span>
+    <span>比较次数: <b id="comp-count">0</b> | 交换/赋值次数: <b id="swap-count">0</b></span>
+  </div>
+</div>
+
+<script>
+const sortViz = (function() {
+  const container = document.getElementById('sort-container');
+  const statusEl = document.getElementById('sort-status');
+  const compEl = document.getElementById('comp-count');
+  const swapEl = document.getElementById('swap-count');
+  
+  let array = [];
+  let bars = [];
+  let delay = 30;
+  let isRunning = false;
+  let stopFlag = false;
+  let comparisons = 0;
+  let swaps = 0;
+  const size = 50;
+
+  function generateArray() {
+    if (isRunning) {
+      stopFlag = true;
+      setTimeout(generateArray, 100);
+      return;
+    }
+    array = [];
+    container.innerHTML = '';
+    bars = [];
+    comparisons = 0;
+    swaps = 0;
+    updateStats();
+    
+    for (let i = 0; i < size; i++) {
+      const val = Math.floor(Math.random() * 90) + 10;
+      array.push(val);
+      const bar = document.createElement('div');
+      bar.className = 'sort-bar';
+      bar.style.height = val + '%';
+      bar.title = val;
+      container.appendChild(bar);
+      bars.push(bar);
+    }
+    statusEl.textContent = '数组已生成';
+  }
+
+  function updateStats() {
+    compEl.textContent = comparisons;
+    swapEl.textContent = swaps;
+  }
+
+  async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function swap(i, j) {
+    if (stopFlag) throw 'Stopped';
+    swaps++;
+    updateStats();
+    
+    bars[i].classList.add('swap');
+    bars[j].classList.add('swap');
+    await sleep(delay);
+    
+    let temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+    
+    bars[i].style.height = array[i] + '%';
+    bars[j].style.height = array[j] + '%';
+    
+    await sleep(delay);
+    bars[i].classList.remove('swap');
+    bars[j].classList.remove('swap');
+  }
+
+  async function compare(i, j) {
+    if (stopFlag) throw 'Stopped';
+    comparisons++;
+    updateStats();
+    
+    bars[i].classList.add('compare');
+    bars[j].classList.add('compare');
+    await sleep(delay);
+    bars[i].classList.remove('compare');
+    bars[j].classList.remove('compare');
+    
+    return array[i] > array[j];
+  }
+  
+  async function setVal(i, val) {
+    if (stopFlag) throw 'Stopped';
+    swaps++;
+    updateStats();
+    array[i] = val;
+    bars[i].classList.add('swap');
+    bars[i].style.height = val + '%';
+    await sleep(delay);
+    bars[i].classList.remove('swap');
+  }
+
+  // --- Algorithms ---
+
+  async function bubbleSort() {
+    for (let i = 0; i < size - 1; i++) {
+      for (let j = 0; j < size - 1 - i; j++) {
+        if (await compare(j, j + 1)) {
+          await swap(j, j + 1);
+        }
+      }
+      bars[size - 1 - i].classList.add('sorted');
+    }
+    bars[0].classList.add('sorted');
+  }
+
+  async function selectionSort() {
+    for (let i = 0; i < size - 1; i++) {
+      let minIdx = i;
+      bars[i].classList.add('pivot');
+      for (let j = i + 1; j < size; j++) {
+        if (array[j] < array[minIdx]) { // Not using compare wrapper to speed up visual slightly
+           comparisons++;
+           updateStats();
+           bars[j].classList.add('compare');
+           await sleep(delay/2);
+           bars[j].classList.remove('compare');
+           minIdx = j;
+        }
+      }
+      bars[i].classList.remove('pivot');
+      if (minIdx !== i) await swap(i, minIdx);
+      bars[i].classList.add('sorted');
+    }
+    bars[size-1].classList.add('sorted');
+  }
+
+  async function insertionSort() {
+    bars[0].classList.add('sorted');
+    for (let i = 1; i < size; i++) {
+      let key = array[i];
+      let j = i - 1;
+      bars[i].classList.add('pivot'); // Current key
+      
+      while (j >= 0) {
+        comparisons++;
+        updateStats();
+        bars[j].classList.add('compare');
+        await sleep(delay);
+        bars[j].classList.remove('compare');
+        
+        if (array[j] > key) {
+          await setVal(j + 1, array[j]);
+          j--;
+        } else {
+          break;
+        }
+      }
+      await setVal(j + 1, key);
+      bars[i].classList.remove('pivot');
+      // Mark 0..i as sorted visually (approx)
+      for(let k=0; k<=i; k++) bars[k].classList.add('sorted');
+    }
+  }
+
+  async function quickSort(low, high) {
+    if (low < high) {
+      let pi = await partition(low, high);
+      await quickSort(low, pi - 1);
+      await quickSort(pi + 1, high);
+    } else if (low >= 0 && high >= 0 && low < size && high < size) {
+       if(low == high) bars[low].classList.add('sorted');
+    }
+  }
+
+  async function partition(low, high) {
+    let pivot = array[high];
+    bars[high].classList.add('pivot');
+    let i = (low - 1);
+    
+    for (let j = low; j <= high - 1; j++) {
+      comparisons++;
+      updateStats();
+      bars[j].classList.add('compare');
+      await sleep(delay);
+      bars[j].classList.remove('compare');
+      
+      if (array[j] < pivot) {
+        i++;
+        await swap(i, j);
+      }
+    }
+    await swap(i + 1, high);
+    bars[high].classList.remove('pivot');
+    bars[i+1].classList.add('sorted');
+    return (i + 1);
+  }
+
+  async function mergeSort(l, r) {
+    if (l >= r) return;
+    let m = l + Math.floor((r - l) / 2);
+    await mergeSort(l, m);
+    await mergeSort(m + 1, r);
+    await merge(l, m, r);
+  }
+
+  async function merge(l, m, r) {
+    let n1 = m - l + 1;
+    let n2 = r - m;
+    let L = new Array(n1);
+    let R = new Array(n2);
+
+    for (let i = 0; i < n1; i++) L[i] = array[l + i];
+    for (let j = 0; j < n2; j++) R[j] = array[m + 1 + j];
+
+    let i = 0, j = 0, k = l;
+    
+    // Visual highlight range
+    for(let x=l; x<=r; x++) bars[x].classList.add('pivot');
+
+    while (i < n1 && j < n2) {
+      comparisons++;
+      updateStats();
+      if (L[i] <= R[j]) {
+        await setVal(k, L[i]);
+        i++;
+      } else {
+        await setVal(k, R[j]);
+        j++;
+      }
+      k++;
+    }
+
+    while (i < n1) {
+      await setVal(k, L[i]);
+      i++;
+      k++;
+    }
+    while (j < n2) {
+      await setVal(k, R[j]);
+      j++;
+      k++;
+    }
+    
+    for(let x=l; x<=r; x++) {
+        bars[x].classList.remove('pivot');
+        bars[x].classList.add('sorted'); // Temporary sorted state
+    }
+  }
+  
+  async function heapSort() {
+      let n = size;
+      // Build heap
+      for (let i = Math.floor(n / 2) - 1; i >= 0; i--)
+          await heapify(n, i);
+
+      // Extract
+      for (let i = n - 1; i > 0; i--) {
+          await swap(0, i);
+          bars[i].classList.add('sorted');
+          await heapify(i, 0);
+      }
+      bars[0].classList.add('sorted');
+  }
+
+  async function heapify(n, i) {
+      let largest = i;
+      let l = 2 * i + 1;
+      let r = 2 * i + 2;
+
+      if (l < n) {
+          comparisons++;
+          updateStats();
+          if (array[l] > array[largest]) largest = l;
+      }
+
+      if (r < n) {
+          comparisons++;
+          updateStats();
+          if (array[r] > array[largest]) largest = r;
+      }
+
+      if (largest != i) {
+          await swap(i, largest);
+          await heapify(n, largest);
+      }
+  }
+
+  async function run(algo) {
+    if (isRunning) return;
+    isRunning = true;
+    stopFlag = false;
+    statusEl.textContent = '正在运行: ' + algo;
+    
+    // Reset colors
+    bars.forEach(b => b.className = 'sort-bar');
+    
+    try {
+      if (algo === 'bubble') await bubbleSort();
+      else if (algo === 'selection') await selectionSort();
+      else if (algo === 'insertion') await insertionSort();
+      else if (algo === 'quick') {
+          await quickSort(0, size - 1);
+          bars.forEach(b => b.classList.add('sorted'));
+      }
+      else if (algo === 'merge') {
+          await mergeSort(0, size - 1);
+          bars.forEach(b => b.classList.add('sorted'));
+      }
+      else if (algo === 'heap') await heapSort();
+      
+      statusEl.textContent = '完成!';
+    } catch (e) {
+      statusEl.textContent = '已停止';
+    }
+    isRunning = false;
+  }
+
+  generateArray();
+  
+  return {
+    generateArray,
+    run
+  };
+})();
+</script>
+
+<hr>
+
+
+  <div class="tag-list">
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">算法/排序</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">算法/排序/冒泡排序</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">算法/排序/选择排序</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">算法/排序/插入排序</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%A0%86%E6%8E%92%E5%BA%8F/">算法/排序/堆排序</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">算法/排序/归并排序</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">算法/排序/快速排序</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">算法/排序/计数排序</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">算法/排序/基数排序</a>
+    
+  </div>
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-O-n-2"><span class="toc-text">基础排序算法 ($O(n^2)$)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F-Bubble-Sort"><span class="toc-text">冒泡排序 (Bubble Sort)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F-Selection-Sort"><span class="toc-text">选择排序 (Selection Sort)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F-Insertion-Sort"><span class="toc-text">插入排序 (Insertion Sort)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AE%83%E4%BB%AC%E9%83%BD%E6%98%AF-O-n-2-%EF%BC%9F-The-Inversion-Argument"><span class="toc-text">为什么它们都是 $O(n^2)$？(The Inversion Argument)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F-Heap-Sort"><span class="toc-text">堆排序 (Heap Sort)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%A4%A7%E6%A0%B9%E5%A0%86%EF%BC%9F"><span class="toc-text">什么是大根堆？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E4%B8%8B%E5%A0%86%E5%8C%96-Heapify"><span class="toc-text">向下堆化 (Heapify)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F%E6%B5%81%E7%A8%8B"><span class="toc-text">堆排序流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-O-n-log-n"><span class="toc-text">高级排序算法 ($O(n \log n)$)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F-Merge-Sort"><span class="toc-text">归并排序 (Merge Sort)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F-Quick-Sort"><span class="toc-text">快速排序 (Quick Sort)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%8E%92%E5%BA%8F-Linear-Sorts"><span class="toc-text">线性排序 (Linear Sorts)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F-Counting-Sort"><span class="toc-text">计数排序 (Counting Sort)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F-Radix-Sort"><span class="toc-text">基数排序 (Radix Sort)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E8%80%83%E8%AF%95%E9%87%8D%E7%82%B9"><span class="toc-text">总结与考试重点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E9%AA%8C%E5%AE%A4"><span class="toc-text">排序算法可视化实验室</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1764412438884" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
