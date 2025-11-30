@@ -23,7 +23,7 @@
     <meta name="description" content="testing">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Naucha">
-<meta property="og:url" content="https://naughtychas.github.io/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E7%BA%BF%E6%80%A7%E6%90%9C%E7%B4%A2/">
+<meta property="og:url" content="https://naughtychas.github.io/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/dijkstra/">
 <meta property="og:site_name" content="Naucha">
 <meta property="og:description" content="testing">
 <meta property="og:locale" content="zh_CN">
@@ -39,7 +39,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764488128069">
+  <link rel="stylesheet" href="/css/main.css?v=1764488128056">
 
 
   
@@ -542,10 +542,10 @@
   
   
   
-  <div class="tag-subtree leaf-tag" data-tag="算法/dijkstra">
+  <div class="tag-subtree leaf-tag expanded" data-tag="算法/dijkstra">
     
   
-  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/dijkstra/">
+  <a class="link active" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/dijkstra/">
     <span class="toc-text" style="padding-left: 0.875rem;">
       
         
@@ -821,7 +821,7 @@
   
   
   
-  <div class="tag-subtree parent-tag expanded" data-tag="算法/搜索">
+  <div class="tag-subtree parent-tag" data-tag="算法/搜索">
     
   
   <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/">
@@ -945,10 +945,10 @@
   
   
   
-  <div class="tag-subtree leaf-tag expanded" data-tag="算法/搜索/线性搜索">
+  <div class="tag-subtree leaf-tag" data-tag="算法/搜索/线性搜索">
     
   
-  <a class="link active" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E7%BA%BF%E6%80%A7%E6%90%9C%E7%B4%A2/">
+  <a class="link" href="/notebooks/COMP2119/tags/%E7%AE%97%E6%B3%95/%E6%90%9C%E7%B4%A2/%E7%BA%BF%E6%80%A7%E6%90%9C%E7%B4%A2/">
     <span class="toc-text" style="padding-left: 1.75rem;">
       
         
@@ -1169,17 +1169,17 @@
   
     <a
       class="post-card post"
-      href="/notes/COMP2119/chapter6/?tag=算法/搜索/线性搜索"
+      href="/notes/COMP2119/chapter3/?tag=算法/dijkstra"
     >
       
 <article class="md-text">
   
-  <h2 class="post-title">Chapter 6: 搜索</h2>
+  <h2 class="post-title">Chapter 3: 基础数据结构</h2>
   <div class="excerpt">
     <p>
       
-        增删改我们聊的挺多了，但是查该如何去执行呢？  
-搜索算法线性搜索 (Linear Search)最简单的查找方式就是线性搜索 (Linear Search) 了。线性搜索的方法非常简单，例如在数组里，我们就从头到尾按照index把整个数组扫一遍。找...
+        本章来介绍一些基础的数据结构。
+抽象数据类型与数据结构抽象数据类型 (Abstract Data Type, ADT) 与 数据结构 (Data Structure) 本质上是两码事。抽象数据类型的角度较为宏观，例如“存在一个栈，允许我往里压入元素，...
       
     </p>
   </div>
@@ -1187,12 +1187,36 @@
     
     <span class="cap" id="post-meta">
       <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
-      <time datetime="2025-11-29T10:31:51.291Z">2025-11-29</time>
+      <time datetime="2025-11-29T12:29:58.165Z">2025-11-29</time>
     </span>
     
       
         <span class="cap breadcrumb" >
-          <span class="tag">算法</span>
+          <span class="tag">数据结构</span>
+        </span>
+      
+        <span class="cap breadcrumb" >
+          <span class="tag">数据结构/抽象数据类型</span>
+        </span>
+      
+        <span class="cap breadcrumb" >
+          <span class="tag">数据结构/数组</span>
+        </span>
+      
+        <span class="cap breadcrumb" >
+          <span class="tag">数据结构/链表</span>
+        </span>
+      
+        <span class="cap breadcrumb" >
+          <span class="tag">数据结构/栈</span>
+        </span>
+      
+        <span class="cap breadcrumb" >
+          <span class="tag">数据结构/队列</span>
+        </span>
+      
+        <span class="cap breadcrumb" >
+          <span class="tag">数据结构/图</span>
         </span>
       
         <span class="cap breadcrumb" >
@@ -1200,27 +1224,19 @@
         </span>
       
         <span class="cap breadcrumb" >
-          <span class="tag">算法/搜索/线性搜索</span>
+          <span class="tag">算法/搜索/广度优先搜索</span>
         </span>
       
         <span class="cap breadcrumb" >
-          <span class="tag">算法/搜索/二分搜索</span>
+          <span class="tag">算法/搜索/深度优先搜索</span>
         </span>
       
         <span class="cap breadcrumb" >
-          <span class="tag">算法/搜索/插值搜索</span>
+          <span class="tag">算法/Dijkstra</span>
         </span>
       
         <span class="cap breadcrumb" >
-          <span class="tag">算法/搜索/跳转搜索</span>
-        </span>
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">算法/搜索/范围搜索</span>
-        </span>
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">算法/复杂度</span>
+          <span class="tag">数据结构/数据结构复杂度</span>
         </span>
       
     
@@ -1658,7 +1674,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764488128069" defer></script>
+<script src="/js/main.js?v=1764488128057" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
