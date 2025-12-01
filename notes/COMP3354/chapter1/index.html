@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
   
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 8.1.1">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,17 +17,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>分类：校内课程 - Naucha</title>
+  <title>Chapter 1: 数据学习介绍 - Naucha</title>
 
   
-    <meta name="description" content="testing">
+    <meta name="description" content="范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。   但是，Arthur Samuel (1959) 提出了一个革命性的想法：如果我们不显式地编写规则，而是赋">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Naucha">
-<meta property="og:url" content="https://naughtychas.github.io/categories/%E5%AD%A6%E4%B9%A0/%E6%A0%A1%E5%86%85%E8%AF%BE%E7%A8%8B/">
+<meta property="og:title" content="Chapter 1: 数据学习介绍">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter1/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="testing">
+<meta property="og:description" content="范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。   但是，Arthur Samuel (1959) 提出了一个革命性的想法：如果我们不显式地编写规则，而是赋">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2025-11-24T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-01T12:22:20.824Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -39,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943421">
+  <link rel="stylesheet" href="/css/main.css?v=1764600943400">
 
 
   
@@ -48,47 +50,228 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Naucha","description":"testing","url":"https://naughtychas.github.io"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 1: 数据学习介绍","description":"范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。  \n但是，Arthur Samuel (1959) 提出了一个革命性的想法：如果我们不显式地编写规则，...","url":"https://naughtychas.github.io/notes/COMP3354/chapter1/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
 
-<div class="l_body index" id="start" layout="undefined" type="undefined" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
 
 <div class="nav-area">
 
-<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
 </div>
 <div class="widgets">
-<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3354" placeholder="在 COMP3354 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2025/11/19/MUSI2010/"><span class="title">Summary of MUSI2010 Music of China</span></a><a class="item title" href="/2025/11/20/MUSI2081/"><span class="title">Summary of MUSI2081 Music in Western culture I</span></a><a class="item title" href="/2025/11/20/history/"><span class="title">博客重构 & 网站更新日志</span></a></div></widget>
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3354/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
-
- 
 
 
 
 
-<div class="navbar top"><div class="navbar-blur"><div class="navbar-container"><nav class="post"><a href="/">近期发布</a><a class="active" href="/categories/">分类：校内课程</a><a href="/tags/">标签</a><a href="/archives/">归档</a></nav></div></div></div>
-<div class="post-list post"><a class="post-card post" href="/2025/11/20/MUSI2081/">
-<article class="md-text"><h2 class="post-title" style="font-weight:bold; font-size: 1.3em;">Summary of MUSI2081 Music in Western culture I</h2><div class="excerpt"><p>An incomplete guide on the course MUSI2081 from HKU.</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2025-11-20T09:36:11.000Z">2025-11-20</time></span><span class="cap breadcrumb"><svg style="margin-bottom:1px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M2 6.95c0-.883 0-1.324.07-1.692A4 4 0 0 1 5.257 2.07C5.626 2 6.068 2 6.95 2c.386 0 .58 0 .766.017a4 4 0 0 1 2.18.904c.144.119.28.255.554.529L11 4c.816.816 1.224 1.224 1.712 1.495a4 4 0 0 0 .848.352C14.098 6 14.675 6 15.828 6h.374c2.632 0 3.949 0 4.804.77c.079.07.154.145.224.224c.77.855.77 2.172.77 4.804V14c0 3.771 0 5.657-1.172 6.828C19.657 22 17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.172C2 19.657 2 17.771 2 14z" opacity=".5"/><path fill="currentColor" d="M20 6.238c0-.298-.005-.475-.025-.63a3 3 0 0 0-2.583-2.582C17.197 3 16.965 3 16.5 3H9.988c.116.104.247.234.462.45L11 4c.816.816 1.224 1.224 1.712 1.495a4 4 0 0 0 .849.352C14.098 6 14.675 6 15.829 6h.373c1.78 0 2.957 0 3.798.238"/><path fill="currentColor" fill-rule="evenodd" d="M12.25 10a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/></svg><span>学习 / 校内课程</span></span></div></article>
-</a><a class="post-card post photo" href="/2025/11/19/MUSI2010/">
-<div class="cover" position="bottom"><img src="/imgs/site/covers/MUSI2010_small.jpg" style="aspect-ratio:3"/><div class="cover-info" position="bottom"style="color:black"><div class="text headline">Summary of MUSI2010 Music of China</div><div class="text caption">A guide on the course MUSI2010 from HKU.</div></div></div>
-</a></div>
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-01T12:22:20.824Z">2025-12-01</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-11-24T02:00:00.000Z">2025-11-24</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 1: 数据学习介绍</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="范式的转变"><a href="#范式的转变" class="headerlink" title="范式的转变"></a>范式的转变</h2><p>在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。  </p>
+<p>但是，Arthur Samuel (1959) 提出了一个革命性的想法：如果我们不显式地编写规则，而是赋予计算机从数据中学习的能力呢？这就是 <strong>Machine Learning</strong>， 机器学习。  </p>
+<p>在这里。流程是你把“数据”和“预期的答案”同时喂给计算机，计算机会自己去“猜”中间的逻辑，最终生成一套规则，这样一套规则即是模型。这就像你教一个有悟性的学生，你只给他看 100 道题和答案，让他自己去琢磨解题方法。</p>
+<p>为了更严谨地定义这种“悟性”，Tom Mitchell 提出了一个经典的数学化定义，包含三个要素：T, P, E：  </p>
+<ul>
+<li><strong>Task (T)</strong>: 任务。比如“区分垃圾邮件”。</li>
+<li><strong>Experience (E)</strong>: 经验。即历史数据，比如“以前收到的 1000 封邮件及其标签”。</li>
+<li><strong>Performance (P)</strong>: 性能指标。比如“分类的准确率”。</li>
+</ul>
+<p>如果一个程序在任务T上的性能P，随着经验E的增加而提高，那么我们就说这个程序正在“学习”。  </p>
+<h2 id="数据表示"><a href="#数据表示" class="headerlink" title="数据表示"></a>数据表示</h2><p>既然汲取需要通过“经验”来学习，我们如何将现实世界中的经验喂给计算机？比如我们需要喂给计算机一首歌，计算机来通过你的口味为你推荐你喜欢的歌曲。计算机当然听不懂旋律，但是我们可以将这首歌翻译成数学语言。例如节拍和响度。  </p>
+<p>想象一下如果我们将节拍速度画在X轴，响度画在Y轴，那么这么一首歌就变成了平面坐标系上的一个点。在这个坐标系中，相似的歌曲汇聚在一起。那么这样你就拥有了一个表示批量数据的方法。例如你想要寻找快节奏，高响度的歌，你就可以去右上角寻找相应的点。  </p>
+<p>在这样的概念下：  </p>
+<p><strong>Input Data ($x$)</strong> 是我们用来描述事物的特征向量。我们写作$x \in \mathbb{R}^d$。这里的$d$代指<strong>特征维度 (Feature Dimension)</strong>。  </p>
+<p>在上面歌曲的例子中，由于我们的特征只有两层，因此$d &#x3D;  2$。而在其他应用场景中，$d$的值可能会非常大，例如图像识别。  </p>
+<p><strong>Label ($y$)</strong> 是我们希望机器会预测的标准答案，在这里就代指你的用户是否喜欢这首歌。</p>
+<p>通过这种方式，原本抽象的“学习喜好”变成了一个几何问题：在坐标系中画一个圈（或一条线），把代表“喜欢”的点和代表“不喜欢”的点分开。当有新的数据点进来时，看它落在圈内还是圈外，就能预测结果了。  </p>
+<hr>
+<h2 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h2><h3 id="监督学习的分类"><a href="#监督学习的分类" class="headerlink" title="监督学习的分类"></a>监督学习的分类</h3><p>在**监督学习 (Supervised Learning)**中，根据我们要预测的 <strong>Label ($y$)</strong> 的性质不同，算法被严格分为两大类。理解它们的区别至关重要。  </p>
+<h4 id="分类问题-Classification"><a href="#分类问题-Classification" class="headerlink" title="分类问题 (Classification)"></a>分类问题 (Classification)</h4><p>分类问题顾名思义，我们的目的是<strong>将数据划分到预定义好的类别中</strong>。  </p>
+<p>分类问题的一大特征是，你的标签$y$应是<strong>离散的 (Discrete)</strong>：  </p>
+<p>如果目标是二选一，例如是否是垃圾邮件，喜欢还是不喜欢，则$y \in  {0, 1}$。<br>如果目标是多选一，例如图片是哈基米还是大狗叫还是叮咚鸡，则$y \in {1, 2, …, K}$,。</p>
+<p>分类任务在散点图中看起来就像是寻找一个合适的边界线。机器要做的就是通过这条边界线，将不同颜色（特征）的点尽可能精准分离出来。  </p>
+<h4 id="回归问题-Regression"><a href="#回归问题-Regression" class="headerlink" title="回归问题 (Regression)"></a>回归问题 (Regression)</h4><p>回归问题要做的更像是预测。机器要做的是根据问题，输出一个具体的数值。  </p>
+<p>回归问题的数学特征是，标签$y$应当是<strong>连续的 (Continous)</strong>，并且$y \in \mathbb{R}$，属于实数集。  </p>
+<p>回归问题的经典案例就是大伙喜闻乐见的房价预测。你向机器输入一个值$x$，代表房子的面积，则机器会根据模型来输出一个$y$，也就是房子的价格。  </p>
+<p>回归问题在散点图中做的不是画分界线了，而是要试图画一条<strong>拟合线 (Fitting Line)</strong>。这条拟合线要做的是<u>尽可能穿过或者靠近所有的数据点</u>。因此，一旦这条线通过训练过程确定下来后，用户输入$x$之后，就可以通过这条线的解析式找到对应的$y$来作为预测值。  </p>
+<hr>
+<h3 id="如何定义“错误”？"><a href="#如何定义“错误”？" class="headerlink" title="如何定义“错误”？"></a>如何定义“错误”？</h3><p>由于我们知道监督学习的目标是找一个函数$f: X \rightarrow Y$，但在坐标轴里随便画一条线也是一个函数。$f(x)$到底要满足什么条件才算好？</p>
+<p>首先我们要介绍一个概念叫做<strong>泛化 (Generalization)</strong>。一个泛化能力优秀的模型应当能够在训练数据的基础上，对未来数据同样拥有不错的表现。我们的目标不是让模型在训练数据 (Training Data)上通过死记硬背表现完美，而是要求模型能够根据这些模型合理预测未来数据。  </p>
+<p>为了让计算机能够通过数学来进行“自我反省”，我们需要定义什么是错误。这就是<strong>损失函数 (Loss Function)</strong>，记作$\ell$。  </p>
+<p>机器学习算法在做的事情就是去寻找能够让总损失值最小化的那个函数$f$。</p>
+<h4 id="分类问题损失函数"><a href="#分类问题损失函数" class="headerlink" title="分类问题损失函数"></a>分类问题损失函数</h4><p>对于分类问题，我们使用<strong>0-1 loss</strong>。这是一个简单粗暴的损失函数：如果我们的预测正确，则损失为0，反之则为1。公式算出来的值说白了就是错误率：</p>
+<p>$$\ell &#x3D; \frac{1}{n} \sum_{i&#x3D;1}^{n} (f(x_1) \neq y_i)$$</p>
+<h4 id="回归问题损失函数"><a href="#回归问题损失函数" class="headerlink" title="回归问题损失函数"></a>回归问题损失函数</h4><p>而对于回归问题，我们需要更合理的损失函数。<br>假如我们预测的房价是100万，而实际上是102万，这样的一次预测算错吗？当然算。预测是200万呢？算，而且错的更离谱了。  </p>
+<p>所以相比分类问题，我们更需要的是衡量模型的输出到底有多错这里我们使用<strong>平方损失函数 (Squared Loss Function)</strong>：</p>
+<p>$$\ell &#x3D; \frac{1}{n} \sum_{i&#x3D;1}^{n} (f(x_i) - y_i)^2$$</p>
+<p>我们之所以要将偏移值算平方有些许原因：<br>首先我们需要消除正负号的影响，因为预测高了或者低了都算错；<br>其次我们还需要对更离谱的预测错误施加更狠的惩罚。偏离10的误差平方后为100，而偏离2的误差平方后为4。这意味着模型会去极力避免那些极其离谱的预测。  </p>
+<hr>
+<h2 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h2><p>当然你不可能将所有的数据全部带上人工标注的标签。这怎么说也不现实。这就是所谓<strong>无监督学习 (Unsupervised Learning)</strong>。提供给你的数据只有$x_1, x_2, …, x_n$，没有标签告诉你什么是对的，什么是错的。  </p>
+<p>这时候算法的目标发生了重要转变。与其说是预测数据，我们要做的是发现数据其中蕴含的规律，和隐藏的结构。也就是Pattern and Structures。  </p>
+<p>无监督学习最典型的任务是<strong>聚类任务 (Clustering)</strong>。给你一堆杂乱的照片，但是没有文件名，让你整理，你会怎么做？  </p>
+<p>你大概率会找到两张照片发现：</p>
+<blockquote>
+<p>哦，这两张全是海边的图片，所以放在一起；这几张都是爬山的，所以放在另一堆…</p>
+</blockquote>
+<p>这就是聚类的核心。我们必须要求**簇内相似 (Intra-cluster similarity)<strong>要高，并且</strong>簇间差异 (Inter-cluster dissimilarity)**要大。也就是说：同一个圈子里的要像，不同圈子里的要不像。  </p>
+<h3 id="K-means算法"><a href="#K-means算法" class="headerlink" title="K-means算法"></a>K-means算法</h3><p>K-means是最经典的聚类算法，目标是将数据分成$K$个蔟。  </p>
+<p>整个算法的核心在于循环执行两个步骤，直到达成收敛。</p>
+<ol start="0">
+<li><p><strong>初始化 (Initialization)</strong></p>
+<p> 在这一步，机器会随手在数据空间里扔下$K$个点，作为初始的中心，也就是Cluster centers。这些点可以是真实存在的数据点，也可以是任意位置。  </p>
+</li>
+<li><p><strong>选边 (Assignment)</strong></p>
+<p> 在这一步算法会遍历每一个数据点$x$，并通过该点距离这$K$个中心的欧几里得距离来判断哪一个距离最近。离得谁最近，那么这个点就归谁的蔟。</p>
+</li>
+<li><p><strong>重新计算中心 (Re-center)</strong></p>
+<p> 经过上一步现在每一个蔟都应该拥有一些成员了，而这时候一开始选择的那个中心可能离其他数据点太偏了，没什么代表性了。于是每个团簇开始重新计算自己所有成员的平均位置，并将这个平均位置设置成这个蔟的新的中心。</p>
+<p> 这时我们的中心点就移动了。</p>
+</li>
+</ol>
+<p>接下来重复上述过程。因为中心点移动了，所以可能在某个蔟边缘的数据点发现它离隔壁团簇的新中心更近了。于是对于这些点来说，重新执行选边。</p>
+<p>周而复始，直到中心点不在移动，或者没有任何数据点重新选边，我们结束K-means流程。这就叫<strong>收敛 (Convergence)</strong>。  </p>
+<p>K-means最大的弱点之一来源于初始化。不同的选点带来的结果通常是不一样的。K-means只能找到局部最优解，而不是全局最优解。<br>就好比你在山上，你的目标是下到最低的山谷。K-means 就像是蒙着眼睛往下走。如果你开始站在南坡，你会滑进南边的山谷；如果你站在北坡，你会滑进北边的山谷。初始点选得不同，最后停下的位置（收敛点）往往也不同。  </p>
+<hr>
+<h2 id="强化学习-Reinforcement-Learning"><a href="#强化学习-Reinforcement-Learning" class="headerlink" title="强化学习 (Reinforcement Learning)"></a>强化学习 (Reinforcement Learning)</h2><p>之前的模块中我们了解了监督和无监督学习，而它们可以看作是两种极端的学习方式。监督学习有老师（标签）手把手教你，而无监督学习啥也没有靠自己悟。  </p>
+<p>**强化学习 (Reinforcement Learning)**处于中间地带。没有老师告诉你每一步该怎么做，但是当你昨晚一系列动作后，你所在的环境会给你奖励或者惩罚。</p>
+<p>比如你想教一只小狗坐下，但是bro不是生物学家同时你的狗也不是人，因此不能直接告诉它要弯曲后腿肌腱。你只能对它发出指令，当它偶然做出坐下的动作时，奖励他，反之就惩罚。有点像巴普洛夫实验。  </p>
+<p>在数学上，我们叫：</p>
+<ul>
+<li>智能体(Agent)是那条狗。</li>
+<li>动作(Action)是这条狗做出的动作，例如坐下或者啃你</li>
+<li>奖励函数(Reward Function)是一个定义什么动作是好的，什么动作是不好的的规则</li>
+</ul>
+<p>在强化学习中你的目标是最大化未来的总奖励值。注意是长期的值，而不是眼前的值。  </p>
+<p>强化学习比其他方法更难，主要问题源于：</p>
+<ol>
+<li><p><strong>信用分配问题 (Credit Assignment) 与延迟奖励</strong></p>
+<p> 想象你在下围棋。你走的第一部棋可能极其高明，但是直到100步才赢得比赛，你得到了+1的奖励。问题随之而来，到底是哪一步棋对你的胜算影响更大？是最后一步的绝杀，还是第一步的开局？  </p>
+<p> 机器需要学会将最终的胜利分配功劳给前面一系列复杂的动作。如果分配错了， 例如分配给了某步昏招，那你模型就玩大了</p>
+</li>
+<li><p><strong>探索与利用的权衡 (Exploration-Exploitation Trade-off)</strong></p>
+<p> 这不只是是一个机器学习问题，更像是一个人生哲学问题。假设你面前有10台老虎机，你试了第一台，赢了五块钱。那么你接下来是：</p>
+<ul>
+<li><p><strong>利用 (Exploitation)</strong>：继续玩第一台，因为你知道它100%能稳赚不赔。但是你有可能错过了旁边一台能直接赢100块的老虎机。</p>
+</li>
+<li><p><strong>探索 (Exploration)</strong>: 放弃第一台，去试第二台。这样你可能会赚，也可能会赔。</p>
+</li>
+</ul>
+<p> 强化学习算法必须要在这两者之间找到平衡。一味的选择利用会像K-means那样陷入局部最优，而一味探索则导致效率低下且风险巨大。</p>
+</li>
+</ol>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
 
 
 <footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8C%83%E5%BC%8F%E7%9A%84%E8%BD%AC%E5%8F%98"><span class="toc-text">范式的转变</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA"><span class="toc-text">数据表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">监督学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">监督学习的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98-Classification"><span class="toc-text">分类问题 (Classification)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98-Regression"><span class="toc-text">回归问题 (Regression)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E2%80%9C%E9%94%99%E8%AF%AF%E2%80%9D%EF%BC%9F"><span class="toc-text">如何定义“错误”？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">分类问题损失函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">回归问题损失函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">无监督学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#K-means%E7%AE%97%E6%B3%95"><span class="toc-text">K-means算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0-Reinforcement-Learning"><span class="toc-text">强化学习 (Reinforcement Learning)</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -510,7 +693,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943421" defer></script>
+<script src="/js/main.js?v=1764600943401" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -582,6 +765,30 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
 
 
 
