@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943400">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326141">
 
 
   
@@ -111,7 +111,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -163,7 +163,7 @@
 <h2 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h2><h3 id="监督学习的分类"><a href="#监督学习的分类" class="headerlink" title="监督学习的分类"></a>监督学习的分类</h3><p>在**监督学习 (Supervised Learning)**中，根据我们要预测的 <strong>Label ($y$)</strong> 的性质不同，算法被严格分为两大类。理解它们的区别至关重要。  </p>
 <h4 id="分类问题-Classification"><a href="#分类问题-Classification" class="headerlink" title="分类问题 (Classification)"></a>分类问题 (Classification)</h4><p>分类问题顾名思义，我们的目的是<strong>将数据划分到预定义好的类别中</strong>。  </p>
 <p>分类问题的一大特征是，你的标签$y$应是<strong>离散的 (Discrete)</strong>：  </p>
-<p>如果目标是二选一，例如是否是垃圾邮件，喜欢还是不喜欢，则$y \in  {0, 1}$。<br>如果目标是多选一，例如图片是哈基米还是大狗叫还是叮咚鸡，则$y \in {1, 2, …, K}$,。</p>
+<p>如果目标是二选一，例如是否是垃圾邮件，喜欢还是不喜欢，则$y \in  {0, 1}$。<br>如果目标是多选一，例如图片是哈基米还是大狗叫还是叮咚鸡，则$y \in {1, 2, ..., K}$,。</p>
 <p>分类任务在散点图中看起来就像是寻找一个合适的边界线。机器要做的就是通过这条边界线，将不同颜色（特征）的点尽可能精准分离出来。  </p>
 <h4 id="回归问题-Regression"><a href="#回归问题-Regression" class="headerlink" title="回归问题 (Regression)"></a>回归问题 (Regression)</h4><p>回归问题要做的更像是预测。机器要做的是根据问题，输出一个具体的数值。  </p>
 <p>回归问题的数学特征是，标签$y$应当是<strong>连续的 (Continous)</strong>，并且$y \in \mathbb{R}$，属于实数集。  </p>
@@ -181,12 +181,12 @@
 <p>$$\ell &#x3D; \frac{1}{n} \sum_{i&#x3D;1}^{n} (f(x_i) - y_i)^2$$</p>
 <p>我们之所以要将偏移值算平方有些许原因：<br>首先我们需要消除正负号的影响，因为预测高了或者低了都算错；<br>其次我们还需要对更离谱的预测错误施加更狠的惩罚。偏离10的误差平方后为100，而偏离2的误差平方后为4。这意味着模型会去极力避免那些极其离谱的预测。  </p>
 <hr>
-<h2 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h2><p>当然你不可能将所有的数据全部带上人工标注的标签。这怎么说也不现实。这就是所谓<strong>无监督学习 (Unsupervised Learning)</strong>。提供给你的数据只有$x_1, x_2, …, x_n$，没有标签告诉你什么是对的，什么是错的。  </p>
+<h2 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h2><p>当然你不可能将所有的数据全部带上人工标注的标签。这怎么说也不现实。这就是所谓<strong>无监督学习 (Unsupervised Learning)</strong>。提供给你的数据只有$x_1, x_2, ..., x_n$，没有标签告诉你什么是对的，什么是错的。  </p>
 <p>这时候算法的目标发生了重要转变。与其说是预测数据，我们要做的是发现数据其中蕴含的规律，和隐藏的结构。也就是Pattern and Structures。  </p>
 <p>无监督学习最典型的任务是<strong>聚类任务 (Clustering)</strong>。给你一堆杂乱的照片，但是没有文件名，让你整理，你会怎么做？  </p>
 <p>你大概率会找到两张照片发现：</p>
 <blockquote>
-<p>哦，这两张全是海边的图片，所以放在一起；这几张都是爬山的，所以放在另一堆…</p>
+<p>哦，这两张全是海边的图片，所以放在一起；这几张都是爬山的，所以放在另一堆...</p>
 </blockquote>
 <p>这就是聚类的核心。我们必须要求**簇内相似 (Intra-cluster similarity)<strong>要高，并且</strong>簇间差异 (Inter-cluster dissimilarity)**要大。也就是说：同一个圈子里的要像，不同圈子里的要不像。  </p>
 <h3 id="K-means算法"><a href="#K-means算法" class="headerlink" title="K-means算法"></a>K-means算法</h3><p>K-means是最经典的聚类算法，目标是将数据分成$K$个蔟。  </p>
@@ -693,7 +693,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943401" defer></script>
+<script src="/js/main.js?v=1764698326143" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -990,29 +990,34 @@
     }
   });
 </script>
-<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 
-<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-  MathJax.Hub.Config({
-    tex2jax: {
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
 </script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

@@ -17,19 +17,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>COMP3354 序言 - Naucha</title>
+  <title>Chapter 4: 线性回归与逻辑回归 - Naucha</title>
 
   
-    <meta name="description" content="欢迎！">
+    <meta name="description" content="线性回归线性回归的目标就是画一条直线来尝试穿过数据点。但是为了计算机能够算出来这条直线，我们需要采用极其严谨的符号定义。 回到房价问题。假设输入数据$x$是一个向量，例如房子的面积。我们认为输出$y$，也就是房价，是这些特征的线性组合 (Linear Combination) $$f(x) &#x3D; \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \dots">
 <meta property="og:type" content="website">
-<meta property="og:title" content="COMP3354 序言">
-<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/begin/">
+<meta property="og:title" content="Chapter 4: 线性回归与逻辑回归">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter4/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="欢迎！">
+<meta property="og:description" content="线性回归线性回归的目标就是画一条直线来尝试穿过数据点。但是为了计算机能够算出来这条直线，我们需要采用极其严谨的符号定义。 回到房价问题。假设输入数据$x$是一个向量，例如房子的面积。我们认为输出$y$，也就是房价，是这些特征的线性组合 (Linear Combination) $$f(x) &#x3D; \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \dots">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
-<meta property="article:published_time" content="2025-12-01T08:39:00.000Z">
-<meta property="article:modified_time" content="2025-12-01T08:39:36.957Z">
+<meta property="article:published_time" content="2025-12-02T13:43:00.000Z">
+<meta property="article:modified_time" content="2025-12-02T17:55:29.552Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764698326139">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326152">
 
 
   
@@ -50,7 +50,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/begin/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"COMP3354 序言","description":"欢迎！\n","url":"https://naughtychas.github.io/notes/COMP3354/begin/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter4/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 4: 线性回归与逻辑回归","description":"线性回归线性回归的目标就是画一条直线来尝试穿过数据点。但是为了计算机能够算出来这条直线，我们需要采用极其严谨的符号定义。\n回到房价问题。假设输入数据$x$是一个向量，例如房子的面积。我们认为输出$y$，也就是房价，是这些特征的线性组合 (Linear Combination)\n$$f(x) &#x3D; \\theta_0 + \\theta_1 x_1 + \\theta_2 x_2 + \\do...","url":"https://naughtychas.github.io/notes/COMP3354/chapter4/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -131,23 +131,221 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-01T08:39:36.957Z">2025-12-01</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-01T08:39:00.000Z">2025-12-01</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-02T17:55:29.552Z">2025-12-03</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-02T13:43:00.000Z">2025-12-02</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>COMP3354 序言</span></h1>
+        <h1 class="text title"><span>Chapter 4: 线性回归与逻辑回归</span></h1>
         
       </div>
     </div>
     
   </div>
-  </div><article class="md-text content"><p>欢迎！</p>
+  </div><article class="md-text content"><h2 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><p>线性回归的目标就是画一条直线来尝试穿过数据点。但是为了计算机能够算出来这条直线，我们需要采用极其严谨的符号定义。</p>
+<p>回到房价问题。假设输入数据$x$是一个向量，例如房子的面积。我们认为输出$y$，也就是房价，是这些特征的<strong>线性组合 (Linear Combination)</strong></p>
+<p>$$f(x) &#x3D; \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_d x_d$$</p>
+<p>这里你会发现公式的首项$\theta_0$是截距，而且非常碍事，因为这个值没有对应的变量$x$。为了能够使用统一的向量点积$x^T\theta$来表示，我们人为地将每个数据样本添加一个特征$x_0 &#x3D; 1$。  </p>
+<p>这样一来，$\theta$就变成了$d+1$维向量，$x$也变成了$d + 1$维。因此:</p>
+<p>$$f(x) &#x3D; \sum_{j&#x3D;0}^d \theta_j x_j &#x3D; \theta^T x$$</p>
+<hr>
+<p>在线性回归中，我们使用<strong>平方损失 (Squared Loss)</strong> 损失函数来衡量模型是好是坏：</p>
+<p>$$\ell(\theta) &#x3D; \sum_{i&#x3D;1}^n (y_i - f(x_i))^2 &#x3D; \sum_{i&#x3D;1}^n (y_i - \theta^T x_i)^2$$</p>
+<p>与其他的损失函数相同，我们的目标是找到能让这个总和最小的 $\theta$。</p>
+<hr>
+<p>由于机器学习往往需要处理大规模数据，因此使用矩阵一次性处理所有数据比写n个循环要容易的多。  </p>
+<p>房价问题内，我们的模型有三个参数：$\theta &#x3D; [\theta_0, \theta_1, \theta_2]^T$，分别是截距，面积权重和房间数权重。  </p>
+<p>假设我们看了一个房子($x^{(1)}$)。它的面积是100平，有俩房间。  </p>
+<p>为了配合截距，我们将特征提取成向量： $x^{(1)} &#x3D; [1, 100, 2]^T$<br>如何预测房价？使用$\hat{y}_1 &#x3D; 1 \cdot \theta_0 + 100 \cdot \theta_1 + 2 \cdot \theta_2$，得出你的y值。</p>
+<p>那么在这一步实际上我们就完成了一步两个向量的点乘积，$x^{(1)T}\theta$</p>
+<p>这只是一个房子。那大批房子怎么办？假设我们还需要知道2号房($[1, 120, 3]$)和3号房($[1, 80, 2]$)的价格, 想要求出$y_2$和$y_3$。  </p>
+<p>与其写三个式子计算：</p>
+<p>$$\hat{y}_1 &#x3D; [1, 100, 2] \cdot \theta$$<br>$$\hat{y}_2 &#x3D; [1, 120, 3] \cdot \theta$$<br>$$\hat{y}_3 &#x3D; [1, 80, 2] \cdot \theta$$</p>
+<p>你可以将这几个向量堆叠起来，形成一个矩阵X：  </p>
+<p>$$<br>X &#x3D; \begin{bmatrix}<br>1 &amp; 100 &amp; 2 \\<br>1 &amp; 120 &amp; 3 \\<br>1 &amp; 80 &amp; 2<br>\end{bmatrix}<br>$$</p>
+<p>这个矩阵就叫<strong>Design Matrix</strong>。它的每一行代表一个数据样本，每一列代表一种特征。也就是</p>
+<p>$$<br>X &#x3D; \begin{bmatrix}<br>\text{---} \ (x^{(1)})^T \ \text{---} \\<br>\text{---} \ (x^{(2)})^T \ \text{---} \\<br>\vdots \\<br>\text{---} \ (x^{(n)})^T \ \text{---}<br>\end{bmatrix}<br>$$</p>
+<p>现在，如果我们用这个矩阵 $X$ 去乘以参数向量 $\theta$：</p>
+<p>$$<br>X \theta &#x3D;<br>\begin{bmatrix}<br>1 &amp; 100 &amp; 2 \\<br>1 &amp; 120 &amp; 3 \\<br>1 &amp; 80 &amp; 2<br>\end{bmatrix}<br>\begin{bmatrix}<br>\theta_0 \\<br>\theta_1 \\<br>\theta_2<br>\end{bmatrix}<br>$$</p>
+<p>根据矩阵乘法规则（行乘以列），结果是一个向量：</p>
+<p>$$\begin{bmatrix} 1\cdot\theta_0 + 100\cdot\theta_1 + 2\cdot\theta_2 \\ 1\cdot\theta_0 + 120\cdot\theta_1 + 3\cdot\theta_2 \\ 1\cdot\theta_0 + 80\cdot\theta_1 + 2\cdot\theta_2 \end{bmatrix} &#x3D; \begin{bmatrix} \hat{y}_1 \\ \hat{y}_2 \\ \hat{y}_3 \end{bmatrix} &#x3D; \hat{y}$$</p>
+<p>这样我们通过一次 $X\theta$ 运算，同时算出了所有房子的预测值向量 $\hat{y}$。</p>
+<p>由于我们的线性回归的目标是最小化所有误差的平方和：$(y_1 - \hat{y}_1)^2 + (y_2 - \hat{y}_2)^2 + (y_3 - \hat{y}_3)^2$。</p>
+<p>通过向量运算可得：</p>
+<p>$$\text{Error Vector } e &#x3D; y - \hat{y} &#x3D; y - X\theta &#x3D; \begin{bmatrix} y_1 - \hat{y}_1 \\ y_2 - \hat{y}_2 \\ y_3 - \hat{y}_3 \end{bmatrix}$$</p>
+<p>这时你发现向量的模长平方就正好是元素的平方和：</p>
+<p>$$|e|^2 &#x3D; e^T e &#x3D; (y - X\theta)^T (y - X\theta)$$</p>
+<p>于是，我们的总损失函数（Empirical Risk）可以写成极其优雅的向量模长平方形式：<br>$$J(\theta) &#x3D; | X\theta - y |^2 &#x3D; (X\theta - y)^T (X\theta - y)$$</p>
+<hr>
+<h3 id="最小化损失"><a href="#最小化损失" class="headerlink" title="最小化损失"></a>最小化损失</h3><p>由于我们的目标是找到能让损失函数$J(\theta)$最小化的值$\theta$，这意味着我们需要对其求导，让他的结果为0。</p>
+<p>首先你会用到这些公式：</p>
+<p><strong>线性项求导：</strong> $\frac{\partial}{\partial \theta} (a^T \theta) &#x3D; a$。<br><strong>二次项求导：</strong> $\frac{\partial}{\partial \theta} (\theta^T A \theta) &#x3D; 2A\theta$。只有$A$是对称矩阵才有效。</p>
+<p>回顾我们的目标函数：<br>$$J(\theta) &#x3D; \underbrace{\theta^T (X^T X) \theta}_{\text{二次项}} - \underbrace{2 (X^T y)^T \theta}_{\text{线性项}} + \underbrace{y^T y}_{\text{常数项}}$$</p>
+<ol>
+<li><p><strong>对第一项求导：</strong><br>$A &#x3D; X^T X$。这是一个对称矩阵。<br>导数 $&#x3D; 2 (X^T X) \theta$。</p>
+</li>
+<li><p><strong>对第二项求导：</strong><br>这是 $-2 a^T \theta$ 的形式，其中 $a &#x3D; X^T y$。<br>导数 $&#x3D; -2 X^T y$。</p>
+</li>
+<li><p><strong>对第三项求导：</strong><br>$y^T y$ 里面没有 $\theta$，是常数。<br>导数 $&#x3D; 0$。</p>
+</li>
+</ol>
+<p><strong>合并并令为 0：</strong><br>$$\nabla_\theta J(\theta) &#x3D; 2 X^T X \theta - 2 X^T y &#x3D; 0$$</p>
+<p>最后求解：<br>消去 2：<br>$$X^T X \theta - X^T y &#x3D; 0$$<br>移项：<br>$$X^T X \theta &#x3D; X^T y$$</p>
+<p>现在你眼前的这个公式就是著名的 <strong>Normal Equations</strong>，或者叫正规方程组。</p>
+<p>最后，假设 $X^T X$ 是可逆的，我们在两边左乘 $(X^T X)^{-1}$：<br>$$\hat{\theta} &#x3D; (X^T X)^{-1} X^T y$$</p>
+<p>这就是线性回归的<strong>闭式解 (Closed-form Solution)</strong>。有了闭式解，你就不需要通过训练来试错了。只需要把你的数据$X$和$y$塞进来算一下，算出来的$\hat{\theta}$就直接是最佳参数的位置。</p>
+<p>虽然这个公式很完美，但在实际编程中（特别是当特征维度$d$特别大，比如$d &#x3D; 100000$时），计算机可能算不出来或者算得极慢。  </p>
+<p>原因是因为<strong>求逆那一步太慢了</strong>。要计算$(X^TX)^{-1}$，如果$X$有100000个特征，那么$X^TX$就是一个$100000 \times 100000$的巨型矩阵。这样的运算复杂度来到了惊人的$O(d^3)$。</p>
+<p>上一章我们用MLE找到了让数据概率发生最大的$\theta$值，这一章通过对平方损失进行求导，找到了能够让误差最小化的$\theta$值。如果我们假设误差服从高斯分布，那么这两种方法算出来的$\theta$实际上是一样的。这是一个非常美妙的巧合，我们在一会会详细说到这点！</p>
+<hr>
+<h3 id="泛化与评估"><a href="#泛化与评估" class="headerlink" title="泛化与评估"></a>泛化与评估</h3><p>既然我们已经算出了最优的$\hat{\theta}$，但实际上故事还远没有结束。  </p>
+<p>由于我们在求导计算时，一直使用的是训练数据集，得到的$\hat{\theta}$也确实让训练数据集的误差最小化了，但即便loss &#x3D; 0这可能会导致模型在真实数据上的表现非常差。</p>
+<p>隆重介绍，<strong>过拟合 (Overfitting)</strong>。过拟合代表模型在训练数据集上的表现不错，但是对后来新数据的泛化能力太差。</p>
+<p>还是房价预测，你用了一个很复杂的模型，你的线性组合里可能用了100次方的多项式，训练出来的线像蛇一样扭曲，完美穿过了每一个训练数据样本。那么你的训练误差在这种情况下就是0。  </p>
+<p>然后我们将这个模型正式纳入使用了。这时来了一个新的数据，但是你训练的多项式可能会给出一个及其离谱的天价或者白菜价。因为你过拟合了，多项式在学到数据规律的同时，也迎合并学习了训练数据中的噪音。你的模型学歪了。  </p>
+<p>这就是为什么我们还需要使用<strong>测试集 (Test Set)</strong>。当模型在使用训练数据集训练的时候，模型不会接触到这些测试集的内容。</p>
+<p>那么我们应当如何正确使用测试集呢？如何使用测试集来告诉我们算出的参数到底有多好？  </p>
+<h4 id="残差"><a href="#残差" class="headerlink" title="残差"></a>残差</h4><p>对于每一个数据点$i$，我们都有它们的：  </p>
+<p>真实值$y_i$，<br>预测值$f(x_i) &#x3D; \hat{\theta}^{T}x_i$</p>
+<p>那么即可通过计算<strong>残差 (Residual)</strong> 来衡量每个点的“预测错误量”：  </p>
+<p>$$r_i &#x3D; |y_i - f(x_i)|$$</p>
+<p>理论来讲，如果数据存在一个完美线性关系，那么所有的残差都为0。但是在现实中，由于噪音的存在，残差是不可避免地。  </p>
+<h4 id="均方误差-MSE"><a href="#均方误差-MSE" class="headerlink" title="均方误差 (MSE)"></a>均方误差 (MSE)</h4><p>假设测试集一共有$m$个样本，则均方误差MSE可通过这个公式求得：</p>
+<p>$$MSE_{test} &#x3D; \frac{1}{m} \sum_{i&#x3D;n+1}^{n+p} (\hat{\theta}^T x_i - y_i)^2$$</p>
+<p>如果算出的$MSE&#x3D;0$，那么说明bro的模型非常不赖，能做到完美预测。<br>如果$MSE$很大，那么这就说明模型在这些没见过的测试数据上表现很差。</p>
+<p>之所以要平方是因为我们沿用了惩罚大误差的思路。与之前一样，错了 10 的惩罚是 100，错了 1 的惩罚是 1。</p>
+<p>计算平均$\frac{1}{m}$的目的是为了让这个指标与数据集的大小无关。无论测试集是 100 个还是 10000 个，MSE 都是同一个量级的，方便比较。</p>
+<p>我们在训练时最小化的是Training MSE，但我们真正考核的是Test MSE。如果 Training MSE 很低（0.01），但 Test MSE 很高（100.0），这就是典型的过拟合现象。</p>
+<hr>
+<h2 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a>逻辑回归</h2><p>如果你用线性回归来做 <strong>二分类 (Binary Classification)</strong>，会发生什么？<br>线性回归输出的是一个实数 $y \in \mathbb{R}$，$z &#x3D; \theta^Tx$，比如 0.8，1.5，甚至 -100。但我们要的是概率 $P \in [0, 1]$，这样更好解释。</p>
+<p>这就引出了<strong>逻辑回归 (Logistic Regression)</strong> 的概念。我们需要的是一个函数，把线性回归那条直直的线“压弯”，压进 [0, 1] 的区间里。</p>
+<p>这个函数就是 <strong>Sigmoid Function</strong> (或者叫 Logistic Function)，记作 $\sigma(z)$。<br>$$\sigma(z) &#x3D; \frac{1}{1 + e^{-z}}$$</p>
+<p>公式该怎么用呢？</p>
+<ol>
+<li>首先算线性得分：$z &#x3D; \theta^T x$ （范围从 $-\infty$ 到 $+\infty$）。</li>
+<li>再通过 Sigmoid：$h_\theta(x) &#x3D; \sigma(\theta^T x) &#x3D; \frac{1}{1 + e^{-\theta^T x}}$。接下来判断：<ul>
+<li>如果 $\theta^T x$ 很大（比如 100），$e^{-100} \approx 0$，则结果趋近 1。</li>
+<li>如果 $\theta^T x$ 很小（比如 -100），$e^{100}$ 很大，分母巨大，结果趋近 0。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="上强度的部分"><a href="#上强度的部分" class="headerlink" title="上强度的部分"></a>上强度的部分</h2><p>不要觉得上强度就代表不考了。祝你对这部分的内容能有一个不错的理解。</p>
+<h3 id="概率视角下的线性回归"><a href="#概率视角下的线性回归" class="headerlink" title="概率视角下的线性回归"></a>概率视角下的线性回归</h3><p>概念有关的内容应该解释的比较透彻了。这里我们来从数学的视角更近一步，来近距离看看这背后的数学原理是怎样的。</p>
+<p>之前我们定义了Loss &#x3D; $(y - \hat{y})^2$，也就是平方损失公式里面的$(y_i - f(x_i))^2$。$y_i$是真实的标签，$f(x_i)$是模型算出来的预测值，而我们一般简写为$\hat{y}_i$。</p>
+<p>那么我们为什么用平方？为什么不是绝对值？</p>
+<p><strong>统计模型假设</strong></p>
+<p>首先我们不再仅仅把 $y$ 看作一个数值，而是看作一个<strong>随机变量</strong>。<br>$$y &#x3D; \theta^T x + \epsilon$$<br>其中我们定义：</p>
+<ul>
+<li>$\theta^T x$ 是确定性的预测部分。</li>
+<li>$\epsilon$ 是噪音 (Noise)。</li>
+<li>这里做出一个关键假设：噪音服从高斯分布 $\epsilon \sim \mathcal{N}(0, \sigma^2)$。</li>
+</ul>
+<p>那么这就这意味着，给定 $x$，真实的 $y$ 会服从一个以 $\theta^T x$ 为中心的高斯分布：<br>$$p(y | x) \sim \mathcal{N}(\theta^T x, \sigma^2)$$</p>
+<p>带入高斯分布的概率密度函数 (PDF) 就是：<br>$$p(y | x; \theta) &#x3D; \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left( - \frac{(y - \theta^T x)^2}{2\sigma^2} \right)$$</p>
+<p><strong>运用MLE推导</strong></p>
+<p>我们在 MLE 那一章学过，为了估计参数 $\theta$，我们要最大化似然函数 $L(\theta)$<br>$$L(\theta) &#x3D; \prod_{i&#x3D;1}^n p(y_i | x_i; \theta)$$</p>
+<p>取对数 Log-Likelihood：<br>$$\ell(\theta) &#x3D; \sum_{i&#x3D;1}^n \log p(y_i | x_i; \theta)$$</p>
+<p>代入高斯 PDF 公式：<br>$$\ell(\theta) &#x3D; \sum_{i&#x3D;1}^n \left[ \log(\text{const}) - \frac{(y_i - \theta^T x_i)^2}{2\sigma^2} \right]$$</p>
+<p>我们的目标是最大化$\ell(\theta)$，即是最大化 $-\frac{1}{2\sigma^2} \sum (y_i - \theta^T x_i)^2$，实际上你发现同样等价于最小化$\sum (y_i - \theta^T x_i)^2$。</p>
+<p>到这里，我们发现<em>最小二乘法 (Least Square)</em> 得出的结论和高斯噪声假设下的MLE结论一致。<br><em>最小二乘法实际上就是我们一直用的那个策略：“找一组参数，让所有误差的平方和最小” 的名字。只要你的目标函数是$\sum(Error)^2$，那么你运用的策略就是最小二乘法。而我们之前推导出的正规方程组，就是最小二乘法的解。</em></p>
+<p>这赋予了平方损失函数极强的理论正当性。如果你相信世界上的噪音大多是高斯分布（根据中心极限定理，这通常是对的），那么用平方损失就是最正确的选择。</p>
+<blockquote>
+<p>实际上两个方法算出的结论吻合算是哲学角度的背书。</p>
+<p>如果有人问你：“凭什么用平方误差？为什么不用绝对值误差$|y - \hat{y}|$，或者误差的四次方？”如果只用最小二乘法得出的结论，你只能回答 “因为平方比较好算导数”。</p>
+<p><em>哦哦有点弱。</em></p>
+<p>但是你通过MLE也得出了这样的结论，你就可以回答 “因为我相信数据中的噪音是遵循高斯分布的，而在高斯分布的假设下，MLE的数学推导推出来的结果就正好是平方误差”。<br>现在你就证明了最小二乘法不仅是好算，而且在统计学方面也是最优解。</p>
+</blockquote>
+<hr>
+<h3 id="岭回归-Ridge-Regression"><a href="#岭回归-Ridge-Regression" class="headerlink" title="岭回归 (Ridge Regression)"></a>岭回归 (Ridge Regression)</h3><p>但是线性回归有一个致命弱点。  </p>
+<p>如果特征之间的高度相关，或者特征数量$d$大于样板量$n$，那么这就导致矩阵$X^TX$不可逆。</p>
+<blockquote>
+<p>假设你有100个未知数，但是只给了你10个方程。这时候方程组就会有无穷组解。</p>
+<p>在矩阵代数中，这意味着矩阵$X$秩(rank)最多只有$n$。而因为$X^TX$是大小为$d \times d$的矩阵，由于$n &lt; d$，因此它不满秩，行列式为0，固然不可逆。</p>
+</blockquote>
+<p>因此模型会变得过拟合，参数$\theta$会变得巨大无比。</p>
+<blockquote>
+<p>你猜为什么过拟合能够做到穿过近乎每一个参数点？正因为函数穿过了好几个带有噪音的点，那么模型会把线扭曲的极度剧烈。</p>
+<p>在数学上，为了抵消某些特征的影响来达到这种扭曲，权重往往需要正负抵消且数值巨大。比如$\theta_1 &#x3D; 10000$, $\theta_2 &#x3D; -9999$。</p>
+<p>正因如此，如果我们看到$\theta$的值很大，那么这通常意味着模型过拟合了，或者至少你能知道模型可能出问题了。这就是为什么我们需要使用岭回归来惩罚大$\theta$。</p>
+</blockquote>
+<p>我们在岭回归中通过引入<strong>正则化 (Regularization)</strong> 来解决这个问题。</p>
+<p><strong>运用MAP</strong></p>
+<p>回想之前学过的内容，MLE只看数据，所以我们还有MAP用。MAP &#x3D; MLE + Prior。<br>这一次，我们不仅假设数据存在符合高斯分布的噪音，我们还要添加一个先验Prior。我们认为$\theta$的每一个分量都应该接近于0：</p>
+<p>$$p(\theta) \sim \mathcal{N}(0, \tau^2 I)$$</p>
+<p>也就是说， $\theta$ 服从均值为 0 的高斯分布。</p>
+<p><strong>目标函数推导</strong></p>
+<p>由于我们的目标还是要最大化后验概率：<br>$$\text{argmax}_\theta [ \log p(Data | \theta) + \log p(\theta) ]$$</p>
+<p>第一项MLE变成了 $-\frac{1}{2\sigma^2} \sum (y - \hat{y})^2$。<br>第二项Prior变成了 $-\frac{1}{2\tau^2} \sum \theta_j^2$。因为 Prior 是高斯 $e^{-\theta^2}$，取对数剩下 $-\theta^2$。</p>
+<p>现在变成了一个$-A-B$的形式。现在我们的目标变成了Maximize $-A-B$。这实际上等价于Minimize $A + B$:</p>
+<p>$$\text{Minimize } \sum (y_i - \hat{y}_i)^2 + \frac{\sigma^2}{\tau^2} |\theta|^2$$</p>
+<p>将$\lambda &#x3D; \frac{\sigma^2}{\tau^2}$，我们就得到了最终的公式：</p>
+<p>$$J_{Ridge}(\theta) &#x3D; \sum_{i&#x3D;1}^n (y_i - \hat{y}_i)^2 + \lambda |\theta|^2$$</p>
+<p>也就是</p>
+<p>$$J_{Ridge}(\theta) &#x3D; \sum_{i&#x3D;1}^n (y_i - \theta^T x_i)^2 + \lambda |\theta|^2$$</p>
+<p>公式里的 $\lambda |\theta|^2$ 叫做<strong>L2正则项</strong>。它的作用是惩罚大的参数。更多有关正则化的内容在后面有单独的一章来讲。</p>
+<hr>
+<h3 id="逻辑回归的数学解剖"><a href="#逻辑回归的数学解剖" class="headerlink" title="逻辑回归的数学解剖"></a>逻辑回归的数学解剖</h3><p>逻辑回归的核心在于，我们如何使用一个线性的$z &#x3D; \theta^Tx$去预测一个二元的$y$。</p>
+<p>复盘一下我们要在逻辑回归做的事情：算了一个分数$z &#x3D; \theta^Tx$。为了表述0-1之间的概率我们使用Sigmoid把分数压到了[0, 1]范围内。</p>
+<p>在这里我们定$y \in {-1, 1}$。因为只要这样设置标签，我们就可以把$P(y&#x3D;1)$和$P(y&#x3D;-1)$的公式合并成一个来搞定所有样本：</p>
+<p>首先我们要定义模型。这一步为了把分数转变为概率：</p>
+<p>$$P(y&#x3D;1|x) &#x3D; \sigma(\theta^T x) &#x3D; \frac{1}{1 + \exp(-\theta^T x)}$$</p>
+<p>$$P(y&#x3D;-1|x) &#x3D; 1 - P(y&#x3D;1|x) &#x3D; \frac{\exp(-\theta^T x)}{1 + \exp(-\theta^T x)} &#x3D; \frac{1}{1 + \exp(\theta^T x)}$$</p>
+<p>接下来请观察分母里的指数项，你会发现：</p>
+<ul>
+<li>当 $y&#x3D;1$ 时，指数是 $-\theta^T x &#x3D; -(1)\theta^T x$。</li>
+<li>当 $y&#x3D;-1$ 时，指数是 $+\theta^T x &#x3D; -(-1)\theta^T x$。</li>
+</ul>
+<p>因此，我们可以把两个概率合并成一个极其优雅的公式：</p>
+<p>$$P(y|x) &#x3D; \frac{1}{1 + \exp(-y \theta^T x)}$$</p>
+<p>这个公式用于求导时非常方便。</p>
+<p><strong>MLE的问题</strong></p>
+<p>有了模型，我们还是需要找到一个让猜对数据概率最大的$\theta$值。</p>
+<p>老样子，我们的目标是想要最大化 Log-Likelihood：<br>$$\max_\theta \sum_{i&#x3D;1}^n \log P(y_i | x_i) &#x3D; \max_\theta \sum_{i&#x3D;1}^n -\log(1 + \exp(-y_i \theta^T x_i))$$</p>
+<p>但是在这里暴露出了一个MLE在逻辑回归中的致命缺陷。<strong>如果数据是线性可分的 (Linearly Separable)</strong>，MLE 会崩溃。</p>
+<p>为什么呢？假设你能画一条线把正负样本完美分开。为了让 $P(y_i|x_i)$ 尽可能接近 1，模型会拼命让 $y_i \theta^T x_i$ 变得无穷大。而结果是，参数 $|\theta|$ 会趋向于<strong>无穷大</strong>。  </p>
+<p>在这之后，你的概率输出不再是平滑的 S 型曲线，而变成了一个硬邦邦的阶跃函数（Step Function）。这就让模型变得极度过拟合。</p>
+<p><strong>MAP的解决方案</strong></p>
+<p>为了防止 $\theta$ 爆炸，我们像刚才那样，引入先验 $P(\theta) \sim \mathcal{N}(0, \frac{1}{\lambda}I)$。这等价于在 Loss Function 后面加一个 <strong>L2 正则项</strong>。这里我们要求$\theta$不能太大。</p>
+<p>最终的优化目标：</p>
+<p>$$\min_\theta \sum_{i&#x3D;1}^n \log(1 + \exp(-y_i \theta^T x_i)) + \frac{\lambda}{2} |\theta|^2$$</p>
+<p>这就是我们在工业界实际使用的逻辑回归标准公式。落实到操作上，我们做的实际上就是在原来的Loss后面加了一个罚项$\lambda||\theta||^2$</p>
+<p>昨晚MAP，我们就可以找到最好的参数，同时防止参数爆炸了。</p>
+<hr>
+<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p><em>这部分太硬核了不知道教授为何要对一个可爱的大二学生这样做。</em></p>
+<p>如果你去发挥互联网的力量，你可以知道标准的梯度下降 (Gradient Descent, GD) 更新规则是：</p>
+<p>$$\theta_{t+1} &#x3D; \theta_t - \eta \sum_{i&#x3D;1}^n \nabla_\theta \ell(x_i, y_i, \theta)$$</p>
+<p>我们有了目标函数，你需要计算梯度下降的方向，来告诉计算机该往哪个方向做优化。  </p>
+<p>但是那个求和符号 $\sum_{i&#x3D;1}^n$导致你的模型每走一步就都要把 $n$ 个数据全算一遍。如果 $n&#x3D;1000000$，那么算一次梯度要几秒钟，训练完需要几天。</p>
+<p>那么聪明的你就在想了：既然总梯度是所有样本梯度的和，那么我随机抽一个样本算出来的梯度，其实就是总梯度在期望意义上的**无偏估计 (Unbiased Estimate)**啊！每次只随机一个数据点，算个梯度就走一步，何尝不是一种不错的策略？</p>
+<p>$$\theta_{t+1} &#x3D; \theta_t - \eta \nabla_\theta \ell(\tilde{x}, \tilde{y}, \theta) - \eta \lambda \theta$$</p>
+<p>这里 $(\tilde{x}, \tilde{y})$ 是就是随机抽的一个样本。注意公式里还有一个 $-\eta \lambda \theta$，这是正则项 $\frac{\lambda}{2}|\theta|^2$ 的导数。</p>
+<p>那么我们可以尝试手推一下逻辑回归的梯度：</p>
+<p>针对单个样本的目标函数是：<br>$$\ell(\theta) &#x3D; \log(1 + \exp(-y \theta^T x))$$</p>
+<p><strong>根据链式法则：</strong></p>
+<ol>
+<li><strong>外层求导 ($\log u$)：</strong><br>$$\frac{\partial \ell}{\partial u} &#x3D; \frac{1}{u} &#x3D; \frac{1}{1 + \exp(-y \theta^T x)}$$</li>
+<li><strong>中间层求导 ($1 + e^v$)：</strong><br>$$\frac{\partial u}{\partial v} &#x3D; e^v &#x3D; \exp(-y \theta^T x)$$</li>
+<li><strong>内层求导 ($-y \theta^T x$) 对 $\theta$：</strong><br>这是一次项求导，结果是系数。<br>$$\frac{\partial v}{\partial \theta} &#x3D; -yx$$</li>
+</ol>
+<p><strong>相乘：</strong><br>$$\nabla_\theta \ell &#x3D; \frac{1}{1 + \exp(-y \theta^T x)} \cdot \exp(-y \theta^T x) \cdot (-yx)$$</p>
+<p>这一步具体推导了针对逻辑回归的这个特定的Loss，$\nabla l$到底该长什么样。这个梯度的物理意义是：</p>
+<ul>
+<li>前面两项乘积其实是 $P(\text{Incorrect Prediction} | x)$。如果预测得很准（$P \approx 1$），梯度就接近 0，不需要更新。</li>
+<li>如果预测得很差，梯度就很大，方向由 $-yx$ 决定。</li>
+</ul>
+<p><strong>稳定SGD</strong></p>
+<p>由于SGD是随机抽样，它的路径会像醉汉一样摇摇晃晃，存在一个相对高的方差。好在我们有将他变稳定的手段：</p>
+<ol>
+<li><p><strong>Polyak-Ruppert Averaging (参数平均):</strong><br>与其取最后一步的 $\theta_T$，而是取路径上所有 $\theta$ 的平均值 $\bar{\theta} &#x3D; \frac{1}{T} \sum \theta_t$。</p>
+<p>这个方法的思想大概是，虽然我们一直在震荡，但震荡的中心往往就是最优解。</p>
+</li>
+<li><p><strong>Step-size Decay (步长衰减):</strong><br>让学习率 $\eta_t &#x3D; \eta_0 &#x2F; \sqrt{t}$。<br>让你的步长随着训练的过程逐渐衰减。</p>
+</li>
+</ol>
+<p>经过SGD之后，你的算法在海量数据上就也能跑动了！</p>
+<hr>
 
-
-  <div class="tag-list">
-    
-  </div>
 
 </article>
 <div class="article-footer">
@@ -181,7 +379,10 @@
 <footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-text">线性回归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E5%8C%96%E6%8D%9F%E5%A4%B1"><span class="toc-text">最小化损失</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%8C%96%E4%B8%8E%E8%AF%84%E4%BC%B0"><span class="toc-text">泛化与评估</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AE%8B%E5%B7%AE"><span class="toc-text">残差</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%87%E6%96%B9%E8%AF%AF%E5%B7%AE-MSE"><span class="toc-text">均方误差 (MSE)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="toc-text">逻辑回归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E5%BC%BA%E5%BA%A6%E7%9A%84%E9%83%A8%E5%88%86"><span class="toc-text">上强度的部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E7%8E%87%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-text">概率视角下的线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B2%AD%E5%9B%9E%E5%BD%92-Ridge-Regression"><span class="toc-text">岭回归 (Ridge Regression)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E6%95%B0%E5%AD%A6%E8%A7%A3%E5%89%96"><span class="toc-text">逻辑回归的数学解剖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="toc-text">随机梯度下降</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -603,7 +804,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764698326140" defer></script>
+<script src="/js/main.js?v=1764698326153" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {

@@ -46,7 +46,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943386">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326217">
 
 
   
@@ -1228,7 +1228,7 @@
 <hr>
 <h3 id="AVL-树的高度与斐波那契数"><a href="#AVL-树的高度与斐波那契数" class="headerlink" title="AVL 树的高度与斐波那契数"></a>AVL 树的高度与斐波那契数</h3><p>那么知道了这些，AVL树在数学上有哪些特征？</p>
 <p>一个关键问题是：<strong>高度为 h 的 AVL 树，最少需要多少个节点？</strong></p>
-<p>设 $N(h)$ 为高度为 $h$ 的 AVL 树的最少节点数。为了让节点数最少，我们要让树”尽可能不平衡但又刚好满足 AVL 条件”——也就是让两棵子树的高度差恰好为 1。</p>
+<p>设 $N(h)$ 为高度为 $h$ 的 AVL 树的最少节点数。为了让节点数最少，我们要让树&quot;尽可能不平衡但又刚好满足 AVL 条件&quot;——也就是让两棵子树的高度差恰好为 1。</p>
 <p>这样就得到递推公式：</p>
 <p>$$N(h) &#x3D; N(h-1) + N(h-2) + 1$$</p>
 <ul>
@@ -1272,13 +1272,13 @@
 <p>在基准情况时，$N(0) &#x3D; 1$，因为一个节点的树高度为0。<br>$N(1) &#x3D; 2$，包含一个根和两个子节点</p>
 <p>你只需要继续往下推进就可以算出来第五层有多少节点了！</p>
 <h3 id="AVL-的旋转操作"><a href="#AVL-的旋转操作" class="headerlink" title="AVL 的旋转操作"></a>AVL 的旋转操作</h3><p>当 AVL 树失衡时，我们需要通过<strong>旋转</strong>来恢复平衡。旋转的本质是<strong>在保持 BST 性质的前提下，重新组织节点的父子关系</strong>。</p>
-<p>我们用右旋来解释一下什么叫旋转。<br>右旋的核心思想：把左子节点”提上来”当新的根。</p>
+<p>我们用右旋来解释一下什么叫旋转。<br>右旋的核心思想：把左子节点&quot;提上来&quot;当新的根。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">右旋前：           右旋后：</span><br><span class="line">    y                 x</span><br><span class="line">   / \               / \</span><br><span class="line">  x   C    →        A   y</span><br><span class="line"> / \                   / \</span><br><span class="line">A   B                 B   C</span><br></pre></td></tr></table></figure>
 
 <p>不难观察到这几点：</p>
 <ul>
 <li>x 原来是 y 的左子节点，现在 x 变成新的根</li>
-<li>x 的右子树 B 原来在 x 右边，现在要”让给” y 当左子树</li>
+<li>x 的右子树 B 原来在 x 右边，现在要&quot;让给&quot; y 当左子树</li>
 <li>最关键的 BST 性质仍然保持：A &lt; x &lt; B &lt; y &lt; C</li>
 </ul>
 <p>如果左子树过高，我们就会在对应的子树来执行右旋。右旋的规则是：</p>
@@ -1290,7 +1290,7 @@
 <p>如果还是很抽象就看看代码吧：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 右旋：把 y 的左孩子 x 提升为新根</span></span><br><span class="line">TreeNode* <span class="title function_">rightRotate</span><span class="params">(TreeNode *y)</span> &#123;</span><br><span class="line">    TreeNode *x = y-&gt;left;</span><br><span class="line">    TreeNode *B = x-&gt;right;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行旋转</span></span><br><span class="line">    x-&gt;right = y;</span><br><span class="line">    y-&gt;left = B;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 更新高度（先更新 y，再更新 x）</span></span><br><span class="line">    y-&gt;height = max(height(y-&gt;left), height(y-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    x-&gt;height = max(height(x-&gt;left), height(x-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> x;  <span class="comment">// x 是新的根</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>左旋与右旋是对称操作。最后的结果会把右子节点”提上来”。过程是：</p>
+<p>左旋与右旋是对称操作。最后的结果会把右子节点&quot;提上来&quot;。过程是：</p>
 <ol>
 <li>将失衡节点的右子节点提升为新的根</li>
 <li>将失衡节点变为它右子节点的左子节点</li>
@@ -2606,7 +2606,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943389" defer></script>
+<script src="/js/main.js?v=1764698326220" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -2903,29 +2903,34 @@
     }
   });
 </script>
-<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 
-<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-  MathJax.Hub.Config({
-    tex2jax: {
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
 </script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

@@ -39,7 +39,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943411">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326259">
 
 
   
@@ -501,7 +501,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943412" defer></script>
+<script src="/js/main.js?v=1764698326260" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -774,29 +774,34 @@
     }
   });
 </script>
-<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 
-<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-  MathJax.Hub.Config({
-    tex2jax: {
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
 </script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

@@ -53,7 +53,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943376">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326201">
 
 
   
@@ -1699,7 +1699,7 @@
 </script>
 
 <hr>
-<h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><p><strong>深度优先搜索 (Depth-First Search, DFS)</strong> 与 BFS 形成鲜明对比。如果说 BFS 是”一层层推进”，那么 DFS 就是”一条路走到黑”。</p>
+<h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><p><strong>深度优先搜索 (Depth-First Search, DFS)</strong> 与 BFS 形成鲜明对比。如果说 BFS 是&quot;一层层推进&quot;，那么 DFS 就是&quot;一条路走到黑&quot;。</p>
 <p>想象你在探索一个迷宫。DFS 的策略是：选择一条路，一直往前走，直到走到死胡同走不通了，我们<strong>回退 (Backtrack)</strong> 到上一个岔路口，尝试另一条路。</p>
 <p>DFS 使用<strong>栈 (Stack)</strong> 来跟踪搜索进程（或者直接使用递归，因为递归本身就是利用调用栈）。步骤如下：</p>
 <ol>
@@ -2126,7 +2126,7 @@
 <h2 id="Dijkstra-最短路径算法"><a href="#Dijkstra-最短路径算法" class="headerlink" title="Dijkstra 最短路径算法"></a>Dijkstra 最短路径算法</h2><p>前面我们说 BFS 可以在<strong>无权图</strong>中找到最短路径。但如果图的边有不同的<strong>权重</strong>（比如道路的距离、通行的费用），BFS 就不够用了。这时候我们需要 <strong>Dijkstra 算法</strong>。</p>
 <p>Dijkstra 算法使用<strong>贪心策略</strong>：</p>
 <ol>
-<li>维护一个”距离表”，记录从起点到每个节点的<strong>当前已知最短距离</strong></li>
+<li>维护一个&quot;距离表&quot;，记录从起点到每个节点的<strong>当前已知最短距离</strong></li>
 <li>每次从未处理的节点中，选择距离最小的那个节点 $u$</li>
 <li>用 $u$ 来<strong>松弛 (Relax)</strong> 它的所有邻居：如果经过 $u$ 到达邻居 $v$ 的距离比之前记录的更短，就更新它</li>
 <li>重复直到所有节点都处理完毕</li>
@@ -3097,7 +3097,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943378" defer></script>
+<script src="/js/main.js?v=1764698326204" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -3394,29 +3394,34 @@
     }
   });
 </script>
-<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 
-<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-  MathJax.Hub.Config({
-    tex2jax: {
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
 </script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

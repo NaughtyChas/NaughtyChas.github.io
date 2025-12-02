@@ -51,7 +51,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943389">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326223">
 
 
   
@@ -1662,7 +1662,7 @@ const SortEngine = (function() {
 })();
 </script>
 
-<h3 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序 (Bubble Sort)"></a>冒泡排序 (Bubble Sort)</h3><p>想象一下水底的气泡，轻的气泡会一点点往上冒。冒泡排序也是这个道理：<strong>让大的元素像气泡一样，通过一次次交换，”浮”到数组的顶端（末尾）。</strong></p>
+<h3 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序 (Bubble Sort)"></a>冒泡排序 (Bubble Sort)</h3><p>想象一下水底的气泡，轻的气泡会一点点往上冒。冒泡排序也是这个道理：<strong>让大的元素像气泡一样，通过一次次交换，&quot;浮&quot;到数组的顶端（末尾）。</strong></p>
 <p>冒泡排序的流程是：</p>
 <ol>
 <li>从头开始，比较相邻的两个元素。</li>
@@ -1974,7 +1974,7 @@ const insertionViz = (function() {
 <p>要想突破这个限制，必须进行<strong>远距离交换</strong>，这就是高级排序算法的秘诀。</p>
 <hr>
 <h2 id="堆排序-Heap-Sort"><a href="#堆排序-Heap-Sort" class="headerlink" title="堆排序 (Heap Sort)"></a>堆排序 (Heap Sort)</h2><p>堆排序利用<strong>二叉堆 (Binary Heap)</strong> 这种数据结构来实现 $O(n \log n)$ 的排序。</p>
-<h3 id="什么是大根堆？"><a href="#什么是大根堆？" class="headerlink" title="什么是大根堆？"></a>什么是大根堆？</h3><p>想象一个金字塔，<strong>大根堆</strong>要求金字塔的每一个”父亲”都要比他的”儿子”们大（或者相等）。<br>这样一来，<strong>塔尖（根节点）永远是最大的</strong>。</p>
+<h3 id="什么是大根堆？"><a href="#什么是大根堆？" class="headerlink" title="什么是大根堆？"></a>什么是大根堆？</h3><p>想象一个金字塔，<strong>大根堆</strong>要求金字塔的每一个&quot;父亲&quot;都要比他的&quot;儿子&quot;们大（或者相等）。<br>这样一来，<strong>塔尖（根节点）永远是最大的</strong>。</p>
 <p>我们在内存里通常用<strong>数组</strong>来模拟这个金字塔：</p>
 <ul>
 <li>塔尖在数组下标 <code>0</code>。</li>
@@ -1985,7 +1985,7 @@ const insertionViz = (function() {
 </ul>
 </li>
 </ul>
-<h3 id="向下堆化-Heapify"><a href="#向下堆化-Heapify" class="headerlink" title="向下堆化 (Heapify)"></a>向下堆化 (Heapify)</h3><p>这是维护金字塔规则的关键。假设有一个节点，它的左右子树都是合格的堆，但它自己可能太小了，配不上”父亲”这个位置。这时候我们就需要把它<strong>往下沉</strong>：  </p>
+<h3 id="向下堆化-Heapify"><a href="#向下堆化-Heapify" class="headerlink" title="向下堆化 (Heapify)"></a>向下堆化 (Heapify)</h3><p>这是维护金字塔规则的关键。假设有一个节点，它的左右子树都是合格的堆，但它自己可能太小了，配不上&quot;父亲&quot;这个位置。这时候我们就需要把它<strong>往下沉</strong>：  </p>
 <ol>
 <li>看看它和两个子节点谁最大。</li>
 <li>如果某个子节点比它大，就和最大的这个子节点交换位置。</li>
@@ -2186,7 +2186,7 @@ const heapViz = (function() {
 <ol>
 <li>准备两个指针，分别指向两个有序数组的开头。</li>
 <li>比较两个指针指向的数，谁小就取谁，放到结果数组里，然后指针后移。</li>
-<li>就像拉链一样，把两个有序序列”拉”在一起。</li>
+<li>就像拉链一样，把两个有序序列&quot;拉&quot;在一起。</li>
 </ol>
 <p>归并排序非常稳健，不管数据多乱都是 $O(n \log n)$。而且它是<strong>稳定</strong>的（相等的元素顺序不会变）。缺点是需要额外的空间$O(n)$来存临时数组。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 合并两个有序子数组 arr[l..m] 和 arr[m+1..r]</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">merge</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> l, <span class="type">int</span> m, <span class="type">int</span> r)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这边省略创建临时数组L,R，和赋值的代码</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, k = l;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) &#123;</span><br><span class="line">        <span class="comment">// 谁小取谁。注意 &lt;= 保证了稳定性（左边的先取）</span></span><br><span class="line">        <span class="keyword">if</span> (L[i] &lt;= R[j]) arr[k++] = L[i++]; </span><br><span class="line">        <span class="keyword">else</span> arr[k++] = R[j++];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 把剩下的元素接在后面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2325,7 +2325,7 @@ const mergeViz = (function() {
 <p>首先<strong>挑选基准</strong>。这一步我们随便找个人来当基准(Pivot)。<br>随后你要求所有人<strong>站队</strong>，比基准小的站左边，比基准大的站右边。<br>最后你对左边的队伍和右边的队伍调用<strong>递归</strong>，重复上面的过程。</p>
 <ol>
 <li>选定一个 pivot（比如最后一个元素）。</li>
-<li>用一个指针 <code>i</code> 记录”小于区”的边界。</li>
+<li>用一个指针 <code>i</code> 记录&quot;小于区&quot;的边界。</li>
 <li>扫描数组，只要发现比 pivot 小的数，就把它换到 <code>i</code> 的位置，然后 <code>i</code> 前进。</li>
 <li>最后把 pivot 放到 <code>i+1</code> 的位置，这样 pivot 左边全比它小，右边全比它大。</li>
 </ol>
@@ -2633,7 +2633,7 @@ const countingViz = (function() {
 <ol>
 <li>先按<strong>个位</strong>数字，把数据分到 0-9 号桶里，然后按顺序倒出来。</li>
 <li>再按<strong>十位</strong>数字，分桶，倒出来。</li>
-<li>… 直到最高位。</li>
+<li>... 直到最高位。</li>
 <li>随后你惊讶的发现，现在数组已经完全有序了（</li>
 </ol>
 <p>这样做的道理在于因为每一次分桶收集，都是一次稳定的排序。当我们排高位时，由于稳定性，低位的相对顺序被保留了下来。</p>
@@ -2832,7 +2832,7 @@ const radixViz = (function() {
 <td align="left">不比大小，利用统计，范围要小</td>
 </tr>
 </tbody></table>
-<p>有关稳定性：记住”快选堆”（快排、选择、堆排）是不稳定的，其他的基本都稳定。<br>最坏情况：快排最坏是 $O(n^2)$，归并和堆排最坏依然是 $O(n \log n)$。<br>应用场景：</p>
+<p>有关稳定性：记住&quot;快选堆&quot;（快排、选择、堆排）是不稳定的，其他的基本都稳定。<br>最坏情况：快排最坏是 $O(n^2)$，归并和堆排最坏依然是 $O(n \log n)$。<br>应用场景：</p>
 <ul>
 <li>数据量小且基本有序 -&gt; <strong>插入排序</strong></li>
 <li>数据量大且要求稳定 -&gt; <strong>归并排序</strong></li>
@@ -3748,7 +3748,7 @@ const sortViz = (function() {
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943393" defer></script>
+<script src="/js/main.js?v=1764698326228" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -4045,29 +4045,34 @@ const sortViz = (function() {
     }
   });
 </script>
-<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 
-<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-  MathJax.Hub.Config({
-    tex2jax: {
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
 </script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

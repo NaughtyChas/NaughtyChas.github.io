@@ -49,7 +49,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943394">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326209">
 
 
   
@@ -1205,11 +1205,11 @@
 
 <p>这样的搜索方式荣获$O(n)$。好处是我们不需要对进行搜索的对象进行任何预处理。</p>
 <details class="tag-plugin colorful folding" ><summary><p>小技巧：哨兵优化</p>
-</summary><div class="body"><p>在数组末尾放一个”哨兵”值，可以省去每次循环检查边界的开销：</p> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">linearSearchSentinel</span><span class="params">(<span class="type">int</span> A[], <span class="type">int</span> n, <span class="type">int</span> x)</span> &#123;</span><br><span class="line">    A[n] = x; <span class="comment">// 哨兵（需保证数组有额外空间）</span></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (A[i] != x) i++;</span><br><span class="line">    <span class="keyword">return</span> i &lt; n ? i : <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> <p>这个技巧在面试中偶尔会被问到。</p> </div></details>  
+</summary><div class="body"><p>在数组末尾放一个&quot;哨兵&quot;值，可以省去每次循环检查边界的开销：</p> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">linearSearchSentinel</span><span class="params">(<span class="type">int</span> A[], <span class="type">int</span> n, <span class="type">int</span> x)</span> &#123;</span><br><span class="line">    A[n] = x; <span class="comment">// 哨兵（需保证数组有额外空间）</span></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (A[i] != x) i++;</span><br><span class="line">    <span class="keyword">return</span> i &lt; n ? i : <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> <p>这个技巧在面试中偶尔会被问到。</p> </div></details>  
 
 <hr>
 <h3 id="二分搜索-Binary-Search"><a href="#二分搜索-Binary-Search" class="headerlink" title="二分搜索 (Binary Search)"></a>二分搜索 (Binary Search)</h3><p>那么你问到什么是预处理。在这之前请允许我先向你介绍二分搜索：</p>
-<p>二分搜索沿用了之前做递归的”Divide and Conquer”的思路，方法是这样的：  </p>
+<p>二分搜索沿用了之前做递归的&quot;Divide and Conquer&quot;的思路，方法是这样的：  </p>
 <ol>
 <li>定位到数据的中间，然后对比一下这个元素相比目标是更大还是更小？</li>
 <li>如果要查找的目标更大，那就抛弃更小的那一半数据，在更大的那一半查找，反之亦然。</li>
@@ -1223,7 +1223,7 @@
 <p>因为当 <code>low</code> 和 <code>high</code> 都很大时，<code>low + high</code> 可能会<strong>整数溢出</strong>！这是面试和考试常问的点。</p>
 <p>这样的要求导致我们在很多时候不会去使用二分搜索，因为对数据预先进行一步预处理可能更消耗时间。二分查找相比之下更适合用于静态数据，也就是一次写入，多次读取的情况。</p>
 <details class="tag-plugin colorful folding" ><summary><p>lower_bound 与 upper_bound</p>
-</summary><div class="body"><p>除了查找”是否存在”，二分搜索还有两个重要变体：</p> <ul> <li><strong>lower_bound(x)</strong>：返回第一个 <strong>≥ x</strong> 的位置</li> <li><strong>upper_bound(x)</strong>：返回第一个 <strong>&gt; x</strong> 的位置</li> </ul> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lower_bound: 返回第一个 &gt;= x 的位置</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">lower_bound</span><span class="params">(<span class="type">int</span> A[], <span class="type">int</span> n, <span class="type">int</span> x)</span> &#123;</span><br><span class="line">    <span class="type">int</span> l = <span class="number">0</span>, r = n; <span class="comment">// 注意是半开区间 [l, r)</span></span><br><span class="line">    <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">        <span class="type">int</span> m = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (A[m] &lt; x) l = m + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> r = m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>  <p>这两个函数在<strong>范围查询</strong>中非常有用！</p> </div></details>  
+</summary><div class="body"><p>除了查找&quot;是否存在&quot;，二分搜索还有两个重要变体：</p> <ul> <li><strong>lower_bound(x)</strong>：返回第一个 <strong>≥ x</strong> 的位置</li> <li><strong>upper_bound(x)</strong>：返回第一个 <strong>&gt; x</strong> 的位置</li> </ul> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lower_bound: 返回第一个 &gt;= x 的位置</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">lower_bound</span><span class="params">(<span class="type">int</span> A[], <span class="type">int</span> n, <span class="type">int</span> x)</span> &#123;</span><br><span class="line">    <span class="type">int</span> l = <span class="number">0</span>, r = n; <span class="comment">// 注意是半开区间 [l, r)</span></span><br><span class="line">    <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">        <span class="type">int</span> m = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (A[m] &lt; x) l = m + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> r = m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>  <p>这两个函数在<strong>范围查询</strong>中非常有用！</p> </div></details>  
 
 <div class="tag-plugin colorful note" ><div class="title">例Cpt6.1</div><div class="body"><p>要搜索的目标$X &#x3D; 8$，请你对下面的数组执行二分搜索并追踪其过程：<br> $$L &#x3D; [1, 3, 5, 7, 9, 11, 13, 15]$$</p></div></div>
 
@@ -1282,7 +1282,7 @@
 <h3 id="跳转搜索-Jump-Search"><a href="#跳转搜索-Jump-Search" class="headerlink" title="跳转搜索 (Jump Search)"></a>跳转搜索 (Jump Search)</h3><p>这就是那种典型的做题最爱算法。</p>
 <p><strong>跳转搜索 (跳转搜索)</strong> 有点像线性搜索，不过与其说像线性搜索那样一个一个往下遍历，跳转搜索会按大小为$k$的序列在目标数组里跳跃。过程大概是：</p>
 <ol>
-<li>按照这样的规律查找值：$0, k, 2k, 3k …$</li>
+<li>按照这样的规律查找值：$0, k, 2k, 3k ...$</li>
 <li>当你发现跳过头的时候，回到上一次跳转的位置，然后从那里往后进行线性搜索。</li>
 </ol>
 <p>$k$值的选择也是有讲究的。一般我们会选择让$k &#x3D; \sqrt{n}$。</p>
@@ -1309,7 +1309,7 @@
 <p>$$\frac{n}{k} + k - 1 &#x3D; \frac{100}{20} + 20 - 1 &#x3D; 5 + 19 &#x3D; 24$$</p>
 <p>然后经过一波嗯算你发现他们的效率实际上相同。</p>
 <details class="tag-plugin colorful folding" ><summary><p>为什么 $k &#x3D; \sqrt{n}$ 是最优的？</p>
-</summary><div class="body"><p>我们要最小化总比较次数 $f(k) &#x3D; \frac{n}{k} + k - 1$。</p> <p>对 $k$ 求导：$f’(k) &#x3D; -\frac{n}{k^2} + 1$</p> <p>令 $f’(k) &#x3D; 0$，得 $k^2 &#x3D; n$，即 $k &#x3D; \sqrt{n}$。</p> <p>代入得最优比较次数约为 $2\sqrt{n} - 1 &#x3D; O(\sqrt{n})$。</p> </div></details>  
+</summary><div class="body"><p>我们要最小化总比较次数 $f(k) &#x3D; \frac{n}{k} + k - 1$。</p> <p>对 $k$ 求导：$f&#39;(k) &#x3D; -\frac{n}{k^2} + 1$</p> <p>令 $f&#39;(k) &#x3D; 0$，得 $k^2 &#x3D; n$，即 $k &#x3D; \sqrt{n}$。</p> <p>代入得最优比较次数约为 $2\sqrt{n} - 1 &#x3D; O(\sqrt{n})$。</p> </div></details>  
 
 
 <hr>
@@ -1906,7 +1906,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943396" defer></script>
+<script src="/js/main.js?v=1764698326212" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -2203,29 +2203,34 @@
     }
   });
 </script>
-<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 
-<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-  MathJax.Hub.Config({
-    tex2jax: {
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
 </script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

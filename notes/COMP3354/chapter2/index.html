@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943396">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326147">
 
 
   
@@ -111,7 +111,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -215,9 +215,9 @@
 <p>所以在这个例子中，运用MLE公式，猜$p &#x3D; \frac{Count(Heads)}{Total Count}$的时候，似然函数能够达到峰值。</p>
 <hr>
 <h3 id="平滑-Smoothing"><a href="#平滑-Smoothing" class="headerlink" title="平滑 (Smoothing)"></a>平滑 (Smoothing)</h3><p>当我们采集的数据过于稀少时，MLE会出现大问题。  </p>
-<p>例如我们要做一个垃圾邮件分类器。我们有一个词库，其中一个词是”Bitcoin”。如果在你的训练数据中，”Bitcoin”从来没有出现过，那么根据MLE可得：  </p>
+<p>例如我们要做一个垃圾邮件分类器。我们有一个词库，其中一个词是&quot;Bitcoin&quot;。如果在你的训练数据中，&quot;Bitcoin&quot;从来没有出现过，那么根据MLE可得：  </p>
 <p>$$\hat{P}(Bitcoin) &#x3D; \frac{0}{n} &#x3D; 0$$</p>
-<p>这意味着你的模型认为全宇宙中”Bitcoin”这个词出现的概率为0。所以如果测试时真的来了一封比特币垃圾邮件，那么你的模型在计算概率时会乘以这个0，导致整个概率变为0。你的分类器就炸了。  </p>
+<p>这意味着你的模型认为全宇宙中&quot;Bitcoin&quot;这个词出现的概率为0。所以如果测试时真的来了一封比特币垃圾邮件，那么你的模型在计算概率时会乘以这个0，导致整个概率变为0。你的分类器就炸了。  </p>
 <p>我们的解决方案是做一步<strong>平滑 (Regularized Estimate &#x2F; Smoothing)</strong>。  </p>
 <p>我们在分子分母加一点“虚构的计数” $\epsilon$，来防止我们最后计算的概率为零：</p>
 <p>$$\hat{p}_i &#x3D; \frac{n_i + \epsilon}{n + k\epsilon}$$</p>
@@ -713,7 +713,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943397" defer></script>
+<script src="/js/main.js?v=1764698326148" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -1010,29 +1010,34 @@
     }
   });
 </script>
-<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 
-<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-  MathJax.Hub.Config({
-    tex2jax: {
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
 </script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

@@ -45,7 +45,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764600943397">
+  <link rel="stylesheet" href="/css/main.css?v=1764698326220">
 
 
   
@@ -1211,17 +1211,17 @@
 </ul>
 <hr>
 <p>要实现一个高效率的哈希表，你首先需要根据你要存储的数据按照特征设计一个合理的哈希函数。  </p>
-<p>例如我们要存储的数据是短英文字符串。例如”BEN”，我们就可以使用Base-128，aka ASCII来进行编码：</p>
-<p>$$\text{“BEN”} &#x3D; \text{‘B’} \times 128^2 + \text{‘E’} \times 128^1 + \times{‘N’} \times 128^0$$</p>
+<p>例如我们要存储的数据是短英文字符串。例如&quot;BEN&quot;，我们就可以使用Base-128，aka ASCII来进行编码：</p>
+<p>$$\text{&quot;BEN&quot;} &#x3D; \text{&#39;B&#39;} \times 128^2 + \text{&#39;E&#39;} \times 128^1 + \times{&#39;N&#39;} \times 128^0$$</p>
 <p>最后，将这个得到的数对$m$取模即可得到index。  </p>
 <p>除了选用合适的编码方式，我们还需要选取合理的$m$值来确保绝大多数的数据不会被分配到同一批index。<br>首先，尽量<strong>不要选取$2^n$</strong> 作为m的值，例如1024。这样的话你的哈希值基本就是key的后几位信息。  </p>
 <p>我们一般选择<strong>质数</strong> 作为m的值，并且这个质数不要贴近任何$2^n$。这种数字分配出来的哈希值是比较平均的。  </p>
-<div class="tag-plugin colorful note" color="cyan"><div class="title">例Cpt4.1</div><div class="body"><p>这里有一张尺寸为$m &#x3D; 100$的哈希表。你将如何为元素’CAT’计算哈希值？</p></div></div>
+<div class="tag-plugin colorful note" color="cyan"><div class="title">例Cpt4.1</div><div class="body"><p>这里有一张尺寸为$m &#x3D; 100$的哈希表。你将如何为元素&#39;CAT&#39;计算哈希值？</p></div></div>
 
 <p>就像我们刚才所说的，我们可以使用Base-128来计算：</p>
-<p>$$\text{Key} &#x3D; c_0 \cdot R^{n-1} + c_1 \cdot R^{n-2} + … + c_{n-1} \cdot R^0$$</p>
+<p>$$\text{Key} &#x3D; c_0 \cdot R^{n-1} + c_1 \cdot R^{n-2} + ... + c_{n-1} \cdot R^0$$</p>
 <p>其中$R$代表你要用于计算的根值。在这里由于我们使用Base-128，因此$R &#x3D; 128$<br>别忘了到最后还要选一个合适的m值，来进行<code>%m</code>。  </p>
-<p>用ASCII编码的话，我们可以很轻松地得出这些字母对应的编码值：’C’(67), ‘A’(65), ‘T’(84). $R &#x3D; 128$, $m &#x3D; 100$</p>
+<p>用ASCII编码的话，我们可以很轻松地得出这些字母对应的编码值：&#39;C&#39;(67), &#39;A&#39;(65), &#39;T&#39;(84). $R &#x3D; 128$, $m &#x3D; 100$</p>
 <p>$$h &#x3D; [67 \cdot 128^2 + 65 \cdot 128^1 + 84 \cdot 128^0] (\text{mod } 100)$$</p>
 <hr>
 <h2 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h2><p>你可以想象一个基础的哈希表由很多小单元格组成。每个单元格都有一个按顺序排列的唯一编号，同样每个单元格都可以存入信息。</p>
@@ -1880,8 +1880,8 @@
 <h2 id="链式哈希（开放哈希）"><a href="#链式哈希（开放哈希）" class="headerlink" title="链式哈希（开放哈希）"></a>链式哈希（开放哈希）</h2><p>中文译名可能不准确，总之<strong>链式哈希</strong> 叫做<strong>Chaining</strong>，外号<strong>Open Hashing</strong>。  </p>
 <p>链式哈希的解决方案是，与其将值直接存入哈希表的单元格中，我们在这些位置内存入一个指向链表的指针。例如：</p>
 <ul>
-<li>“Ben”通过哈希函数算出来的哈希值是5，则在哈希表中找到第五个格子，插入到第五个格子指针所指的链表中。  </li>
-<li>“Jerry”同样被分配到了一样的哈希值5，于是我们就在对应链表后面（Ben所在的链表）后方直接插入进去。</li>
+<li>&quot;Ben&quot;通过哈希函数算出来的哈希值是5，则在哈希表中找到第五个格子，插入到第五个格子指针所指的链表中。  </li>
+<li>&quot;Jerry&quot;同样被分配到了一样的哈希值5，于是我们就在对应链表后面（Ben所在的链表）后方直接插入进去。</li>
 </ul>
 <p>这样一来，即使不同的值分配到了一样的位置，我们也可以将它们的值存下来，查询的时候也可以按照哈希函数追寻到他们的位置。  </p>
 <p>链式哈希做法的性能如何？</p>
@@ -2516,7 +2516,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764600943399" defer></script>
+<script src="/js/main.js?v=1764698326222" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -2813,29 +2813,34 @@
     }
   });
 </script>
-<link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 
-<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-  MathJax.Hub.Config({
-    tex2jax: {
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
 </script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
