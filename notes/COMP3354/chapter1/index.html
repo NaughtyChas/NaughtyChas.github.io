@@ -20,16 +20,16 @@
   <title>Chapter 1: 数据学习介绍 - Naucha</title>
 
   
-    <meta name="description" content="范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。   但是，Arthur Samuel (1959) 提出了一个革命性的想法：如果我们不显式地编写规则，而是赋">
+    <meta name="description" content="本章是整个课程的&quot;预告片&quot;。我们会快速浏览机器学习的三大流派——监督学习、无监督学习、强化学习——建立直觉。别担心如果有些概念现在还模糊，后续章节会逐一深入每个领域。 现在，让我们从一个根本性的问题开始：什么是&quot;学习&quot;？  范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Chapter 1: 数据学习介绍">
 <meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter1/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。   但是，Arthur Samuel (1959) 提出了一个革命性的想法：如果我们不显式地编写规则，而是赋">
+<meta property="og:description" content="本章是整个课程的&quot;预告片&quot;。我们会快速浏览机器学习的三大流派——监督学习、无监督学习、强化学习——建立直觉。别担心如果有些概念现在还模糊，后续章节会逐一深入每个领域。 现在，让我们从一个根本性的问题开始：什么是&quot;学习&quot;？  范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2025-11-24T02:00:00.000Z">
-<meta property="article:modified_time" content="2025-12-01T12:22:20.824Z">
+<meta property="article:modified_time" content="2025-12-04T18:26:12.189Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764860092502">
+  <link rel="stylesheet" href="/css/main.css?v=1764874090222">
 
 
   
@@ -50,7 +50,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 1: 数据学习介绍","description":"范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。  \n但是，Arthur Samuel (1959) 提出了一个革命性的想法：如果我们不显式地编写规则，...","url":"https://naughtychas.github.io/notes/COMP3354/chapter1/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 1: 数据学习介绍","description":"本章是整个课程的&quot;预告片&quot;。我们会快速浏览机器学习的三大流派——监督学习、无监督学习、强化学习——建立直觉。别担心如果有些概念现在还模糊，后续章节会逐一深入每个领域。\n现在，让我们从一个根本性的问题开始：什么是&quot;学习&quot;？\n\n范式的转变在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律...","url":"https://naughtychas.github.io/notes/COMP3354/chapter1/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -111,7 +111,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -131,7 +131,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-01T12:22:20.824Z">2025-12-01</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-11-24T02:00:00.000Z">2025-11-24</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T18:26:12.189Z">2025-12-05</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-11-24T02:00:00.000Z">2025-11-24</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -142,7 +142,10 @@
     </div>
     
   </div>
-  </div><article class="md-text content"><h2 id="范式的转变"><a href="#范式的转变" class="headerlink" title="范式的转变"></a>范式的转变</h2><p>在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。  </p>
+  </div><article class="md-text content"><p>本章是整个课程的&quot;预告片&quot;。我们会快速浏览机器学习的三大流派——监督学习、无监督学习、强化学习——建立直觉。别担心如果有些概念现在还模糊，后续章节会逐一深入每个领域。</p>
+<p>现在，让我们从一个根本性的问题开始：<strong>什么是&quot;学习&quot;？</strong></p>
+<hr>
+<h2 id="范式的转变"><a href="#范式的转变" class="headerlink" title="范式的转变"></a>范式的转变</h2><p>在数据学习出现之前，我们面对计算机时的思维模式是“指令式”的。也就是说，作为程序员的你必须非常聪明。你需要亲自总结出规律，写下具体的指令（Rules），然后把数据（Data）喂给计算机，计算机会严格执行你的指令吐出答案。这就像你教一个只会死记硬背的学生：“如果A发生，你就做B”。  </p>
 <p>但是，Arthur Samuel (1959) 提出了一个革命性的想法：如果我们不显式地编写规则，而是赋予计算机从数据中学习的能力呢？这就是 <strong>Machine Learning</strong>， 机器学习。  </p>
 <p>在这里。流程是你把“数据”和“预期的答案”同时喂给计算机，计算机会自己去“猜”中间的逻辑，最终生成一套规则，这样一套规则即是模型。这就像你教一个有悟性的学生，你只给他看 100 道题和答案，让他自己去琢磨解题方法。</p>
 <p>为了更严谨地定义这种“悟性”，Tom Mitchell 提出了一个经典的数学化定义，包含三个要素：T, P, E：  </p>
@@ -172,8 +175,11 @@
 <hr>
 <h3 id="如何定义“错误”？"><a href="#如何定义“错误”？" class="headerlink" title="如何定义“错误”？"></a>如何定义“错误”？</h3><p>由于我们知道监督学习的目标是找一个函数$f: X \rightarrow Y$，但在坐标轴里随便画一条线也是一个函数。$f(x)$到底要满足什么条件才算好？</p>
 <p>首先我们要介绍一个概念叫做<strong>泛化 (Generalization)</strong>。一个泛化能力优秀的模型应当能够在训练数据的基础上，对未来数据同样拥有不错的表现。我们的目标不是让模型在训练数据 (Training Data)上通过死记硬背表现完美，而是要求模型能够根据这些模型合理预测未来数据。  </p>
-<p>为了让计算机能够通过数学来进行“自我反省”，我们需要定义什么是错误。这就是<strong>损失函数 (Loss Function)</strong>，记作$\ell$。  </p>
+<p>为了让计算机能够通过数学来进行&quot;自我反省&quot;，我们需要定义什么是错误。这就是<strong>损失函数 (Loss Function)</strong>，记作$\ell$。  </p>
 <p>机器学习算法在做的事情就是去寻找能够让总损失值最小化的那个函数$f$。</p>
+<blockquote>
+<p><strong>记住这个核心循环</strong>：定义损失 → 最小化损失 → 得到模型。这个套路会贯穿整门课程。</p>
+</blockquote>
 <h4 id="分类问题损失函数"><a href="#分类问题损失函数" class="headerlink" title="分类问题损失函数"></a>分类问题损失函数</h4><p>对于分类问题，我们使用<strong>0-1 loss</strong>。这是一个简单粗暴的损失函数：如果我们的预测正确，则损失为0，反之则为1。公式算出来的值说白了就是错误率：</p>
 <p>$$\ell &#x3D; \frac{1}{n} \sum_{i&#x3D;1}^{n} (f(x_1) \neq y_i)$$</p>
 <h4 id="回归问题损失函数"><a href="#回归问题损失函数" class="headerlink" title="回归问题损失函数"></a>回归问题损失函数</h4><p>而对于回归问题，我们需要更合理的损失函数。<br>假如我们预测的房价是100万，而实际上是102万，这样的一次预测算错吗？当然算。预测是200万呢？算，而且错的更离谱了。  </p>
@@ -234,6 +240,16 @@
 <p> 强化学习算法必须要在这两者之间找到平衡。一味的选择利用会像K-means那样陷入局部最优，而一味探索则导致效率低下且风险巨大。</p>
 </li>
 </ol>
+<hr>
+<h2 id="本章小结"><a href="#本章小结" class="headerlink" title="本章小结"></a>本章小结</h2><p>在这一章，我们建立了机器学习的宏观图景：</p>
+<ul>
+<li><strong>监督学习</strong>：有老师（标签）手把手教，目标是学会预测。分为分类（离散标签）和回归（连续标签）。</li>
+<li><strong>无监督学习</strong>：没有标签，目标是发现数据中隐藏的结构（如聚类）。</li>
+<li><strong>强化学习</strong>：通过与环境交互获得奖励&#x2F;惩罚，目标是最大化长期收益。</li>
+</ul>
+<p>我们还引入了<strong>损失函数</strong>这个核心概念——它是机器&quot;自我反省&quot;的工具，也是我们优化的目标。</p>
+<p>但你可能已经发现一个问题：现实世界充满噪音和不确定性。如果数据本身就是模糊的，我们怎么&quot;精确&quot;地学习？</p>
+<p>下一章，我们将引入<strong>概率论</strong>——这是机器学习的数学语言，让我们能够优雅地处理不确定性。</p>
 
 
 </article>
@@ -270,7 +286,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8C%83%E5%BC%8F%E7%9A%84%E8%BD%AC%E5%8F%98"><span class="toc-text">范式的转变</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA"><span class="toc-text">数据表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">监督学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">监督学习的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98-Classification"><span class="toc-text">分类问题 (Classification)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98-Regression"><span class="toc-text">回归问题 (Regression)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E2%80%9C%E9%94%99%E8%AF%AF%E2%80%9D%EF%BC%9F"><span class="toc-text">如何定义“错误”？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">分类问题损失函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">回归问题损失函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">无监督学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#K-means%E7%AE%97%E6%B3%95"><span class="toc-text">K-means算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0-Reinforcement-Learning"><span class="toc-text">强化学习 (Reinforcement Learning)</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8C%83%E5%BC%8F%E7%9A%84%E8%BD%AC%E5%8F%98"><span class="toc-text">范式的转变</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA"><span class="toc-text">数据表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">监督学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">监督学习的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98-Classification"><span class="toc-text">分类问题 (Classification)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98-Regression"><span class="toc-text">回归问题 (Regression)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E2%80%9C%E9%94%99%E8%AF%AF%E2%80%9D%EF%BC%9F"><span class="toc-text">如何定义“错误”？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">分类问题损失函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">回归问题损失函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">无监督学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#K-means%E7%AE%97%E6%B3%95"><span class="toc-text">K-means算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0-Reinforcement-Learning"><span class="toc-text">强化学习 (Reinforcement Learning)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93"><span class="toc-text">本章小结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -693,7 +709,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764860092505" defer></script>
+<script src="/js/main.js?v=1764874090225" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {

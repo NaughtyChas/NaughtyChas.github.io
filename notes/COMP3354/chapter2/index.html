@@ -20,16 +20,16 @@
   <title>Chapter 2: 概率论与统计学回顾 - Naucha</title>
 
   
-    <meta name="description" content="这些内容是我们学习统计学习的基石。如果说编程是机器学习的骨架，那么概率统计就是它的灵魂。 建模不确定性由于现实世界中充满不确定性 (Uncertainty)，因此为了让机器能够对应现实世界的问题，我们需要将这种不确定性纳入考虑。 我们需要了解下面的这些概念：  样本空间 (Outcomes, $\Omega$) 是一个实验所有可能结果的集合。例如扔骰子事件的样本空间就是$\Omega &#x3D;">
+    <meta name="description" content="上一章我们建立了机器学习的宏观图景：数据 → 模型 → 预测。但有一个问题被我们刻意回避了——现实世界充满噪音和不确定性。 传感器会出错，标签会被打错，数据本身就是模糊的。我们如何用数学语言描述这种&quot;不确定&quot;？答案就是概率论。 如果说编程是机器学习的骨架，那么概率统计就是它的灵魂。这一章的内容是我们后续学习的基石。  建模不确定性由于现实世界中充满不确定性 (Uncertain">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Chapter 2: 概率论与统计学回顾">
 <meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter2/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="这些内容是我们学习统计学习的基石。如果说编程是机器学习的骨架，那么概率统计就是它的灵魂。 建模不确定性由于现实世界中充满不确定性 (Uncertainty)，因此为了让机器能够对应现实世界的问题，我们需要将这种不确定性纳入考虑。 我们需要了解下面的这些概念：  样本空间 (Outcomes, $\Omega$) 是一个实验所有可能结果的集合。例如扔骰子事件的样本空间就是$\Omega &#x3D;">
+<meta property="og:description" content="上一章我们建立了机器学习的宏观图景：数据 → 模型 → 预测。但有一个问题被我们刻意回避了——现实世界充满噪音和不确定性。 传感器会出错，标签会被打错，数据本身就是模糊的。我们如何用数学语言描述这种&quot;不确定&quot;？答案就是概率论。 如果说编程是机器学习的骨架，那么概率统计就是它的灵魂。这一章的内容是我们后续学习的基石。  建模不确定性由于现实世界中充满不确定性 (Uncertain">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2025-12-01T12:23:00.000Z">
-<meta property="article:modified_time" content="2025-12-01T13:39:10.000Z">
+<meta property="article:modified_time" content="2025-12-04T18:27:24.455Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764860092512">
+  <link rel="stylesheet" href="/css/main.css?v=1764874090235">
 
 
   
@@ -50,7 +50,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter2/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 2: 概率论与统计学回顾","description":"这些内容是我们学习统计学习的基石。如果说编程是机器学习的骨架，那么概率统计就是它的灵魂。\n建模不确定性由于现实世界中充满不确定性 (Uncertainty)，因此为了让机器能够对应现实世界的问题，我们需要将这种不确定性纳入考虑。\n我们需要了解下面的这些概念：\n\n样本空间 (Outcomes, $\\Omega$) 是一个实验所有可能结果的集合。例如扔骰子事件的样本空间就是$\\Omega &#x...","url":"https://naughtychas.github.io/notes/COMP3354/chapter2/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter2/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 2: 概率论与统计学回顾","description":"上一章我们建立了机器学习的宏观图景：数据 → 模型 → 预测。但有一个问题被我们刻意回避了——现实世界充满噪音和不确定性。\n传感器会出错，标签会被打错，数据本身就是模糊的。我们如何用数学语言描述这种&quot;不确定&quot;？答案就是概率论。\n如果说编程是机器学习的骨架，那么概率统计就是它的灵魂。这一章的内容是我们后续学习的基石。\n\n建模不确定性由于现实世界中充满不确定性 (Uncert...","url":"https://naughtychas.github.io/notes/COMP3354/chapter2/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -111,7 +111,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -131,7 +131,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-01T13:39:10.000Z">2025-12-01</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-01T12:23:00.000Z">2025-12-01</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T18:27:24.455Z">2025-12-05</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-01T12:23:00.000Z">2025-12-01</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -142,7 +142,10 @@
     </div>
     
   </div>
-  </div><article class="md-text content"><p>这些内容是我们学习统计学习的基石。如果说编程是机器学习的骨架，那么概率统计就是它的灵魂。</p>
+  </div><article class="md-text content"><p>上一章我们建立了机器学习的宏观图景：数据 → 模型 → 预测。但有一个问题被我们刻意回避了——<strong>现实世界充满噪音和不确定性</strong>。</p>
+<p>传感器会出错，标签会被打错，数据本身就是模糊的。我们如何用数学语言描述这种&quot;不确定&quot;？答案就是<strong>概率论</strong>。</p>
+<p>如果说编程是机器学习的骨架，那么概率统计就是它的灵魂。这一章的内容是我们后续学习的基石。</p>
+<hr>
 <h2 id="建模不确定性"><a href="#建模不确定性" class="headerlink" title="建模不确定性"></a>建模不确定性</h2><p>由于现实世界中充满不确定性 (Uncertainty)，因此为了让机器能够对应现实世界的问题，我们需要将这种不确定性纳入考虑。</p>
 <p>我们需要了解下面的这些概念：</p>
 <ul>
@@ -170,7 +173,8 @@
 <p>$P(X&#x3D;a | Y&#x3D;b) &#x3D; \frac{P(X&#x3D;a, Y&#x3D;b)}{P(Y&#x3D;b)}$</p>
 <p>这个公式中，$P(X&#x3D;a | Y&#x3D;b)$代表在$Y &#x3D; b$的前提下，发生$X &#x3D; a$的概率。意思是我们不再去将视野聚集到整个样本空间内，而是只看$Y &#x3D; b$的那部分空间的时候，$X &#x3D; a$占据了它多大的比例？</p>
 <p>如果$P(X|Y) &#x3D; P(X)$，则表明“知不知道Y对判断X完全没有影响”。这种情况下，两个变量的关系是**独立 (Independent)**的。在现实中，两个数据独立往往是一个非常罕见且奢侈的属性。</p>
-<h2 id="贝叶斯定理"><a href="#贝叶斯定理" class="headerlink" title="贝叶斯定理"></a>贝叶斯定理</h2><p>通常我们很容易获得正向概率，比如：得了流感($F$)的人，90%的人会喉咙痛($S$)。我们直接就可以得出$P(S|F) &#x3D; 0.9$。</p>
+<h2 id="贝叶斯定理"><a href="#贝叶斯定理" class="headerlink" title="贝叶斯定理"></a>贝叶斯定理</h2><p>现在我们进入本章最重要的部分——它将在后续章节反复出现。</p>
+<p>通常我们很容易获得正向概率，比如：得了流感($F$)的人，90%的人会喉咙痛($S$)。我们直接就可以得出$P(S|F) &#x3D; 0.9$。</p>
 <p>但是作为医生来说，我们如何得到这个问题的概率：“我现在喉咙痛，我有多大概率得了流感？”。也就是说，我们该如何求$P(F|S)$？</p>
 <p>如果直接回答90%，那么你就掉进了基本比率谬误的陷阱。这时候我们可以通过贝叶斯定理：</p>
 <p>$$P(H|E) &#x3D; \frac{P(E|H)P(H)}{P(E)}$$</p>
@@ -192,7 +196,8 @@
 <p>那么剩下的一千万人怎么办？$9999990 \times 0.0001 \approx 1000$个假阳性。</p>
 <p>由于你现在是阳性，那么你属于所有阳性人群的一员。那么阳性总人数为10 + 1000 &#x3D; 1010人。由于真正得病的人群只有10人，则你是10个真病人之一的概率仅有$\frac{10}{1010} &#x3D; 0.0099$。百分之一都不到。  </p>
 <hr>
-<h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><h3 id="最大似然估计"><a href="#最大似然估计" class="headerlink" title="最大似然估计"></a>最大似然估计</h3><p>在前面的例子中，我们假设知道某些参数的值，例如先验概率。但是在现实的机器学习任务中，我们只有数据，没有上帝视角。因此我们需要学会如何**估计 (Estimate)**它们。</p>
+<h2 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h2><h3 id="最大似然估计"><a href="#最大似然估计" class="headerlink" title="最大似然估计"></a>最大似然估计</h3><p>现在我们进入机器学习的核心问题：<strong>估计参数</strong>。</p>
+<p>在前面的例子中，我们假设知道某些参数的值，例如先验概率。但是在现实的机器学习任务中，我们只有数据，没有上帝视角。因此我们需要学会如何**估计 (Estimate)**它们。</p>
 <p>老师上课讲了最主流的<em>最大似然估计 (Maximum Likelihood Estimation)</em>* 方法，所以我们在这就讲一下这个吧。</p>
 <blockquote>
 <p>假设你扔硬币100次，出现了70次正面。那么你觉得这个硬币扔出正面的概率$p$是多少？</p>
@@ -254,6 +259,23 @@
 <h4 id="相关性与因果性"><a href="#相关性与因果性" class="headerlink" title="相关性与因果性"></a>相关性与因果性</h4><p>概率统计只能告诉你两件事发生了，存在<strong>关联性 (Correlation)</strong>，不能告诉你一件事导致了另一件事，也就是<strong>因果性 (Causation)</strong>。</p>
 <p>即便诺贝尔奖得主数量与巧克力消费量呈正相关，也不代表bro吃点巧克力就能让你得诺贝尔奖了。  </p>
 <p>它们可能都和一个共同的因素有关，比如国家的GDP。有钱的国家既吃得起巧克力，也养得起科学家。但是绝对不是因为吃巧克力就能让你变聪明（  </p>
+<hr>
+<h2 id="本章小结"><a href="#本章小结" class="headerlink" title="本章小结"></a>本章小结</h2><p>这一章我们建立了描述不确定性的数学语言：</p>
+<ul>
+<li><strong>随机变量</strong>把现实映射为数字，让我们能计算期望、方差</li>
+<li><strong>联合分布与条件概率</strong>让我们能处理变量之间的关系</li>
+<li><strong>贝叶斯定理</strong>让我们能&quot;反向推理&quot;：从证据更新信念</li>
+<li><strong>MLE</strong>让我们能从数据估计参数：&quot;什么参数能让这些数据最可能发生？&quot;</li>
+<li><strong>平滑</strong>防止零概率灾难，同时引入了偏差-方差权衡的预告</li>
+</ul>
+<blockquote>
+<ul>
+<li>贝叶斯：$P(H|E) &#x3D; \frac{P(E|H)P(H)}{P(E)}$</li>
+<li>MLE：$\hat{p}_i &#x3D; \frac{n_i}{n}$</li>
+<li>平滑：$\hat{p}_i &#x3D; \frac{n_i + \epsilon}{n + k\epsilon}$</li>
+</ul>
+</blockquote>
+<p>我们已经有了MLE这把锤子。下一章，我们将用数学严格证明&quot;扔硬币的直觉&quot;是对的，并把MLE扩展到更复杂的分布（高斯、指数）。同时，我们会引入MLE的升级版——<strong>MAP（最大后验估计）</strong>，它结合了数据和先验知识。</p>
 
 
 </article>
@@ -290,7 +312,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E6%A8%A1%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">建模不确定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E5%90%88%E4%B8%8E%E6%9D%A1%E4%BB%B6"><span class="toc-text">联合与条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86"><span class="toc-text">贝叶斯定理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-text">参数估计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="toc-text">最大似然估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E6%BB%91-Smoothing"><span class="toc-text">平滑 (Smoothing)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%B0%E8%AE%A1%E7%9A%84%E8%B4%A8%E9%87%8F"><span class="toc-text">估计的质量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%8F%E5%B7%AE%E4%B8%8E%E6%96%B9%E5%B7%AE%E7%9A%84%E6%9D%83%E8%A1%A1"><span class="toc-text">偏差与方差的权衡</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E4%B8%8E%E5%9B%A0%E6%9E%9C%E6%80%A7"><span class="toc-text">相关性与因果性</span></a></li></ol></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E6%A8%A1%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">建模不确定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E5%90%88%E4%B8%8E%E6%9D%A1%E4%BB%B6"><span class="toc-text">联合与条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86"><span class="toc-text">贝叶斯定理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-text">参数估计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="toc-text">最大似然估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E6%BB%91-Smoothing"><span class="toc-text">平滑 (Smoothing)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%B0%E8%AE%A1%E7%9A%84%E8%B4%A8%E9%87%8F"><span class="toc-text">估计的质量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%8F%E5%B7%AE%E4%B8%8E%E6%96%B9%E5%B7%AE%E7%9A%84%E6%9D%83%E8%A1%A1"><span class="toc-text">偏差与方差的权衡</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E4%B8%8E%E5%9B%A0%E6%9E%9C%E6%80%A7"><span class="toc-text">相关性与因果性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93"><span class="toc-text">本章小结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -713,7 +735,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764860092513" defer></script>
+<script src="/js/main.js?v=1764874090237" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {

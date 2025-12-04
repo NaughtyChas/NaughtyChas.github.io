@@ -20,16 +20,16 @@
   <title>Chapter 7: 聚类 - Naucha</title>
 
   
-    <meta name="description" content="回到算法的领域，或者更具体些，我们来聊聊聚类 (Clustering) 这些内容我们在第一章简单介绍过。在无监督学习中，没有标签告诉我们要凑成什么样，唯一的指导原则就是：物以类聚，人以群分。但关键是，怎么算“类”，怎么算“群”？ 聚类算法流派我们将聚类算法划分为三大流派：  划分式 (Partitional)   划分式的代表就是我们之前讲过的K-means。   划分式聚类算法的逻辑有点像切蛋糕">
+    <meta name="description" content="欢迎来到&quot;第二座山&quot;！ 前六章我们一直有&quot;标签&quot;这个拐杖（监督学习）。但现实中，大部分数据是没有标签的。没人告诉你这张图是猫还是狗，也没人告诉你这封邮件是不是垃圾邮件。 当没人告诉你答案时，你能发现数据中的结构吗？这就是无监督学习。 本章我们将探索无监督学习的第一站——聚类 (Clustering)。唯一的指导原则就是：物以类聚，人以群分。  聚类算法流派我">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Chapter 7: 聚类">
 <meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter7/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="回到算法的领域，或者更具体些，我们来聊聊聚类 (Clustering) 这些内容我们在第一章简单介绍过。在无监督学习中，没有标签告诉我们要凑成什么样，唯一的指导原则就是：物以类聚，人以群分。但关键是，怎么算“类”，怎么算“群”？ 聚类算法流派我们将聚类算法划分为三大流派：  划分式 (Partitional)   划分式的代表就是我们之前讲过的K-means。   划分式聚类算法的逻辑有点像切蛋糕">
+<meta property="og:description" content="欢迎来到&quot;第二座山&quot;！ 前六章我们一直有&quot;标签&quot;这个拐杖（监督学习）。但现实中，大部分数据是没有标签的。没人告诉你这张图是猫还是狗，也没人告诉你这封邮件是不是垃圾邮件。 当没人告诉你答案时，你能发现数据中的结构吗？这就是无监督学习。 本章我们将探索无监督学习的第一站——聚类 (Clustering)。唯一的指导原则就是：物以类聚，人以群分。  聚类算法流派我">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2025-12-03T12:35:00.000Z">
-<meta property="article:modified_time" content="2025-12-04T08:18:57.168Z">
+<meta property="article:modified_time" content="2025-12-04T18:39:41.726Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764860092517">
+  <link rel="stylesheet" href="/css/main.css?v=1764874090244">
 
 
   
@@ -50,7 +50,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter7/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 7: 聚类","description":"回到算法的领域，或者更具体些，我们来聊聊聚类 (Clustering)\n这些内容我们在第一章简单介绍过。在无监督学习中，没有标签告诉我们要凑成什么样，唯一的指导原则就是：物以类聚，人以群分。但关键是，怎么算“类”，怎么算“群”？\n聚类算法流派我们将聚类算法划分为三大流派：\n\n划分式 (Partitional)\n  划分式的代表就是我们之前讲过的K-means。\n  划分式聚类算法的逻辑有点像...","url":"https://naughtychas.github.io/notes/COMP3354/chapter7/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter7/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 7: 聚类","description":"欢迎来到&quot;第二座山&quot;！\n前六章我们一直有&quot;标签&quot;这个拐杖（监督学习）。但现实中，大部分数据是没有标签的。没人告诉你这张图是猫还是狗，也没人告诉你这封邮件是不是垃圾邮件。\n当没人告诉你答案时，你能发现数据中的结构吗？这就是无监督学习。\n本章我们将探索无监督学习的第一站——聚类 (Clustering)。唯一的指导原则就是：物以类聚，人以群分。\n\n聚类算法...","url":"https://naughtychas.github.io/notes/COMP3354/chapter7/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -111,7 +111,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -131,7 +131,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T08:18:57.168Z">2025-12-04</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-03T12:35:00.000Z">2025-12-03</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T18:39:41.726Z">2025-12-05</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-03T12:35:00.000Z">2025-12-03</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -142,8 +142,11 @@
     </div>
     
   </div>
-  </div><article class="md-text content"><p>回到算法的领域，或者更具体些，我们来聊聊<strong>聚类 (Clustering)</strong></p>
-<p>这些内容我们在第一章简单介绍过。在无监督学习中，没有标签告诉我们要凑成什么样，唯一的指导原则就是：物以类聚，人以群分。但关键是，怎么算“类”，怎么算“群”？</p>
+  </div><article class="md-text content"><p>欢迎来到&quot;第二座山&quot;！</p>
+<p>前六章我们一直有&quot;标签&quot;这个拐杖（监督学习）。但现实中，大部分数据是没有标签的。没人告诉你这张图是猫还是狗，也没人告诉你这封邮件是不是垃圾邮件。</p>
+<p>当没人告诉你答案时，你能发现数据中的结构吗？这就是<strong>无监督学习</strong>。</p>
+<p>本章我们将探索无监督学习的第一站——<strong>聚类 (Clustering)</strong>。唯一的指导原则就是：物以类聚，人以群分。</p>
+<hr>
 <h2 id="聚类算法流派"><a href="#聚类算法流派" class="headerlink" title="聚类算法流派"></a>聚类算法流派</h2><p>我们将聚类算法划分为三大流派：</p>
 <ul>
 <li><p><strong>划分式 (Partitional)</strong></p>
@@ -252,7 +255,7 @@
 <li><p>然后我们固定点的归属，调整中心位置。<br>  现在大家的分组订好了，按照规则谁也不许换组。我们现在要移动中心$\mu_j$，让这个组内所有成员的“满意程度最大化”，也就是总距离平方和最小。这是一个纯微积分问题，也就是说，我们现在要最小化的式子就是：</p>
 <p>  $$Loss(\mu_j) &#x3D; \sum_{x \in C_j}(x - \mu_j)^2$$</p>
 <p>  对$\mu_j$求得导数，并令其为零，省略中间不重要的推导部分，我们得到：</p>
-<p>  $$\mu_j &#x3D; \frac{1}{n_j} \sum{x \in C_j}xs$$</p>
+<p>  $$\mu_j &#x3D; \frac{1}{n_j} \sum_{x \in C_j} x$$</p>
 <p>  因此我们知道，算术平均值也就是重心，这就是能让平方误差和变得最小的那个点。因此，把重心挪到重心，误差$J$一定减少。</p>
 </li>
 <li><p>由于$J$单调递减，所以我们得到K-means一定会收敛。</p>
@@ -295,6 +298,17 @@
 </tr>
 </tbody></table>
 <p>理解一下这张表选择题大概就没啥问题了。</p>
+<hr>
+<h2 id="本章小结"><a href="#本章小结" class="headerlink" title="本章小结"></a>本章小结</h2><p>这一章我们学习了两种截然不同的聚类思路：</p>
+<ul>
+<li><strong>K-means</strong>：简单粗暴，先定K个中心，然后不断迭代。适合大数据，但只能切出球形的类。</li>
+<li><strong>HAC (层次聚类)</strong>：精细优雅，像消消乐一样不断合并。能展示数据的层级结构，但计算太慢。</li>
+</ul>
+<blockquote>
+<p>K-means是&quot;找中心&quot;，HAC是&quot;找邻居&quot;。</p>
+</blockquote>
+<p>聚类帮我们发现了数据的&quot;分组&quot;结构。但如果数据太复杂、维度太高怎么办？比如一张图片有10000个像素（10000维），我们能不能只用50个数就概括它？</p>
+<p>下一章，我们将学习无监督学习的另一大神器——<strong>PCA (主成分分析)</strong>。我们将学会如何在保留信息的前提下，把高维数据&quot;拍扁&quot;。</p>
 
 
 </article>
@@ -331,7 +345,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95%E6%B5%81%E6%B4%BE"><span class="toc-text">聚类算法流派</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB"><span class="toc-text">聚合层次聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="toc-text">距离度量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E9%93%BE%E6%8E%A5-Single-Linkage"><span class="toc-text">单链接 (Single-Linkage)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E9%93%BE%E6%8E%A5-Complete-Linkage"><span class="toc-text">全链接 (Complete-Linkage)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B3%E5%9D%87%E9%93%BE%E6%8E%A5-Average-Linkage"><span class="toc-text">平均链接 (Average-Linkage)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%95%E6%97%B6%E5%81%9C%E6%AD%A2%EF%BC%9F"><span class="toc-text">何时停止？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E4%B8%AD%E5%BF%83%E7%9A%84%E8%81%9A%E7%B1%BB"><span class="toc-text">基于中心的聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#K-means%E7%9A%84%E6%95%B0%E5%AD%A6%E7%9B%AE%E6%A0%87"><span class="toc-text">K-means的数学目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HAC-vs-K-means"><span class="toc-text">HAC vs K-means</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95%E6%B5%81%E6%B4%BE"><span class="toc-text">聚类算法流派</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB"><span class="toc-text">聚合层次聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="toc-text">距离度量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E9%93%BE%E6%8E%A5-Single-Linkage"><span class="toc-text">单链接 (Single-Linkage)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E9%93%BE%E6%8E%A5-Complete-Linkage"><span class="toc-text">全链接 (Complete-Linkage)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B3%E5%9D%87%E9%93%BE%E6%8E%A5-Average-Linkage"><span class="toc-text">平均链接 (Average-Linkage)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%95%E6%97%B6%E5%81%9C%E6%AD%A2%EF%BC%9F"><span class="toc-text">何时停止？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E4%B8%AD%E5%BF%83%E7%9A%84%E8%81%9A%E7%B1%BB"><span class="toc-text">基于中心的聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#K-means%E7%9A%84%E6%95%B0%E5%AD%A6%E7%9B%AE%E6%A0%87"><span class="toc-text">K-means的数学目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HAC-vs-K-means"><span class="toc-text">HAC vs K-means</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93"><span class="toc-text">本章小结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -754,7 +768,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764860092518" defer></script>
+<script src="/js/main.js?v=1764874090245" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {

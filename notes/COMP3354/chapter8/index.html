@@ -20,16 +20,16 @@
   <title>Chapter 8: PCA - Naucha</title>
 
   
-    <meta name="description" content="PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量、正交矩阵），还涉及优化的思想，例如拉格朗日乘子。 线性代数为了能理解PCA，我们需要使用到基础的线性代数知识。我们不把线性代数当作枯燥的计算规则，而是把它当作描述高维空间的语言。   在 PCA 中，我们要在高维空间（比如 1000 维）里旋转、投影、寻找“主轴”，没有这套工具是不行的。 下面应该都是老朋友了">
+    <meta name="description" content="上一章我们通过聚类发现了数据的&quot;分组&quot;结构。今天我们来解决另一个无监督学习的难题：维度灾难。 想象你有一张100x100的图片，它就是10000维空间里的一个点。处理这么高维的数据不仅慢，而且容易过拟合（记得Ch6的VC维吗？维度越高，模型越复杂）。 能不能把这10000维的数据&quot;压缩&quot;成50维，同时还不丢失主要信息？这就是PCA (主成分分析) 要做的事。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Chapter 8: PCA">
 <meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter8/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量、正交矩阵），还涉及优化的思想，例如拉格朗日乘子。 线性代数为了能理解PCA，我们需要使用到基础的线性代数知识。我们不把线性代数当作枯燥的计算规则，而是把它当作描述高维空间的语言。   在 PCA 中，我们要在高维空间（比如 1000 维）里旋转、投影、寻找“主轴”，没有这套工具是不行的。 下面应该都是老朋友了">
+<meta property="og:description" content="上一章我们通过聚类发现了数据的&quot;分组&quot;结构。今天我们来解决另一个无监督学习的难题：维度灾难。 想象你有一张100x100的图片，它就是10000维空间里的一个点。处理这么高维的数据不仅慢，而且容易过拟合（记得Ch6的VC维吗？维度越高，模型越复杂）。 能不能把这10000维的数据&quot;压缩&quot;成50维，同时还不丢失主要信息？这就是PCA (主成分分析) 要做的事。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2025-12-04T08:29:00.000Z">
-<meta property="article:modified_time" content="2025-12-04T11:26:40.097Z">
+<meta property="article:modified_time" content="2025-12-04T18:41:32.739Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764860092572">
+  <link rel="stylesheet" href="/css/main.css?v=1764874090243">
 
 
   
@@ -50,7 +50,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter8/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 8: PCA","description":"PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量、正交矩阵），还涉及优化的思想，例如拉格朗日乘子。\n线性代数为了能理解PCA，我们需要使用到基础的线性代数知识。我们不把线性代数当作枯燥的计算规则，而是把它当作描述高维空间的语言。  \n在 PCA 中，我们要在高维空间（比如 1000 维）里旋转、投影、寻找“主轴”，没有这套工具是不行的。\n下面应该都是老...","url":"https://naughtychas.github.io/notes/COMP3354/chapter8/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter8/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 8: PCA","description":"上一章我们通过聚类发现了数据的&quot;分组&quot;结构。今天我们来解决另一个无监督学习的难题：维度灾难。\n想象你有一张100x100的图片，它就是10000维空间里的一个点。处理这么高维的数据不仅慢，而且容易过拟合（记得Ch6的VC维吗？维度越高，模型越复杂）。\n能不能把这10000维的数据&quot;压缩&quot;成50维，同时还不丢失主要信息？这就是PCA (主成分分析) 要做...","url":"https://naughtychas.github.io/notes/COMP3354/chapter8/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -111,7 +111,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -131,7 +131,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T11:26:40.097Z">2025-12-04</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-04T08:29:00.000Z">2025-12-04</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T18:41:32.739Z">2025-12-05</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-04T08:29:00.000Z">2025-12-04</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -142,7 +142,11 @@
     </div>
     
   </div>
-  </div><article class="md-text content"><p>PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量、正交矩阵），还涉及优化的思想，例如拉格朗日乘子。</p>
+  </div><article class="md-text content"><p>上一章我们通过聚类发现了数据的&quot;分组&quot;结构。今天我们来解决另一个无监督学习的难题：<strong>维度灾难</strong>。</p>
+<p>想象你有一张100x100的图片，它就是10000维空间里的一个点。处理这么高维的数据不仅慢，而且容易过拟合（记得Ch6的VC维吗？维度越高，模型越复杂）。</p>
+<p>能不能把这10000维的数据&quot;压缩&quot;成50维，同时还不丢失主要信息？这就是<strong>PCA (主成分分析)</strong> 要做的事。</p>
+<p>PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量），还涉及优化的思想。</p>
+<hr>
 <h2 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h2><p>为了能理解PCA，我们需要使用到基础的线性代数知识。我们不把线性代数当作枯燥的计算规则，而是把它当作描述高维空间的语言。  </p>
 <p>在 PCA 中，我们要在高维空间（比如 1000 维）里旋转、投影、寻找“主轴”，没有这套工具是不行的。</p>
 <p>下面应该都是老朋友了。如果bro的线性代数学的很不错，那你直接跳过这一块就可以。</p>
@@ -297,6 +301,21 @@
 </ol>
 <p>那么说得好，我们为什么会使用SVD呢？SVD好在哪？计算 $XX^T$ 会导致数字精度损失（平方会让很小的数变得极小，很大的数变得极大）。SVD 直接在 $X$ 上操作，数值更稳定，而且现代SVD算法更加高效。</p>
 <hr>
+<h2 id="本章小结"><a href="#本章小结" class="headerlink" title="本章小结"></a>本章小结</h2><p>这一章我们攻克了无监督学习的第二座堡垒——降维。</p>
+<ul>
+<li>我们发现 降维 &#x3D; 找一个投影方向，让数据投影后的<strong>方差最大</strong>，保留最多信息。</li>
+<li><strong>数学结论</strong>：这个&quot;最佳方向&quot;竟然就是协方差矩阵$S$的<strong>最大特征向量</strong>。</li>
+<li><strong>操作流程</strong>：中心化数据 → 算协方差矩阵$S$ → 算特征值和特征向量 → 选最大的几个投影。</li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>聚类 (Ch7)</strong>：在样本之间找关系（把相似的样本归为一类）。</li>
+<li><strong>PCA (Ch8)</strong>：在特征之间找关系（把相关的特征合并成主成分）。</li>
+</ul>
+</blockquote>
+<p>至此，我们已经翻越了&quot;第二座山&quot;。我们学会了在有标签时怎么预测（监督学习），在没标签时怎么找结构（无监督学习）。</p>
+<p>但这些模型都是&quot;静态&quot;的——给一个输入，吐一个输出，结束。</p>
+<p>如果你的模型是一个机器人，它做出的动作会改变环境，环境又会反过来影响它，这该怎么学？</p>
 
 
 </article>
@@ -333,7 +352,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"><span class="toc-text">线性代数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F-Vector"><span class="toc-text">向量 (Vector)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5-Matrix"><span class="toc-text">矩阵 (Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95-Matrix-Multiplication"><span class="toc-text">矩阵乘法 (Matrix Multiplication)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E7%9A%84%E5%87%A0%E4%BD%95"><span class="toc-text">投影的几何</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E4%B8%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F"><span class="toc-text">特征值与特征向量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCA%E5%A6%82%E4%BD%95%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB"><span class="toc-text">PCA如何降维打击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E6%96%B9%E5%B7%AE"><span class="toc-text">最大方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%EF%BC%9A%E4%B8%AD%E5%BF%83%E5%8C%96"><span class="toc-text">预处理：中心化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BF%BB%E8%AF%91%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0"><span class="toc-text">翻译目标函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95"><span class="toc-text">拉格朗日乘子法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E9%87%8D%E6%9E%84%E8%AF%AF%E5%B7%AE"><span class="toc-text">最小重构误差</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3-SVD"><span class="toc-text">奇异值分解 (SVD)</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"><span class="toc-text">线性代数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F-Vector"><span class="toc-text">向量 (Vector)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5-Matrix"><span class="toc-text">矩阵 (Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95-Matrix-Multiplication"><span class="toc-text">矩阵乘法 (Matrix Multiplication)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E7%9A%84%E5%87%A0%E4%BD%95"><span class="toc-text">投影的几何</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E4%B8%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F"><span class="toc-text">特征值与特征向量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCA%E5%A6%82%E4%BD%95%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB"><span class="toc-text">PCA如何降维打击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E6%96%B9%E5%B7%AE"><span class="toc-text">最大方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%EF%BC%9A%E4%B8%AD%E5%BF%83%E5%8C%96"><span class="toc-text">预处理：中心化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BF%BB%E8%AF%91%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0"><span class="toc-text">翻译目标函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95"><span class="toc-text">拉格朗日乘子法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E9%87%8D%E6%9E%84%E8%AF%AF%E5%B7%AE"><span class="toc-text">最小重构误差</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3-SVD"><span class="toc-text">奇异值分解 (SVD)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93"><span class="toc-text">本章小结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -756,7 +775,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764860092573" defer></script>
+<script src="/js/main.js?v=1764874090244" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {

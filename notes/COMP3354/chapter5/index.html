@@ -20,16 +20,16 @@
   <title>Chapter 5: 正则化 - Naucha</title>
 
   
-    <meta name="description" content="正则化 (Regularization) 是机器学习中用来防止过拟合，提升模型泛化能力的核心技术。 正则化还记得上一章我们最后提到的模型过拟合问题吗？复盘一下：   如果你用一个九次多项式来拟合只有几个点的正弦曲线时，模型就拥有了过于强大的能力。它不仅学会了正弦曲线的趋势，还拼命扭曲自己去穿过每一个带有噪音的样本点。   在这时，模型的Training loss几乎为零，因为它确实记住了测试集的所">
+    <meta name="description" content="上一章我们推导出了线性回归的完美闭式解。但故事远没有结束——如果你真的用它去预测，很可能会遭遇一个噩梦：模型在训练集上完美，在测试集上一塌糊涂。 这就是过拟合。本章将介绍对抗它的终极武器：正则化。  正则化还记得上一章我们最后提到的模型过拟合问题吗？复盘一下：   如果你用一个九次多项式来拟合只有几个点的正弦曲线时，模型就拥有了过于强大的能力。它不仅学会了正弦曲线的趋势，还拼命扭曲自己去穿过每一个">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Chapter 5: 正则化">
 <meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter5/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="正则化 (Regularization) 是机器学习中用来防止过拟合，提升模型泛化能力的核心技术。 正则化还记得上一章我们最后提到的模型过拟合问题吗？复盘一下：   如果你用一个九次多项式来拟合只有几个点的正弦曲线时，模型就拥有了过于强大的能力。它不仅学会了正弦曲线的趋势，还拼命扭曲自己去穿过每一个带有噪音的样本点。   在这时，模型的Training loss几乎为零，因为它确实记住了测试集的所">
+<meta property="og:description" content="上一章我们推导出了线性回归的完美闭式解。但故事远没有结束——如果你真的用它去预测，很可能会遭遇一个噩梦：模型在训练集上完美，在测试集上一塌糊涂。 这就是过拟合。本章将介绍对抗它的终极武器：正则化。  正则化还记得上一章我们最后提到的模型过拟合问题吗？复盘一下：   如果你用一个九次多项式来拟合只有几个点的正弦曲线时，模型就拥有了过于强大的能力。它不仅学会了正弦曲线的趋势，还拼命扭曲自己去穿过每一个">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2025-12-03T05:51:00.000Z">
-<meta property="article:modified_time" content="2025-12-03T07:36:15.614Z">
+<meta property="article:modified_time" content="2025-12-04T18:37:47.619Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764860092571">
+  <link rel="stylesheet" href="/css/main.css?v=1764874090238">
 
 
   
@@ -50,7 +50,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter5/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 5: 正则化","description":"正则化 (Regularization) 是机器学习中用来防止过拟合，提升模型泛化能力的核心技术。\n正则化还记得上一章我们最后提到的模型过拟合问题吗？复盘一下：  \n如果你用一个九次多项式来拟合只有几个点的正弦曲线时，模型就拥有了过于强大的能力。它不仅学会了正弦曲线的趋势，还拼命扭曲自己去穿过每一个带有噪音的样本点。  \n在这时，模型的Training loss几乎为零，因为它确实记住了测试...","url":"https://naughtychas.github.io/notes/COMP3354/chapter5/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter5/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 5: 正则化","description":"上一章我们推导出了线性回归的完美闭式解。但故事远没有结束——如果你真的用它去预测，很可能会遭遇一个噩梦：模型在训练集上完美，在测试集上一塌糊涂。\n这就是过拟合。本章将介绍对抗它的终极武器：正则化。\n\n正则化还记得上一章我们最后提到的模型过拟合问题吗？复盘一下：  \n如果你用一个九次多项式来拟合只有几个点的正弦曲线时，模型就拥有了过于强大的能力。它不仅学会了正弦曲线的趋势，还拼命扭曲自己去穿过...","url":"https://naughtychas.github.io/notes/COMP3354/chapter5/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -111,7 +111,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -131,7 +131,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-03T07:36:15.614Z">2025-12-03</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-03T05:51:00.000Z">2025-12-03</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T18:37:47.619Z">2025-12-05</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-03T05:51:00.000Z">2025-12-03</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -142,7 +142,9 @@
     </div>
     
   </div>
-  </div><article class="md-text content"><p><strong>正则化 (Regularization)</strong> 是机器学习中用来防止过拟合，提升模型泛化能力的核心技术。</p>
+  </div><article class="md-text content"><p>上一章我们推导出了线性回归的完美闭式解。但故事远没有结束——如果你真的用它去预测，很可能会遭遇一个噩梦：模型在训练集上完美，在测试集上一塌糊涂。</p>
+<p>这就是<strong>过拟合</strong>。本章将介绍对抗它的终极武器：<strong>正则化</strong>。</p>
+<hr>
 <h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>还记得上一章我们最后提到的模型过拟合问题吗？复盘一下：  </p>
 <p>如果你用一个九次多项式来拟合只有几个点的正弦曲线时，模型就拥有了过于强大的能力。它不仅学会了正弦曲线的趋势，还拼命扭曲自己去穿过每一个带有噪音的样本点。  </p>
 <p>在这时，模型的Training loss几乎为零，因为它确实记住了测试集的所有样本，而你发现你模型的Test Loss巨大无比。</p>
@@ -180,6 +182,10 @@
 <p>$$ -\log \left( \exp\left( -\frac{\lambda}{2} |\theta|^2 \right) \right) &#x3D; \frac{\lambda}{2} |\theta|^2 $$</p>
 <p>因此：</p>
 <p>$$ P(\theta) \propto e^{-|\theta|^2} \implies \log P(\theta) \propto -|\theta|^2 $$</p>
+<blockquote>
+<p>这里的推导再次印证了我们在Ch3和Ch4反复提到的结论：<br><strong>L2正则化 &#x3D; MAP估计（假设参数服从高斯先验）</strong></p>
+<p>无论你是从&quot;软约束&quot;的角度（罚款），还是从&quot;贝叶斯&quot;的角度（先验信念），最后都殊途同归。</p>
+</blockquote>
 <hr>
 <h2 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h2><p>继续刚才的故事，在软约束上，我们如果要决定对参数$\theta$进行“罚款”，那么最自然的方式是什么？这你就联想到了在集合中衡量距离最自然的方式就是使用欧几里得距离。</p>
 <p>如此，我们不妨来计算向量$\theta$的长度平方：</p>
@@ -249,6 +255,20 @@
 <p>这迫使网络不能依赖一个或者一批神经元。我们相当于在训练$2^N$个不同的子网络，最后再将它们平均起来。这也是一种噪声注入，我们可以增强模型的可依赖性。  </p>
 <hr>
 <h3 id="批量归一法-Batch-Normalization"><a href="#批量归一法-Batch-Normalization" class="headerlink" title="批量归一法 (Batch Normalization)"></a>批量归一法 (Batch Normalization)</h3><p>我们强行把每一层的输出拉回到均值为0、方差为1的分布。虽然它主要为了加速训练，但因为它引入了 Batch 的统计噪声（用当前 Batch 的均值代替全局均值），它也有轻微的正则化效果。</p>
+<h2 id="本章小结"><a href="#本章小结" class="headerlink" title="本章小结"></a>本章小结</h2><p>这一章我们学习了如何给模型&quot;戴上镣铐&quot;，防止它在训练数据上玩得太嗨（过拟合）：</p>
+<ul>
+<li><strong>L2正则化 (Ridge)</strong>：假设参数服从高斯分布，倾向于让参数变小（Weight Decay）。</li>
+<li><strong>L1正则化 (Lasso)</strong>：假设参数服从拉普拉斯分布，倾向于让参数变0（稀疏解）。</li>
+<li><strong>贝叶斯视角</strong>：正则化本质上就是引入先验知识（Prior）。</li>
+</ul>
+<blockquote>
+<ul>
+<li>L2像一个园丁，把所有草都修短。</li>
+<li>L1像一个除草机，把不重要的草直接拔光。</li>
+</ul>
+</blockquote>
+<p>现在我们已经知道怎么用正则化来解决过拟合了。但你可能会问：凭什么加个$|\theta|^2$就能提升泛化能力？这背后的深层原理是什么？</p>
+<p>下一章，我们将深入机器学习的理论核心——<strong>偏差-方差分解</strong>。你会看到，正则化其实是在用一点点偏差（Bias）去换取方差（Variance）的大幅降低。这是一个关于&quot;取舍&quot;的艺术。</p>
 
 
 </article>
@@ -285,7 +305,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-text">正则化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E7%BA%A6%E6%9D%9F"><span class="toc-text">硬约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E7%BA%A6%E6%9D%9F"><span class="toc-text">软约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%85%88%E9%AA%8C"><span class="toc-text">贝叶斯先验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L2%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-text">L2正则化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#L2%E5%A6%82%E4%BD%95%E6%94%B9%E5%8F%98%E6%9C%80%E4%BC%98%E8%A7%A3%EF%BC%9F"><span class="toc-text">L2如何改变最优解？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%99%AA%E5%A3%B0%E6%B3%A8%E5%85%A5"><span class="toc-text">噪声注入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L1%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-text">L1正则化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E4%BB%A3%E6%AD%A3%E5%88%99%E5%8C%96%E6%8A%80%E5%B7%A7"><span class="toc-text">现代正则化技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA-Data-Augmentation"><span class="toc-text">数据增强 (Data Augmentation)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A9%E5%81%9C-Early-Stopping"><span class="toc-text">早停 (Early Stopping)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A2%E5%BC%83%E6%B3%95-Dropout"><span class="toc-text">丢弃法 (Dropout)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E5%BD%92%E4%B8%80%E6%B3%95-Batch-Normalization"><span class="toc-text">批量归一法 (Batch Normalization)</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-text">正则化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E7%BA%A6%E6%9D%9F"><span class="toc-text">硬约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E7%BA%A6%E6%9D%9F"><span class="toc-text">软约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%85%88%E9%AA%8C"><span class="toc-text">贝叶斯先验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L2%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-text">L2正则化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#L2%E5%A6%82%E4%BD%95%E6%94%B9%E5%8F%98%E6%9C%80%E4%BC%98%E8%A7%A3%EF%BC%9F"><span class="toc-text">L2如何改变最优解？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%99%AA%E5%A3%B0%E6%B3%A8%E5%85%A5"><span class="toc-text">噪声注入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L1%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-text">L1正则化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E4%BB%A3%E6%AD%A3%E5%88%99%E5%8C%96%E6%8A%80%E5%B7%A7"><span class="toc-text">现代正则化技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA-Data-Augmentation"><span class="toc-text">数据增强 (Data Augmentation)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A9%E5%81%9C-Early-Stopping"><span class="toc-text">早停 (Early Stopping)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A2%E5%BC%83%E6%B3%95-Dropout"><span class="toc-text">丢弃法 (Dropout)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E5%BD%92%E4%B8%80%E6%B3%95-Batch-Normalization"><span class="toc-text">批量归一法 (Batch Normalization)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93"><span class="toc-text">本章小结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -708,7 +728,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764860092572" defer></script>
+<script src="/js/main.js?v=1764874090239" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {

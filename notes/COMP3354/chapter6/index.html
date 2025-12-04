@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2025-12-03T07:37:00.000Z">
-<meta property="article:modified_time" content="2025-12-03T13:03:09.202Z">
+<meta property="article:modified_time" content="2025-12-04T18:39:08.915Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1764860092518">
+  <link rel="stylesheet" href="/css/main.css?v=1764874090241">
 
 
   
@@ -111,7 +111,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/begin/"><span class="title">COMP3354 序言</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a><a class="item title" href="/notes/COMP3354/chapter1/"><span class="title">Chapter 1: 数据学习介绍</span></a><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -131,7 +131,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-03T13:03:09.202Z">2025-12-03</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-03T07:37:00.000Z">2025-12-03</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T18:39:08.915Z">2025-12-05</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-03T07:37:00.000Z">2025-12-03</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -158,6 +158,12 @@
 <hr>
 <p>那么我们要对这个Error公式进行一个开膛破肚。首先把$(y - f(x;D))^2$拆开。为了能够做到这一点，我们需要引入一个概念，叫<strong>平均模型 (Expected Model)</strong>，记作$\bar{f}(x) &#x3D; E_D[f(x; D)]$。真实的函数值应当是$E[y|x]$。</p>
 <p>假设你训练了1000次模型，每次的数据都不一样。但是你把这1000条曲线叠加起来求得平均值，你就得到了一个非常稳定的平均模型$\bar{f}(x)$。</p>
+<p>接下来我们要做一件数学上很漂亮的事：把&quot;误差&quot;这个笼统的概念，精确地分解成三个独立的部分。这个分解过程有点长，但值得坚持。让我告诉你接下来会发生什么：</p>
+<ol>
+<li>首先，我们把噪音剥离出来（不可约误差）</li>
+<li>然后，我们把&quot;模型学歪了&quot;和&quot;模型太敏感&quot;分开（偏差 vs 方差）</li>
+<li>最后，我们得到一个干净利落的公式：$Total Error &#x3D; Bias^2 + Variance + Noise$</li>
+</ol>
 <p><strong>首先剥离噪音：</strong></p>
 <p>我们要计算$E[(y - f(x; D))^2]$。我们在括号里减去一个$E[y|x]$，再加上一个$E[y|x]$，我们就得到了：</p>
 <p>$$ y - f(x; D) &#x3D; (y - E[y|x]) + (E[y|x] - f(x; D)) $$</p>
@@ -795,7 +801,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1764860092520" defer></script>
+<script src="/js/main.js?v=1764874090243" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
