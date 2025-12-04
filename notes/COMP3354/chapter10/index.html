@@ -1,0 +1,1132 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Chapter 10: 神经网络 - Naucha</title>
+
+  
+    <meta name="description" content="感知机与第一次AI寒冬人脑由神经元组成。生物学家告诉我们，神经元的工作方式很简单： 树突接收来自其他神经元的信号（输入）。细胞体负责累加这些信号。如果累加的信号超过某个阈值，轴突就“啪”地一下放电（激活），把信号传给下一个神经元。 数学家尝试用数学来模仿大脑。我们将这个生物过程写成公式，那么我们就形成了感知机 (Perceptron)： $$ o &#x3D; \sigma(\mathbf{w}^">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chapter 10: 神经网络">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter10/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="感知机与第一次AI寒冬人脑由神经元组成。生物学家告诉我们，神经元的工作方式很简单： 树突接收来自其他神经元的信号（输入）。细胞体负责累加这些信号。如果累加的信号超过某个阈值，轴突就“啪”地一下放电（激活），把信号传给下一个神经元。 数学家尝试用数学来模仿大脑。我们将这个生物过程写成公式，那么我们就形成了感知机 (Perceptron)： $$ o &#x3D; \sigma(\mathbf{w}^">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2025-12-04T13:51:00.000Z">
+<meta property="article:modified_time" content="2025-12-04T14:53:29.226Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1764860092510">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter10/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 10: 神经网络","description":"感知机与第一次AI寒冬人脑由神经元组成。生物学家告诉我们，神经元的工作方式很简单：\n树突接收来自其他神经元的信号（输入）。细胞体负责累加这些信号。如果累加的信号超过某个阈值，轴突就“啪”地一下放电（激活），把信号传给下一个神经元。\n数学家尝试用数学来模仿大脑。我们将这个生物过程写成公式，那么我们就形成了感知机 (Perceptron)：\n$$ o &#x3D; \\sigma(\\mathbf{...","url":"https://naughtychas.github.io/notes/COMP3354/chapter10/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3354" placeholder="在 COMP3354 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3354/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T14:53:29.226Z">2025-12-04</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-04T13:51:00.000Z">2025-12-04</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 10: 神经网络</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="感知机与第一次AI寒冬"><a href="#感知机与第一次AI寒冬" class="headerlink" title="感知机与第一次AI寒冬"></a>感知机与第一次AI寒冬</h2><p>人脑由神经元组成。生物学家告诉我们，神经元的工作方式很简单：</p>
+<p><strong>树突</strong>接收来自其他神经元的信号（输入）。<strong>细胞体</strong>负责累加这些信号。如果累加的信号超过某个阈值，<strong>轴突</strong>就“啪”地一下放电（激活），把信号传给下一个神经元。</p>
+<p>数学家尝试用数学来模仿大脑。我们将这个生物过程写成公式，那么我们就形成了<strong>感知机 (Perceptron)</strong>：</p>
+<p>$$ o &#x3D; \sigma(\mathbf{w}^T \mathbf{x} + b) $$</p>
+<p>其中：</p>
+<ul>
+<li><strong>$\mathbf{x}$ (Input):</strong> 输入信号（比如图像像素）。对应树突。</li>
+<li><strong>$\mathbf{w}$ (Weights):</strong> 权重，代表连接的强弱。对应突触的连接强度。</li>
+<li><strong>$\mathbf{w}^T \mathbf{x} + b$ (Weighted Sum):</strong> 细胞体里的信号累加。</li>
+<li><strong>$\sigma$ (Activation Function):</strong> 激活函数。<ul>
+<li>在最原始的感知机中，$\sigma$ 是一个 <strong>阶跃函数 (Step Function)</strong>：</li>
+<li>如果总和 $&gt; 0$，输出 1（激活&#x2F;放电）。</li>
+<li>如果总和 $\le 0$，输出 0（静默）。</li>
+</ul>
+</li>
+</ul>
+<p>这实际上和我们上一章学的 <strong>逻辑回归 (Logistic Regression)</strong> 几乎一模一样。<br>唯一的区别在于：逻辑回归用的 $\sigma$ 是平滑的 Sigmoid（输出概率），而原始感知机用的是硬邦邦的阶跃函数（输出 0 或 1）。</p>
+<hr>
+<p>感知机能做什么？例如我们可以通过感知机来学习参数 $\mathbf{w}$ 和 $b$，把猫和狗分开。</p>
+<p>从几何上看，公式 $\mathbf{w}^T \mathbf{x} + b &#x3D; 0$ 定义了一个 <strong>超平面 (Hyperplane)</strong>。</p>
+<ul>
+<li>线的一边，$\mathbf{w}^T \mathbf{x} + b &gt; 0$，感知机喊“1”（是狗）。</li>
+<li>线的另一边，$\mathbf{w}^T \mathbf{x} + b &lt; 0$，感知机喊“0”（是猫）。</li>
+</ul>
+<p>所以，单个感知机本质上就是一个线性分类器。</p>
+<hr>
+<p>在 1950&#x2F;60 年代，人们以为感知机无所不能。直到 1969 年，Minsky 和 Papert 写了一本书《Perceptron》，无情地指出了它的致命缺陷，直接导致了 AI 领域的第一次寒冬。这个缺陷就是 <strong>异或问题 (XOR Problem)</strong>。</p>
+<p><strong>XOR (异或门):</strong> 是一个执行相同时输出 0，不同时输出 1的逻辑门：</p>
+<ul>
+<li>(0, 0) -&gt; 0</li>
+<li>(1, 1) -&gt; 0</li>
+<li>(0, 1) -&gt; 1</li>
+<li>(1, 0) -&gt; 1</li>
+</ul>
+<p>现在，你尝试在纸上画一个坐标系，然后：</p>
+<ul>
+<li>在 $(0,0)$ 和 $(1,1)$ 画两个 <strong>红点</strong>（代表 0 类）。</li>
+<li>在 $(0,1)$ 和 $(1,0)$ 画两个 <strong>绿点</strong>（代表 1 类）。</li>
+</ul>
+<p>然后请你拿一把尺子，画一条直线，把红点和绿点完美分开。bro会发现根本做不到。无论你怎么画，总会有一个点被分错。</p>
+<p>这就是导致单个感知机处理不了<strong>非线性可分 (Non-linearly Separable)</strong> 的数据的直接原因。而现实世界（比如图像、语言）几乎全是非线性的。</p>
+<hr>
+<h2 id="多层感知机与训练"><a href="#多层感知机与训练" class="headerlink" title="多层感知机与训练"></a>多层感知机与训练</h2><p>那么还是同样的问题，如果我们能画两条线，你能不能分开这几个点？答案是可以的。</p>
+<p>既然单个感知机没法解决XOR问题，我们想出的办法非常朴素：人多力量大，如果我们把很多个感知机连接起来，是不是就能产生奇迹？</p>
+<p>答案是肯定的，但是我们需要一个极其关键的条件。</p>
+<hr>
+<p>看下面这张图，现代神经网络其实就是层层堆叠的函数：</p>
+<p><img src="https://s2.loli.net/2025/12/04/1gw3BdbnqFjrCfO.png" alt="image.png"></p>
+<p>其中：</p>
+<ul>
+<li>Input Layer($x$)是原始数据，比如图片的像素。</li>
+<li>Hidden Layer($h$)是中间层，公式为：<br>  $\mathbf{h} &#x3D; \sigma(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1)$。这一层我们进行<strong>特征提取 (Feature Extraction)</strong>。它把原始空间扭曲，折叠，试图把原本纠缠在一起的数据拉开。</li>
+<li>Output Layer ($y$)是我们的输出层。<br>  $\mathbf{f} &#x3D; \mathbf{W}_2 \mathbf{h} + \mathbf{b}_2$。这一步我们基于提取出来的特征，做最后的线性分类。</li>
+</ul>
+<p>另外我们发现，我们必须需要使用非线性激活函数$\sigma$。如果我们去掉了激活函数$\sigma$，让每一层都只是线性的：$h &#x3D; W_1 x$, $y &#x3D; W_2 h$</p>
+<p>那么我们最后得到的输出是：</p>
+<p>$$ y &#x3D; W_2 (W_1 x) &#x3D; (W_2 W_1) x &#x3D; W_{new} x $$</p>
+<p>这样无论你堆叠了 100 层还是 1000 层线性层，如果你不采用非线性激活函数，它们最终**数学上等价于 1 层线性层。深层网络就退化回了单层感知机，XOR 问题依然无解。</p>
+<p>因此，<strong>非线性激活函数 (Sigmoid, ReLU)</strong> 是赋予网络“扭曲空间能力”的灵魂。</p>
+<hr>
+<h3 id="多分类与损失函数"><a href="#多分类与损失函数" class="headerlink" title="多分类与损失函数"></a>多分类与损失函数</h3><p>如果我们要分辨猫、狗、鸟等多个类，输出层该怎么办？</p>
+<p>神经网络最后的输出往往是一组没有任何范围的实数，比如 $[2.0, 1.0, 0.1]$。而我们需要把它变成概率分布，它们的和应该为1。</p>
+<p>我们可以使用<strong>Softmax 公式：</strong></p>
+<p>$$ p_i &#x3D; \frac{e^{z_i}}{\sum_{j&#x3D;1}^K e^{z_j}} $$</p>
+<p>其中：</p>
+<ul>
+<li><strong>指数 ($e^z$)：</strong> 把负数变正，同时拉大差距（大的更大）。</li>
+<li><strong>归一化 ($\sum$)：</strong> 确保加起来等于 1。</li>
+</ul>
+<p>那么，我们该如何衡量预测概率 $p$（比如 $[0.8, 0.1, 0.1]$）和真实标签 $y$（比如 $[1, 0, 0]$，即 One-hot 编码）之间的差距？</p>
+<p>我们使用 <strong>交叉熵损失 (Cross-Entropy Loss)</strong>：</p>
+<p>$$ L &#x3D; - \sum_{j&#x3D;1}^K y_j \log p_j $$</p>
+<p>由于真实标签 $y$ 通常只有正确的那一类是 1，其他是 0，公式简化为：</p>
+<p>$$ L &#x3D; - \log(p_{correct}) $$</p>
+<p>如果正确类别的概率 $p_{correct} &#x3D; 1$，则 $\log(1) &#x3D; 0$，Loss &#x3D; 0。<br>如果正确类别的概率 $p_{correct} \to 0$，则 $\log(0) \to -\infty$，Loss $\to \infty$。我们会施加一个巨大惩罚。</p>
+<p>我们这里的目标，就是把正确类别的概率推向 1。</p>
+<hr>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p>现在有了网络结构，有了 Loss，怎么找到那一堆参数 $\mathbf{W}$ 和 $\mathbf{b}$？<br>我们这里使用<strong>SGD (随机梯度下降)</strong>。</p>
+<p>但是，对于深层网络，求导数变得很复杂。比如求第一层的权重 $W_1$ 的导数，你需要穿过 $W_2$, $W_3$... 直到 Loss。</p>
+<p>这就需要用到 <strong>链式法则 (Chain Rule)</strong>。在神经网络中，这个过程有一个专门的名字：<strong>反向传播 (Backpropagation)</strong>。</p>
+<ul>
+<li><strong>Forward Pass:</strong> 数据从输入流向输出，算出 Loss。</li>
+<li><strong>Backward Pass:</strong> 误差信号从 Loss 流向输入，沿途计算每个参数的梯度，告诉它们“该变大还是变小”。</li>
+</ul>
+<hr>
+<p>来作题。</p>
+<ol>
+<li>维度</li>
+</ol>
+<p>假设输入 $x$ 是 100 维（$100 \times 1$）。<br>隐藏层有 50 个神经元。<br>输出层有 10 个类别（做 Softmax）。<br>请问：</p>
+<ul>
+<li>第一层权重矩阵 $W_1$ 的形状是多少？</li>
+<li>第二层权重矩阵 $W_2$ 的形状是多少？</li>
+</ul>
+<p>这是一道必须画图才能做对的题。记住一个核心原则：<strong>矩阵乘法 $(R \times C) \times (C \times 1) &#x3D; (R \times 1)$，中间的维度必须消除。</strong></p>
+<ul>
+<li><p><strong>第一层：</strong> 输入 $x$ 是 $100 \times 1$。输出 $h$ 是 $50 \times 1$。</p>
+<ul>
+<li>公式：$h &#x3D; W_1 x$</li>
+<li>推导：$(? \times ?) \times (100 \times 1) &#x3D; (50 \times 1)$</li>
+<li>答案：$W_1$ 必须是 <strong>$50 \times 100$</strong>。（50 行代表有 50 个神经元，100 列代表每个神经元要接收 100 个输入像素的权重）。</li>
+</ul>
+</li>
+<li><p><strong>第二层：</strong> 输入 $h$ 是 $50 \times 1$。输出 $z$ 是 $10 \times 1$（10个类别）。</p>
+<ul>
+<li>公式：$z &#x3D; W_2 h$</li>
+<li>推导：$(? \times ?) \times (50 \times 1) &#x3D; (10 \times 1)$</li>
+<li>答案：$W_2$ 必须是 <strong>$10 \times 50$</strong>。</li>
+</ul>
+</li>
+</ul>
+<p>最后你可以记住，权重矩阵的形状永远是 <strong>[输出节点数 $\times$ 输入节点数]</strong>。</p>
+<hr>
+<ol start="2">
+<li>Loss</li>
+</ol>
+<p>假设做三分类（猫、狗、鸟）。真实图片是猫。<br>模型 A 预测概率：[0.6, 0.3, 0.1]<br>模型 B 预测概率：[0.9, 0.05, 0.05]</p>
+<p>那么哪个模型的 Cross-Entropy Loss 更小？</p>
+<p>我们传入真实图片是猫，因此猫的特征就应该是($y&#x3D;1$)。</p>
+<p>模型 A说它是猫的概率是 0.6。Loss &#x3D; $-\log(0.6) \approx 0.51$。</p>
+<p>模型 B说它是猫的概率是 0.9。Loss &#x3D; $-\log(0.9) \approx 0.10$。</p>
+<p>因此，<strong>模型 B 的 Loss 更小。</strong></p>
+<p>Cross-Entropy 是在衡量“惊讶程度”。既然是猫，B 很有信心（0.9），所以惩罚小；A 犹豫不决（0.6），所以惩罚大。</p>
+<hr>
+<ol start="3">
+<li>激活函数</li>
+</ol>
+<p>如果我们把隐藏层的 Sigmoid 换成线性函数，但保留输出层的 Softmax。这个模型还能解决 XOR 问题吗？为什么？</p>
+<p>很多人会想：“Softmax 是非线性的，应该能解决 XOR 吧？”<br>实际上我们不能，</p>
+<p>我们不妨来看看会发生什么：</p>
+<ul>
+<li>隐层：$h &#x3D; W_1 x$ (线性)</li>
+<li>输出层输入：$z &#x3D; W_2 h &#x3D; W_2 (W_1 x) &#x3D; (W_2 W_1) x$。</li>
+<li><strong>本质：</strong> 两个矩阵相乘 $W_{new} &#x3D; W_2 W_1$，它依然是一个矩阵。这说明从 $x$ 到 $z$ 的映射依然是<strong>纯线性</strong>的。</li>
+</ul>
+<p>虽然 Softmax 本身是弯曲的，但它只是把线性的 $z$ 压扁成概率。<strong>决定分类边界（Decision Boundary）的依然是 $z$</strong>。在 $z$ 的空间里，正负样本依然是线性不可分的。因此，没有 Sigmoid&#x2F;ReLU 这种“扭曲空间”的激活函数，多少层网络都会退化成单层感知机。</p>
+<hr>
+<h2 id="卷积神经网络-CNN"><a href="#卷积神经网络-CNN" class="headerlink" title="卷积神经网络 (CNN)"></a>卷积神经网络 (CNN)</h2><p>还记得上一章的多层感知机吗？每个神经元都要连接输入的所有像素。假设我们想要通过MLP建立一个处理图片的网络会发生什么》</p>
+<p>已知一张普通的手机照片（1200万像素），输入向量 $x$ 的长度是 3600万。</p>
+<p>如果你想在第一层仅仅放 100 个神经元。权重矩阵 $W$ 的大小就是 $36000000 \times 100 &#x3D; 36$亿。</p>
+<p>你会发现内存溢出，不仅训练不动，即使能跑得了也会因为参数比数据多太多极易过拟合。</p>
+<p>生物学家发现，人眼看世界不是“一口气全看完”，而是有策略的：</p>
+<ul>
+<li><strong>局部性 (Locality):</strong> 这里的鸟嘴和那边树叶没关系。判断“鸟嘴”只需要看一小块区域。</li>
+<li><strong>平移不变性 (Translation Invariance):</strong> 鸟飞到左上角是鸟，飞到右下角还是鸟。识别“鸟”的规则（权重）应该是一样的。</li>
+</ul>
+<p>于是，<strong>卷积 (Convolution)</strong> 诞生了。<br>我们不再用一个巨大的 $W$ 矩阵，而是用一个很小的 <strong>$3 \times 3$ 矩阵</strong>，我们称为 Kernel 或 kernal。</p>
+<p>我们拿着这个小矩阵，像手电筒一样在图片上<strong>滑动 (Slide)</strong>。无论滑到哪里，用的都是同一个 $3 \times 3$ 矩阵。通过这样的方式，参数量从36亿瞬间降到了9个参数。简直就是降维打击。</p>
+<hr>
+<h3 id="卷积的微观算数"><a href="#卷积的微观算数" class="headerlink" title="卷积的微观算数"></a>卷积的微观算数</h3><p>当 $3 \times 3$ 的 Kernel 盖在图像的某个 $3 \times 3$ 区域（Receptive Field）上时，我们做的事情很简单：</p>
+<p>首先上下对应位置相乘，然后把这 9 个数加起来，再加上偏移量。你得到的这个标量，就是 Feature Map 上的一个像素点。  </p>
+<p>它代表了：“这一小块区域和我的 Kernel 长得像不像？”（像就是大正数，不像就是 0 或负数）。</p>
+<p>我们有两个关键超参数需要介绍：</p>
+<p><strong>Stride (步长) $S$:</strong> 手电筒每次挪动几格？</p>
+<ul>
+<li>$S&#x3D;1$: 细致扫描。</li>
+<li>$S&#x3D;2$: 粗略扫描，同时输出尺寸直接减半。这就是下采样。</li>
+</ul>
+<p><strong>Padding (填充) $P$:</strong> 如果Kernal移出边界，我们怎么处理？  </p>
+<p>如果不填充，每次卷完图片都会变小（Corner 还没卷够）。因此通常补一圈 0，保持尺寸不变。</p>
+<p>因此，我们可以得出我们的输出尺寸公式为：</p>
+<p>$$ \text{Output Size} &#x3D; \frac{N - K + 2P}{S} + 1 $$</p>
+<p>其中：</p>
+<ul>
+<li>$N$: 输入大小</li>
+<li>$K$: Kernel大小</li>
+<li>$P$: Padding</li>
+<li>$S$: Stride</li>
+</ul>
+<hr>
+<h3 id="通道"><a href="#通道" class="headerlink" title="通道"></a>通道</h3><p>由于我们处理的彩色图片不是只有一个通道，而是三个通道叠在一起（RGB）。所以，输入维度是 $H \times W \times 3$。</p>
+<p>为了处理 RGB三个通道，我们的 Kernel 不能只是 $3 \times 3$，它必须是 <strong>$3 \times 3 \times 3$</strong>。你的深度必须匹配输入通道数。</p>
+<p>接下来用这样的结构来做计算，它的 R 层卷输入的 R 层，G 层卷 G 层... 最后把这三个结果加起来。一个 Kernel 卷一次，吐出来的依然是一张单层的 Feature Map（二维矩阵）。</p>
+<p>但如果我们只想提取一个特征，用 1 个 kernal 就够了。但我们要提取几百种特征（颜色、纹理、形状...）。</p>
+<p>所以我们会选择用 <strong>$K$ 个不同的 kernal</strong>。每个 kernal 吐出一张 Map，$K$ 个 kernal 就吐出 $K$ 张 Map。我们将这 $K$ 张 Map 叠在一起，形成了下一层的输入：$H&#39; \times W&#39; \times K$。</p>
+<hr>
+<h2 id="架构进化史与Transformer"><a href="#架构进化史与Transformer" class="headerlink" title="架构进化史与Transformer"></a>架构进化史与Transformer</h2><p>有了卷积层（提取特征）和池化层（Pooling，用来降维&#x2F;模糊化），我们就能搭建大厦了。</p>
+<p>在2012年，AlexNet证明了“深层”卷积网络在 GPU 加持下威力无穷。它的结构还是经典结构：卷积 -&gt; 池化 -&gt; 卷积 -&gt; 池化 -&gt; 全连接。这是深度学习的爆发。</p>
+<p>随着网络越来越深（比如 20 层），人们发现效果反而变差了。原因是<strong>梯度消失 (Vanishing Gradient)</strong> ：反向传播时，误差信号乘了几十次小于 1 的数，传到前面就没了。</p>
+<p>2015年，ResNet使用了残差链接方式。它在两层网络之间加了一条“旁路”，直接把输入$x$加到输出上：$F(x) + x$。这就像给梯度修了一条高速公路。梯度可以不走复杂的卷积层$F(x)$，直接沿着$x$这条路无损地传回前面。这让网络有了“自我修正”的能力：如果某一层学废了，它至少可以把$x$原封不动地传下去（Identity Mapping），保证效果不会退化。</p>
+<p>自这之后，网络深度就继续增加，从20层突破到了上千层。</p>
+<h3 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h3><p>CNN是处理网格数据的绝对王者，但处理序列数据，如文本或语音时，他是怎么演变的？</p>
+<p>之前我们使用循环神经网络RNN。它就像阅读一样一个字一个字读。读了上文，记住状态，再读下文。不仅慢，且容易“忘事”。</p>
+<p>2017年，一份名叫<em>Attention Is All You Need</em>的文章横空初世。它抛弃了循环，引入了**自注意力 (Self-Attention)**机制。当它读到“银行”这个词时，它会同时看向句子里的所有其他词。如果看到“河流”，它知道这是“河岸”；如果看到“金钱”，它知道这是“金融机构”。它的并行计算能力极强，能捕捉极长距离的关联。这是 ChatGPT 等 LLM 的基石。</p>
+<p>下一张，我们会具体深入Transformer，以及它背后的原理。</p>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8E%E7%AC%AC%E4%B8%80%E6%AC%A1AI%E5%AF%92%E5%86%AC"><span class="toc-text">感知机与第一次AI寒冬</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8E%E8%AE%AD%E7%BB%83"><span class="toc-text">多层感知机与训练</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%88%86%E7%B1%BB%E4%B8%8E%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">多分类与损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83"><span class="toc-text">训练</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-CNN"><span class="toc-text">卷积神经网络 (CNN)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E7%9A%84%E5%BE%AE%E8%A7%82%E7%AE%97%E6%95%B0"><span class="toc-text">卷积的微观算数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E9%81%93"><span class="toc-text">通道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%BF%9B%E5%8C%96%E5%8F%B2%E4%B8%8ETransformer"><span class="toc-text">架构进化史与Transformer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Transformer"><span class="toc-text">Transformer</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1764860092511" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

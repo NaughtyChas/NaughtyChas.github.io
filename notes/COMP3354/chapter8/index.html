@@ -1,0 +1,1102 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Chapter 8: PCA - Naucha</title>
+
+  
+    <meta name="description" content="PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量、正交矩阵），还涉及优化的思想，例如拉格朗日乘子。 线性代数为了能理解PCA，我们需要使用到基础的线性代数知识。我们不把线性代数当作枯燥的计算规则，而是把它当作描述高维空间的语言。   在 PCA 中，我们要在高维空间（比如 1000 维）里旋转、投影、寻找“主轴”，没有这套工具是不行的。 下面应该都是老朋友了">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chapter 8: PCA">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter8/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量、正交矩阵），还涉及优化的思想，例如拉格朗日乘子。 线性代数为了能理解PCA，我们需要使用到基础的线性代数知识。我们不把线性代数当作枯燥的计算规则，而是把它当作描述高维空间的语言。   在 PCA 中，我们要在高维空间（比如 1000 维）里旋转、投影、寻找“主轴”，没有这套工具是不行的。 下面应该都是老朋友了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2025-12-04T08:29:00.000Z">
+<meta property="article:modified_time" content="2025-12-04T11:26:40.097Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1764860092572">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter8/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 8: PCA","description":"PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量、正交矩阵），还涉及优化的思想，例如拉格朗日乘子。\n线性代数为了能理解PCA，我们需要使用到基础的线性代数知识。我们不把线性代数当作枯燥的计算规则，而是把它当作描述高维空间的语言。  \n在 PCA 中，我们要在高维空间（比如 1000 维）里旋转、投影、寻找“主轴”，没有这套工具是不行的。\n下面应该都是老...","url":"https://naughtychas.github.io/notes/COMP3354/chapter8/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3354" placeholder="在 COMP3354 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3354/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-04T11:26:40.097Z">2025-12-04</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-04T08:29:00.000Z">2025-12-04</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 8: PCA</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>PCA是一个从直觉到数学推导都比较有挑战性的硬骨头。它不仅涉及线性代数（特征值、特征向量、正交矩阵），还涉及优化的思想，例如拉格朗日乘子。</p>
+<h2 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h2><p>为了能理解PCA，我们需要使用到基础的线性代数知识。我们不把线性代数当作枯燥的计算规则，而是把它当作描述高维空间的语言。  </p>
+<p>在 PCA 中，我们要在高维空间（比如 1000 维）里旋转、投影、寻找“主轴”，没有这套工具是不行的。</p>
+<p>下面应该都是老朋友了。如果bro的线性代数学的很不错，那你直接跳过这一块就可以。</p>
+<h3 id="向量-Vector"><a href="#向量-Vector" class="headerlink" title="向量 (Vector)"></a>向量 (Vector)</h3><p>我们通常把一个数据样本$x$看作一个列向量，维度为$d(x \in \mathbb{R}^d)$。<br>向量是$d$维空间中的一个点，或者是从原点指向该点的一个箭头。</p>
+<h3 id="矩阵-Matrix"><a href="#矩阵-Matrix" class="headerlink" title="矩阵 (Matrix)"></a>矩阵 (Matrix)</h3><p>有一个矩阵$A$。$A$不仅仅只是一张数字表，它代表了一种<strong>线性变换 (Linear Transformation)</strong>。</p>
+<p>当你用矩阵$A$乘以一个向量$x$时($Ax$)，我们实际上对空间中的$x$进行了扭曲。这个向量可能发生了旋转，拉伸，或者剪切。具体看$A$的内容。</p>
+<h3 id="矩阵乘法-Matrix-Multiplication"><a href="#矩阵乘法-Matrix-Multiplication" class="headerlink" title="矩阵乘法 (Matrix Multiplication)"></a>矩阵乘法 (Matrix Multiplication)</h3><p>$C &#x3D; AB$，这代表变换的叠加。先做$B$变换，然后再做$A$变换。</p>
+<p>执行矩阵乘法之前需要做一步维度检查。简而言之：</p>
+<p>$$(m \times n) \times (n \times p) \rightarrow (m \times p)$$</p>
+<p>其中，中间的$n$必须匹配，否则两个矩阵无法相乘。而且，$AB \ne BA$。</p>
+<hr>
+<h3 id="投影的几何"><a href="#投影的几何" class="headerlink" title="投影的几何"></a>投影的几何</h3><p>既然我们已经了解了最基础的现代内容，我们就可以开始理解什么是投影了。</p>
+<p>首先我们可以知道向量**内积 (或者点乘积 &#x2F; Dot Product)**可以通过该公式算得：</p>
+<p>$$x^Ty &#x3D; \sum(x_i y_i) &#x3D; ||x|| ||y|| cos(\theta)$$</p>
+<p>如果$x^Ty &#x3D; 0$，那么证明这两个向量夹角为90°，两个向量垂直。<br>向量自己的内积是该向量长度的平方，$x^Tx &#x3D; ||x||^2$。</p>
+<p>那么PCA的核心动作：**投影 (Projection)**是怎样的呢？想象我们有一个单位向量$u$：它的长度为一，仅用来代表一个方向，那么向量$x$在$u$方向上的投影长度是多少？</p>
+<p>$$x^Tu$$</p>
+<p>由于PCA的目的就是找到一个方向$u$，使得所有数据点$x_i$投影到$u$上之后，分布的最散，也就是方差最大。因此你会在后面反复看见$x^Tu$。</p>
+<hr>
+<h3 id="特征值与特征向量"><a href="#特征值与特征向量" class="headerlink" title="特征值与特征向量"></a>特征值与特征向量</h3><p>如果说矩阵$A$是一个空间变换器，那么特征向量就是它的骨架。</p>
+<p>对于方阵$A$，如果存在非零向量$v$和标量$\lambda$，使得：</p>
+<p>$$Av &#x3D; \lambda v$$</p>
+<p>我们就称$v$是<strong>特征向量 (Eigenvector)</strong>，$\lambda$则是<strong>特征值 (Eigenvalue)</strong>。</p>
+<p>通常情况下，矩阵$A$乘以一个向量$x$，会改变$x$的方向和长度。但是对于特征向量$v$来说，矩阵$A$作用在它上面<strong>只会改变它的长度，不会改变它的方向</strong>。这些$v$指示了矩阵变换的“主轴方向”。</p>
+<p>后面我们会发现，数据的协方差矩阵$S$描述了数据的分布形状，通常来说它看起来像一个橄榄球。这个橄榄球的长轴方向，就是$S$的最大特征向量。长轴的长度是方差大小，就刚好对应了最大特征值$\lambda$。这就是为什么PCA最终是一个求得特征值的问题。</p>
+<hr>
+<h2 id="PCA如何降维打击"><a href="#PCA如何降维打击" class="headerlink" title="PCA如何降维打击"></a>PCA如何降维打击</h2><p>想象你有一张大小为$100 \times 100$ 的灰度图片。如果每一个像素是一个特征，那么数据的原始维度就是$d &#x3D; 10000$维。</p>
+<p>你发现这10000个像素之间存在大量冗余。如果背景是全黑色的，那么这几千个像素其实只需要用一个“背景为黑”的信息就能概括。因此我们要做的就是找到一个更低维度的$r$，例如$r &#x3D; 50$，来尝试只用50个数就能概括这张图的主要特征。</p>
+<h3 id="最大方差"><a href="#最大方差" class="headerlink" title="最大方差"></a>最大方差</h3><p>那么你就想：怎么样概括数据来降维才算好？PCA的逻辑是：保留差异。</p>
+<p>假设我们有一堆数据点，分布为一个椭圆形状。我们想要把它们投影到一条直线上，从2D降维到1D。我们可以选择两个方案来达成这一点：  </p>
+<ol>
+<li><p>随便画一条线，然后尝试将数据点投影到这条线上。你会发现投影后的挤在一起，糊在一团。这不是很好，因为很多原本不同的点，经过投影之后变得更难区分了。这就是我们之前说的投影后方差小的概念：</p>
+<p> <img src="https://s2.loli.net/2025/12/04/YbKSLNu5CfosFqV.png" alt="image.png"></p>
+</li>
+<li><p>我们沿着数据“椭圆”的长轴画一条线。这样你发现投影之后的点拉的很开，分布很广。这才是我们想要的投影效果，因为这样的投影方式保留了数据组内部最大的差异。这就是刚才提到的，PCA的目标是达到投影后数据方差大的根本逻辑：</p>
+<p> <img src="https://s2.loli.net/2025/12/04/rDnjC69OQUtXv5I.png" alt="image.png"></p>
+</li>
+</ol>
+<p>我们的目标就是寻找一个方向$u$，使得数据投影到$u$上后的方差最大。这个方向$u$就叫<strong>第一主成分 (Principal Component 1)</strong></p>
+<p>想象你手里拿着一根法棍。这根法棍存在于三维空间，而你要做的是把它拍扁成一张照片。这就是降维。那么为了让照片里的法棍看起来最清楚（保留最多信息&#x2F;方差最大），你应该朝着哪个角度拍？你要找到法棍的长轴，这就是PCA的直觉。</p>
+<hr>
+<h3 id="预处理：中心化"><a href="#预处理：中心化" class="headerlink" title="预处理：中心化"></a>预处理：中心化</h3><p>在做PCA之前，我们需要先做一部预处理。首先是减去均值:</p>
+<p>$$New x_i &#x3D; x_i - \mu$$</p>
+<p>这样一来，所有数据的中心就被挪到了原点。我们之所以这样做是为了方便计算方差：</p>
+<p>我们知道方差公式为$Var &#x3D; \frac{1}{n} \sum(val_i - mean)^2$。如果已经中心化了，那么mean&#x3D;0，方差公式即可直接简化掉$mean$项。这简化了我们后续的推导。</p>
+<h3 id="翻译目标函数"><a href="#翻译目标函数" class="headerlink" title="翻译目标函数"></a>翻译目标函数</h3><p>接下来我们可以进行数据投影了。  </p>
+<p>我们输入中心化后的数据$x_1, ..., x_n$，将每个$x_i$投影到单位向量$u$上，而$u$就是我们要找的长轴方向，且$u^Tu &#x3D; 1$。由投影公式可得，该点的投影值就应该是$z_i &#x3D; {x_i}^Tu$。</p>
+<p>我们关心投影后的方差。由于输入的均值是0，则投影后的均值也是0。这就是为什么我们要输入均值为0的数据。那么方差就是投影值平方和的平均：</p>
+<p>$$Var&#x3D; \frac{1}{n-1} \sum_{i-1}^n (z_i)^2$ &#x3D; \frac{1}{n-1} \sum_{i&#x3D;1}^n ({x_i}^Tu)^2$</p>
+<p>处于性能考虑，我们当然想要把求和变成矩阵乘法。如何做到呢？这是线性代数最美妙的瞬间之一：</p>
+<p>还记得$z_i &#x3D; {x_i}^Tu$是一个标量吗？标量的平方实际上可以写成$a^2 &#x3D; a \cdot a &#x3D; a^Ta$：</p>
+<p>$$ (x_i^T u)^2 &#x3D; (x_i^T u) (x_i^T u) &#x3D; (u^T x_i) (x_i^T u) &#x3D; u^T (x_i x_i^T) u $$</p>
+<p>把求和符号放进去：</p>
+<p>$$ \text{Var} &#x3D; \frac{1}{n-1} \sum_{i&#x3D;1}^n u^T (x_i x_i^T) u &#x3D; u^T \left( \frac{1}{n-1} \sum_{i&#x3D;1}^n x_i x_i^T \right) u $$</p>
+<p>我们总结括号内的这样一大串东西为<strong>样本协方差矩阵 (Sample Covariance Matrix)</strong>，记作 <strong>$S$</strong>。<br>$$ S &#x3D; \frac{1}{n-1} X X^T $$<br><em>(注：这里假设 $X$ 是 $d \times n$，每列一个样本)</em></p>
+<p>因此，我们得到了我们想要最大化的目标函数：</p>
+<p>$$ \text{Maximize } \quad u^T S u $$</p>
+<hr>
+<h3 id="拉格朗日乘子法"><a href="#拉格朗日乘子法" class="headerlink" title="拉格朗日乘子法"></a>拉格朗日乘子法</h3><p>如果我们只要求最大化 $u^T S u$，那简单了，把 $u$ 弄得无穷大就行了。但这没意义。我们要找的是<strong>方向</strong>。</p>
+<p>所以必须限制 $u$ 是<strong>单位向量</strong>：<br>$$ \text{Subject to } \quad u^T u &#x3D; 1 $$</p>
+<p>为了解决带这样约束的优化问题，我们需要使用<strong>拉格朗日乘子法 (Lagrange Multipliers)</strong>。</p>
+<p>我们引入拉格朗日函数 $\mathcal{L}$，$\lambda$ 是乘子：<br>$$ \mathcal{L}(u, \lambda) &#x3D; u^T S u - \lambda (u^T u - 1) $$</p>
+<p>对向量 $u$ 求偏导，并令其为 0：</p>
+<ul>
+<li>$u^T S u$ 对 $u$ 求导是 $2Su$（因为 $S$ 是对称阵，参考上一章 Ridge 的推导）。</li>
+<li>$u^T u$ 对 $u$ 求导是 $2u$。</li>
+</ul>
+<p>可得：</p>
+<p>$$ \frac{\partial \mathcal{L}}{\partial u} &#x3D; 2Su - 2\lambda u &#x3D; 0 $$</p>
+<p>消去 2，移项，我们看到了那个熟悉的公式：<br>$$ \mathbf{S u &#x3D; \lambda u} $$</p>
+<hr>
+<p>这说明了什么？</p>
+<ol>
+<li><strong>$u$ 必须是 $S$ 的特征向量</strong><br>我们要找的那个“最优投影方向”，竟然就是协方差矩阵的特征向量。</li>
+<li><strong>方差到底有多大？</strong><br>把 $Su &#x3D; \lambda u$ 代回方差公式 $u^T S u$：<br>$$ \text{Var} &#x3D; u^T (S u) &#x3D; u^T (\lambda u) &#x3D; \lambda (u^T u) &#x3D; \lambda \cdot 1 &#x3D; \lambda $$<br>你发现投影后的方差，正好<strong>等于对应的特征值 $\lambda$</strong></li>
+</ol>
+<p>到这里PCA就闭环了。我们的逻辑是：</p>
+<p>算$S$ $\rightarrow$ 算$\lambda$和$u$ $\rightarrow$ 挑大的$\lambda$对应的$u$进行投影。</p>
+<p>为了让方差最大 $\to$ 就要让 $\lambda$ 最大。所以：<strong>第一主成分 (PC1) &#x3D; 最大特征值 $\lambda_1$ 对应的特征向量 $u_1$。</strong></p>
+<p>同理，第二主成分 (PC2) &#x3D; 第二大特征值 $\lambda_2$ 对应的特征向量 $u_2$。以此类推。</p>
+<hr>
+<p>我们来做一个思考题来更深入理解我们干了什么。如果数据$X$是二维的，均值为0。我们知道$S$是一个$2 \times 2$方阵。</p>
+<p>如果</p>
+<p>$$ S &#x3D; \begin{bmatrix} 10 &amp; 0 \\ 0 &amp; 1 \end{bmatrix} $$</p>
+<p>a) 这意味着这两个特征之间是相关的还是无关的？数据的分布形状大概是什么样子的？</p>
+<p>b) 我们可以知道$S$的特征值分别是10和1，对应的特征向量就是$u_1 &#x3D; [1, 0]^T$和$u_2 &#x3D; [0, 1]^T$。 如果我们做PCA降维到1D，我们会选择哪个方向？保留下来的方差是多少？丢掉的信息量是多少？</p>
+<p>c) 我们为什么要加上$u^Tu &#x3D; 1$这个约束？直接最大化$u^TSu$结果会是什么样？</p>
+<hr>
+<p>a):</p>
+<p>我们之前推导出 $S &#x3D; \frac{1}{n-1} XX^T$。这个矩阵是 PCA 的**“地图”**。它告诉我们数据的地形。</p>
+<p>假设我们有 2 维数据 $(x_1, x_2)$。$S$ 是一个 $2 \times 2$ 矩阵：</p>
+<p>$$ S &#x3D; \begin{bmatrix} \text{Var}(x_1) &amp; \text{Cov}(x_1, x_2) \\ \text{Cov}(x_2, x_1) &amp; \text{Var}(x_2) \end{bmatrix} $$</p>
+<p>则：</p>
+<ul>
+<li><strong>对角线元素 (Diagonal):</strong> $\text{Var}(x_1)$ 和 $\text{Var}(x_2)$。<ul>
+<li>这代表数据在<strong>轴向上的拉伸程度</strong>。数值越大，数据在这个轴上铺得越开。</li>
+</ul>
+</li>
+<li><strong>非对角线元素 (Off-diagonal):</strong> $\text{Cov}(x_1, x_2)$。<ul>
+<li>这代表两个特征的<strong>联动程度</strong>。</li>
+<li>如果是 <strong>0</strong>：说明 $x_1$ 变大时，$x_2$ 毫无规律（爱变不变）。这叫<strong>不相关 (Uncorrelated)</strong>。</li>
+<li>如果是<strong>正数</strong>：说明 $x_1$ 变大，$x_2$ 也倾向于变大。数据分布会像一个<strong>向右上倾斜</strong>的雪茄。</li>
+</ul>
+</li>
+</ul>
+<p>回到这个问题，我们就可以通过$S$解读数据：</p>
+<p>$$ S &#x3D; \begin{bmatrix} 10 &amp; 0 \\ 0 &amp; 1 \end{bmatrix} $$</p>
+<p>由于非对角线是 0 $\to$ <strong>无相关性</strong>。<br>同时由于$x_1$ 方差是 10，$x_2$ 方差是 1。数据看起来就像一根沿着 X 轴平放的法棍面包。它在 X 轴很长（10），在 Y 轴很窄（1）。</p>
+<hr>
+<p>b):</p>
+<p>首先，特征值$\lambda$意味着什么？我们刚才推导出投影后的方差 &#x3D; $\lambda$，在PCA中，<strong>方差&#x3D;信息量</strong>，也就是说，如果所有数据都是一样的，方差为 0，没有任何信息；方差越大，区别度越高，信息越多。</p>
+<p>回到问题，刚才的法棍面包矩阵得出的特征值分别是$\lambda_1 &#x3D; 10$, $\lambda_2 &#x3D; 1$，则我们可以得出：</p>
+<ul>
+<li>$\lambda_1 &#x3D; 10$对应X轴方向的$u_1 &#x3D; [1, 0]^T$。这根轴保留了10个单位的信息量。</li>
+<li>$\lambda_2 &#x3D; 1$对应Y轴方向$u_2 &#x3D; [0, 1]^T$。这跟轴只保留了1个单位的信息量。</li>
+</ul>
+<p>那么如果我们要降维，我们肯定要保留$\lambda$最大的那个！因此，我们保留X轴，丢弃Y轴。</p>
+<p>这样我们就保留了$\frac{10}{(10+1)} \approx 0.91$的原始信息，丢掉了百分之9的信息。</p>
+<p>所以，特征值$\lambda$就是每个主成分的含金量，而PCA要做的就是按照含金量从高到低来淘金。</p>
+<hr>
+<p>c):</p>
+<p>由于PCA的目标是找一个“最佳拍摄角度”，如果我们不加$u^Tu &#x3D; 1$的约束，直接最大化$u^TSu$，算法就会跑偏：</p>
+<p>想象一下，我选定了一个最好的角度，打比方说X轴，此时$u &#x3D; [1,0]^T$，方差&#x3D;10。既然没有约束，那算法可能会“走神”，与其寻找一个最佳方向，算法也同时去拉长$u$的长度。最大化$u^TSu$会导致解趋向于无穷大，如果这样优化问题就是去意义了。</p>
+<hr>
+<h3 id="最小重构误差"><a href="#最小重构误差" class="headerlink" title="最小重构误差"></a>最小重构误差</h3><p>我们知道PCA的目标是最大化投影方差，让数据分的越开越好。但同时我们也需要保证我们能最小化重构误差，也就是让丢掉的信息越少越好。它们之间有什么联系吗？</p>
+<p>想象一下我们有一个数据点$x$，我们想要将其投影到直线$u$上。</p>
+<p>你应该还记得啥是勾股定理吧？如果我们将：</p>
+<ul>
+<li>斜边定义为原始向量$x$的长度 $a$</li>
+<li>直角边1定义为投影向量的长度，也就是我们想要最大化的方差 $b$</li>
+<li>直角边2定义为数据点到直线的垂直距离，那么这个就是我们想要最小化的损失 $c$</li>
+</ul>
+<p>根据勾股定理，我们就知道</p>
+<p>$$a^2 &#x3D; b^2 + c^2$$</p>
+<p>由于$a$是固定的，所以我们可以得出<strong>最大化投影长度就在同样最小化误差长度</strong>。</p>
+<p>因此，PCA找到的那根轴，不仅是数据分布最广的方向，也是里所有数据点平均距离最近的那条线。这就是为什么我们可以用PCA来做压缩，因为它丢掉的信息最少。</p>
+<hr>
+<h2 id="奇异值分解-SVD"><a href="#奇异值分解-SVD" class="headerlink" title="奇异值分解 (SVD)"></a>奇异值分解 (SVD)</h2><p>在之前的推导中，要是想做PCA，我们需要先算出协方差矩阵$S$，然后求$S$的特征值。但是有趣的是在实际工程中，我们几乎从不这么做，相反，我们直接对数据矩阵$X$做<strong>奇异值分解 (Singular Value Decomposition, SVD)</strong>。</p>
+<p>什么是SVD？线性代数告诉我们，任何一个矩阵$X(d \times n)$都可以拆解成三个矩阵的乘积：</p>
+<p>$$ X &#x3D; U \Sigma V^T $$</p>
+<ul>
+<li>$U$: 左奇异向量 ($d \times d$, 正交阵)。</li>
+<li>$\Sigma$: 奇异值矩阵 ($d \times n$, 对角阵)。对角线上的 $\sigma_i$ 是 <strong>奇异值 (Singular Values)</strong>。</li>
+<li>$V$: 右奇异向量 ($n \times n$, 正交阵)。</li>
+</ul>
+<p>让我们把 $X &#x3D; U \Sigma V^T$ 代入协方差矩阵 $S$ 的公式看看会发生什么：</p>
+<p>$$ S &#x3D; \frac{1}{n-1} X X^T $$<br>$$ S &#x3D; \frac{1}{n-1} (U \Sigma V^T) (U \Sigma V^T)^T $$<br>$$ S &#x3D; \frac{1}{n-1} U \Sigma \underbrace{V^T V}_{&#x3D;I} \Sigma^T U^T $$<br>$$ S &#x3D; U \left( \frac{\Sigma \Sigma^T}{n-1} \right) U^T $$</p>
+<p>回顾特征分解公式 $S &#x3D; U \Lambda U^T$，对比上面两个式子，你会发现：</p>
+<ol>
+<li><strong>PCA 的特征向量 (Eigenvectors) 正好就是 SVD 的左奇异向量 $U$</strong></li>
+<li><strong>PCA 的特征值 (Eigenvalues) $\lambda_i$ 与 SVD 的奇异值 $\sigma_i$ 存在换算关系：</strong><br>$$ \lambda_i &#x3D; \frac{\sigma_i^2}{n-1} $$</li>
+</ol>
+<p>那么说得好，我们为什么会使用SVD呢？SVD好在哪？计算 $XX^T$ 会导致数字精度损失（平方会让很小的数变得极小，很大的数变得极大）。SVD 直接在 $X$ 上操作，数值更稳定，而且现代SVD算法更加高效。</p>
+<hr>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"><span class="toc-text">线性代数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F-Vector"><span class="toc-text">向量 (Vector)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5-Matrix"><span class="toc-text">矩阵 (Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95-Matrix-Multiplication"><span class="toc-text">矩阵乘法 (Matrix Multiplication)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E7%9A%84%E5%87%A0%E4%BD%95"><span class="toc-text">投影的几何</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E4%B8%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F"><span class="toc-text">特征值与特征向量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCA%E5%A6%82%E4%BD%95%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB"><span class="toc-text">PCA如何降维打击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E6%96%B9%E5%B7%AE"><span class="toc-text">最大方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%EF%BC%9A%E4%B8%AD%E5%BF%83%E5%8C%96"><span class="toc-text">预处理：中心化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BF%BB%E8%AF%91%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0"><span class="toc-text">翻译目标函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95"><span class="toc-text">拉格朗日乘子法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E9%87%8D%E6%9E%84%E8%AF%AF%E5%B7%AE"><span class="toc-text">最小重构误差</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3-SVD"><span class="toc-text">奇异值分解 (SVD)</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1764860092573" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

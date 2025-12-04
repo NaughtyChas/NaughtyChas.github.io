@@ -1,0 +1,1141 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Chapter 6: 泛化 - Naucha</title>
+
+  
+    <meta name="description" content="偏差与方差这一部分是整个机器学习理论中最优美的章节之一。之前的目光聚焦到“如何训练模型（降低 Loss）”，而现在我们来看看“模型为什么会犯错”。 首先我们要建立一个所谓上帝视角。在现实中，我们只有一份训练数据$D$，但在理论分析中，我们要想象存在无数个平行宇宙。   假设在这个世界上，$x$和$y$拥有一个真实的，完美的函数关系，只不过就是被噪音干扰了： $$y &#x3D; TrueFunct">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chapter 6: 泛化">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3354/chapter6/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="偏差与方差这一部分是整个机器学习理论中最优美的章节之一。之前的目光聚焦到“如何训练模型（降低 Loss）”，而现在我们来看看“模型为什么会犯错”。 首先我们要建立一个所谓上帝视角。在现实中，我们只有一份训练数据$D$，但在理论分析中，我们要想象存在无数个平行宇宙。   假设在这个世界上，$x$和$y$拥有一个真实的，完美的函数关系，只不过就是被噪音干扰了： $$y &#x3D; TrueFunct">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2025-12-03T07:37:00.000Z">
+<meta property="article:modified_time" content="2025-12-03T13:03:09.202Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1764860092518">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3354/chapter6/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 6: 泛化","description":"偏差与方差这一部分是整个机器学习理论中最优美的章节之一。之前的目光聚焦到“如何训练模型（降低 Loss）”，而现在我们来看看“模型为什么会犯错”。\n首先我们要建立一个所谓上帝视角。在现实中，我们只有一份训练数据$D$，但在理论分析中，我们要想象存在无数个平行宇宙。  \n假设在这个世界上，$x$和$y$拥有一个真实的，完美的函数关系，只不过就是被噪音干扰了：\n$$y &#x3D; TrueFu...","url":"https://naughtychas.github.io/notes/COMP3354/chapter6/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3354" placeholder="在 COMP3354 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3354/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3354/chapter11/"><span class="title">Chapter 11: LLM与注意力机制</span></a><a class="item title" href="/notes/COMP3354/chapter10/"><span class="title">Chapter 10: 神经网络</span></a><a class="item title" href="/notes/COMP3354/chapter9/"><span class="title">Chapter 9: 强化学习</span></a><a class="item title" href="/notes/COMP3354/chapter8/"><span class="title">Chapter 8: PCA</span></a><a class="item title" href="/notes/COMP3354/chapter7/"><span class="title">Chapter 7: 聚类</span></a><a class="item title" href="/notes/COMP3354/chapter6/"><span class="title">Chapter 6: 泛化</span></a><a class="item title" href="/notes/COMP3354/chapter5/"><span class="title">Chapter 5: 正则化</span></a><a class="item title" href="/notes/COMP3354/chapter4/"><span class="title">Chapter 4: 线性回归与逻辑回归</span></a><a class="item title" href="/notes/COMP3354/chapter3/"><span class="title">Chapter 3: 朴素贝叶斯与MLE进阶</span></a><a class="item title" href="/notes/COMP3354/chapter2/"><span class="title">Chapter 2: 概率论与统计学回顾</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3354/">COMP3354</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2025-12-03T13:03:09.202Z">2025-12-03</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2025-12-03T07:37:00.000Z">2025-12-03</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 6: 泛化</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="偏差与方差"><a href="#偏差与方差" class="headerlink" title="偏差与方差"></a>偏差与方差</h2><p>这一部分是整个机器学习理论中最优美的章节之一。之前的目光聚焦到“如何训练模型（降低 Loss）”，而现在我们来看看“模型为什么会犯错”。</p>
+<p>首先我们要建立一个所谓上帝视角。在现实中，我们只有一份训练数据$D$，但在理论分析中，我们要想象存在无数个平行宇宙。  </p>
+<p>假设在这个世界上，$x$和$y$拥有一个真实的，完美的函数关系，只不过就是被噪音干扰了：</p>
+<p>$$y &#x3D; TrueFunction(x) + \epsilon$$</p>
+<p>那么这个“真实函数”我们通过数学化定义为$E[y|x]$，也就是给定x之后y的期望值。我们用它来表明排除噪音$\epsilon$之后，世界的本来面目。</p>
+<p>我们的处境是怎样呢？</p>
+<p>我们在某个平行宇宙中收集到了一份特定的数据集：$D &#x3D; {(x_1, y_1), ..., (x_m, y_m)}$，随后我们用这个$D$训练出了一个模型，我们记作$f(x;D)$。其中：</p>
+<ul>
+<li>$x$是输入，$D$是随机变量。这意味着如果再另一个平行宇宙，数据的噪音哪怕改变了一点点，那么我们训练出的模型$f(x;D&#39;)$就长得不一样。</li>
+</ul>
+<p>而我们的目标衡量对于一个固定的测试点，我们的模型$f(x;D)$预测的$y$和真实的$y$查了多少？我们可以用均方误差MSE来进行衡量：</p>
+<p>$$ \text{Error} &#x3D; E_{D, \epsilon} \left[ (y - f(x; D))^2 \right] $$</p>
+<p>其中，这里的期望 $E$ 是对所有可能的训练集 $D$ 和所有可能的噪音 $\epsilon$ 求平均。也就是说，我们想知道这个算法“平均而言”表现如何。</p>
+<hr>
+<p>那么我们要对这个Error公式进行一个开膛破肚。首先把$(y - f(x;D))^2$拆开。为了能够做到这一点，我们需要引入一个概念，叫<strong>平均模型 (Expected Model)</strong>，记作$\bar{f}(x) &#x3D; E_D[f(x; D)]$。真实的函数值应当是$E[y|x]$。</p>
+<p>假设你训练了1000次模型，每次的数据都不一样。但是你把这1000条曲线叠加起来求得平均值，你就得到了一个非常稳定的平均模型$\bar{f}(x)$。</p>
+<p><strong>首先剥离噪音：</strong></p>
+<p>我们要计算$E[(y - f(x; D))^2]$。我们在括号里减去一个$E[y|x]$，再加上一个$E[y|x]$，我们就得到了：</p>
+<p>$$ y - f(x; D) &#x3D; (y - E[y|x]) + (E[y|x] - f(x; D)) $$</p>
+<p>等式两边取平方，并取期望$E$。我们就得到了：</p>
+<p>$$E[(y - f(x; D))^2] &#x3D; E[(A+B)^2] &#x3D; E[A^2] + E[B^2] + 2E[AB] $$</p>
+<p>其中，记：</p>
+<ul>
+<li><strong>$A &#x3D; y - E[y|x]$</strong>: 这是<strong>纯噪音</strong> $\epsilon$。</li>
+<li><strong>$B &#x3D; E[y|x] - f(x; D)$</strong>: 这是模型和真理的差距。</li>
+<li><strong>交叉项 $2E[AB]$</strong>: 因为噪音 $\epsilon$ 是随机的，且均值为 0，它和模型 $f$ 无关。所以这一项的期望是 <strong>0</strong>。</li>
+</ul>
+<p>于是，误差的第一部分出现了：<br>$$ E[A^2] &#x3D;  E[(y - E[y|x])^2] &#x3D; \text{Variance of Noise} $$</p>
+<p>这是<strong>不可约误差 (Irreducible Error)</strong>。无论你模型多牛，这部分误差（比如传感器本身的精度）你永远消除不掉。</p>
+<p>接下来，<strong>剥离偏差与方差：</strong><br>现在我们只剩下第二项：$E[B^2] &#x3D; E_D [ (E[y|x] - f(x; D))^2 ]$。</p>
+<p>我们在里面插入那个“中间人” $\bar{f}(x)$，并做一个和刚才一样的加减变换：</p>
+<p>$$E[B^2] &#x3D; (E[y|x] - \bar{f}(x)) + (\bar{f}(x) - f(x; D)) $$</p>
+<p>再次平方展开：</p>
+<ul>
+<li><p>第一部分：$(E[y|x] - \bar{f}(x))^2$。</p>
+<ul>
+<li>这是真理与平均模型的差距。我们管它叫Bias (偏差)** 的平方。它衡量了你的模型是否由于太简单而学歪了。</li>
+</ul>
+</li>
+<li><p>第二部分：$E_D [ (\bar{f}(x) - f(x; D))^2 ]$。</p>
+<ul>
+<li>这是平均模型与具体某次训练出的模型的差距。这叫方差。它衡量了你的模型是否对数据太敏感，换一波数据就剧烈波动。</li>
+</ul>
+</li>
+<li><p>交叉项再次为 0（数学推导略，原理同上，常数与随机变量偏差的积的期望）。</p>
+</li>
+</ul>
+<p>最终我们得到：</p>
+<p>$$ \text{Total Error} &#x3D; \text{Bias}^2 + \text{Variance} + \text{Noise} $$</p>
+<hr>
+<p>公式推完了，那么这到底意味着什么？</p>
+<p><strong>High Bias (高偏差) &#x3D; 欠拟合 (Underfitting)</strong></p>
+<p>想象你正在尝试用一条直线（1st order）去拟合一个正弦波。无论你换多少次数据集，这条直线的“平均位置”离真实的正弦波都很远。它太僵硬了，根本<strong>学不到</strong>数据的规律。因此，训练误差大，测试误差也大。</p>
+<p><strong>High Variance (高方差) &#x3D; 过拟合 (Overfitting)</strong></p>
+<p>现在你尝试用一个 50 次多项式去拟合几个点。正如我们之前所说，它会疯狂扭曲去穿过每一个点。  </p>
+<p>如果你做无数次实验取平均，这团乱麻的中心其实挺接近真理的（平均线是对的）。但是具体的某一次，你的线可能飞到天上去。因为数据里的一点点噪音就会导致模型发生剧烈变化。因此这些模型的训练误差极小，测试误差极大。</p>
+<p>我们想要 Bias 和 Variance 都小，但这很难。我们可以<strong>增加模型复杂度</strong>（比如增加多项式次数，或者加深神经网络）这样一来：</p>
+<ul>
+<li>Bias $\downarrow$， 模型更灵活，能拟合复杂规律。但是：</li>
+<li>Variance $\uparrow$更敏感，更容易被噪音带偏</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/12/03/pTq5OdtESya3G1D.png" alt="image.png"></p>
+<p><strong>我们寻找的“甜点” (Sweet Spot):</strong> 就是代表模型泛化能力最强的时刻。在这个点上，模型刚好足够复杂，能够捕获到数据背后的真实规律（Bias够低），同时又足够简单，没有去强行记忆数据里的随即噪音（Variance够低）。</p>
+<p>看这个图，如果太靠左，那么你可能还在尝试使用线性回归来做图像识别。模型太简单了不好拟合，索尼你啥也学不到。</p>
+<p>如果太靠右，那么你可能尝试使用一个1000层的神经网络去尝试拟合10个数据点。这太复杂了，bro把噪点全部背下来了。</p>
+<p>你想要找到的甜点就是那个中间的那条蓝色的4th order的线。这就是我们训练模型时想要达到的终极形态。</p>
+<hr>
+<p>讲清楚什么是偏差和方差，现在我们就跳出平均情况的假设，讨论一下“我到底要需要多少数据，才能保证我训练的模型是靠谱的”？</p>
+<h2 id="PAC理论"><a href="#PAC理论" class="headerlink" title="PAC理论"></a>PAC理论</h2><p>在刚才的偏差方差分析中，我们还在用$y - f(x)$这种连续纸的误差。它告诉我们“模型太复杂会High Variance，太简单会High Bias”，是一个解释现象的思维工具。</p>
+<p>接下来我们使用PAC理论进行定量分析。我们试图为偏差方差分析中的方差部分划定一个数学上限。现在为了理论推导方便，我们需要回到最简单的二分类问题，也就是 $y \in {0, 1}$。</p>
+<p>首先，如果bro是上帝，那么你应该就能知道什么是<strong>真实误差 (True Error &#x2F; Generalization Error)</strong>。这个数据表示在整个数据分布$D$上，你的模型$h$犯错的概率：</p>
+<p>$$err(h) &#x3D; P_{x~D}[h(x) \neq c^{*}(x)]$$</p>
+<p>这就是那个我们想要知道，但是永远无法直接算出来的数据。</p>
+<p>现在回到凡人视角。我们能算出来的误差叫做<strong>经验误差(Empirical Error &#x2F; Training Error)</strong>。这个数据表示在我们手头$m$个样本集$S$上，我们的模型$h$犯错的比例：</p>
+<p>$$err_S(h) &#x3D; \frac{1}{m} \sum_{i&#x3D;1}^m \mathbb{I}[h(x_i) \neq y_i]$$</p>
+<p>那么你就在想了：如果能够证明数据量 $m$ 足够大，<strong>经验误差 $err_S(h)$ 就会非常接近真实误差 $err(h)$</strong>，这样如果我们算出训练误差很低，就可以自信地说：真实误差肯定也很低了。</p>
+<hr>
+<h3 id="可靠环境样本复杂度"><a href="#可靠环境样本复杂度" class="headerlink" title="可靠环境样本复杂度"></a>可靠环境样本复杂度</h3><p>那我们就假设完美的上帝函数$c^*$包含在我们的备选模型库，假设空间$H$里面。这意味着如果我们搜遍$H$，则我们一定能找到一个模型使得它的训练误差为0。假设空间类似你想要找的函数的范围，例如约定指数函数，多项式还是其它类型的函数。</p>
+<p>那么我们假设$H$是有限的，我们需要找多少样本$m$才能保证我们找到的那个“训练误差为0”的模型，它的“真实误差”小于$\epsilon$的概率至少是$1-\delta$？其中：</p>
+<ul>
+<li>$\epsilon$ (Epsilon): 误差容忍度（比如 0.05，即 95% 准确）。</li>
+<li>$\delta$ (Delta): 失败概率（比如 0.01，即我们有 99% 的信心）。</li>
+</ul>
+<p>我们定义**泛化差距 (Generalization Gap)**为：</p>
+<p>$|err(h) - err_S(h)| \le \epsilon$</p>
+<p>这个差距越大，说明模型越不稳定，Variance越大。我们想要知道如果我们想将Variance压倒$\epsilon$这么小，我们需要多少数据？</p>
+<p>则我们通过<strong>样本复杂度公式 (Sample Complexity)</strong> 可以算出这个值：</p>
+<p>$$ m \ge \frac{1}{\epsilon} \left( \ln|H| + \ln\frac{1}{\delta} \right) $$</p>
+<p>公式推导过程大概是：</p>
+<ul>
+<li><p>如果一个模型很烂（真实误差 $&gt; \epsilon$），我们暂且称其为“坏模型”。  </p>
+<p>  那么这个坏模型在1 个数据点上蒙混过关的概率是 $&lt; (1-\epsilon)$。它在 <strong>$m$ 个</strong> 数据点上全部蒙混过关（训练误差保持为 0）的概率是 $&lt; (1-\epsilon)^m \approx e^{-m\epsilon}$。</p>
+</li>
+<li><p>由于我们一共有 $|H|$ 个模型。所有坏模型里只要<strong>有一个</strong>蒙混过关，就算失败。因此我们要把所有坏模型漏网的概概率使用Union Bound (联合界)加起来:</p>
+</li>
+</ul>
+<p>$$P(\text{Any bad h survives}) \le |H| \cdot P(\text{One bad h survives})$$</p>
+<ul>
+<li>我们要让这个坏事发生的概率 $\le \delta$。解这个不等式，就得到了上面的 $m$ 公式。</li>
+</ul>
+<p>这样，我们就可以通过PAC理论，来判断：“只要数据量满足公式，我的模型保证在未知数据上也有效”了。</p>
+<p>观察公式，你会发现在这里，$m$ 与 $1&#x2F;\epsilon$ 成 <strong>线性 (Linear)</strong> 关系。这说明学习很高效，为了提升精度，你需要的数据量与其成线性关系。</p>
+<hr>
+<h3 id="不可靠环境样本复杂度"><a href="#不可靠环境样本复杂度" class="headerlink" title="不可靠环境样本复杂度"></a>不可靠环境样本复杂度</h3><p>但现实是残酷的。完美的函数 $c^*$ 可能极其复杂，根本不在我们的线性模型库 $H$ 里。或者数据本身就有噪音（同样的 $x$ 有时是 0 有时是 1）。</p>
+<p>这时，即使是最好的模型，训练误差也不可能是 0。我们只能追求 <strong>“无限逼近真实误差”</strong>。</p>
+<p>这个定理描述了，我们要找多少样本 $m$，才能保证对于所有的模型 $h$，经验误差和真实误差的差距 $|err_S(h) - err(h)|$ 不超过 $\epsilon$？</p>
+<p>则<strong>样本复杂度公式：</strong><br>$$ m \ge \frac{1}{2\epsilon^2} \left( \ln(2|H|) + \ln\frac{1}{\delta} \right) $$</p>
+<p>你会发现分母变成了 <strong>$2\epsilon^2$</strong>。在刚才讲到的可靠情况是 $1&#x2F;\epsilon$。在 现在的不可靠情况下是 $1&#x2F;\epsilon^2$。这意味着如果你想要提升精度降低误差，那么你需要的数据量就增长更快。这就是为什么现实中的高精度模型往往需要海量数据。</p>
+<hr>
+<p>样本复杂度公式的实际用途主要在于知道“量级”和“趋势”的变化关系。例如，如果我们想让精度翻倍，也就是$\epsilon$减半，我们需要手机多少数据？</p>
+<p>这样我们就可以通过公式算出来，在可靠环境下你需要收集两倍多的数据，不可靠环境下为四倍。</p>
+<hr>
+<h2 id="VC维"><a href="#VC维" class="headerlink" title="VC维"></a>VC维</h2><p>回顾上一张的可靠环境样本复杂度公式：</p>
+<p>$$ m \ge \frac{1}{\epsilon} \left( \ln|H| + \ln\frac{1}{\delta} \right) $$</p>
+<p>这证明我们需要的数据量$m$与模型数量$|H|$的对数成正比。</p>
+<p>哪怕是最简单的 “一维线性分类器”（在数轴上找个点切一刀），因为切点$\theta$可以是任意实数，所以可能的模型数量是无穷大的。$|H| &#x3D; \infty$</p>
+<p>如果直接带入公式，$\ln \infty &#x3D; \infty$，这意味着我们需要无限多的数据才能训练一个最简单的分类器。这显然是荒谬的，因为我们知道线性分类器很好训练。  </p>
+<p>所以我们得出结论，直接使用数量$|H|$来衡量模型的复杂度还是太粗糙了。我们需要一把更精细的尺子，用来衡量无限集合的“丰富程度”或“表达能力”。这把尺子就是<strong>VC维 (Vapnik-Chervonenkis Dimension)</strong>。</p>
+<hr>
+<p>在定义VC维之前，我们需要先理解什么是<strong>打散 (Shattering)</strong></p>
+<p>打散指的是一个假设类能够对某个有限样本集合的所有可能标记方式都能找到对应的分类器来实现。人话来说，模型能够完全区分该集合的所有标签组合。</p>
+<p>假定一个假设类$H$和一个样本集合$S &#x3D; {x_1, x_2, ..., x_n}$。如果对于集合$S$上的所有可能的标签组合，都存在一个假设$h \in H$，使得$h(x_i)$与该标签完全一致，那么我们就说假设类打散了集合$S$。模型能把样本集合的所有可能分类方式都覆盖到。</p>
+<p>例如集合里面有三个点，那么对于二分类问题来讲，可能的标记方式就一共有$2^3$种。模型对于这$m$个点拥有上帝般的控制力。无论你怎么标正负，它都能画出一条边界线把他们分开。</p>
+<p>现在我们就可以定义这把“尺子”了。</p>
+<p>我们定义一个假设空间$H$的VC维，是它所能打散的最大样本数量，记作$d &#x3D; VCdim(H)$。这包含两层意思：</p>
+<ol>
+<li>世界上至少存在某一组$d$个点，可以被$H$打散。同时：</li>
+<li>世界上不存在任何一组$d + 1$个点，可以被$H$打散。</li>
+</ol>
+<p>这意味着一旦数据量达到$d + 1$，模型的神力就失效了，它再也没办法拟合所有可能的标签组合了。因为一定会出现某些标签的排列组合，是这个模型死活分不开的。</p>
+<p>这一刻就是模型复杂度的极限。</p>
+<hr>
+<p><em>Talk is cheap, show me the examples：</em></p>
+<p><strong>阈值分类器</strong></p>
+<p>假设我们的模型是一个阈值分类器。我们会在数轴上选一点$a$，左边是0，右边是1。</p>
+<p>一个点可以打散吗？可以。点在$x$，如果要标0，那就把切点$a$放在右边；如果要标1，那就反过来把$a$放在左边。</p>
+<p>两个点$(x_1, x_2)$可以打散吗？不难看出我们要实现四种组合：(0, 0), (1, 1), (0, 1), (1, 0)</p>
+<p>前三种都好办，但是(1, 0)怎么办？这要求$x_1$是1，放在右边，$x_2$是0，放在左边。但是物理位置上$x_1$在$x_2$的左边。假设方向固定，分类器没法做到这样的分类。</p>
+<p>于是我们得出结论：能打散一个，打不散两个。VC维就为1。</p>
+<p>那么想象一个<strong>区间分类器</strong>：我们要做的事在数轴上选个区间$[a, b]$。区间内是1，区间外是0。  </p>
+<p>同理，两个点怎么标都可以分开，但是三个点$x_1, x_2, x_3$就出问题了。由于我们想要实现(1, 0, 1)，也就是说$x_1$到$x_3$分别是正负正。由于$x_2$夹在中间，如果你想用一个联通的区间包住$x_1$和$x_3$，就会不可避免地把中间的$x_2$也包含进去。所以我们在3失败了。</p>
+<p>于是我们得出结论，这样的一个分类器VC维是2。</p>
+<p>我们能得出什么规律呢？<strong>对于$d$维空间的线性分类器，它的VC维是$d + 1$。</strong> 这就是为什么线性回归或逻辑回归中的特征维度$d$如此重要，因为它直接决定了模型的VC维，也就是复杂度。</p>
+<hr>
+<p>反过来想，假设对于 2D 线性分类器（VC&#x3D;3）。如果我有 3 个点，它们不幸共线，你没法把中间的点标为 + 而两头的点标为 - 。这是否意味着 VC 维就变成 2 了？</p>
+<p>根据下界的条件和VC维的定义，存在一组$d$个点就可以被打散。只要你能找到一组数据能够被切开，那么VC维就是3。至于这组共线点那就是它们自己的问题，不影响模型的能力上限。</p>
+<hr>
+<h2 id="样本复杂度界限"><a href="#样本复杂度界限" class="headerlink" title="样本复杂度界限"></a>样本复杂度界限</h2><p>还记得我们之前的问题吗？之前的公式内存在$\ln |H|$。对于线性分类器来说，$|H|$是无穷大，公式失效。因此我们需要用刚学到的VC维$d$来替换掉尴尬的$|H|$。</p>
+<h3 id="绍尔引理-Sauer-s-Lemma"><a href="#绍尔引理-Sauer-s-Lemma" class="headerlink" title="绍尔引理 (Sauer&#39;s Lemma)"></a>绍尔引理 (Sauer&#39;s Lemma)</h3><p>如果模型H的VC维是$d$，那这意味着什么？这意味着当数据量$m \le d$时，模型简直无人能挡，能够打散所有$2^m$种组合。</p>
+<p>绍尔引理在此之上告诉我们一个事实：一旦数据量超过了模型能力的极限，也就是$m &gt; d$，那么模型能产生的不同标签组合数量就会急剧下降。</p>
+<p>因此，我们就可以使用“在$m$个数据上的有效模型数量”来替代$|H|$：</p>
+<p>$$ln(Effective |H|) \approx ln(m^d) &#x3D; d\ln(m)$$</p>
+<p>我们就解决了无穷大的$|H|$的问题，取而代之的是有限的$d$和$\ln(m)$</p>
+<hr>
+<p>既然我们解决了这一点，我们就回去来得到通用的样本复杂度公式吧：</p>
+<ol>
+<li><strong>可靠环境样本复杂度</strong>：</li>
+</ol>
+<p>$$ m \ge C \cdot \frac{1}{\epsilon} \left( d \ln \frac{1}{\epsilon} + \ln \frac{1}{\delta} \right) $$</p>
+<p>可以得到$m$的大致量级：$m \approx \frac{d}{\epsilon}$。</p>
+<p>这意味着你需要的样本量，大概是你的模型复杂度 ($d$) 的倍数。这就解释了为什么深度学习需要海量数据。</p>
+<ol start="2">
+<li><strong>不可靠环境样本复杂度</strong>：</li>
+</ol>
+<p>$$ m \ge C \cdot \frac{1}{\epsilon^2} \left( d + \ln \frac{1}{\delta} \right) $$</p>
+<p>$m$的大致量级：$m \approx \frac{d}{\epsilon^2}$。</p>
+<hr>
+<h3 id="泛化误差最终公式"><a href="#泛化误差最终公式" class="headerlink" title="泛化误差最终公式"></a>泛化误差最终公式</h3><p>那么我们知道数据量为$m$，我们有没有办法找到真实误差$L(f)$最坏是多少？</p>
+<p>可以：</p>
+<p>$$ L(f) \le \hat{L}(f) + \sqrt{\frac{d \ln m + \ln(\frac{1}{\delta})}{m}} $$</p>
+<p>这个公式比较高光了。它包含了两部分：</p>
+<ol>
+<li><strong>Training Loss $\hat{L}(f)$:</strong> 你的模型在训练集上表现多好？（Bias 部分）</li>
+<li><strong>Complexity Penalty $\sqrt{\frac{d \ln m + \ln(\frac{1}{\delta})}{m}}$:</strong> 你的模型有多复杂？（Variance 部分）<ul>
+<li>分子是 $d$ (VC 维)：模型越复杂，惩罚越大。</li>
+<li>分母是 $m$ (数据量)：数据越多，惩罚越小（根号速度衰减）。</li>
+</ul>
+</li>
+</ol>
+<p>到最后，我们发现我们实际上目标是要寻找一个模型，<strong>既能让 Training Loss 小，又让 VC 维 $d$ 小</strong>。这不就是我们上一章学的 <strong>正则化 (Regularization)</strong> 吗？你看：</p>
+<ul>
+<li>Training Loss $\to$ 数据拟合项。</li>
+<li>Complexity Penalty $\to$ 正则项 ($\lambda |\theta|^2$)。</li>
+</ul>
+<p>最后兜兜转转，理论证明了正则化的正确性。正则化就是在强行降低模型的有效 VC 维，从而减小泛化误差的上界。</p>
+<hr>
+<p>我们来用一个问题结束本章吧。  </p>
+<p>根据 VC 维理论，参数越多，$d$越大，泛化误差的上界应该越高。<br>但在现代深度学习的实践中，我们经常发现：即使参数量远远超过数据量（$d \gg m$, 即过参数化），模型在测试集上的表现依然非常好，并没有发生严重的过拟合。</p>
+<p>这是不是意味着VC维理论失效了？还是说我们应该重新理解公式中的$\hat{L}(f)$和Penalty的关系？</p>
+<p>还记得公式中$Penalty &#x3D; \sqrt{\frac{d...}{m}}$吗？  </p>
+<p>如果$m$固定，而$d$跟随深度学习模型的层数飞速增长，则这个Penalty项在数学上颇有爆炸风险。根据经典VC维理论，当$d \gg m$时，泛化误差的上界确实会变得非常大。这时候这个上界就变得没有什么意义了。  </p>
+<p>那为什么在现实中我们的模型照常运行？</p>
+<p>Training Loss $\hat{L}(f)$的作用是，当模型极大的时候，它有能力将训练误差$\hat{L}(f)$彻底压到0。虽然名义上的$d$很大，但是SGD等算法更倾向于寻找更平滑的那一组解。  </p>
+<p>所以并不是VC维理论失效了：不等式仍然成立，只是VC太悲观了。目前他还没办法解释为什么在$d \gg m$的过参数化区间内，模型依旧能够表现良好。这促使学界提出了新的理论来替代简单的VC维。</p>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%81%8F%E5%B7%AE%E4%B8%8E%E6%96%B9%E5%B7%AE"><span class="toc-text">偏差与方差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PAC%E7%90%86%E8%AE%BA"><span class="toc-text">PAC理论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%9D%A0%E7%8E%AF%E5%A2%83%E6%A0%B7%E6%9C%AC%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">可靠环境样本复杂度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%8F%AF%E9%9D%A0%E7%8E%AF%E5%A2%83%E6%A0%B7%E6%9C%AC%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">不可靠环境样本复杂度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VC%E7%BB%B4"><span class="toc-text">VC维</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B7%E6%9C%AC%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%95%8C%E9%99%90"><span class="toc-text">样本复杂度界限</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8D%E5%B0%94%E5%BC%95%E7%90%86-Sauer-s-Lemma"><span class="toc-text">绍尔引理 (Sauer&#39;s Lemma)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%8C%96%E8%AF%AF%E5%B7%AE%E6%9C%80%E7%BB%88%E5%85%AC%E5%BC%8F"><span class="toc-text">泛化误差最终公式</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1764860092520" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
