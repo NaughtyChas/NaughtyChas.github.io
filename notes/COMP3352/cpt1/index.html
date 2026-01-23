@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-01-21T08:11:00.000Z">
-<meta property="article:modified_time" content="2026-01-23T07:13:21.333Z">
+<meta property="article:modified_time" content="2026-01-23T17:58:40.845Z">
 <meta property="article:author" content="Naucha">
 <meta property="article:tag" content="分治法">
 <meta property="article:tag" content="归并排序">
@@ -43,7 +43,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1769152551526">
+  <link rel="stylesheet" href="/css/main.css?v=1769191303515">
 
 
   
@@ -183,7 +183,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3352/">COMP3352</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-23T07:13:21.333Z">2026-01-23</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-21T08:11:00.000Z">2026-01-21</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-23T17:58:40.845Z">2026-01-24</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-21T08:11:00.000Z">2026-01-21</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -322,6 +322,103 @@
 <hr>
 <h2 id="选择问题"><a href="#选择问题" class="headerlink" title="选择问题"></a>选择问题</h2><p>由于绝大多数的分治思想都是从归并排序开始讲起来的，所以对于大家来说已经是很司空见惯的内容了。有没有什么不一样的？</p>
 <p>有的兄弟有的。在这一部分，我们来想象你有一个内容随机排列的数组。那么，你 <strong>如何在不完全排序的情况下，找到数组中第$k$大的数？</strong></p>
+<hr>
+<p>最简单直白的方法是将所有数字进行排序。如果我们想找第$k$大的数字，最笨的方式就是花$O(n \log{n})$的时间排序，然后直接访问第$k$个。</p>
+<p>但是这样的问题是我们花了很多精力在无用功上，排序让我们知道所有数据的大小。在一场百米赛跑中，如果我们只想知道谁是第五名，我们不需要精确地直到第50名和51名谁快谁慢。即便使用最小堆的方法，在$k$很大的时候，并且在最坏情况下（$k &#x3D; n&#x2F;2$）的算法效率仍然是$O(n\log{n})$。</p>
+<p>我们要追求$O(n)$的线性时间。</p>
+<hr>
+<h3 id="切分与丢弃"><a href="#切分与丢弃" class="headerlink" title="切分与丢弃"></a>切分与丢弃</h3><p>这一部分我们的解决方案和快速排序比较相像，但是有一个本质区别，那就是我们每次只需要递归枢轴的其中一边。这个算法我们通常称之为快速选择 (QuickSelect) 算法。</p>
+<p>想象你面前有一堆杂乱的数字，排成数列。你的目标是寻找第$k$大的数。</p>
+<p>第一步，我们随便从数字中选择一个数作为基准，我们把它叫做 <strong>枢轴$x$ (Pivot)</strong>。<br>第二步，我们将剩下的所有数字分成三堆：</p>
+<ul>
+<li>$L$堆包含所有比$x$小的数字。</li>
+<li>$M$堆包含所有等于$x$的数字。</li>
+<li>$R$堆包含所有比$x$大的数字。</li>
+</ul>
+<p>这一步只需要耗时$O(n)$，因为它只遍历了一遍数组。</p>
+<p>第三步是这个算法最关键的一步。由于我们知道这三堆中各有多少个数字，我们就可以立刻判断出我们要找的那个“第$k$大”的数位于哪一堆。具体可以分为三种情况，看我娓娓道来：</p>
+<ul>
+<li><p><strong>情况A：</strong></p>
+<p>如果$R$堆的数量$|R|$已经大于等于$k$了，那么说明第$k$大的数肯定在这一组中。那么我们就可以直接舍弃$L$与$M$堆的内容，直接递归去$R$堆里继续寻找目标。</p>
+</li>
+<li><p><strong>情况B：</strong></p>
+<p>如果$k$刚好落在$M$的范围内，即：</p>
+<p>$$|R| &lt; k \leq |R| + |M|$$</p>
+<p>那么说明你这次选择的枢轴就是你的目标，可以直接return返回结果了。</p>
+</li>
+<li><p><strong>情况C:</strong></p>
+<p>如果前两堆的数量都不够，那么只能说明目标只能在$L$堆里。这时候我们要递归寻找$L$中的目标。</p>
+<p>需要注意由于我们已经排除了$|R|$个大值和$|M|$个中间值，因此我们要找的目标在$L$堆里面的序数就变了：我们下一步要寻找第$k - |R| - |M|$大的数值。</p>
+</li>
+</ul>
+<hr>
+<p>如果我们选择的枢轴非常理想，每次能够将数组完美减半，那么问题规模的减小速度非常可观：</p>
+<p>$n$ → $n&#x2F;2$ → $n&#x2F;4$ → $n&#x2F;8$...</p>
+<p>直接将他们加起来，我们得到总工作量是：</p>
+<p>$$n + \frac{n}{2} + \frac{n}{4} + ... &#x3D; 2n$$</p>
+<p>也就是$O(n)$。这就是快速选择的理想情况复杂度。</p>
+<hr>
+<p>当你开始考虑最差情况时，就会出现问题。如果假设我们选择的枢轴每次都是最小的那个数，那么在每次递归中，$L$堆一定是空的，因此每次递归都只能从$R$排除一个数字。问题规模从$n$变成$n - 1$，$n - 2$ ...，总复杂度就会直接退化成$O(n^2)$。</p>
+<p>所以我们的问题出现了，如何保证我们每次选择的枢轴，一定能够尽可能切掉大块数据？</p>
+<hr>
+<h3 id="中位数的中位数"><a href="#中位数的中位数" class="headerlink" title="中位数的中位数"></a>中位数的中位数</h3><p>为了保证算法在最坏情况下复杂度也是$O(n)$，我们需要一种确定性的方法来选择枢轴，而不是靠运气。  </p>
+<p>在这里我们使用Median of Medians算法来解决这个问题：</p>
+<p>为了选出一个大概率位于中间的枢轴，我们首先进行下列步骤：</p>
+<ol>
+<li><p><strong>分组</strong>：我们将$n$个元素按每5个元素一组的规律，分成$n&#x2F;5$个小组。</p>
+</li>
+<li><p><strong>组内排序</strong>：对于每个小组中的5个数，我们寻找它们的中位数。由于只有5个数，寻找中位数的速度是极快的，因此我们将这步看作常数时间$O(1)$。</p>
+</li>
+<li><p><strong>递归寻找枢轴</strong>：</p>
+</li>
+</ol>
+<p>  现在我们拥有了这所有$n&#x2F;5$个组各自的中位数，我们需要将这些数字拿出来，递归调用刚才的算法，找出这些数字中的中位数。这个“中位数组的中位数”，Median of Medians，就是我们要找的枢轴。</p>
+<p>但是看起来这样的方法缺少依据啊？我们为什么要选择这样的计算方法？为啥非得是5？</p>
+<hr>
+<p>我们来看看选出来这个最终枢轴是什么情况，就假设它是$x$吧。同时我们命名每一个组中选出来的那个中位数叫“组长”。</p>
+<p>由于$x$是那$n&#x2F;5$个小组组长的中位数，所以 <em>至少</em> 有一半的组长比$x$大。<br>而对于每一个比$x$大的组长，它那组里面至少还有2个组员比他自己大。  </p>
+<p>如果我们思考连带效应，把我们已知的内容总结一下：至少有一半的组长$\geq x$，并且每个这样的组里面至少有三个人 $\geq$ 这个组长 $\geq x$。</p>
+<p>所以，在整个数组中，我们算出至少有$3 \times (n&#x2F;10) &#x3D; 3n&#x2F;10$的人比$x$大。反过来同理，也至少有$3n&#x2F;10$的人比$x$小。</p>
+<p>这意味着无论$x$选的再偏，如果我们使用$x$去切分数组，最坏的一堆，包括$L$或者$R$，都最多只能包含$7m&#x2F;10$个元素。不过为了计算方便，我们一般说这个最值近似$3n&#x2F;4$。<br>只要我们保证每次递归都能稳定切掉恒定比例的数据，例如30%，递归树的深度就一定是$\log{n}$，且每层工作量按指数级递减，总和收敛于$O(n)$。</p>
+<hr>
+<p>所以我们来把所有的开销加起来吧。</p>
+<p>$$T(n) \leq T(n&#x2F;5) + T(3n&#x2F;4) + Cn$$</p>
+<p>其中：</p>
+<ul>
+<li>$T(n&#x2F;5)$ 代指找组长的中位数所花费的递归成本</li>
+<li>$T(3n&#x2F;4)$ 代指在最坏情况下，递归去剩下的那一堆里寻找第$k$大的数的成本。由于我们保证了最好的一堆至少有$n&#x2F;4$，那么我们就知道最坏的一堆最多包含$3n&#x2F;4$的数据。</li>
+<li>$Cn$ 代指分组，找每组中位数，以及最后划分$L, M, R$的线性工作量。</li>
+</ul>
+<hr>
+<p>为了证明这样的策略始终有效，我们需要证明存在一个常数$K$，使得$T(n) \leq K \cdot n$</p>
+<p>在这里我们先来试试假设$K &#x3D; 20C$，看看能不能证明出来。</p>
+<p>来用数学归纳法吧。首先我们假设所有小于$n$的数$m$，结论都成立，因此我们得到：</p>
+<p>$$T(m) \leq 20C \cdot m$$</p>
+<p>我们接下来需要验证$T(n)$是否也小于$20C \cdot n$。把假设带入递推式的右边：</p>
+<p>$$T(n) \leq [20C \cdot (\frac{n}{5})] + [20C \cdot (\frac{3n}{4})] + C \cdot n$$</p>
+<p>经过简单的代数运算把括号展开，我们最后得到：</p>
+<p>$$T(n) \leq 4Cn + 15Cn + Cn$$</p>
+<p>$$T(n) \leq 20Cn$$</p>
+<p>$$\text{Q.E.D.}$$</p>
+<hr>
+<p>得证了。但是你有想过为什么我们假设目标的系数是20？</p>
+<p>20关联到这道题还能剩下多少余量来处理杂务。例如这次，我们直接将常数留成$K$，看看为了能让证明成立，$K$至少要是多少。</p>
+<p>由于我们要证明复杂度$T(n)$是线性的$O(n)$，在数学上的意义还记得吗？寻找一个常数$K$使得$T(n) \leq K \cdot n$。前面的$C$属于题目已知的常数。这个常熟代表我们在做分组，找中位数，划分数组这些杂务必须要花费的固定代价，而$K$就是那个倍率。</p>
+<p>递推公式：</p>
+<p>$$T(n) \leq T(n&#x2F;5) + T(3n&#x2F;4) + Cn$$</p>
+<p>如果把目标$T(n) \leq Kn$带入会发生什么？左边的预算变成$Kn$，右边的开销分子问题来衡量：第一个子问题花了$K \cdot (0.2n)$的开销，第二个花了$K \cdot (0.75n)$，杂务花了$C \cdot n$。</p>
+<p>为了能让证明成立，预算必须要大于等于开销。因此我们可以证明这样一个不等式：</p>
+<p>$$Kn \geq K(0.2n) +K(0.75n) +Cn$$</p>
+<p>大家都有$n$，约掉：</p>
+<p>$$K \geq 0.2K + 0.75K +C$$</p>
+<p>合并$K$：</p>
+<p>$$K \geq 0.95K + C$$</p>
+<p>观察这个式子。这意味着当我们递归处理完子问题后，我们已经消耗了总预算$K$的95%，也就是说，我们只剩下5%的预算来分配给杂务$C$了。</p>
+<p>不难得出：</p>
+<p>$$K - 0.95K \geq C$$</p>
+<p>$$K \geq 20C$$</p>
+<p>这就是20的由来了。我们通过中位数查找把算法的规模缩减为原来的$1&#x2F;5 + 3&#x2F;4 &#x3D; 0.95$，这就意味着通过每一层递归，相比原问题我们节省了5%的工作量。由于每一层只能节省5%的工作量，所以为了覆盖掉每一层固定$C$的这么多杂活，我们的总预算$K$就必须是$C$的20倍。</p>
+<hr>
 
 
   <div class="tag-list">
@@ -368,7 +465,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E9%80%92%E6%8E%A8%E5%BC%8F"><span class="toc-text">归并递推式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E4%B8%8E%E4%B8%A5%E8%B0%A8%E6%80%A7%E8%AF%81%E6%98%8E"><span class="toc-text">数学推导与严谨性证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F%EF%BC%9A%E4%B8%BB%E5%AE%9A%E7%90%86"><span class="toc-text">万能公式：主定理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%97%AE%E9%A2%98"><span class="toc-text">选择问题</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E9%80%92%E6%8E%A8%E5%BC%8F"><span class="toc-text">归并递推式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E4%B8%8E%E4%B8%A5%E8%B0%A8%E6%80%A7%E8%AF%81%E6%98%8E"><span class="toc-text">数学推导与严谨性证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F%EF%BC%9A%E4%B8%BB%E5%AE%9A%E7%90%86"><span class="toc-text">万能公式：主定理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%97%AE%E9%A2%98"><span class="toc-text">选择问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E5%88%86%E4%B8%8E%E4%B8%A2%E5%BC%83"><span class="toc-text">切分与丢弃</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E4%BD%8D%E6%95%B0%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0"><span class="toc-text">中位数的中位数</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -791,7 +888,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1769152551530" defer></script>
+<script src="/js/main.js?v=1769191303517" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
