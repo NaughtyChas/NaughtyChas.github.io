@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-01-21T08:11:00.000Z">
-<meta property="article:modified_time" content="2026-01-23T17:58:40.845Z">
+<meta property="article:modified_time" content="2026-01-25T08:57:11.256Z">
 <meta property="article:author" content="Naucha">
 <meta property="article:tag" content="分治法">
 <meta property="article:tag" content="归并排序">
@@ -43,7 +43,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1769191303515">
+  <link rel="stylesheet" href="/css/main.css?v=1769331452838">
 
 
   
@@ -183,7 +183,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3352/">COMP3352</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-23T17:58:40.845Z">2026-01-24</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-21T08:11:00.000Z">2026-01-21</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-25T08:57:11.256Z">2026-01-25</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-21T08:11:00.000Z">2026-01-21</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -419,6 +419,147 @@
 <p>$$K \geq 20C$$</p>
 <p>这就是20的由来了。我们通过中位数查找把算法的规模缩减为原来的$1&#x2F;5 + 3&#x2F;4 &#x3D; 0.95$，这就意味着通过每一层递归，相比原问题我们节省了5%的工作量。由于每一层只能节省5%的工作量，所以为了覆盖掉每一层固定$C$的这么多杂活，我们的总预算$K$就必须是$C$的20倍。</p>
 <hr>
+<h2 id="最近点对问题"><a href="#最近点对问题" class="headerlink" title="最近点对问题"></a>最近点对问题</h2><p>接下来来看看我们如何使用分治的思维来解决二维空间中的最近点对问题。</p>
+<p>假如我们在平面上有n个点，二我们的目标就是找出距离最近的那两个点。  </p>
+<p>如果我们使用暴力枚举的方法，算出每一对点之间的距离，我们需要一共计算 $\frac{n(n-1)}{2}$ 次，也就是 $O(n^2)$ 的复杂度。这样效率低下的算法我们当然是不可接受的。</p>
+<p>不如我们先将问题简化，来看看如果这些点只有一个$x$坐标：只有一维数据，全部可以被呈现在一条一维直线上，怎样做最快？<br>在一维情况下，我们拿到的是一堆点的坐标值，例如<code>&#123;7, 2, 10, 4, 1&#125;</code>。如果直接去比较左右点的距离就还是 $O(n^2)$，但是如果我们<u>先按照坐标值排序</u>，得到<code>&#123;1, 2, 4, 7, 10&#125;</code>，那么由于排序后最近的一对点一定是相邻的两个点，因此我们只需要遍历一遍相邻的距离，找到最小的那个差值即可。</p>
+<p>在这里，算法的整体复杂度就是排序的 $O(n \log{n})$ + 遍历的 $O(n)$ &#x3D; $O(n \log{n})$。</p>
+<hr>
+<p>但是到了二维，我们就没法排序了。如果我们将数据点按照$x$排序，但是$y$的值可以差的很远。这时候我们需要使用分治的思维：</p>
+<p>假设所有的$x$坐标都不重复，那么首先我们按照$x$坐标把点集从中间一刀切开，分成左右两个部分$L$和$R$。<br>随后，使用递归去找出左半边的最近距离，记作$d_L$，和右半边的最近距离，记作$d_R$。每次递归都在更小的点集上重复同样的流程，直到子集规模很小（比如 2 或 3 个点），此时直接暴力计算即可。  </p>
+<p>到最后我们需要返回的值$d$应当是左右两边的最小值，也就是 $min(d_L, d_R)$ 。  </p>
+<p>但到这里我们只考虑了最短距离全部在$L$或者$R$里面的情况，那么如果这个最近点对跨越了中间点，我们该如何去查找？<br>由于你已经在每一步递归时算出$d$来了，那么如果横跨中点的点对有可能是最短距离，它们的距离必须要小于$d$，否则$d$的值还是最小的，不需要更新。</p>
+<p>也就是说我们只需要在每个递归层检查分割线附近，宽度为$d$区域内的点即可：</p>
+<ul>
+<li><p>如果一个左边的点离分割线的距离超过$d$，那么它到分割线右边的任何点距离一定大于$d$，因此我们可以直接忽略。</p>
+</li>
+<li><p>同理，如果右边的点离分割线距离也超过$d$，说明左边的点与他距离一定超过$d$，因此这些点也可以被忽略。</p>
+</li>
+</ul>
+<p>这样一来，我们就减小了搜索范围。如果通过这一步我们查找到了跨越分割线的更小距离，就更新$d$的值为 $d &#x3D; min(d, d_{cross})$，其中$d_{cross}$是这个穿越分割线的最小距离。这个值  </p>
+<p>换句话说，在每个递归层，我们返回的$d$的值本质上就是：</p>
+<p>$$d &#x3D; min(d_L, d_R, d_{cross})$$</p>
+<p>每层这样的返回值$d$当传播到上一层继续运算时，由于上一层的左右两半就是这一层处理的完整数据，因此$d$就对应着上一层的$d_L$或者$d_R$。</p>
+<hr>
+<h3 id="常数邻居原则"><a href="#常数邻居原则" class="headerlink" title="常数邻居原则"></a>常数邻居原则</h3><p>但是如果但是如果所有$n$个点都挤在这个狭窄的区域$2d$里怎么办？我们没有使用递归来检查$d_{cross}$，那么这样是不是会让我们的算法本质上还是 $O(n^2)$ ？</p>
+<p>为了更高效的检查这个中间区域，我们首先将这些处于$2d$宽度区域内的点，按照$y$坐标从下到上排好序。</p>
+<p>然后我们应用一个原则叫做 <strong>常数邻居原则</strong> 。对于每一个点$p$，我们不需要根区域内的所有的点进行比较，而是只需要将它与它 <em>后面</em> 紧挨着的11个点比较距离即可。如果这11个点内没有距离小于d的，那么就不可能有其他点符合要求了。</p>
+<p>这看起来像是一个暴论，但是为什么它成立呢？</p>
+<hr>
+<p>我们考虑我们这个宽度为$2d$候选带的几何形状。想象我们在水平$x$轴上画出来那条分界线，它左右各有$d$的宽度加起来是$2d$总宽，而由于$y$的值可以是任何值，因此在这块区域内竖直高度是无限高的。看起来就像是一个窄高长方形。</p>
+<p>我们要证明在这个带里，如果点之间的最近距离 $\geq d$，那么每个点在$y$排序中只需要检查有限个邻居即可。</p>
+<p>想象我们把候选带划分成若干个大小为$\frac{d}{2} \times \frac{d}{2}$的小方格。这样我们在长方形内数格子，横向有4列。  </p>
+<p>在一个$d&#x2F;2 \times d&#x2F;2$的正方形内，它的对角线长度是$\frac{d}{\sqrt{2}} \approx 0.7d$。由于递归的前提“同侧最小距离是d”被违背了，因此在任意一个小格子里，绝对不可能存在两个点。</p>
+<p>展开来说，我们不能违反递归本身给我们的承诺。当我们在画网格图时，分割线就是格子的边界。也就是说任何一个小格子要么完全属于左侧区域，要么完全属于右侧区域。我们可以用数学过程来反证一下：</p>
+<hr>
+<p>左边区域任意两点的最短距离是$d_L$，右边是$d_R$，当前执行中间检查之前留下的$d &#x3D; min(d_L, d_R)$。这意味着左边的任意两点距离一定 $\geq d$，同样对于右边的任意两点，距离也一定$\geq d$。这里的$d$代表递归下一层传递上来的最终距离。</p>
+<p>但是当我们来观察几何事实：一个边长为$d&#x2F;2$的正方形格子，它的最长距离一定是核心对角线：</p>
+<p>$$\sqrt{(\frac{d}{2})^2 + (\frac{d}{2})^2} &#x3D; \sqrt{\frac{d^2}{4} + \frac{d^2}{4}} &#x3D; \frac{d}{\sqrt{2}} \approx 0.7d$$</p>
+<p>我们假设这个格子内有两个点A和B，那么AB之间的距离一定是小于等于0.7d的。但是根据递归，我们期望这个格子要么完全在左边，或者完全在右边，所以理论来讲A与B是同侧点。</p>
+<p>但是根据定义，同侧点的距离应当至少是d，因此这里出现了矛盾。结果是，一个格子里面只能有一个值。</p>
+<hr>
+<p>由于距离是双向的，而且按照算法的流程：</p>
+<blockquote>
+<ol>
+<li>我们把所有在候选带里的点按照$y$轴坐标从小到大排序，记作$p_1, p_2, p_3, ..., p_m$</li>
+<li>执行下列循环：<ul>
+<li>当指针走向$p_1$，它往上计算距离，包含$dist(p_1, p_2)$</li>
+<li>当指针走向$p_2$，他往上计算上面的距离。由于刚才在$p_1$的回合，我们已经计算过$dist(p_1, p_2)$，因此在这里它不需要回头看了</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p>我们可以保证每个点向上计算绝对不会错过关键距离。从根源避免$O(n^2)$。</p>
+<p>由于我们只关心竖直和水平距离都 &lt; $d$的点，而且我们按照$y$轴排序后只向上看，因此用这个范围来覆盖格子，我们就可以找到哪些格子可能包含目标：</p>
+<p>横向来看，总宽度是$2d$，每个格子宽度是$d&#x2F;2$，因此你需要检查同行全部4个格子。<br>纵向来看，由于我们只看竖直距离 &lt; $d$的区域，因此我们需要查找包含目标格上方两行的区域。</p>
+<p>那么我们任选一个点$p$，那么对于点$p$所在的这一层，你需要检查的格子包含：</p>
+<ul>
+<li>点$p$自己所在的这一行横跨左右的四个格子。</li>
+<li>高度范围在它上方一格的四个格子，以及：</li>
+<li>在它上方两个的四个格子。</li>
+</ul>
+<p>一旦超过这两行，竖直高度差就一定超过d了，因此直接排除就可以了。</p>
+<p>所以潜在的邻居 <em>最多</em> 分布在这些格子内，接下来数数就好了。区域内一共有$3 \times 4 &#x3D; 12$ 个格子，去掉$p$自己就是11。因此我们只需要比较11个点就好了。</p>
+<hr>
+<p>那么你可能在想，这十一个格子里面，在对角线位置的格子理论来讲距离是不是就超出$d$了？想法是正确的，但是这一点实际上对证明有利。</p>
+<p>我们画的那个$2d \times d$的矩形，其最远的两个角落到中心点的距离是$1.414d$，明显大于$d$。那我们为什么还要检查它们？</p>
+<p>我们的目标不是去画一个精准的圆来检查邻居，相反我们要做的是画一个包围盒，bounding box。从圆形的最优目标来看，我们要检查的是$p$周围半径为$d$的半圆内的点，为了方便，我们直接使用$p$上方$2d \times d$范围内的点全部抓来检验。<br>这些范围覆盖了半圆吗？覆盖了。在这个大矩形里，我们使用鸽巢原理证明了这里一共有12个格子，每个格子最多一个点，所以矩形范围内撑死12个点。12个点的查找对于计算机已经是线性时间了。另外，我们不能因为效率就漏掉可能的任何数据点，因此这个矩形范围是能够接近圆的计算精度，同时权衡计算速度的最优解了。</p>
+<hr>
+<h2 id="加速代数运算"><a href="#加速代数运算" class="headerlink" title="加速代数运算"></a>加速代数运算</h2><p>如果说归并排序教会了我们“分治能维持效率”，那么这一部分我们来看看分治是如何暴力打破所谓“物理极限”。我们来看看分治思想是如何加速整数乘法和矩阵乘法的。</p>
+<h3 id="整数乘法-Karatsuba算法"><a href="#整数乘法-Karatsuba算法" class="headerlink" title="整数乘法 &#x2F; Karatsuba算法"></a>整数乘法 &#x2F; Karatsuba算法</h3><p>想象你要在计算机里计算两个超级大的整数相乘，计算机该如何进行计算？</p>
+<p>就像我们使用的竖式乘法一样：如果是两个$n$位数，那么就一共需要进行$n \times n$次运算，复杂度是$O(n^2)$。对于超大整数来讲，这种计算方式太慢了。</p>
+<p>我们起初尝试对这样的的计算引入分治法。把两个$n$位的数字$x, y$，切成左右两半。对于$x$来说，$a$代表高位，$b$则是低位。我们可得：</p>
+<p>$$x &#x3D; 2^{\frac{n}{2}} \cdot + b$$</p>
+<p>同理：</p>
+<p>$$y &#x3D; 2^{\frac{n}{2}} \cdot + b$$</p>
+<p>那么$xy$的乘积就是：</p>
+<p>$$xy &#x3D; (2^{n&#x2F;2}a + b)(2^{n&#x2F;2}c + d) &#x3D; 2^n(ac) + 2^{n&#x2F;2}(ad + bc) + bd$$</p>
+<p>由于$2^n$本质上就是移位操作，在计算机中计算几乎没有任何成本，核心难点是我们如何计算$ac$, $ad$, $bc$, $bd$。</p>
+<p>因此，我们尝试递归地计算这四个规模为$n&#x2F;2$的乘法，可以得到递推式：</p>
+<p>$$T(n) &#x3D; 4T(n&#x2F;2) + O(n)$$</p>
+<p>根据主定理， $a &#x3D; 4$, $b &#x3D; 2$, $\log_{2}{4} &#x3D; 2$</p>
+<p>因此，$T(n) &#x3D; O(n^2)$</p>
+<p>最后算下来发现复杂度还是 $O(n^2)$，根本没有任何提升。</p>
+<hr>
+<p>后来数学家发现为了打破$O(n^2)$的瓶颈，我们需要减少乘法的次数，也就是让那个 $a &#x3D; 4$ 变小。</p>
+<p>观察中间的那一项 $(ad + bc)$，实际上我们只需要知道它们的和就可以了，不需要真的一定要计算出$ad$ 和$bc$。</p>
+<p>所以我们尝试从 $(a + b)(c + d)$展开：</p>
+<p>$$(a + b)(c + d) &#x3D; ac + ad + bc + bd$$</p>
+<p>$$ad + bc &#x3D; (a + b)(c + d) - ac - bd$$</p>
+<p>由于$ac$和$bd$我们本身就要算，现在我们只需要计算三次乘法就可以了：</p>
+<p>$P_1 &#x3D; ac$<br>$P_2 &#x3D; bd$<br>$P_3 &#x3D; (a + b)(c + d)$</p>
+<p>那么中间项$(ad + bc)$就可以直接通过$P_3 - P_1 - P_2$得到了。</p>
+<p>所以现在我们的主定理中$a$的系数由4变成了3：</p>
+<p>$$T(n) &#x3D; 3T(n&#x2F;2) + O(n)$$</p>
+<p>根据主定理我们知道复杂度降低到了$O(n^{1.585})$，相比$O(n^2)$，已经是一个非常大的提速了。</p>
+<hr>
+<h3 id="矩阵乘法-Strassen算法"><a href="#矩阵乘法-Strassen算法" class="headerlink" title="矩阵乘法 &#x2F; Strassen算法"></a>矩阵乘法 &#x2F; Strassen算法</h3><p>同样的剧本在矩阵乘法这边又上演了一次。</p>
+<p>如果我们需要让两个$n \times n$的矩阵$A$, $B$相乘，最终得到结果$C$，按照暴力做法硬算的复杂度是$O(n^3)$。</p>
+<p>那么如果我们将矩阵切分成四块$n&#x2F;2 \times n&#x2F;2$的子矩阵：</p>
+<p>$$<br>\begin{pmatrix} A_{11} &amp; A_{12} \ A_{21} &amp; A_{22} \end{pmatrix}<br>\times<br>\begin{pmatrix} B_{11} &amp; B_{12} \ B_{21} &amp; B_{22} \end{pmatrix}<br>$$</p>
+<p>根据矩阵乘法规则，我们需要计算八个子矩阵的乘积。使用递归的话就可以得到递推式：</p>
+<p>$$T(n) &#x3D; 8T(n&#x2F;2) + O(n^2)$$s</p>
+<p>根据主定理最后得到复杂度仍然是$o(n^3)$s。</p>
+<hr>
+<p>在1969年，Strassen发现实际上我们根本不需要8次乘法，相反，只需要进行七次相乘和若干个加减法就足够了。我们不需要掌握这个算法具体是怎样一个流程和步骤，看看就好。</p>
+<p>在上面子矩阵的基础上，我们定义7个中间矩阵：</p>
+<p>$$<br>\begin{aligned}<br>M_1 &amp;&#x3D; (A_{11} + A_{22})(B_{11} + B_{22}) \<br>M_2 &amp;&#x3D; (A_{21} + A_{22})B_{11} \<br>M_3 &amp;&#x3D; A_{11}(B_{12} - B_{22}) \<br>M_4 &amp;&#x3D; A_{22}(B_{21} - B_{11}) \<br>M_5 &amp;&#x3D; (A_{11} + A_{12})B_{22} \<br>M_6 &amp;&#x3D; (A_{21} - A_{11})(B_{11} + B_{12}) \<br>M_7 &amp;&#x3D; (A_{12} - A_{22})(B_{21} + B_{22})<br>\end{aligned}<br>$$</p>
+<p>利用这 7 个结果，可以拼出最终的乘积矩阵 $C &#x3D; A \cdot B$：</p>
+<p>$$<br>\begin{aligned}<br>C_{11} &amp;&#x3D; M_1 + M_4 - M_5 + M_7 \<br>C_{12} &amp;&#x3D; M_3 + M_5 \<br>C_{21} &amp;&#x3D; M_2 + M_4 \<br>C_{22} &amp;&#x3D; M_1 - M_2 + M_3 + M_6<br>\end{aligned}<br>$$</p>
+<p>如果矩阵的规模仍非常巨大，就对每个子矩阵递归继续应用Strassen算法就行了。当规模缩小到一定程度（比如 $n$ 很小），直接使用普通矩阵乘法计算就行。</p>
+<hr>
+<p>因此，我们可以得到递推式：</p>
+<p>$$T(n) &#x3D; 7T(n&#x2F;2) + O(n^2)$$</p>
+<p>使用主定理，我们计算出叶子的权重大概为$n^{\log_{2}{7}} \approx n^{2.808}$，根部为$n^2$.因此，我们得到Strassen算法的复杂度为 $O(n^{2.808})$。</p>
+<p>运用这个算法，我们就可以在大规模矩阵运算中显著减少计算量。</p>
+<hr>
+<p>分治这一部分就讲完了。最后的最后，</p>
+<p><strong>我恨递归。</strong></p>
+<p>两个 $n \times n$ 的矩阵 $A$ 和 $B$ 相乘，得到 $C$。<br>暴力做法是 $O(n^3)$。<br>如果我们把矩阵切成 4 块 $n&#x2F;2 \times n&#x2F;2$ 的子矩阵：<br>$$<br>\begin{pmatrix} A_{11} &amp; A_{12} \ A_{21} &amp; A_{22} \end{pmatrix}<br>\times<br>\begin{pmatrix} B_{11} &amp; B_{12} \ B_{21} &amp; B_{22} \end{pmatrix}<br>$$<br>根据矩阵乘法规则，我们要计算 8 个子矩阵的乘积（$A_{11}B_{11}, A_{12}B_{21}$ 等等）。<br>递归式：$T(n) &#x3D; 8T(n&#x2F;2) + O(n^2)$（加法是 $n^2$）。<br>主定理：$\log_2 8 &#x3D; 3$。<br><strong>结论：</strong> 依然是 $O(n^3)$。没用。</p>
+<h4 id="2-Strassen-的魔法-Slide-50"><a href="#2-Strassen-的魔法-Slide-50" class="headerlink" title="2. Strassen 的魔法 (Slide 50)"></a>2. Strassen 的魔法 (Slide 50)</h4><p>Volker Strassen 在 1969 年发现了一个惊人的事实：你不需要 8 次乘法，<strong>7 次就够了</strong>！</p>
+<p>他在 Slide 50 列出了一堆看起来像天书一样的公式（$M_1$ 到 $M_7$）。你<strong>不需要背诵这些公式</strong>（就像你不需要背诵圆周率后100位）。<br>你只需要理解他的核心思想：<br>他构造了 7 个复杂的中间矩阵（$M$），每个 $M$ 都是通过一次子矩阵乘法得到的。<br>然后，通过在这个 7 个 $M$ 之间做加减法，神奇地还原出了结果矩阵 $C$ 的四个部分。</p>
+<p><strong>代价与收益：</strong></p>
+<ul>
+<li><strong>代价：</strong> 加法和减法的次数变多了（Slide 50 说用了 18 次加减法）。但这影响的只是 $O(n^2)$ 前面的常数。</li>
+<li><strong>收益：</strong> 乘法次数从 8 降到了 7。这改变了递归树的<strong>分支数量</strong>，直接改变了复杂度指数。</li>
+</ul>
+<h4 id="3-最终分析"><a href="#3-最终分析" class="headerlink" title="3. 最终分析"></a>3. 最终分析</h4><p>递归式：<br>$$T(n) &#x3D; 7T(n&#x2F;2) + O(n^2)$$</p>
+<p>主定理比较：</p>
+<ul>
+<li>叶子：$n^{\log_2 7} \approx n^{2.808}$</li>
+<li>根部：$n^2$<br>显然 $2.808 &gt; 2$，叶子占主导。<br>复杂度 &#x3D; <strong>$O(n^{2.808})$</strong>。</li>
+</ul>
+<p>这就是为什么 Slide 51 说这是一个里程碑。虽然 $2.8$ 和 $3$ 看起来差的不多，但在数学上，它打破了 $O(n^3)$ 是矩阵乘法下界的迷信。后续的算法（如 Coppersmith-Winograd）只是在 Strassen 的思路上继续把指数往下压。</p>
+<hr>
+<p><strong>FINAL STOP &amp; CHECK</strong></p>
+<p>至此，我们已经讲完了整份课件。</p>
+<p>总结一下这一章的“代数分治”：</p>
+<ol>
+<li><strong>直接分治往往没有用：</strong> 如果你只是把 $n^2$ 的问题拆成 4 个 $n&#x2F;2$ 的问题，或者把 $n^3$ 拆成 8 个，复杂度是不会变的。</li>
+<li><strong>核心在于减少子问题数量 ($a$)：</strong> Karatsuba 把 4 变成 3，Strassen 把 8 变成 7。</li>
+<li><strong>手段是“加法换乘法”：</strong> 利用代数恒等式，增加廉价的加减法操作，来节省昂贵的递归乘法操作。</li>
+</ol>
+<p>对于这最后一部分，或者整份课件的任何内容，你还有什么疑问吗？</p>
 
 
   <div class="tag-list">
@@ -465,7 +606,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E9%80%92%E6%8E%A8%E5%BC%8F"><span class="toc-text">归并递推式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E4%B8%8E%E4%B8%A5%E8%B0%A8%E6%80%A7%E8%AF%81%E6%98%8E"><span class="toc-text">数学推导与严谨性证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F%EF%BC%9A%E4%B8%BB%E5%AE%9A%E7%90%86"><span class="toc-text">万能公式：主定理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%97%AE%E9%A2%98"><span class="toc-text">选择问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E5%88%86%E4%B8%8E%E4%B8%A2%E5%BC%83"><span class="toc-text">切分与丢弃</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E4%BD%8D%E6%95%B0%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0"><span class="toc-text">中位数的中位数</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E9%80%92%E6%8E%A8%E5%BC%8F"><span class="toc-text">归并递推式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E4%B8%8E%E4%B8%A5%E8%B0%A8%E6%80%A7%E8%AF%81%E6%98%8E"><span class="toc-text">数学推导与严谨性证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F%EF%BC%9A%E4%B8%BB%E5%AE%9A%E7%90%86"><span class="toc-text">万能公式：主定理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%97%AE%E9%A2%98"><span class="toc-text">选择问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E5%88%86%E4%B8%8E%E4%B8%A2%E5%BC%83"><span class="toc-text">切分与丢弃</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E4%BD%8D%E6%95%B0%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0"><span class="toc-text">中位数的中位数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E8%BF%91%E7%82%B9%E5%AF%B9%E9%97%AE%E9%A2%98"><span class="toc-text">最近点对问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E6%95%B0%E9%82%BB%E5%B1%85%E5%8E%9F%E5%88%99"><span class="toc-text">常数邻居原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E9%80%9F%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97"><span class="toc-text">加速代数运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E4%B9%98%E6%B3%95-Karatsuba%E7%AE%97%E6%B3%95"><span class="toc-text">整数乘法 &#x2F; Karatsuba算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95-Strassen%E7%AE%97%E6%B3%95"><span class="toc-text">矩阵乘法 &#x2F; Strassen算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Strassen-%E7%9A%84%E9%AD%94%E6%B3%95-Slide-50"><span class="toc-text">2. Strassen 的魔法 (Slide 50)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%9C%80%E7%BB%88%E5%88%86%E6%9E%90"><span class="toc-text">3. 最终分析</span></a></li></ol></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -888,7 +1029,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1769191303517" defer></script>
+<script src="/js/main.js?v=1769331452841" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
