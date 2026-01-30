@@ -23,13 +23,13 @@
     <meta name="description" content="分治法分治法的核心思想正如同他的名字一样：分而治之。   想象一下你想要整理一副散落满地的扑克牌，直接面对52张乱序的牌可能会让人感到无从下手。但是如果你只需要整理其中的一张牌，那么这一张牌自己就是有序的，在这之上我们就可以将整理一张牌的问题扩大规模到两张牌，随后52张。这样每一步任务的难度都非常简单。 分治法的核心策略就是：不断地将大问题切分成原本问题的一半，直到问题变得极小（我们叫它Base">
 <meta property="og:type" content="website">
 <meta property="og:title" content="分治法的核心与归并排序">
-<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3352/cpt1/">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3352/divide'n'conquer/">
 <meta property="og:site_name" content="Naucha">
 <meta property="og:description" content="分治法分治法的核心思想正如同他的名字一样：分而治之。   想象一下你想要整理一副散落满地的扑克牌，直接面对52张乱序的牌可能会让人感到无从下手。但是如果你只需要整理其中的一张牌，那么这一张牌自己就是有序的，在这之上我们就可以将整理一张牌的问题扩大规模到两张牌，随后52张。这样每一步任务的难度都非常简单。 分治法的核心策略就是：不断地将大问题切分成原本问题的一半，直到问题变得极小（我们叫它Base">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-01-21T08:11:00.000Z">
-<meta property="article:modified_time" content="2026-01-25T12:40:54.609Z">
+<meta property="article:modified_time" content="2026-01-29T08:53:27.133Z">
 <meta property="article:author" content="Naucha">
 <meta property="article:tag" content="分治法">
 <meta property="article:tag" content="归并排序">
@@ -43,7 +43,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1769532067511">
+  <link rel="stylesheet" href="/css/main.css?v=1769759750416">
 
 
   
@@ -52,7 +52,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3352/cpt1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"分治法的核心与归并排序","description":"分治法分治法的核心思想正如同他的名字一样：分而治之。  \n想象一下你想要整理一副散落满地的扑克牌，直接面对52张乱序的牌可能会让人感到无从下手。但是如果你只需要整理其中的一张牌，那么这一张牌自己就是有序的，在这之上我们就可以将整理一张牌的问题扩大规模到两张牌，随后52张。这样每一步任务的难度都非常简单。\n分治法的核心策略就是：不断地将大问题切分成原本问题的一半，直到问题变得极小（我们叫它Ba...","url":"https://naughtychas.github.io/notes/COMP3352/cpt1/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3352/divide'n'conquer/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"分治法的核心与归并排序","description":"分治法分治法的核心思想正如同他的名字一样：分而治之。  \n想象一下你想要整理一副散落满地的扑克牌，直接面对52张乱序的牌可能会让人感到无从下手。但是如果你只需要整理其中的一张牌，那么这一张牌自己就是有序的，在这之上我们就可以将整理一张牌的问题扩大规模到两张牌，随后52张。这样每一步任务的难度都非常简单。\n分治法的核心策略就是：不断地将大问题切分成原本问题的一半，直到问题变得极小（我们叫它Ba...","url":"https://naughtychas.github.io/notes/COMP3352/divide'n'conquer/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -159,11 +159,36 @@
   </div>
 
       
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="快速傅里叶变换">
+    
+  
+  <a class="link" href="/notebooks/COMP3352/tags/%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        快速傅里叶变换
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
     </div>
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3352/cpt1/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3352/begin/"><span class="title">COMP3352 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3352/FFT/"><span class="title">快速傅里叶变换</span></a><a class="item title" href="/notes/COMP3352/divide'n'conquer/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3352/begin/"><span class="title">COMP3352 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -183,7 +208,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3352/">COMP3352</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-25T12:40:54.609Z">2026-01-25</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-21T08:11:00.000Z">2026-01-21</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-29T08:53:27.133Z">2026-01-29</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-21T08:11:00.000Z">2026-01-21</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -1029,7 +1054,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1769532067513" defer></script>
+<script src="/js/main.js?v=1769759750419" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
