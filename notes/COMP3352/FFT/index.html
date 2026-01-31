@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-01-28T10:32:00.000Z">
-<meta property="article:modified_time" content="2026-01-30T06:41:56.220Z">
+<meta property="article:modified_time" content="2026-01-31T08:27:29.658Z">
 <meta property="article:author" content="Naucha">
 <meta property="article:tag" content="分治法">
 <meta property="article:tag" content="快速傅里叶变换">
@@ -43,7 +43,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1769759750414">
+  <link rel="stylesheet" href="/css/main.css?v=1769848054127">
 
 
   
@@ -208,7 +208,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3352/">COMP3352</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-30T06:41:56.220Z">2026-01-30</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-28T10:32:00.000Z">2026-01-28</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-31T08:27:29.658Z">2026-01-31</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-28T10:32:00.000Z">2026-01-28</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -249,7 +249,7 @@
 <hr>
 <p>你有没有想过万一我指定了$n$个点值，但是结果对应了两个不同的多项式怎么办？或者找不到任意多项式该咋办？你如何证明点值表示法一定能够使用点值来确定唯一的一个多项式？</p>
 <p>想象我们要找多项式的系数 $a_0, a_1, ..., a_{n-1}$， 如果我们知道$n$个点$(x_0, y_0), ..., (x_{n-1}, y_{n-1})$，我们可以列出$n$个方程：</p>
-<p>$$a_0 + a_1x_0 + \dots + a_{n-1}x_0^{n-1} &#x3D; y_0$<br>$$...$$<br>$$a_0 + a_1x_{n-1} + \dots + a_{n-1}x_{n-1}^{n-1} &#x3D; y_{n-1}$$</p>
+<p>$$a_0 + a_1x_0 + \dots + a_{n-1}x_0^{n-1} &#x3D; y_0$$ $$...$$ $$a_0 + a_1x_{n-1} + \dots + a_{n-1}x_{n-1}^{n-1} &#x3D; y_{n-1}$$</p>
 <p>把这个方程组写成矩阵形式，中间那个充满了 $x$ 的矩阵就是 <strong>Vandermonde 矩阵</strong>。</p>
 <p>只要 $x_0, \dots, x_{n-1}$ 这些点互不相同，Vandermonde 矩阵的行列式就不为 0，也就是矩阵可逆。<br>这意味着对于任意一组给定的$y$值，方程组有且仅有唯一解。这从数学上保证了点值表示法是稳健的。</p>
 <hr>
@@ -270,7 +270,7 @@
 <p>FFT要做的是找到一种极快的方法，来完成这个传送过程。我们不能随便选点，相反，我们需要有策略地选取点值。</p>
 <hr>
 <h2 id="单位根"><a href="#单位根" class="headerlink" title="单位根"></a>单位根</h2><p>这一部分我们主要解决选点问题。</p>
-<p>FFT的巧妙之处就在于选择单位根。单位根的模长始终是1，所以无论指数多大，数值大小都不会爆炸。例如，$\omega_{n}^{j} &#x3D; e^{2\piij&#x2F;n}$，不管$j$多大，结构总是单位圆上的一个点，大小始终是1。这就避免了数值溢出和精度问题。  </p>
+<p>FFT的巧妙之处就在于选择单位根。单位根的模长始终是1，所以无论指数多大，数值大小都不会爆炸。例如，$\omega_{n}^{j} &#x3D; e^{2\pi k&#x2F;n}$，不管$j$多大，结构总是单位圆上的一个点，大小始终是1。这就避免了数值溢出和精度问题。  </p>
 <p>同时，单位根的对称性能够让我们把计算拆分成一半一半，从而把复杂度降到$O(n \log{n})$</p>
 <p>我们想象复数平面上的单位圆。在这个圆上的任何一个点，无论你怎么做乘法，结果仍然会在这个圆上。<br>我们需要在这个圆上均匀的切$n$刀。这些切点就叫$n$次单位根。也就是满足$\omega^{n} &#x3D; 1$的复数$\omega$。就像一个时钟。如果$n &#x3D; 4$，那么这四个点就分别在3, 12, 9, 6点钟位置。   </p>
 <p>我们定位 <strong>主单位根 (Principal Root of Unity)</strong> $\omega_{n}$ 为逆时针方向的第一个刻度：</p>
@@ -296,7 +296,75 @@
 <p>$$(\omega_n^k)^2 &#x3D; \omega_{n&#x2F;2}^k$$</p>
 <p>这意味着我们在顶层有 $n$ 个输入点。进入下一子问题层时，我们只需要处理 $n&#x2F;2$ 个点。</p>
 <hr>
-<h2 id="FFT的前向算法"><a href="#FFT的前向算法" class="headerlink" title="FFT的前向算法"></a>FFT的前向算法</h2>
+<h2 id="FFT的前向算法"><a href="#FFT的前向算法" class="headerlink" title="FFT的前向算法"></a>FFT的前向算法</h2><p>有了这个性质，我们就可以真正开始构建算法了。</p>
+<hr>
+<p>首先，我们要分。</p>
+<p>我们要计算$A(x)$在$n$个单位根上的值。我们不能像归并排序那样把数组左边和右边切开，实际上，我们需要按照下标的奇偶性来切分：</p>
+<p>假设原始的多项式是：</p>
+<p>$$A(x) &#x3D; a_{0} + a_{1}x + a_{2}x^2 + ... + a_{n}x^n$$</p>
+<p>我们可以把系数分成两组，分别是：</p>
+<p>$a_0 + a_{2}x^2 + a_{4}x^4 + ...$ 是偶数下标<br>$a_{1}x + a_{3}x^3 + a_{5}x^5 + ...$ 是奇数下标</p>
+<p>我们希望把这两部分都写成某个多项式在$x^2$上的形式，于是这里我们定义：  </p>
+<p>$$A_{\text{even}}(z) &#x3D; a_0 + a_{2}z + a_{4}z^2 + ...$$<br>$$A_{\text{odd}}(z) &#x3D; a_1 + a_{3}z + a_{5}z^2 + ...$$</p>
+<p>观察上方的规律，我们可以得到偶数部分可以用 $A_{\text{even}}(x^2)$ 表示，同理，奇数部分可以用 $x \cdot A_{\text{odd}}(x^2)$ 表示。</p>
+<p>因此，合并原来的多项式就是：</p>
+<p>$$A(x) &#x3D; A_{\text{even}}(x^2) + x \cdot A_{\text{odd}}(x^2)$$</p>
+<hr>
+<p>接下来我们递归调用FFT，分别计算：</p>
+<ul>
+<li>$A_{\text{even}}(x)$ 在 $n&#x2F;2$个点 ${\omega_{n&#x2F;2}^0, ..., \omega_{n&#x2F;2}^{n&#x2F;2-1}}$上的值</li>
+<li>$A_{\text{odd}}(x)$ 在 $n&#x2F;2$个点 ${\omega_{n&#x2F;2}^0, ..., \omega_{n&#x2F;2}^{n&#x2F;2-1}}$上的值</li>
+</ul>
+<p>怎么来的？由于我们已经知道：</p>
+<p>$$A(x) &#x3D; A_{\text{even}}(x^2) + x \cdot A_{\text{odd}}(x^2)$$</p>
+<p>所以如果我们要计算 $A(\omega_{n}^k)$，就变成了：</p>
+<p>$$A(\omega_{n}^k) &#x3D; A_{\text{even}}((\omega_{n}^k)^2) + \omega_{n}^k \cdot A_{odd}((\omega_{n}^k)^2)$$</p>
+<p>由于：</p>
+<p>$$(\omega_{n}^k)^2 &#x3D; \omega_{n}^{2k} &#x3D; \omega_{n&#x2F;2}^k$$</p>
+<p>这说明当我们在$n$个单位根上计算$A(x)$时，实际上只需要在$n&#x2F;2$个单位根上计算 $A_{even}(x)$ 和 $A_{odd}(x)$即可。</p>
+<hr>
+<p>分治完毕后我们要合并。我们拿到了两个子问题的结果数组，就把他们叫 $y_{\text{even}}$ 和 $y_{\text{odd}}$ 吧。我们要把它们拼回 $n$ 个结果。</p>
+<p>结果公式可以从上面的公式推导出来，就是：</p>
+<p>$$A(\omega_{n}^k) &#x3D; A_{\text{even}}(\omega_{n}^{2k}) + \omega_{n}^k \cdot A_{\text{odd}}(\omega_{n}^{2k})$$</p>
+<p>利用性质 $\omega_{n}^{2k} &#x3D; \omega_{n&#x2F;2}^k$，我们可以知道对于从0到 $n&#x2F;2 - 1$的$k$来说：</p>
+<p>前半部分的结果就是：</p>
+<p>$$y_k &#x3D; y_{\text{even}}[k] + \omega_{n}^k \cdot y_{\text{odd}}[k]$$</p>
+<p>而后半部分的结果就是：</p>
+<p>$$y_{k + n&#x2F;2} &#x3D; y_{\text{even}}[k] - \omega_{n}^k \cdot y_{\text{odd}}[k]$$</p>
+<p>这就是大名鼎鼎的蝴蝶操作。</p>
+<hr>
+<h3 id="蝴蝶操作"><a href="#蝴蝶操作" class="headerlink" title="蝴蝶操作"></a>蝴蝶操作</h3><p>那么你很迷惑这些公式是什么意思，前半部分和后半部分到底是什么东西。<br>蝴蝶操作的前后半公式往往难以理解。首先我们在前面推导出了最基本的拆分公式：</p>
+<p>$$P(x) &#x3D; P_{\text{even}}(x^2) + x \cdot P_{\text{odd}}(x^2)$$</p>
+<p>这个公式告诉我们，如果你想算出多项式$P$在点$x$的值，你只需要算出两个小多项式$P_{\text{even}}$和$P_{\text{odd}}$在$x^2$点的值，然后代入公式计算即可。</p>
+<p>而在FFT中我们要计算的是$P$在$n$个单位根上的值： $\omega_{n}^0, \omega_{n}^1, ..., \omega_{n}^{n - 1}$</p>
+<p>我们把这些$n$个点分成两组。  </p>
+<p>前半组是 $k &#x3D; 0$ 到 $n&#x2F;2 - 1$。如果$n &#x3D; 8$，那么$k &#x3D; 0, 1, 2, 3$<br>那么后半组就是 $k &#x3D; n&#x2F;2$ 到 $n - 1$。在上面的例子中就是$k &#x3D; 4, 5, 6, 7$</p>
+<hr>
+<p>先来看前半组的推导。如果我们要计算第 $k$个点的值，我们就把$x &#x3D; \omega_{n}^k$带入核心公式：</p>
+<p>$$P(\omega_n^k) &#x3D; P_{even}((\omega_n^k)^2) + \omega_n^k \cdot P_{odd}((\omega_n^k)^2)$$</p>
+<p>利用折半引理 $\omega_{n}^{2k} &#x3D; \omega_{n&#x2F;2}^k$：</p>
+<p>$$P(\omega_n^k) &#x3D; P_{even}(\omega_{n&#x2F;2}^k) + \omega_n^k \cdot P_{odd}(\omega_{n&#x2F;2}^k)$$</p>
+<p>其中，$P_{\text{even}}(\omega_{n&#x2F;2}^k)$就是我们递归调用<code>FFT(even)</code>返回的结果数组中的第$k$个元素，我们记作$y_{even}[k]$。同理，$P_{\text{odd}}(\omega_{n&#x2F;2}^k)$就是调用<code>FFT(odd)</code>中的第$k$个元素，记作$y_{\text{odd}}[k]$。</p>
+<p>前半部分的公式就变成了：</p>
+<p>$$y[k] &#x3D; y_{\text{even}}[k] + \omega_{n}^k \cdot y_{\text{odd}}[k]$$</p>
+<hr>
+<p>前半部分还算比较简单，后半部分的推导就比较令人迷惑了。  </p>
+<p>后半部分的点，可以写成$k&#39; &#x3D; k + n&#x2F;2$，其中$k$还是从0到$n&#x2F;2 - 1$。比如$n &#x3D; 8$，第四个点就是$0 + 4$，第五个点就是$1 + 4$。</p>
+<p>因此，在整理索引后，我们把 $x &#x3D; \omega_{n}^{k + n&#x2F;2}$ 带入核心公式：</p>
+<p>$$P(\omega_n^{k+n&#x2F;2}) &#x3D; P_{even}((\omega_n^{k+n&#x2F;2})^2) + \omega_n^{k+n&#x2F;2} \cdot P_{odd}((\omega_n^{k+n&#x2F;2})^2)$$</p>
+<p>首先来看看平方部分。我们需要计算$(\omega_{n}^{k + n&#x2F;2})^2$：</p>
+<p>$$(\omega_{n}^{k+n&#x2F;2})^2 &#x3D; \omega_{n}^{2k+n} &#x3D; \omega_n^{2k} \cdot \omega_{n}^n$$</p>
+<p>由于$\omega_n^n &#x3D; 1$，转了一圈回到原点，因此：</p>
+<p>$$&#x3D; \omega_n^{2k} \cdot 1 &#x3D; \omega_{n&#x2F;2}^{k}$$</p>
+<p>你发现后半部分输入值的平方与前半部分输入值的平方是一模一样的。这意味着$P_{even}$和$P_{odd}$不需要重新计算，我们只需要复用前半部分拿到的$y_{even}[k]$和$y_{odd}[k]$就可以了。</p>
+<p>然后来看看编号的系数部分 $x &#x3D; \omega_{n}^{k + n&#x2F;2}$：</p>
+<p>$$\omega_{n}^{k + n&#x2F;2} &#x3D; \omega_{n}^k \cdot \omega_{n}^{n&#x2F;2}$$</p>
+<p>由于$\omega_n$是把圆切成$n$份，$\omega_n^{n&#x2F;2}$就是切了$n&#x2F;2$份，也就是转了180度。<br>在复平面上，转180°就是等于乘以-1，因此：</p>
+<p>$$\omega_n^{k + n&#x2F;2} &#x3D; -\omega_n^k$$</p>
+<p>最后，我们把上面两点结合起来，带回原式：</p>
+<p>$$P(\omega_n^{k+n&#x2F;2}) &#x3D; P_{even}(\dots) + (-\omega_n^k) \cdot P_{odd}(\dots)$$<br>$$y[k + n&#x2F;2] &#x3D; y_{even}[k] - \omega_n^k \cdot y_{odd}[k]$$</p>
+<p>OK了。这里的蝴蝶操作就是利用了复数的对称性来化简计算。前半个圆上面的点$k$结果是$A + \omega^k B$，后半个是$A - \omega^k B$。这里的 $A(y_{even}[k])$ 和 $B(y_{odd}[k])$ 对于这两个点是完全共用的，区别就在于中间的加号变成了减号。  </p>
+
 
   <div class="tag-list">
     
@@ -342,7 +410,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-text">多项式乘法的表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%BD%8D%E6%A0%B9"><span class="toc-text">单位根</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%98%E5%8D%8A%E5%BC%95%E7%90%86"><span class="toc-text">折半引理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FFT%E7%9A%84%E5%89%8D%E5%90%91%E7%AE%97%E6%B3%95"><span class="toc-text">FFT的前向算法</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-text">多项式乘法的表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%BD%8D%E6%A0%B9"><span class="toc-text">单位根</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%98%E5%8D%8A%E5%BC%95%E7%90%86"><span class="toc-text">折半引理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FFT%E7%9A%84%E5%89%8D%E5%90%91%E7%AE%97%E6%B3%95"><span class="toc-text">FFT的前向算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%9D%B4%E8%9D%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">蝴蝶操作</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -765,7 +833,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1769759750415" defer></script>
+<script src="/js/main.js?v=1769848054128" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
