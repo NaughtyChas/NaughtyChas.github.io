@@ -17,19 +17,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>机器学习介绍 - Naucha</title>
+  <title>Cpt1: 机器学习介绍 - Naucha</title>
 
   
     <meta name="description" content="实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分： https:&#x2F;&#x2F;naughtychas.github.io&#x2F;notes&#x2F;COMP3354&#x2F;chapter1&#x2F;Chapter&nbsp;1&nbsp;&amp;&nbsp;10:&nbsp;数据学习介绍   AI, ML 和 DL这三个词是我们在本节课中会不停使用到的词。 Artificial Intelligence">
 <meta property="og:type" content="website">
-<meta property="og:title" content="机器学习介绍">
+<meta property="og:title" content="Cpt1: 机器学习介绍">
 <meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt1/">
 <meta property="og:site_name" content="Naucha">
 <meta property="og:description" content="实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分： https:&#x2F;&#x2F;naughtychas.github.io&#x2F;notes&#x2F;COMP3354&#x2F;chapter1&#x2F;Chapter&nbsp;1&nbsp;&amp;&nbsp;10:&nbsp;数据学习介绍   AI, ML 和 DL这三个词是我们在本节课中会不停使用到的词。 Artificial Intelligence">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-01-27T08:16:00.000Z">
-<meta property="article:modified_time" content="2026-01-27T16:40:49.522Z">
+<meta property="article:modified_time" content="2026-02-11T14:42:24.808Z">
 <meta property="article:author" content="Naucha">
 <meta property="article:tag" content="分治法">
 <meta property="article:tag" content="归并排序">
@@ -43,7 +43,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1770820758445">
+  <link rel="stylesheet" href="/css/main.css?v=1770821191819">
 
 
   
@@ -52,7 +52,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"机器学习介绍","description":"实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分：\nhttps://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&nbsp;1&nbsp;&&nbsp;10:&nbsp;数据学习介绍\n\n\nAI, ML 和 DL这三个词是我们在本节课中会不停使用到的词。\nArtificial Intelligen...","url":"https://naughtychas.github.io/notes/COMP3314/cpt1/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt1: 机器学习介绍","description":"实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分：\nhttps://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&nbsp;1&nbsp;&&nbsp;10:&nbsp;数据学习介绍\n\n\nAI, ML 和 DL这三个词是我们在本节课中会不停使用到的词。\nArtificial Intelligen...","url":"https://naughtychas.github.io/notes/COMP3314/cpt1/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -163,7 +163,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">Cpt2: 感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -183,12 +183,12 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-27T16:40:49.522Z">2026-01-28</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-27T08:16:00.000Z">2026-01-27</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-02-11T14:42:24.808Z">2026-02-11</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-27T08:16:00.000Z">2026-01-27</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>机器学习介绍</span></h1>
+        <h1 class="text title"><span>Cpt1: 机器学习介绍</span></h1>
         
       </div>
     </div>
@@ -788,7 +788,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1770820758447" defer></script>
+<script src="/js/main.js?v=1770821191820" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
