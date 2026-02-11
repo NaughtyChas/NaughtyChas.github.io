@@ -17,17 +17,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>Naucha</title>
+  <title>感知机与自适应线性神经元 - Naucha</title>
 
   
-    <meta name="description" content="testing">
+    <meta name="description" content="大脑由神经元组成。神经元的工作方式很像一个投票系统。树突用来接收来自其他神经元的信号，细胞核处理信号。如果信号足够强，轴突就负责将脉冲发送给下一个神经元。 这样的过程可以很容易被数学来建模。1943年有数学家尝试用数学来描述这个过程，而他们做的就是把整个过程简化为一个逻辑门：  信号传入 → 信号累加 → 如果超出阈值则输出一，否则输出0  这就是MCP Neuron：一个二元阈值神经元模型。该神">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Naucha">
-<meta property="og:url" content="https://naughtychas.github.io/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+<meta property="og:title" content="感知机与自适应线性神经元">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt2/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="testing">
+<meta property="og:description" content="大脑由神经元组成。神经元的工作方式很像一个投票系统。树突用来接收来自其他神经元的信号，细胞核处理信号。如果信号足够强，轴突就负责将脉冲发送给下一个神经元。 这样的过程可以很容易被数学来建模。1943年有数学家尝试用数学来描述这个过程，而他们做的就是把整个过程简化为一个逻辑门：  信号传入 → 信号累加 → 如果超出阈值则输出一，否则输出0  这就是MCP Neuron：一个二元阈值神经元模型。该神">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-02-10T05:18:00.000Z">
+<meta property="article:modified_time" content="2026-02-11T14:39:11.011Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -39,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1770820758649">
+  <link rel="stylesheet" href="/css/main.css?v=1770820758441">
 
 
   
@@ -48,12 +50,12 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Naucha","description":"testing","url":"https://naughtychas.github.io"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt2/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"感知机与自适应线性神经元","description":"大脑由神经元组成。神经元的工作方式很像一个投票系统。树突用来接收来自其他神经元的信号，细胞核处理信号。如果信号足够强，轴突就负责将脉冲发送给下一个神经元。\n这样的过程可以很容易被数学来建模。1943年有数学家尝试用数学来描述这个过程，而他们做的就是把整个过程简化为一个逻辑门：\n\n信号传入 → 信号累加 → 如果超出阈值则输出一，否则输出0\n\n这就是MCP Neuron：一个二元阈值神经元模型...","url":"https://naughtychas.github.io/notes/COMP3314/cpt2/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
 
-<div class="l_body index" id="start" layout="notes" type="undefined" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
@@ -135,10 +137,10 @@
   
   
   
-  <div class="tag-subtree leaf-tag expanded" data-tag="归并排序">
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
     
   
-  <a class="link active" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
     <span class="toc-text">
       
         
@@ -164,56 +166,301 @@
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
 
-<div class="post-list post">
-  
-    <a
-      class="post-card post"
-      href="/notes/COMP3314/cpt1/?tag=归并排序"
-    >
-      
-<article class="md-text">
-  
-  <h2 class="post-title">机器学习介绍</h2>
-  <div class="excerpt">
-    <p>
-      
-        实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分：
-https://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&amp;nbsp;1&amp;nbsp;&amp;&amp;nbsp;...
-      
-    </p>
-  </div>
-  <div class="meta cap">
-    
-    <span class="cap" id="post-meta">
-      <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
-      <time datetime="2026-01-27T16:40:49.522Z">2026-01-28</time>
-    </span>
-    
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">分治法</span>
-        </span>
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">归并排序</span>
-        </span>
-      
-    
-  </div>
-</article>
 
-    </a>
-  
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
+
 </div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-02-11T14:39:11.011Z">2026-02-11</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-02-10T05:18:00.000Z">2026-02-10</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>感知机与自适应线性神经元</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>大脑由神经元组成。神经元的工作方式很像一个投票系统。树突用来接收来自其他神经元的信号，细胞核处理信号。如果信号足够强，轴突就负责将脉冲发送给下一个神经元。</p>
+<p>这样的过程可以很容易被数学来建模。1943年有数学家尝试用数学来描述这个过程，而他们做的就是把整个过程简化为一个逻辑门：</p>
+<blockquote>
+<p>信号传入 → 信号累加 → 如果超出阈值则输出一，否则输出0</p>
+</blockquote>
+<p>这就是MCP Neuron：一个二元阈值神经元模型。该神经元要么放电，要么不放电。这取决于输入的总和是否达到阈值。</p>
+<hr>
+<h2 id="感知机"><a href="#感知机" class="headerlink" title="感知机"></a>感知机</h2><p>而在1958年，Frank Rosenblatt提出了感知机的概念。这就是我们要来学习的第一个算法。  </p>
+<p>假如你去大厂面试，把面试官看成一个感知机，那么一个感知机包含：</p>
+<ul>
+<li><p><strong>输入 (Input | $x$)</strong>：比如你的各项条件，例如学历，经验和技能。</p>
+</li>
+<li><p><strong>权重 (Weights | $w$)</strong>：代表面试官中心中的权重。也许这个面试官更看重经验而不看重学历，那么从“学历”来的数据权重较低，反之经验更高。</p>
+</li>
+<li><p><strong>净输入 (Net Input | $z$)</strong>：就是所有的输入值加权求和：</p>
+</li>
+</ul>
+<p>$$z &#x3D; w_1x_1 + w_2x_2 + ... + w_mx_m$$</p>
+<p>你会发现这本质上就是点积。也就是：$z &#x3D; \mathbf{w}^{\mathbf{T}}\mathbf{x}$</p>
+<hr>
+<h3 id="决策函数与偏置"><a href="#决策函数与偏置" class="headerlink" title="决策函数与偏置"></a>决策函数与偏置</h3><p>算出总分$z$后，面试官要根据一个规则来决定你会被录用，还是会被淘汰。也就是代表感知机输出0还是1。</p>
+<p>在感知机里，这个规则叫做 <mark class="tag-plugin colorful mark" color="blue">单位阶跃函数 (Unit Step Function)</mark>：</p>
+<p>在总分为$z &#x3D; w_1x_1 + w_2x_2 + ... + w_mx_m$的条件下：</p>
+<p>如果$z \geq \theta$，则输出1，相反：如果$z &lt; \theta$，则输出-1。  </p>
+<hr>
+<p>而数学家不喜欢公式右边还要拖着一个的右边还要带着一个阈值$\theta$。为了简洁，我们可以将$\theta$移动到等式左边，并将其重新命名为 { % mark 偏置 (Bias Unit | $w_0$) color:blue %}：</p>
+<p>我们原始的总分公式： </p>
+<p>$$z &#x3D; w_1x_1 + w_2x_2 + ... + w_mx_m$$</p>
+<p>的决策函数为：</p>
+<p>$\phi(z) &#x3D;$</p>
+<p>$$<br>\begin{cases}<br>1  &amp; \text{if } z \geq \theta \\<br>-1 &amp; \text{otherwise}<br>\end{cases}<br>$$</p>
+<p>但为了简洁，我们可以将阈值$\theta$调到等式的左边，定义：</p>
+<p>$$z &#x3D; w_0x_0 + w_1x_1 + ... + w_mx_m &#x3D; \mathbf{w}^T\mathbf{x}$$</p>
+<p>其中：</p>
+<ul>
+<li>$w_0 &#x3D; -\theta$</li>
+<li>$x_0 &#x3D; 1$</li>
+</ul>
+<p>决策函数为：</p>
+<p>$\phi(z) &#x3D;$</p>
+<p>$$<br>\begin{cases}<br>1  &amp; \text{if } z \geq 0 \\<br>-1 &amp; \text{otherwise}<br>\end{cases}<br>$$</p>
+<p>我们叫这个$w_0$为偏置值。</p>
+<hr>
+<p>引入偏置值还有哪些影响？引入偏置后我们的判断标准统一变成了“是否大于零”。</p>
+<p>原来的公式仅仅在超出阈值的时候才算通过激活，也就是$w_1x_1 &gt; \theta$。而引入偏置后的新公式：</p>
+<p>$$w_1x_1 - \theta &gt; 0 \rightarrow w_1x_1 + w_0 &gt; 0$$</p>
+<p>在计算上更加方便，不需要每次记下不同的偏置值来判断结果。</p>
+<hr>
+<h3 id="感知机学习规则-（更新公式）"><a href="#感知机学习规则-（更新公式）" class="headerlink" title="感知机学习规则 （更新公式）"></a>感知机学习规则 （更新公式）</h3><p>感知机的学习过程就像你学习一样，做题做错了老师会给你批出来，随后你就知道这里出错了，下次改正。  </p>
+<p>感知机在开始学习之前，会先经历 <mark class="tag-plugin colorful mark" color="blue">初始化 (Initialize)</mark> 流程。这一步我们将所有权重 $\mathbf{w}$ 设置为0或者很小的随机数。</p>
+<p>最后进入循环流程，遍历每一个训练样本：</p>
+<ul>
+<li><mark class="tag-plugin colorful mark" color="blue">预测</mark>：计算当前权重下的预测值。预测得出布尔类型True或者False，对应0和1。</li>
+<li><mark class="tag-plugin colorful mark" color="blue">对比</mark>：我们将上一步得出的预测值$\hat{y}$和真实标签$y$进行对比。</li>
+<li><mark class="tag-plugin colorful mark" color="blue">更新</mark>：如果对不上，我们就根据 **误差** 来调整权重 $\mathbf{w}$。</li>
+</ul>
+<hr>
+<p>那么聪明的你就会问了，我们是怎么更新权重的呢？</p>
+<p>我们使用这个公式来更新权重：</p>
+<p>$$w_j :&#x3D; w_j + \Delta w_j$$</p>
+<p>$$\Delta w_j &#x3D; \eta \cdot (y^{(i)} - \hat{y}^{(i)}) \cdot x_j^{(i)}$$</p>
+<p>其中：</p>
+<ul>
+<li><p>$w_j$：第 $j$个特征的权重</p>
+</li>
+<li><p>$y^{(i)}$：真实标签</p>
+</li>
+<li><p>$\hat{y}^{(i)}$：模型预测</p>
+</li>
+<li><p>$x_{j}^{(i)}$：第$i$个样本的第$j$个特征值。</p>
+</li>
+<li><p>$\eta$: <mark class="tag-plugin colorful mark" color="blue">学习率 (Learning Rate)</mark></p>
+<p>  学习率是一个人为设定的常数，通常为0.01或者0.1。这控制了我们纠正的步子迈的多大。<br>  如果学习率过大容易矫枉过正，学习率太小就会学习的太慢 <blur>*吃一堑一堑一堑一堑*</blur></p>
+</li>
+<li><p>$y^{(i)} - \hat{y}^{(i)}$ <mark class="tag-plugin colorful mark" color="blue">误差 (Error)</mark></p>
+<p>  误差就是所谓真实值减去预测值。</p>
+<p>  如果模型<u>猜对</u>了：真实值 $y &#x3D; 1$，预测 $\hat{y} &#x3D; 1$，则误差为0。负数同理。<br>  因此在预测正确情况下得到 $\Delta w &#x3D; 0$。没误差就不做任何更改，权重保持不变。</p>
+<p>  如果模型猜错了。例如：</p>
+<p>  真实值 $y &#x3D; 1$，预测值 $\hat{y} &#x3D; -1$，误差就是 $\Delta w &#x3D; 1 - (-1) &#x3D; 2$</p>
+</li>
+<li><p>$x_j^{(i)}$ <mark class="tag-plugin colorful mark" color="blue">输入值 (Input)</mark></p>
+<p>  如果某个特征的 $x_j$ 值很大，那么这个值对错误判断的贡献就很大。所以说它的权重需要被惩罚得更重。</p>
+</li>
+</ul>
+<hr>
+<p>那么公式是怎么用的？为什么这个公式有效？</p>
+<p>假设我们遇到一个样本，真实标签是正类(1)，而我们的模型预测为负类(-1)。这意味着什么？意味着我们的总得分 $z &#x3D; \mathbf{w}^T\mathbf{x}$ 太低了，算出来小于0。因此对于这个样本，我们需要把 $z$推高。</p>
+<p>根据公式 $\Delta w &#x3D; \eta \cdot (2) \cdot x$，我们可以得到新的权重应该是：</p>
+<p>$$w_{new} &#x3D; w_{old} + \eta \cdot 2 \cdot x^2$$</p>
+<p>因此下次我们再算 $w_{new} \cdot x$ 时，会多出一项 $\eta \cdot 2 \cdot x^2$。由于$x^2$肯定是正数，因此总得分$z$就会增加。得分增加，则更可能跨过0的门槛，变成正确的预测值。这就是感知机知错能改的数学本质。</p>
+<hr>
+<p>感知机有一个死穴，那就是只有在数据时线性可分的时候，才能够保证收敛。  </p>
+<p>如果数据线性可分，那么你拿菜刀一刀下去数据能够完美地分开，出现AB两类，干净利落。而线性不可分就是AB两类点掺杂在一起。不管你怎么画直线，总会有分错的数据点。  </p>
+<p>如果数据线性不可分，那么感知机就永远会有预测错误的值，权重会一直改来改去，永远不会收敛，一直震荡下去。为了防止这种情况，我们通常会设置一个值 <code>max_iter</code>，代表最大迭代次数。当次数达到之后结束训练。  </p>
+<hr>
+<h2 id="Adaline-与代价函数"><a href="#Adaline-与代价函数" class="headerlink" title="Adaline 与代价函数"></a>Adaline 与代价函数</h2><h3 id="Adaline的预测输出"><a href="#Adaline的预测输出" class="headerlink" title="Adaline的预测输出"></a>Adaline的预测输出</h3><p>感知机按照布尔类型预测结果。也就是说，对于一个预测考试成绩合格与否的应用，如果一个学生得了98分，另一个学生考虑61分，模型都预测了合格。理论来讲预测的都对，但是模型预测的到底有多对？  </p>
+<p>由于两个预测都看作完美，因此模型完全不调整权重。实际上61分距离不及格仅一步之遥，感知机看不到这种危险，因为总分 $z$只是预测使用的中间数据：它把具体的数值信息丢掉了。</p>
+<hr>
+<p>因此在1960年，Widrow和Hoff提出了 <mark class="tag-plugin colorful mark" color="blue">Adaline (Adaptive Linear Neuron)</mark>，使得模型的预测更加细腻。它不再盯着最后的分类标签来学习，相反，我们盯着具体的连续数值学习。</p>
+<p>感知机使用阶跃函数来计算误差：</p>
+<div id="stepFunc"></div>
+<script src="https://unpkg.com/function-plot/dist/function-plot.js"></script>
+<script>
+functionPlot({
+  target: '#stepFunc',
+  width: 500,
+  height: 300,
+  grid: true,
+  data: [{
+    fn: 'x < 0 ? 0 : 1',
+    sampler: 'builtIn',
+    graphType: 'polyline'
+  }]
+})
+</script>
+
+<p>最后得出的误差值， $\Delta w &#x3D; y - \hat{y}_{\text{binary}}$，也就是说误差值只能是0, 2或者-2。</p>
+<p>而Adaline使用 **线性激活函数 (Linear Activation Function)**来计算误差。Adaline的输出一直是：</p>
+<p>$$\phi (z) &#x3D; z$$</p>
+<p>意思说神经元的输出就是输入的加权和本身。与其像感知机一样归类为1或者-1，Adaline不再进行二值化变换。这意味着Adaline即使答对了，也会被量化模型到底对了多少。它现在可以意识到“哎就离目标值差了0.1”，于是它依然会根据差距计算微调权重。  </p>
+<p>这就使得Adaline的学习过程比感知机更加平滑，更加稳健。</p>
+<hr>
+<h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><p>那么我们现在知道了Adaline的输出逻辑是线性的，也知道Adaline能够感知错了&#x2F;对了多少，那么Adaline究竟如何根据这些数字来调整自己的权重？</p>
+<p>震撼介绍，<mark class="tag-plugin colorful mark" color="blue">代价函数 (Cost Function, $J(w)$)</mark>。  </p>
+<p>代价函数是Adaline给机器学习界带来的最大贡献，也就是引入了 **目标函数 (Objective Function)**的概念。在监督学习中，我们往往称其为损失函数。</p>
+<details class="tag-plugin colorful folding" color="cyan"><summary><p>拓展：代价函数与损失函数</p>
+</summary><div class="body"><p>在ML里，我们往往混用代价函数和损失函数两个词语。而严格来讲它们之间亦有区别：</p> <p><strong>损失函数</strong> 是<u>衡量单个样本的预测值与真实值之间的差异</u>，针对单个样本。</p> <p>例如感知机的误差：$(y - \hat{y})$，Adaline的平方误差：$\frac{1}{2} (y - z)^2$，损失函数是针对<u>单一样本</u>的。</p> <p>而 <strong>代价函数</strong> 通常是<u>对所有训练样本的损失函数进行平均或累加</u>，用来衡量整个模型的性能。比如说：</p> <p>Adaline的代价函数就是：</p> <p>$$J(w) &#x3D; \frac{1}{2}\sum_i{(y^{(i)} - z^{(i)})^2}$$</p> <p>这个是所有样本的平方误差总和。代价函数是放眼全局的。</p> <p>不过我们在深度学习里，大家往往都直接说“损失函数”来指代整个训练目标函数。</p> </div></details>
+
+<p>与其像感知机那样错一个改一个，不如我们定义一个全局指标：</p>
+<blockquote>
+<p>“现在的这组权重 $\mathbf{w}$，在整个训练集上表现有多差？”</p>
+</blockquote>
+<p>Adaline使用 <strong>误差平方和 (Sum of Squared Errors, SSE)</strong> 来计算：</p>
+<p>$$J(\mathbf{w}) &#x3D; \frac{1}{2} \sum_{i} (y^{(i)} - \phi(z^{(i)}))^2$$</p>
+<p>其中：</p>
+<ul>
+<li><p>$y^{(i)} - \phi(z^{(i)})$ 是真实值减去预测的连续值，也叫做残差。</p>
+<p>  注意到我们在公式中对残差进行了平方计算。由于我们不关心残差的方向，仅关心大小，所以我们将所有残差变为正数。</p>
+<p>  其次，我们想要拉宽所有的残差值，这样我们就能够严厉惩罚大误差。错的越多，惩罚越重。</p>
+</li>
+<li><p>求和 $\sum$ 用来将所有样本误差加起来，算总账。</p>
+</li>
+<li><p>$\frac{1}{2}$ 纯粹是为了数学方便。由于我们要在后续对 $J$进行求导，那么平方项导出来的2就刚好能够跟这个抵消，优美数学。</p>
+</li>
+</ul>
+<hr>
+<p>如果我们把权重 $w$ 当作横坐标，代价函数 $J(w)$ 当作纵坐标画出来，那么我们可以发现这个函数看起来像一个碗：</p>
+<div id="cost"></div>
+<script src="https://unpkg.com/function-plot/dist/function-plot.js"></script>
+<script>
+functionPlot({
+  target: '#cost',
+  width: 500,
+  height: 300,
+  grid: true,
+  data: [{
+    fn: '0.5*(x-2)^2',
+    sampler: 'builtIn',
+    graphType: 'polyline'
+  }]
+})
+</script>
+
+<p>碗底代表误差最小的地方，这个位置代表我们梦寐以求的最佳权重。</p>
+<p>由于代价函数是抛物线形状，因此我们保证这个函数只有一个最低点。我们只要不断迭代，就一定能够找到最优解。</p>
+<hr>
+<h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><mark class="tag-plugin colorful mark" color="blue">梯度下降</mark>是整个深度学习训练的基石。
+
+<p>想象一下我们被蒙住双眼，放在了一座山上的随机位置。这个山就是我们刚才说到的代价函数上的某一点。</p>
+<p>而我们的目标是找到这个山谷的最低点，也就是Global Minimum，也就是能够让误差最小的参数值。  </p>
+<p>而我们并不知整个山谷地形，要找到最低点，我们只能够用脚来探。那么你在这个情况下，会怎么做？  </p>
+<p>你大概会首先感受一下脚下的坡度，看看哪个方向最陡峭。</p>
+<p>随后你朝着下坡的方向迈一步，到达一个新的位置，再次探一下脚下的坡度。  </p>
+<p>当什么时候你发现脚下是平地，那么说明我们到谷底了。这就是梯度下降的核心思路。</p>
+<hr>
+<p>在数学上，坡度可以很容易的被衡量：导数。想要找到这个山坡在某个点的坡度，就是$\nabla J(\mathbf{w})$</p>
+<p>由于我们有多个权重 $w_1, w_2...$，对于这样一个多元函数来说，梯度就是一个由所有偏导数组成的向量。</p>
+<p>我们可以得出权重更新公式为：</p>
+<p>$$\mathbf{w} :&#x3D; \mathbf{w} + \Delta \mathbf{w}$$</p>
+<p>$$\Delta \mathbf{w} &#x3D; -\eta \nabla J(\mathbf{w})$$</p>
+<p>其中的$\eta$仍然是我们的老朋友学习率，决定一步迈多远。</p>
+<p>你会发现误差部分里面存在一个符号。由于梯度指向的是函数增长最快的方向，也就是上坡方向，我们需要取反来找到下坡的方向。</p>
+<hr>
+<h3 id="Adaline-权重更新公式的推导"><a href="#Adaline-权重更新公式的推导" class="headerlink" title="Adaline 权重更新公式的推导"></a>Adaline 权重更新公式的推导</h3><p>我们希望通过最小化代价函数 $J(\mathbf{w})$ 来找到最优权重。Adaline 使用的是误差平方和（SSE）代价函数：</p>
+<p>$$J(\mathbf{w}) &#x3D; \frac{1}{2} \sum_{i} (y^{(i)} - \phi(z^{(i)}))^2$$</p>
+<p>其中 $\phi(z^{(i)}) &#x3D; z^{(i)} &#x3D; \mathbf{w}^T \mathbf{x}^{(i)}$ 是线性激活函数。</p>
+<p>为了找到使 $J(\mathbf{w})$ 最小的权重，我们计算代价函数对每个权重 $w_j$ 的偏导数（即梯度）：</p>
+<p>$$\frac{\partial J}{\partial w_j} &#x3D; \frac{\partial}{\partial w_j} \frac{1}{2} \sum_{i} (y^{(i)} - \phi(z^{(i)}))^2$$</p>
+<p>根据链式法则，我们先对平方项求导，再对括号内的项求导：</p>
+<p>$$\begin{aligned}<br>\frac{\partial J}{\partial w_j} &amp;&#x3D; \sum_{i} (y^{(i)} - \phi(z^{(i)})) \cdot \frac{\partial}{\partial w_j} (y^{(i)} - \phi(z^{(i)})) \\<br>&amp;&#x3D; \sum_{i} (y^{(i)} - \phi(z^{(i)})) \cdot (0 - \frac{\partial \phi(z^{(i)})}{\partial w_j}) \\<br>&amp;&#x3D; \sum_{i} (y^{(i)} - \phi(z^{(i)})) \cdot (-x_j^{(i)}) \\<br>&amp;&#x3D; -\sum_{i} (y^{(i)} - \phi(z^{(i)})) x_j^{(i)}<br>\end{aligned}$$</p>
+<p>由于梯度 $\nabla J(\mathbf{w})$ 指向的是函数值增加最快的方向，为了最小化代价函数，我们需要沿着梯度的反方向更新权重：</p>
+<p>$$\Delta w_j &#x3D; -\eta \frac{\partial J}{\partial w_j}$$</p>
+<p>将偏导数代入上式：</p>
+<p>$$\Delta w_j &#x3D; -\eta \left( -\sum_{i} (y^{(i)} - \phi(z^{(i)})) x_j^{(i)} \right)$$</p>
+<p>最终得到最终的 Adaline 权重更新公式：</p>
+<p>$$\Delta w_j &#x3D; \eta \sum_{i} (y^{(i)} - \phi(z^{(i)})) x_j^{(i)}$$</p>
+<p>你会发现，这个公式在形式上与感知机的更新公式非常相似，但是它与感知机的公式还是存在本质区别。这里的 $y - \phi(z)$ 是一个连续的线性输出，而不是感知机中二值化的步阶输出。而使用求和符$\sum$，则是Adaline基于所有样本的误差综合来更新权重的过程。我们管它叫做 <strong>批量梯度下降 (Batch Gradient Descent)</strong></p>
+<hr>
+<h3 id="调整学习率"><a href="#调整学习率" class="headerlink" title="调整学习率"></a>调整学习率</h3><p>虽然原理简单，但是实际操作中学习率 $\eta$非常难调。  </p>
+<p>如果学习率太小，那么学习过程会巨慢无比，像蜗牛一样蠕动，可能需要算上百万次才能够走到谷底。<br>如果学习率太大，那么一步太大了就可能跨过谷底，直接冲到对面山坡上。这样的情况叫做 <strong>超调 （Overshooting）</strong>。你会发现误差不仅没有变小，反而越来越大，最后你有可能得到一个漂亮的 $\text{NaN}$。</p>
+<div class="tag-plugin image"><div class="image-bg" style="padding:16px;width:100%;"><img class="lazy" src="https://files.seeusercontent.com/2026/02/11/huS8/pasted-image-1770819983904.webp" data-src="https://files.seeusercontent.com/2026/02/11/huS8/pasted-image-1770819983904.webp" style="width:80%;"onerror="this.src=&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2rem' height='2rem' viewBox='0 0 24 24'%3E%3C!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --%3E%3Cpath fill='%23F44336' d='M22 12.698c-.002 1.47-.013 2.718-.096 3.743c-.097 1.19-.296 2.184-.74 3.009a4.2 4.2 0 0 1-.73.983c-.833.833-1.893 1.21-3.237 1.39C15.884 22 14.2 22 12.053 22h-.106c-2.148 0-3.83 0-5.144-.177c-1.343-.18-2.404-.557-3.236-1.39c-.738-.738-1.12-1.656-1.322-2.795c-.2-1.12-.236-2.512-.243-4.241Q1.999 12.737 2 12v-.054c0-2.148 0-3.83.177-5.144c.18-1.343.557-2.404 1.39-3.236s1.893-1.21 3.236-1.39c1.168-.157 2.67-.175 4.499-.177a.697.697 0 1 1 0 1.396c-1.855.002-3.234.018-4.313.163c-1.189.16-1.906.464-2.436.994S3.72 5.8 3.56 6.99C3.397 8.2 3.395 9.788 3.395 12v.784l.932-.814a2.14 2.14 0 0 1 2.922.097l3.99 3.99a1.86 1.86 0 0 0 2.385.207l.278-.195a2.79 2.79 0 0 1 3.471.209l2.633 2.37c.265-.557.423-1.288.507-2.32c.079-.972.09-2.152.091-3.63a.698.698 0 0 1 1.396 0' opacity='.5'/%3E%3Cpath fill='%23F44336' fill-rule='evenodd' d='M17.5 11c-2.121 0-3.182 0-3.841-.659S13 8.621 13 6.5s0-3.182.659-3.841S15.379 2 17.5 2s3.182 0 3.841.659S22 4.379 22 6.5s0 3.182-.659 3.841S19.621 11 17.5 11m-1.47-7.03a.75.75 0 1 0-1.06 1.06l1.47 1.47l-1.47 1.47a.75.75 0 0 0 1.06 1.06l1.47-1.47l1.47 1.47a.75.75 0 1 0 1.06-1.06L18.56 6.5l1.47-1.47a.75.75 0 0 0-1.06-1.06L17.5 5.44z' clip-rule='evenodd'/%3E%3C/svg%3E&quot;"/><div class="lazy-icon" style="background-image:url(https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd);"></div></div></div>
+
+<p>所以我们一般会在一开始把步子迈大一点，快到谷底时让步子小一点。这也就是后来高级优化器所做的事情，但是在Adaline中我们通常将学习力设置为一个固定的中间值，比如0.01。</p>
+<hr>
+<h3 id="实战优化技巧"><a href="#实战优化技巧" class="headerlink" title="实战优化技巧"></a>实战优化技巧</h3><p>为了能让梯度下降跑的更快更稳，这里介绍三个实战技巧：</p>
+<ol>
+<li><mark class="tag-plugin colorful mark" color="blue">**特征缩放 (Feature Scaling)**</mark>
+
+<p> 假设特征$x_1$是房价，范围从0到1000000，$x_2$是房间数，范围1-5。<br> 由于房价数值过大，房间数数值太小，那么想象$J(w)$的形状：会变成一个拉的非常长的椭圆碗。梯度下降会在长轴方向上来回震荡，很难走到中心位置。</p>
+<p> 我们对付这个问题的武器是：<strong>标准化 (Standardization)</strong>：</p>
+<p> $$ x&#39;_j &#x3D; \frac{x_j - \mu_j}{\sigma_j} $$</p>
+<p> 我们对数据减去平均值，随后除以标准差。这样所有的特征都变成了以0为中心，方差为1的分布，碗就变成了正圆，梯度下降这样就可以直接指向圆心。</p>
+</li>
+<li><mark class="tag-plugin colorful mark" color="blue">**随机梯度下降 (Stochastic Gradient Descent, SGD)**</mark>
+
+<p> 但假如我们的数据量非常多，该怎么办？  </p>
+<p> 假设我们一共有一百万条数据，每走一步需要计算更新一次$w$，那么我们需要将所有的100万条数据全部算一遍误差求和。太慢了哥们。</p>
+<p> 而SGD的策略是我们不求和了。我们每次只随机抽取一个样本，算它的误差，然后立即更新权重。  </p>
+<p> 这样的算法优点是速度极快。而且由于它随机选点，因此它更有机会帮助训练跳出局部最优解问题，在深度学习里很有用。</p>
+ <details class="tag-plugin colorful folding" color="cyan"><summary><p>拓展：全局最小值与局部最小值</p>
+</summary><div class="body"><p>什么是局部最优？不是说是一个完美的碗吗？怎么会有多个最小值？</p> <p>实际上对于Adaline和线性回归来说，代价函数确实只有一个最小值，但是在真实世界中，看起来是一个非凸函数，是一片崎岖的山脉：</p> <div class="tag-plugin image"><div class="image-bg" style="padding:12px;width:100%;"><img class="lazy" src="https://files.seeusercontent.com/2026/02/11/huS8/pasted-image-1770819983904.webp" data-src="https://files.seeusercontent.com/2026/02/11/huS8/pasted-image-1770819983904.webp" style="width:80%;"onerror="this.src=&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2rem' height='2rem' viewBox='0 0 24 24'%3E%3C!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --%3E%3Cpath fill='%23F44336' d='M22 12.698c-.002 1.47-.013 2.718-.096 3.743c-.097 1.19-.296 2.184-.74 3.009a4.2 4.2 0 0 1-.73.983c-.833.833-1.893 1.21-3.237 1.39C15.884 22 14.2 22 12.053 22h-.106c-2.148 0-3.83 0-5.144-.177c-1.343-.18-2.404-.557-3.236-1.39c-.738-.738-1.12-1.656-1.322-2.795c-.2-1.12-.236-2.512-.243-4.241Q1.999 12.737 2 12v-.054c0-2.148 0-3.83.177-5.144c.18-1.343.557-2.404 1.39-3.236s1.893-1.21 3.236-1.39c1.168-.157 2.67-.175 4.499-.177a.697.697 0 1 1 0 1.396c-1.855.002-3.234.018-4.313.163c-1.189.16-1.906.464-2.436.994S3.72 5.8 3.56 6.99C3.397 8.2 3.395 9.788 3.395 12v.784l.932-.814a2.14 2.14 0 0 1 2.922.097l3.99 3.99a1.86 1.86 0 0 0 2.385.207l.278-.195a2.79 2.79 0 0 1 3.471.209l2.633 2.37c.265-.557.423-1.288.507-2.32c.079-.972.09-2.152.091-3.63a.698.698 0 0 1 1.396 0' opacity='.5'/%3E%3Cpath fill='%23F44336' fill-rule='evenodd' d='M17.5 11c-2.121 0-3.182 0-3.841-.659S13 8.621 13 6.5s0-3.182.659-3.841S15.379 2 17.5 2s3.182 0 3.841.659S22 4.379 22 6.5s0 3.182-.659 3.841S19.621 11 17.5 11m-1.47-7.03a.75.75 0 1 0-1.06 1.06l1.47 1.47l-1.47 1.47a.75.75 0 0 0 1.06 1.06l1.47-1.47l1.47 1.47a.75.75 0 1 0 1.06-1.06L18.56 6.5l1.47-1.47a.75.75 0 0 0-1.06-1.06L17.5 5.44z' clip-rule='evenodd'/%3E%3C/svg%3E&quot;"/><div class="lazy-icon" style="background-image:url(https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd);"></div></div></div>   <p>当进入深度神经网络后，由于现代神经网络使用Sigmoid, ReLU, Tanh等非线性函数，因此一旦引入非线性，那么代价函数就不再是简单的二次抛物面了。</p> <p>而深度学习是函数套函数： $f(g(h(x)))$。这种复杂的复合函数会让代价函数的表面看起来崎岖不平。</p> <p>那么解释清楚成因了，什么是局部最优？ **局部最优 (Local Minima)**是山腰上的一个小坑，球滚进去就出不来了。但是放眼整个区域，这不是这片区域里面最低的点，也就不是对这组数据误差最小的点。我们要找的是全局最优点。</p> <p>除了局部最优，这样的地形也会出现 <strong>鞍点 (Saddle Point)</strong>。在斜率正负方向上，前后看这里是最低点（平地），向左右看是最高点，那么这一点的梯度计算出来是0，容易骗过算法。</p> <p>同时也可能出现 **平原 (Plateau)**地形。很简单，在这里我们就无法继续下降了。</p> <hr> <p>所以总的来说，Adaline 没这个问题，但 Gradient Descent 这个工具在未来处理复杂模型时，会面临 Local Minima 的风险。而 Stochastic Gradient Descent (SGD) 的随机抖动特性，恰好能帮我们要跳出这些小坑。</p> </div></details>
+
+<p> 那么代价是什么呢？它的梯度下降路径会很抖，看起来像是喝醉了酒下山。但最终还是会因为样本多了而平均掉，接近最优解。</p>
+</li>
+<li><mark class="tag-plugin colorful mark" color="blue">**小批量梯度下降 (Mini-Batch Gradient Descent)**</mark>
+
+<p> 这个是Batch和SGD的折中方案，也是目前深度学习的主流方法。</p>
+<p> 我们每次不取一个，也不取全部，相反求得中庸之道，每次取一小批，比如32个或者64个，叫做batch size，也是我们在训练模型中最常调节的参数之一。</p>
+<p> 这样我们既利用了矩阵运算得并行加速，还避免了一次性把大数据全部读进内存。</p>
+</li>
+</ol>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
 
 
 
 <footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="toc-text">感知机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E5%87%BD%E6%95%B0%E4%B8%8E%E5%81%8F%E7%BD%AE"><span class="toc-text">决策函数与偏置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%84%9F%E7%9F%A5%E6%9C%BA%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%99-%EF%BC%88%E6%9B%B4%E6%96%B0%E5%85%AC%E5%BC%8F%EF%BC%89"><span class="toc-text">感知机学习规则 （更新公式）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Adaline-%E4%B8%8E%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="toc-text">Adaline 与代价函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Adaline%E7%9A%84%E9%A2%84%E6%B5%8B%E8%BE%93%E5%87%BA"><span class="toc-text">Adaline的预测输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="toc-text">代价函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="toc-text">梯度下降</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Adaline-%E6%9D%83%E9%87%8D%E6%9B%B4%E6%96%B0%E5%85%AC%E5%BC%8F%E7%9A%84%E6%8E%A8%E5%AF%BC"><span class="toc-text">Adaline 权重更新公式的推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E6%95%B4%E5%AD%A6%E4%B9%A0%E7%8E%87"><span class="toc-text">调整学习率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7"><span class="toc-text">实战优化技巧</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -635,7 +882,7 @@ https://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&amp;nbsp;1&amp;nbs
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1770820758649" defer></script>
+<script src="/js/main.js?v=1770820758443" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -707,6 +954,30 @@ https://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&amp;nbsp;1&amp;nbs
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
 
 
 
