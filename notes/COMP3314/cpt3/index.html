@@ -1,0 +1,1202 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Cpt3: 逻辑回归，SVM和KNN - Naucha</title>
+
+  
+    <meta name="description" content="逻辑回归逻辑回归 ( Logistic Regression ) 的名字里虽然带有Regression,  但是它其实是一个经典的二元分类算法，并非预测连续数值的回归模型。 在之前提到的Perceptron和Adaline中，我们的核心一直是计算特征与权重的线性组合，也就是Net Input， $z &#x3D; w^Tx$。在Adaline中，激活函数 $\phi(z)$实际上就是 $z$本身。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cpt3: 逻辑回归，SVM和KNN">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt3/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="逻辑回归逻辑回归 ( Logistic Regression ) 的名字里虽然带有Regression,  但是它其实是一个经典的二元分类算法，并非预测连续数值的回归模型。 在之前提到的Perceptron和Adaline中，我们的核心一直是计算特征与权重的线性组合，也就是Net Input， $z &#x3D; w^Tx$。在Adaline中，激活函数 $\phi(z)$实际上就是 $z$本身。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-02-10T05:18:00.000Z">
+<meta property="article:modified_time" content="2026-03-13T12:28:18.639Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1773408351662">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt3/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt3: 逻辑回归，SVM和KNN","description":"逻辑回归逻辑回归 ( Logistic Regression ) 的名字里虽然带有Regression,  但是它其实是一个经典的二元分类算法，并非预测连续数值的回归模型。\n在之前提到的Perceptron和Adaline中，我们的核心一直是计算特征与权重的线性组合，也就是Net Input， $z &#x3D; w^Tx$。在Adaline中，激活函数 $\\phi(z)$实际上就是 $z$...","url":"https://naughtychas.github.io/notes/COMP3314/cpt3/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3314" placeholder="在 COMP3314 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="分治法">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        分治法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt3/"><span class="title">Cpt3: 逻辑回归，SVM和KNN</span></a><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">Cpt2: 感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-03-13T12:28:18.639Z">2026-03-13</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-02-10T05:18:00.000Z">2026-02-10</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Cpt3: 逻辑回归，SVM和KNN</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a>逻辑回归</h1><p>逻辑回归 ( <strong>Logistic Regression</strong> ) 的名字里虽然带有Regression,  但是它其实是一个经典的二元分类算法，并非预测连续数值的回归模型。</p>
+<p>在之前提到的Perceptron和Adaline中，我们的核心一直是计算特征与权重的线性组合，也就是Net Input， $z &#x3D; w^Tx$。在Adaline中，激活函数 $\phi(z)$实际上就是 $z$本身。这意味着我们实际上在用 $w^Tx$ 直接拟合连续的标签值。但是当我们的任务是去分类并希望得到一个概率时，矛盾就产生了：线性组合的取值是整个实数轴，但是概率是限制在 $(0, 1)$ 之间的。因此如果我们强行说 $w^Tx$ 就是概率，当特征值 $x$很大的时候，你可能会算出一个等于10或者等于100的概率，而这在数学上是完全不可能出现的。</p>
+<p>所以总的来说，在机器学习的分类任务中，我们面临一个根本性的矛盾，那就是我们的线性模型输出 $z &#x3D; w^Tx$ 是一个可以在全实数范围内任意游走的数值，但是我们往往渴望一个概率值的预测结果，而概率值很明显，是被严格限制在0和1之间的。为了连接这两个截然不同的区间，我们需要使用一些精妙的数学方法。</p>
+<hr>
+<h2 id="逻辑回归的计算"><a href="#逻辑回归的计算" class="headerlink" title="逻辑回归的计算"></a>逻辑回归的计算</h2><p>在逻辑回归中，我们使用 <strong>Logit Function</strong> 来实现空间的拉伸。他接受一个从0到1的概率值 $p$，通过计算对数来将这个0-1的区间映射到整个无穷大的数轴上面。这也就意味着如果你有一个概率，那么Logit就能够告诉你它在实数轴上对应哪个点。</p>
+<p>我们不是直接把线性组合 $z &#x3D; w^Tx$ 丢进logit里面去直接压缩，而是定义了一种概率的某种变换，我们叫做 <strong>对数几率 (Log-odds)</strong> 变换。换句话说，逻辑回归的灵魂等式实际上就是：</p>
+<p>$$logit(p) &#x3D; w^Tx$$</p>
+<p>因此我们不是在拟合概率本身，而是在拟合那个被Logit函数拉直到全实数范围的概率变换体。</p>
+<p>然而在实际预测中我们的模型会优先算出来 $z$，也就是那个不受限的实数，而我们要做的是把这个数压回概率区间。很简单，我们只需要找到Logit函数的反函数就可以了。那么Logit的反函数是什么？是<strong>Sigmoid函数</strong>：</p>
+<p>$$\phi(z) &#x3D; \frac{1}{1 + e^{-z}}$$</p>
+<p>Sigmoid函数正好做了Logit的反面工作：接受任何实数输入 $z$，然后将其平滑挤压到0-1的区间内。Sigmoid函数的特征是：当 $z$趋于正无穷时，输出趋近于1；反之当 $z$趋向于负无穷，输出趋近于0。</p>
+<p>因此如果我们想要得到概率值，则在 $logit(p)$ 的基础上，通过代数反求就可以知道：</p>
+<p>$$p &#x3D; \phi(w^Tx)$$</p>
+<p>而这里的 $\phi(z)$ 正是Sigmoid。</p>
+<p>如果你把这两个函数画在同一页里看，会非常有画面感：Sigmoid是一条平滑的S形曲线，中间在 $z&#x3D;0$ 处穿过0.5，左边无限贴近0，右边无限贴近1；而Logit刚好反过来，在 $p \to 0$ 和 $p \to 1$ 的两端会向负无穷和正无穷发散，中间在 $p&#x3D;0.5$ 的时候等于0。也就是说，Sigmoid负责“把实数压成概率”，Logit负责“把概率拉回实数轴”。这对互逆关系就是逻辑回归最核心的变换齿轮。</p>
+<hr>
+<h2 id="逻辑回归的训练"><a href="#逻辑回归的训练" class="headerlink" title="逻辑回归的训练"></a>逻辑回归的训练</h2><p>在之前的Adaline中，我们通过最小化误差平方和来更新权重。但是在这里由于我们输出的是概率，因此我们引入了一个更符合统计直觉的目标：<strong>最大似然估计 (Maximum Likelihood Estimation, MLE)</strong>。</p>
+<p>想象一下我们有一堆鸢尾花数据，那么Likelihood $L(w)$的物理意义是，在特定的权重 $w$下，这组观测数据出现的总概率是多少。而我们的目标是通过不断调整 $w$，来让这个 $L(w)$达到最大。这意味着我们要让模型最大化地解释当前已经发生的数据，而这就是MLE。具体可以阅读我之前写过的这篇文章：</p>
+<div class="tag-plugin link dis-select"><a class="link-card rich" title="Chapter&nbsp;2:&nbsp;概率论与统计学回顾" href="/notes/COMP3354/chapter2/" cardlink autofill="icon,desc"><div class="top"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div><span class="cap link footnote">https://naughtychas.github.io/notes/COMP3354/chapter2/</span></div><div class="bottom"><span class="title">Chapter&nbsp;2:&nbsp;概率论与统计学回顾</span><span class="cap desc footnote"></span></div></a></div>
+
+<details class="tag-plugin colorful folding" ><summary><p>为什么是MLE?</p>
+</summary><div class="body"><p>我们之所以在Adaline中使用SSE作为代价函数，是因为Adaline的激活函数是线性的： $\phi(z) &#x3D; z$。在这种情况下，我们关心的物理量是预测值与真实值之间的“物理距离”，因此通过最小化平方误差来拟合数据是非常自然的选择，这在数学上称之为最小二乘法。</p> <p>然而当我们在逻辑回归这里，以条件概率作为输出时，仅仅衡量距离是不够的。我们需要衡量的是在当前的参数 $w$下，观测到这组数据的可能性有多大。</p> <p>如果你懒得看上面的文章链接，那么MLE基本上是：你面前有一枚不均匀的硬币，你抛出10次得到了7次正面。MLE要做的就是寻找一个模型参数来让某件事观测到的概率达到最大。</p> <p>例如如果我们选择正面的概率，那么我们需要让“观测到7次正面”的概率最大化。这意味着在机器学习中，Likelihood $L(w)$ 衡量的是 <u>在特定权重 $w$ 的驱动下，我们的模型能够得到当前训练集中所有真实标签 $y$ 的总概率。</u> 。因此我们不再是单纯缩小距离，而是通过调整 $w$，来让模型最大化地解释这些已经发生的事实。</p> </div></details>
+
+<p>提到的 $L(w)$ 就是：</p>
+<p>$$L(w) &#x3D; P(y | x; w) &#x3D; \prod_{i &#x3D; 1}^n P(y^{(i)} | x^{(i)}; w) &#x3D; \prod_{i &#x3D; 1}^n (\phi(z^{(i)}))^{y^{(i)}} (1 - \phi(z^{(i)}))^{1 - y^{(i)}}$$</p>
+<p>然而在数学实现上直接对一连串的概率做乘法运算不仅计算量大，而且还特别容易产生数值下溢。因此我们会将这个似然函数取自然对数，得到 <strong>Log-Likelihood Function</strong> ，这样原本的复杂联乘运算就变成了简单的求和运算：</p>
+<details class="tag-plugin colorful folding" ><summary><p>数值下溢?</p>
+</summary><div class="body"><p>似然函数 $L(w)$ 是由每个样本的概率联乘得到的。由于概率都在0-1，那么大量小数的连乘会导致计算机出现数值下溢，也就是数值溢出的反义词：数值小到超出计算机的表示范围。</p> </div></details>
+
+<p>$$l(w) &#x3D; \log L(w) &#x3D; \sum_{i &#x3D; 1}^n [y^{(i)} \log(\phi(z^{(i)})) + (1 - y^{(i)}) \log(1 - \phi(z^{(i)}))]$$</p>
+<p>所以我们只需要最大化个样本预测正确的对数概率之和就可以了，因为对数函数单调递增，所以在数学上这和直接最大化原始的似然函数是完全等价的。</p>
+<p>更有趣的是，由于我们想要像Adaline那样同样使用梯度下降来最小化误差，这里我们给函数加一个负号，从而定义了逻辑回归的代价函数 $J(w)$，也叫交叉熵损失 (Cross-Entropy Loss)：</p>
+<p>$$J(w) &#x3D; \sum_{i &#x3D; 1}^n [-y^{(i)} \log(\phi(z^{(i)})) - (1 - y^{(i)}) \log(1 - \phi(z^{(i)}))]$$</p>
+<p>当真实标签 $y &#x3D; 1$的时候，如果模型预测的概率 $\phi(z)$ 接近1，代价 $J$就会特别小。但如果模型预测接近0，则代价就会爆炸式增长，就如同这张图所示：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/13/J2fs/pasted-image-1773404721658.webp" alt="Graph"></p>
+<p>假如我们有一个真实标签为 $y &#x3D; 1$ 的数据，而模型说我有99%的信心说这是1，也就是 $\phi(z) &#x3D; 0.99$。那么我们根本不需要惩罚他啊，代价函数的值接近于零。但如果模型说我觉得有 1% 的可能性这是 $y &#x3D; 1$，那么这是一个严重的误判。为了能够让模型记住这个教训，我们需要给它一个巨大的惩罚。这个机制不仅要求逻辑回归预测正确，还要求模型在正确的方向上尽可能自信。</p>
+<hr>
+<h2 id="进步了吗？进步在哪？"><a href="#进步了吗？进步在哪？" class="headerlink" title="进步了吗？进步在哪？"></a>进步了吗？进步在哪？</h2><p>逻辑回归相比于感知机和Adaline要更强大，但是强大在哪？</p>
+<p>我们知道在感知机中，通过引入偏置项 $w_0$， 我们让模型在全实数空间的Net Input $z &#x3D; w^Tx$ 上寻找一个过原点的切割点。由于 $w_0$ 吸收了阈值 $\theta$，所以我们可以说，决策的分界点就是 $z &#x3D; 0$。这意味着如果 $z &gt; 0$，那么感知机就会通过阶跃函数直接将结果判断为正类。而Adaline虽然在训练阶段使用线性激活函数 $\phi(z) &#x3D; z$ 来计算误差平方和来优化权重，但是在最好的决策阶段，它依然套用相同的阈值逻辑，还是以 $z &#x3D; 0$ 作为分界线。</p>
+<p>但是逻辑回归通过logit和Sigmoid这一套下来我们将 $z$ 转换成了概率。这意味着不仅模型能够告诉你类别，我们还能知道模型对于他的判断有多大把握。例如，当 $\phi(z) &#x3D; 0.8$ 的时候，这可能意味着样本有 80%的概率属于A。</p>
+<p>除了能够返还概率，Sigmoid还能够帮助构造一个更稳健的模型。例如感知机里只要样本被正确分类，样本距离决策边界的距离远近都不会触发模型去微调权重，而是只有错了再触发更新。这就导致感知机的收敛极度依赖数据是否线性可分。而逻辑回归使用Sigmoid，我们得到的代价函数Log-likelihood是连续且处处可导的。这意味着即使样本分类正确，模型依然会为了提高概率信心来继续微调权重，来找到泛化能力更强的边界。 </p>
+<p>所以，如果我们想要自己实现逻辑回归，只需要将Adaline的代码的激活函数替换为Sigmoid，然后再把原来衡量物理距离的误差平方和替换为基于对数似然的交叉熵损失就ok了。</p>
+<hr>
+<h2 id="调优与评估"><a href="#调优与评估" class="headerlink" title="调优与评估"></a>调优与评估</h2><p>我们知道了如何训练一个逻辑回归模型，但是我们需要考虑如何解决过拟合和欠拟合的问题。</p>
+<p>我相信这两个概念应该很容易理解。一个死刷题拿满分的学生不一定能够在未来的考试中一定取得好成绩。这就是<strong>过拟合 (Overfitting)</strong>，模型可能因为参数过多或者逻辑过于复杂，导致它记住了训练数据中的噪点或偶然误差，而导致它在新数据上面的泛化能力极差。这在统计学上我们也叫做 <strong>高方差 (High Variance)</strong></p>
+<p>反之，欠拟合就是一个大脑皮层褶皱被拉平的学生，无论怎么学习都抓不住重点。模型可能因为过于简单，无法捕捉到数据后面的核心规律，表现为训练误差和测试误差都很高。</p>
+<p>因此，找到一个好的模型应该秉承中庸之道，找到一个良好的折中点，让模型复杂度和泛化力之间达成和谐。</p>
+<p>为了解决过拟合的问题，我们引入了 <strong>正则化</strong> (Regularization)这个概念，来帮助我们控制参数权重 $w$ 的数值。想象一下一个权重 $w$ 的数值变得极其巨大，意味着模型可能对某个特征产生了过度的依赖，而这往往是过拟合的先兆。因此我们使用L2 Regularization，在原有的代价函数后面加一个惩罚项来计算权重向量长度的平方：$\frac{\lambda}{2} ||w||^2$ 来惩罚那些极端的参数：</p>
+<p>现在我们的代价函数就是两个人物的结合体：</p>
+<p>$$J(w) &#x3D; \sum_{i &#x3D; 1}^n [\text{Original Loss}] + \frac{\lambda}{2} \sum_{j &#x3D; 1}^m w_j^2$$</p>
+<p>参数 $\lambda$ 叫做正则化参数，来控制正则化力度。 $\lambda$ 越大惩罚越重，模型就更倾向于使用简单的逻辑来抑制过拟合。反之如果 $\lambda$ 太小，限制不够严厉，模型就会重新陷入过拟合的问题。</p>
+<p>这意味着在训练过程中模型要面临两个任务。首先为了尽可能最小化原始代价，要尽可能预测准确；其次为了保证模型足够简单，我们的权重也要尽可能小。</p>
+<blockquote>
+<p>在Scikit-Learn里面我们一般使用参数 $C$来调节标准化力度，而C不是什么新的概念，而是被定义为 $\lambda$ 的倒数： $C &#x3D; 1 &#x2F; \lambda$。这意味着如果我们减小C的数值，我们实际上是在增加正则化的强度。</p>
+</blockquote>
+<hr>
+<h1 id="支持向量机-SVM"><a href="#支持向量机-SVM" class="headerlink" title="支持向量机 (SVM)"></a>支持向量机 (SVM)</h1><p>逻辑回归中我们尝试最大化解释数据的概率，但是在SVM这里我们要寻找最宽的安全距离。</p>
+<p>SVM被视为感知机的升级版。感知机只要找到一条线把数据分开就大功告成了，哪怕这条线紧贴着某个样本。但是SVM追求的是最大化间隔。</p>
+<p>想象有一条公路要把两类样本分开，这条公路就是我们的决策边界。SVM的目标是不仅修好这条路，还要让路的宽度尽可能宽，直到我们碰到最近的那几个样本为止。这些决定了路有多宽的边界样本，我们就叫做 <strong>支持向量 (Supporting Vectors)</strong>。</p>
+<p>一旦这条最宽的公路被确定，公路以外的其他样本无论怎么增加，都不会影响这条边界的位置。这意味着SVM是一种对局部边界极其敏感，同时对全局噪声感知不强的算法。</p>
+<hr>
+<h2 id="决策规则"><a href="#决策规则" class="headerlink" title="决策规则"></a>决策规则</h2><p>想象我们现在在一个由两个特征数据库组成的二维平面上。</p>
+<p>在数学上，任何一条直线都可以写成这样的形式：</p>
+<p>$$w_1x_1 + w_2x_2 + w_0 &#x3D; 0$$</p>
+<p>而这实际上就是我们在感知机学过的 $w^Tx + w_0 &#x3D; 0$ 的展开表达。因此当我们在图像上使用一条线来分割两类样本时，我们实际上就是找到了一条特定的线，能够用线性组合来表示，同时这条线也是所有能够使得Net Input $z$ 恰好等于0的点 $(x_1, x_2)$的集合。</p>
+<p> 而我们的权重向量 $w$ 在集合上就是垂直于这条决策边界的法向量，你可以在图中看到他们很明显地垂直。$w$指向的方向就是模型认为正类特征最强的方向。因此当你拿取一个样本的特征向量 $x$ 与 $w$ 做内积 ($w^Tx$) 的时候，我们实际上是正在计算这个样本在 $w$ 方向上的标量投影。加上偏置 $w_0$ 之后，如果结果大于0，那么样本就落在了决策边界的上方或者前方，反之小于0就落在下方或者后方。</p>
+<p>因此在这个图上，我们可以把决策边界看成一条代表海拔为0的线。而 $w^Tx + w_0$ 就像是地理上的等高线函数，可以为平面上的每一个点都计算出一个海拔高度。</p>
+<p>而SVM的决策规则就是：如果样本海拔大于0，就属于正类；反之小于0就是负类。同时由于我们刚才讲过的最大宽度要求，我们还人为规定了“路肩宽度”，也就是属，只有海拔达到1才能算100%正类，低于-1才算是稳稳的负类，而中间这段 $[-1, 1]$的区域就是我们要最大化的间隔。</p>
+<hr>
+<h3 id="马路要有多宽？"><a href="#马路要有多宽？" class="headerlink" title="马路要有多宽？"></a>马路要有多宽？</h3><p>由于 $w$ 垂直于路面，我们只需要计算一个在正路肩上的样本 $x_{+}$ 和一个在负路肩上的样本 $x_{-}$ 在 $w$ 方向上的投影差即可。这样即便正负样本是斜着过马路的，也可以计算出来这两个样本在垂直方向的长度是多少。</p>
+<p>为了只测量长度而不改变数值的级数，我们需要使用 $w$ 方向上的单位向量来计算。因此，宽度的代数表达式可以写为：</p>
+<p>$$\text{Width} &#x3D; (x_{+} - x_{-})^T \frac{w}{||w||}$$</p>
+<p>展开，即可得到：</p>
+<p>$$\text{Width} &#x3D; \frac{w^Tx_{+} - w^Tx_{-}}{||w||}$$</p>
+<p>由于我们刚才所说，对于正侧路肩上的样本，我们必须满足 $w^Tx_{+} + w_0 &#x3D; 1$ 的关系，也就是 $w^Tx_{+} &#x3D; 1 - w_0$。负侧同理，因此我们可以将这两个等式带入刚才的宽度公式中，就可以得到：</p>
+<p>$$\text{Width} &#x3D; \frac{(1 - w_0) - (-1 - w_0)}{||w||} &#x3D; \frac{2}{||w||}$$</p>
+<p>你会发现整个马路的宽度仅仅取决于权重向量 $w$的模长。因此为了让马路越秀越宽，我们就必须让 $||w||$ 越小越好。在实操时我们实际上会最小化 $\frac{1}{2}||w||^2$，因为 $||w||$ 包含根号，求导会非常麻烦，而 $\frac{1}{2}||w||^2$ 的导数刚好是 $w$，这就使得后续求解过程变得更丝滑。</p>
+<p>然而这场优化并非漫无目的，你不能为了极致的宽度来导致数据点真正进入路肩以内。因此我们必须引入一组约束条件：</p>
+<p>$$y^{(i)}(w^Tx^{(i)} + w_0) \ge 1$$</p>
+<p>且对于所有样本 $i$ 必须成立。这样SVM就可以找到一组能够让权重向量最短的参数，同时保证每一个样本都落在正确路肩以外。</p>
+<hr>
+<h2 id="SVM的训练"><a href="#SVM的训练" class="headerlink" title="SVM的训练"></a>SVM的训练</h2><p>假设我们发现数据中存在一个离群点，或者数据本身并非线性可分，我们该怎么办？这样的话我们刚才提出的优化方式就不行了，因为在绝对零容忍的要求之下，算法是不可能找到一个能够让所有样本都乖乖呆在马路正确一边外面的解。因此我们需要借助统计建模的力量，希望模型本身具备一定容错率。</p>
+<p>在这里我们引入一个新的优化方式，叫做 <strong>Soft Margin Classification</strong>。我们不再追求绝对的正确分类，反倒是在拉大马路宽度的同时，允许违规行为，但是尽量减少。我们的目标和之前一样，也是找到一个最佳的平衡点。</p>
+<p>在数学实现上，我们为每一个样本都引入一个松弛变量，我们记作 $\xi$ 。如果样本老老实实呆在正确路肩之外，那么这个样本的 $\xi &#x3D; 0$，而如果它因为某种原因踩在了马路上，甚至跨到了马路对面，我们就需要使用 $\xi$ 记录它的违规程度。</p>
+<p>如何衡量 $\xi$ 的值？衡量一个点错没错或者错了多少，参照物不是那条马路中间的中线，而是海拔为正负1的路肩。我们可以把每一个样本 $i$ 的违规程度 $\xi^{(i)}$ 看作是一把从路肩向内延伸的刻度尺，我们叫它Hinge Loss，计算逻辑如下：</p>
+<p>$$\xi^{(i)} &#x3D; \text{max}(0, 1 - y^{(i)}(w^Tx^{(i)} + w_0))$$</p>
+<p>这意味着系统会自动对比这个样本的<em>实际海拔</em>和它<em>应该呆在的海拔</em>之间的差距。具体可以分为三个情况：</p>
+<ul>
+<li>完全合规。如果一个正类样本的海拔 $\ge$ 1，负类样本相反，那么说明这个样本处于正确的位置。此时 $y^{(i)}z \ge 1$，公式计算出的结果是 0 或者负数。但是在 $\text{max}$ 的作用下，会被锁定为0。</li>
+<li>路肩内部正确侧。如果一个样本的海拔是0.5，正好处于路肩和中线之间，虽然说还没有跨过中线，但是已经入侵了安全距离。此时 $y^{(i)}z &#x3D; 0.5$ ，根据公式可以算出 $\xi^{(i)}$ &#x3D; 1 - 0.5 &#x3D; 0.5。即便在分类上是对的，仍然是会贡献一个正的惩罚值。所以SVM不仅要分类正确，还要考虑距离。</li>
+<li>错误一侧说明海拔为负数， 对于海拔为 -0.5 的样本，$y^{(i)}z &#x3D; -0.5$。所以 $\xi^{(i)} &#x3D; 1 - (-0.5) &#x3D; 1.5$。值轻松超过1。因此一旦样本跨越越策边界，那么它的惩罚 $\xi$ 会随着它的偏离目标的距离线性增长。</li>
+</ul>
+<p>总的来说 $\xi$衡量的不是样本离马路中线有多远，而是衡量它离本应该待的路边有多远。</p>
+<p>因此，我们最后的优化目标是最小化这样一个综合代价：</p>
+<p>$$\text{Cost} &#x3D; \frac{1}{2}||w||^2 + C\sum_i \xi^{(i)}$$</p>
+<p>如果我们把参数C设置的很大，那么我们对违规极其严厉。模型会变回几乎不容忍任何错误的训练风格，也就是上一部分我们提到的那样。相反，如果我们减小C的数值，那么模型就会在分类错误上面表现的更加宽容，从而换取更宽的路面宽度。我们做的本质上还是在平衡偏差和方差：减小C会增加模型的偏差，但是能够降低模型对噪声的敏感度，从而提升模型的泛化能力。</p>
+<hr>
+<h2 id="核支持向量机"><a href="#核支持向量机" class="headerlink" title="核支持向量机"></a>核支持向量机</h2><p>我们一直尝试在现有的特征空间里面画直线。但如果数据无法线性可分，例如环形分布，那么在二维平面上无论我们怎么画直线，我们都不可能实现完美的分类。这时候我们需要做的是采用“降维打击”的反策略：我们来玩玩升维打击。</p>
+<p>所谓核支持向量机（Kernel SVM），核心思想其实一句话就能说清：我们不在原空间里硬画直线，而是先把数据映射到更高维的特征空间，再在那个空间里画一条线性可分的超平面。</p>
+<p>但是这里有个现实问题：如果我们真的把每个样本都显式映射到高维，计算量会直接爆炸。于是核技巧（Kernel Trick）登场了。它告诉我们：SVM训练里真正需要的不是样本坐标本身，而是样本两两之间的内积。只要我们能直接定义一个核函数 $K(x_i, x_j)&#x3D;\phi(x_i)^T\phi(x_j)$，就等价于“在高维空间做了内积”，却不需要真的把 $\phi(x)$ 算出来。</p>
+<p>常见核函数大概有三类：</p>
+<ul>
+<li>线性核：适合本来就接近线性可分的数据，速度快、可解释性强。</li>
+<li>多项式核：可以学到特征之间的组合关系，比如二次、三次交互。</li>
+<li>RBF核（高斯核）：最常用，能构造非常灵活的非线性边界，适合边界弯弯绕绕的数据。</li>
+</ul>
+<p>你可以把核函数理解成“相似度放大器”：它不是直接看两点在原空间的直线距离，而是用一种更聪明的方式去度量它们在隐式高维空间里到底像不像。这样一来，原本在二维里画不直的边界，在高维里可能就是一刀切。</p>
+<p>当然，核SVM不是无脑强。参数选不好一样会翻车。比如RBF里的 $\gamma$ 太大，模型会变得非常敏感，边界抖得像锯齿，容易过拟合；$\gamma$ 太小，边界又太平滑，容易欠拟合。同时参数 $C$ 依然控制“严格执法”还是“适度容错”。所以实战里一般会用交叉验证一起调 $C$ 和 $\gamma$，找一个泛化最稳的平衡点。</p>
+<hr>
+<h1 id="决策树学习"><a href="#决策树学习" class="headerlink" title="决策树学习"></a>决策树学习</h1><p>相比之前那些黑盒一般的数学映射，决策树学习的关键在于可解释性。它就像我们日常生活中做决策那样，通过提出一系列又简至深的问题来不断缩小范围，最终将复杂的样本群逐步拆解成整齐划一的小组或者个体。</p>
+<p>决策树学习使用数结构，从根出发签出下面的子节点。而我们的终极目标是让每一个叶子节点都达到纯净的状态，也就是说，该节点内的样本全部都属于同一个类别。</p>
+<p>但是如果我们允许这棵树毫无节制地生长下去，那么模型就会为了完美分类训练集中的每一个孤立噪点而变得极其复杂，从而形成一个非常深的数，这就是决策树学习中的过拟合。因此为了让模型具备更好的泛化能力，我们通常需要进行剪枝(Pruning)操作，比如设定最大深度来强迫📖停止生长。有关剪枝的内容会在后面继续讲解。</p>
+<hr>
+<h2 id="决策树如何切分问题？"><a href="#决策树如何切分问题？" class="headerlink" title="决策树如何切分问题？"></a>决策树如何切分问题？</h2><p>由于决策树通过一系列针对特征的问题来拆分数据，那么在数以百计的特征和切分点中，哪一个才是含金量最高的问题？我们该如何切分问题，来让每个节点下面的节点剩下的数据尽可能更有意义？</p>
+<p>为了量化这种含金量，我们引入一个概念：<strong>基尼不纯度 (Gini Impurity)</strong>。</p>
+<p>$$I_G(t) &#x3D; 1 - \sum_{i &#x3D; 1}^c p(i | t)^2$$</p>
+<p>这里的 $p(i | t)$ 代表在节点 $t$中属于第 $i$ 类样本的比例。</p>
+<p>基尼不纯度有点像是量化“随机盲猜的挫败感”的量。如果你面前有一个果篮，代表一个节点，里面混杂苹果，梨和葡萄。如果你闭着眼睛从篮子里随机摸出一个水果，并根据篮子里水果的整体比例猜一个标签，那么你猜错的概率就是这个节点的基尼不纯度。</p>
+<p>具体来说如果篮子里面全部都是苹果，也就是说这个节点达到了纯净状态，无论你怎么摸，怎么猜你都不可能会猜错，因此你的挫败感为0，基尼不纯度也等于0。然而如果篮子里面各种水果混杂，你猜错的可能性会很大，基尼不纯度也会变大。</p>
+<p>因此决策树的生长目标非常单纯，在每个节点都尽全力寻找一个拆分方式，使得拆分后产生的子节点比父节点更“纯”，也就是尽可能让基尼不纯度一直下降。</p>
+<p>理解这些后回去看一看公式。 $\sum p(i | t)^2$ 实际上是在计算“连续两次摸到同一类水果”的概率。如果某类样本占据了绝对优势，那么这个平方和就会非常接近1。用1减去这个数得到的基尼不纯度就会非常小，接近0。反之同理，如果各个种类平分秋色，那么不纯度就会变高。</p>
+<hr>
+<h2 id="引导决策树"><a href="#引导决策树" class="headerlink" title="引导决策树"></a>引导决策树</h2><p>知道决策树如何衡量节点纯度，我们就需要知道纯度如何影响决策树的决策。</p>
+<p>在决策时进行每一次分裂的时候，它会计算Information Gain：</p>
+<p>$$\text{Information Gain}(\text{Parent}) &#x3D; I(\text{Parent}) - \sum \frac{N_j}{N_p}I(\text{Child}_j)$$</p>
+<p>左边的Information Gain也可以写成 $IG(Parent)$， 那么左边的这个 $I(Parent)$ 代表父节点在拆分之前的混乱程度，而减号右边的部分代表拆分之后所有子节点的残留混乱度之和。因此这两者之间的差值就是我们通过这次拆分消除掉的混乱度，也就是我们获得的信息收益。</p>
+<p>同时你发现我们会对子节点的残留加权求和。这反映了一个节点的纯度贡献必须包含其样本的数量挂钩。假如我们把100个样本分成两组，左边是一组拥有99个样本的大杂烩，而右边是一个已经提纯的节点，实际上这个纯净节点对全局分类的贡献微乎其微。因此公式要求我们计算子节点不纯度的加权平均值。只有包含大量样本的子节点都变得非常纯净时，这个加权后的数值才会显著变小，从而使得Information Gain达到最大。</p>
+<p>也就是说，算法会对比父节点的不纯度与它所有子节点的不纯度的加权平均值。如果某次分裂能够让整体不纯度大幅下降，也就是Information Gain最大化，那么这个特征和对应的切分点就会被采纳。</p>
+<hr>
+<p>就例如我们现在在父节点上有一个数据表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Color</th>
+<th align="center">Number</th>
+<th align="center">Label</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Green</td>
+<td align="center">3</td>
+<td align="center">Apple</td>
+</tr>
+<tr>
+<td align="center">Yellow</td>
+<td align="center">3</td>
+<td align="center">Apple</td>
+</tr>
+<tr>
+<td align="center">Red</td>
+<td align="center">1</td>
+<td align="center">Grape</td>
+</tr>
+<tr>
+<td align="center">Red</td>
+<td align="center">1</td>
+<td align="center">Grape</td>
+</tr>
+<tr>
+<td align="center">Yellow</td>
+<td align="center">3</td>
+<td align="center">Lemon</td>
+</tr>
+</tbody></table>
+<p>我们需要盯着这些样本的标签来看，因为不纯度衡量的是结果的纯净度而并非原因的复杂性。在这个包含五个样本的集合中，我们观察到有两个苹果，两个葡萄和一个柠檬。如果我们闭着眼睛从集合中随机抽取一个样本，抽到苹果的概率 $p &#x3D; 2&#x2F;5$ ，也就是0.4，同理，葡萄0.4，柠檬0.2。</p>
+<p>还记得之前的 $I_G$ 公式吗： $I_G(t) &#x3D; 1 - \sum p(i | t)^2$， 计算过程实际上是询问，如果我们根据当前的类别比例随机给样本贴标签，我们贴对的综合概率是多少？因此我们计算每个类别概率的平方求和：</p>
+<p>$$0.4^2 + 0.4^2 + 0.2^2 &#x3D; 0.16 + 0.16 + 0.04 &#x3D; 0.36$$</p>
+<p>随后我们用一减去0.36，得到基尼不纯度0.64。我们得到了父节点的值，重复对父节点的子节点们进行计算，然后套用Information Gain的公式计算就好。</p>
+<hr>
+<p>除了使用不纯度来主导计算Information Gain，我们还可以使用 <strong>熵 (Entropy)</strong> 和 <strong>分类错误率 (Classification Error)</strong> 。</p>
+<p>熵在信息论中用来衡量系统的不确定性，定义为：</p>
+<p>$$I_H(t) &#x3D; - \sum_{i&#x3D;1}^c p(i|t)\log_2 p(i|t)$$</p>
+<p>这里的 $p(i|t)$ 依然是第 $i$ 类样本在节点 $t$ 中的占比。</p>
+<p>分类错误率比较简单直白：</p>
+<p>$$1 - \text{max}{p(i|t)}$$</p>
+<p>即是1减去当前节点中占比最大的那一类的比例。</p>
+<p>所以我们什么时候用熵，什么时候用基尼不确定度？基尼的目标是最小化随机分类错误的概率，而熵更侧重于最大化“互信息”，也就是说减少对系统状态的未知感。</p>
+<p>在实际工程运用中，两者的表现一般来讲比较接近。而由于基尼在计算时需要做平方运算，但是熵需要计算对数，因此计算基尼系数的速度往往会稍快一些。因此在训练大规模数据集的时候，基尼系数往往是默认首选。然而熵对概率分布的变化有时候比基尼系数更敏感一些，所以在某些特定场景下可能会产生更平衡的结果。</p>
+<p><img src="https://files.seeusercontent.com/2026/03/13/Lgv0/pasted-image-1773404825100.webp" alt="Graph"></p>
+<p>那么分类错误率呢？分类错误率的曲线看起来像是一个尖锐的三角形，而基尼和熵是圆润的弧线。这意味着当类别比例发生微小变化的时，基尼和熵导致的坡度变化会很明显，能够带给优化算法清晰的信号。而分类错误率在很多区域的坡度是恒定的，甚至某些方案下数值不会发生任何改变，从而导致Information Gain为0。</p>
+<p>所以分类错误率不适合长数，反而我们使用它来剪枝。</p>
+<hr>
+<h2 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h2><p>一颗决策树是对于当前数据集的专家，但是如果这个专家比较偏执怎么办？</p>
+<p>随机森林引入了所谓群体智慧的概念，是一场集思广益的民主投票。我们通过构建多个彼此不同的深层决策树让它们共同协作，利用群体智慧来抵消个体的过拟合偏见。</p>
+<p>这意味着，即便森林中的每一棵树单独拿出来都有很高的方差，但通过平均化的处理，整体模型会变得非常稳健，从而在没见过的测试数据集上表现出更好的泛化性能。</p>
+<p>那么我们如何确保森林里的每一棵树不会异口同声地反同一个错误？</p>
+<p>与其说我们把所有数据同样为给每一棵树，我们从原始训练集中随机的，有放回地抽 $n$ 个样本喂给不同的树来训练。由于是有放回的抽取，有些样本会被反复选中，当然也有些可能不会出现在某些决策树的视野里。这叫做 <strong>自助采样 (Bootstrap Sampling)</strong> 。采样量大小 $n$ 会决定个体之间的差异性大小。比如 $n$很大，那么树就会长的越来越像，森林也就失去了群体智慧的优势，变得容易过拟合。</p>
+<p>接下来在每个树的每个节点寻找最佳切分特征的时候，我们不再从所有的特征中筛选，而是随机选择其中的 $d$ 个特征。模型只能从这几个特征里面挑选他们的切分特征。这意味着即使某个特征在全局上非常有统治力，由于随机抽样待的限制，某些节点上我们没办法100%选用这些特征，从而给了其他特征表现的机会。这种随机性就是为什么随机森林叫做随机森林。</p>
+<hr>
+<h1 id="KNN"><a href="#KNN" class="headerlink" title="KNN"></a>KNN</h1><p>KNN是目前我们学到的机器学习算法中最直观，最符合人类社交直觉的算法。</p>
+<p>刚才说到的SVM和逻辑回归是通过使用复杂的计算来划定边界，那么KNN就是“物以类聚，人以群分”。看这个图：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/13/8wDj/pasted-image-1773404867604.webp" alt="KNN"></p>
+<p>我们想要判断一个位置样本属于哪一类的时候，不需要去训练一个复杂的数学模型，而是直接观察它在特征空间内最靠近的 $k$ 个邻居是谁。如果邻居大多数都是三角形，那么这个问好也有很大概率是个三角形。</p>
+<p>因此我们说KN N是一个基于内存的模型，或者说是一个惰性学习者。因为它在训练阶段几乎不做任何实质性的计算，只是单纯的把数据存起来，然后把所有的推理工作推迟到分类阶段。</p>
+<hr>
+<h2 id="KNN的工作原理"><a href="#KNN的工作原理" class="headerlink" title="KNN的工作原理"></a>KNN的工作原理</h2><p>既然KN N需要找到最近的邻居，首先我们要知道KNN如何衡量样本之间的距离。介绍闵科夫斯基距离：</p>
+<p>$$d(x^{(i)}, x^{(i)}) &#x3D; \sqrt[p]{\sum_k |x_k^{(i)} - x_k^{(j)}|^p}$$</p>
+<p>这个公式实际上是欧几里得距离和曼哈顿距离的母体。当参数 $p &#x3D; 2$的时候，这个公式计算的就是欧几里得距离（直线距离）；当 $p &#x3D; 1$的时候就变成了曼哈顿距离。我们在KNN中，一般设置 $p &#x3D; 2$。</p>
+<p>随后我们还需要对数据做标准化。由于KNN完全依赖距离来做决策，如果我们的特征两极不同意，那么数值较大的特征会完全主导距离计算。</p>
+<p>完成这些步骤后，当我们需要预测一个位置的数据点类型的时候，就找到他的邻居计算就可以了。</p>
+<hr>
+<p>但是KNN有一个问题。随着特征维度的增加，高维空间会变得极其稀疏。这意味着即便我们找到了最近的邻居，它在物理距离上也可能会离我们非常遥远。</p>
+<p>想想你在一个楼道走廊里面找邻居，因为大家挨着很近，一般来讲邻居之间也会走得很近。但如果同样数量的业主分到一个高维度里，这个空间的体积会变得非常大，而由于样本没有增加，整个空间就变得很稀疏，就像宇宙一样。所以即便你已经找到了离你最近的邻居，这个邻居在物理距离上已经离你非常遥远了。由于足够遥远，邻居与你实际上已经完全并不具备任何相似性，而是在宇宙里恰好离你近一些的陌生人。</p>
+<p>所以如果算法强行依据这个陌生人的标签来做预测，那么它实际上是在拟合一种随机的噪声，而不是真正的数据模式。这种对于远距离样本的盲目跟从，会导致过拟合的出现。所以这就是为什么我们要在KNN之前还要做一步特征选择或者降维来让数据脱水。</p>
+<p>有关降维和PCA的内容我们会在后面的章节展开的。</p>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="toc-text">逻辑回归</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="toc-text">逻辑回归的计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E8%AE%AD%E7%BB%83"><span class="toc-text">逻辑回归的训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E6%AD%A5%E4%BA%86%E5%90%97%EF%BC%9F%E8%BF%9B%E6%AD%A5%E5%9C%A8%E5%93%AA%EF%BC%9F"><span class="toc-text">进步了吗？进步在哪？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E4%BC%98%E4%B8%8E%E8%AF%84%E4%BC%B0"><span class="toc-text">调优与评估</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA-SVM"><span class="toc-text">支持向量机 (SVM)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E8%A7%84%E5%88%99"><span class="toc-text">决策规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A9%AC%E8%B7%AF%E8%A6%81%E6%9C%89%E5%A4%9A%E5%AE%BD%EF%BC%9F"><span class="toc-text">马路要有多宽？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SVM%E7%9A%84%E8%AE%AD%E7%BB%83"><span class="toc-text">SVM的训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="toc-text">核支持向量机</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%AD%A6%E4%B9%A0"><span class="toc-text">决策树学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%A6%82%E4%BD%95%E5%88%87%E5%88%86%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-text">决策树如何切分问题？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AF%BC%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-text">引导决策树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97"><span class="toc-text">随机森林</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#KNN"><span class="toc-text">KNN</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#KNN%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">KNN的工作原理</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1773408351665" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
