@@ -1,0 +1,1164 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Cpt4: 数据预处理 - Naucha</title>
+
+  
+    <meta name="description" content="在机器学习中有一句至理名言，叫做“垃圾进，垃圾出”（Garbage In, Garbage Out）。这句话的意思是，如果我们输入的数据质量很差，那么我们得到的结果也会很差。   因此，预处理 (Preprocessing) 并不是什么可有可无的步骤，而是机器学习流程中最核心的起步环节。  异常值处理Outliers，往往代表看起来很离谱的数据点。它们可能是由于数据录入错误、传感器故障或者其他异常">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cpt4: 数据预处理">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt4/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="在机器学习中有一句至理名言，叫做“垃圾进，垃圾出”（Garbage In, Garbage Out）。这句话的意思是，如果我们输入的数据质量很差，那么我们得到的结果也会很差。   因此，预处理 (Preprocessing) 并不是什么可有可无的步骤，而是机器学习流程中最核心的起步环节。  异常值处理Outliers，往往代表看起来很离谱的数据点。它们可能是由于数据录入错误、传感器故障或者其他异常">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-03-19T07:02:00.000Z">
+<meta property="article:modified_time" content="2026-03-19T13:42:42.467Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1773927775529">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt4/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt4: 数据预处理","description":"在机器学习中有一句至理名言，叫做“垃圾进，垃圾出”（Garbage In, Garbage Out）。这句话的意思是，如果我们输入的数据质量很差，那么我们得到的结果也会很差。  \n因此，预处理 (Preprocessing) 并不是什么可有可无的步骤，而是机器学习流程中最核心的起步环节。\n\n异常值处理Outliers，往往代表看起来很离谱的数据点。它们可能是由于数据录入错误、传感器故障或者其...","url":"https://naughtychas.github.io/notes/COMP3314/cpt4/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3314" placeholder="在 COMP3314 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="分治法">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        分治法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt4/"><span class="title">Cpt4: 数据预处理</span></a><a class="item title" href="/notes/COMP3314/cpt3/"><span class="title">Cpt3: 逻辑回归，SVM和KNN</span></a><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">Cpt2: 感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-03-19T13:42:42.467Z">2026-03-19</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-03-19T07:02:00.000Z">2026-03-19</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Cpt4: 数据预处理</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>在机器学习中有一句至理名言，叫做“垃圾进，垃圾出”（Garbage In, Garbage Out）。这句话的意思是，如果我们输入的数据质量很差，那么我们得到的结果也会很差。  </p>
+<p>因此，<strong>预处理 (Preprocessing)</strong> 并不是什么可有可无的步骤，而是机器学习流程中最核心的起步环节。</p>
+<hr>
+<h2 id="异常值处理"><a href="#异常值处理" class="headerlink" title="异常值处理"></a>异常值处理</h2><p>Outliers，往往代表看起来很离谱的数据点。它们可能是由于数据录入错误、传感器故障或者其他异常情况引起的。就好像一个病人的血压数据突然飙升到300&#x2F;200，这显然是一个异常值，因为正常的血压范围通常在120&#x2F;80左右。</p>
+<p>如果我们不处理这些异常值，那么它们可能会对模型的训练产生严重的影响。例如，异常值可能会导致模型过拟合，因为模型会试图去拟合这些离谱的数据点，从而失去了对整体数据分布的把握。</p>
+<p>因此，处理异常值是数据预处理中的重要步骤。在scikit-learn中，我们可以使用<code>IsolationForest</code>类来检测和处理异常值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> IsolationForest</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 创建一个包含异常值的数组</span></span><br><span class="line">data = np.array([[<span class="number">1</span>], [<span class="number">2</span>], [<span class="number">3</span>], [<span class="number">4</span>], [<span class="number">5</span>], [<span class="number">100</span>]])</span><br><span class="line"><span class="comment"># 创建一个IsolationForest对象</span></span><br><span class="line">iso_forest = IsolationForest(contamination=<span class="number">0.1</span>)</span><br><span class="line"><span class="comment"># 训练模型并预测异常值</span></span><br><span class="line">outliers = iso_forest.fit_predict(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;异常值的索引:&quot;</span>, np.where(outliers == -<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">异常值的索引: [5]</span><br></pre></td></tr></table></figure>
+
+<p>去除异常值之后，我们就可以得到一个更干净的数据集，这样模型就能够更好地学习到数据的真实模式，而不是被那些离谱的数据点所干扰了。</p>
+<hr>
+<h2 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h2><p>在现实世界中，数据的来源往往不够可靠。传感器可能会发生故障，数据记录可能会出现错误，或者某些信息可能根本就没有被收集到。这些情况都会导致数据集中出现缺失值。</p>
+<p>如果这些缺失值不加以处理，那么绝大多数的机器学习算法都无法正常工作，因为它们需要完整的数据来进行训练和预测。例如scikit-learn中的大多数算法都会在遇到NaN值时抛出错误。</p>
+<p>因此，处理缺失值是数据预处理中的重要步骤。常见的处理方法包括：</p>
+<h3 id="删除样本或特征"><a href="#删除样本或特征" class="headerlink" title="删除样本或特征"></a>删除样本或特征</h3><p>这是处理缺失值最直观的方法，同时也是最暴力的方法。如果一个样本丢失了关键信息，或者一个特征列有大量的空值，那么我们可以选择将其整行或者整列抹去。</p>
+<p>例如，在scikit-learn中，我们可以使用<code>dropna()</code>方法来删除包含缺失值的样本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment"># 创建一个包含缺失值的DataFrame</span></span><br><span class="line">data = &#123;<span class="string">&#x27;A&#x27;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="literal">None</span>, <span class="number">4</span>], <span class="string">&#x27;B&#x27;</span>: [<span class="number">5</span>, <span class="literal">None</span>, <span class="number">7</span>, <span class="number">8</span>]&#125;</span><br><span class="line">df = pd.DataFrame(data)</span><br><span class="line"><span class="comment"># 删除包含缺失值的样本</span></span><br><span class="line">df_cleaned = df.dropna()</span><br><span class="line"><span class="built_in">print</span>(df_cleaned)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">     A    B</span><br><span class="line">0  1.0  5.0</span><br><span class="line">3  4.0  8.0</span><br></pre></td></tr></table></figure>
+
+<p><code>dropna()</code>方法会删除包含NaN值的行或列，具体取决于参数设置。虽然这种方法简单直接，但它可能会导致数据量的显著减少，尤其是在缺失值较多的情况下。</p>
+<p>我们可以用不同参数来决定<code>dropna()</code>如何处理缺失值，例如：</p>
+<p><code>df.dropna(how=&#39;any&#39;)</code>：删除任何包含NaN值的行（默认行为）。<br><code>df.dropna(how=&#39;all&#39;)</code>：仅删除所有值都是NaN的行。</p>
+<p><code>df.dropna(thresh=2)</code>：仅删除那些至少有2个非NaN值的行。<br><code>df.dropna(subset=[&#39;A&#39;])</code>：仅删除在列A中包含NaN值的行。</p>
+<hr>
+<p>但是删除样本和特征之所以叫做“暴力手段”，是因为它可能会导致数据量的显著减少，尤其是在缺失值较多的情况下。这可能会导致模型训练不足，甚至无法训练。</p>
+<p>因此，在处理缺失值时，我们需要权衡删除样本或特征的利弊，确保我们不会丢失过多有用的信息。</p>
+<hr>
+<h3 id="填充缺失值"><a href="#填充缺失值" class="headerlink" title="填充缺失值"></a>填充缺失值</h3><p>除了删除可能有问题的数据，我们也可以选择填充缺失值。就像一个病人的血压数据丢失了，与其删除这位病人的记录，不如用该病人群体的血压均值或者中位数来猜一个值。</p>
+<p>我们一般使用 <strong>插值 (Interpolation)</strong> 方法来填充缺失值。插值是一种通过已知数据点来估计未知数据点的方法。由于我们使用scikit-learn进行机器学习，所以我们可以使用scikit-learn中的<code>SimpleImputer</code>类来实现插值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.impute <span class="keyword">import</span> SimpleImputer</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 创建一个包含缺失值的数组</span></span><br><span class="line">data = np.array([[<span class="number">1</span>, <span class="number">5</span>], [<span class="number">2</span>, np.nan], [np.nan, <span class="number">7</span>], [<span class="number">4</span>, <span class="number">8</span>]])</span><br><span class="line"><span class="comment"># 创建一个SimpleImputer对象，使用均值填充缺失值</span></span><br><span class="line">imputer = SimpleImputer(strategy=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line"><span class="comment"># 对数据进行插值</span></span><br><span class="line">data_imputed = imputer.fit_transform(data)</span><br><span class="line"><span class="built_in">print</span>(data_imputed)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输出：</span><br><span class="line">[[1.  5. ]</span><br><span class="line"> [2.  6.66666667]</span><br><span class="line"> [2.33333333 7. ]</span><br><span class="line"> [4.  8. ]]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="Transformer-和-Estimator"><a href="#Transformer-和-Estimator" class="headerlink" title="Transformer 和 Estimator"></a>Transformer 和 Estimator</h4><p>在scikit-learn中，数据预处理通常通过两种类型的对象来实现：<strong>Transformer</strong> 和 <strong>Estimator</strong>。我们刚才使用的<code>SimpleImputer</code>就是一个Transformer，用于数据的转换和预处理。</p>
+<p>Transformer是一个具有<code>fit()</code>和<code>transform()</code>方法的对象。<code>fit()</code>方法用于学习数据的统计特征，例如均值和标准差，而<code>transform()</code>方法则用于对数据进行转换，例如填充缺失值或标准化数据。具体能干什么用呢？我们可以用Transformer来实现数据的预处理步骤，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="comment"># 创建一个包含缺失值的数组</span></span><br><span class="line">data = np.array([[<span class="number">1</span>, <span class="number">5</span>], [<span class="number">2</span>, np.nan], [np.nan, <span class="number">7</span>], [<span class="number">4</span>, <span class="number">8</span>]])</span><br><span class="line"><span class="comment"># 创建一个StandardScaler对象，用于标准化数据</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line"><span class="comment"># 对数据进行标准化</span></span><br><span class="line">data_scaled = scaler.fit_transform(data_imputed)</span><br><span class="line"><span class="built_in">print</span>(data_scaled)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[[-1.34164079 -1.34164079]</span><br><span class="line"> [-0.4472136  -0.4472136 ]</span><br><span class="line"> [ 0.4472136   0.4472136 ]</span><br><span class="line"> [ 1.34164079  1.34164079]]</span><br></pre></td></tr></table></figure>
+
+<p>不着急，我们在后面会聊到有关标准化的内容。</p>
+<hr>
+<p>而Estimator与Transformer在某些地方有些相似。Estimator也有<code>fit()</code>方法，<code>transform()</code>方法则是可选的。同时，Estimator还具有一个<code>predict()</code>方法，用于进行预测。Estimator通常用于训练模型，例如线性回归、决策树等。</p>
+<hr>
+<h2 id="处理非数值信息"><a href="#处理非数值信息" class="headerlink" title="处理非数值信息"></a>处理非数值信息</h2><p>在现实世界的机器学习任务中，特征往往不仅仅是数值类型的，还可能包含文本、类别等非数值信息。例如商品尺码，颜色，或者类别标签这种文字信息。因此，作为ML工程师，我们需要将这些非数值信息转换成数值形式，以便机器学习算法能够处理。</p>
+<p>但是首先，我们需要在逻辑上区分两种不同的类别特征：<strong>定序特征 (Ordinal Features)</strong> 和 <strong>定类特征 (Nominal Features)</strong> 。这种区分至关重要，因为它决定了我们应该使用哪种编码方法来处理这些特征。</p>
+<hr>
+<h3 id="定序特征"><a href="#定序特征" class="headerlink" title="定序特征"></a>定序特征</h3><p>定序特征指那些先天性具有自然排序的特征，例如教育水平（小学、初中、高中、大学）或者客户满意度（非常不满意、不满意、一般、满意、非常满意）。这些特征的不同取值之间存在一种明确的顺序关系。这意味着，我们可以在它们之间建立一个有意义的比较关系，例如“大学”比“高中”更高，或者“满意”比“一般”更好。</p>
+<p>因此，对于定序特征，最直观的处理方式就是将其映射为整数。我们可以定义一个映射字典，将每个类别映射到一个整数值。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment"># 创建一个包含定序特征的DataFrame</span></span><br><span class="line">data = &#123;<span class="string">&#x27;Education&#x27;</span>: [<span class="string">&#x27;小学&#x27;</span>, <span class="string">&#x27;初中&#x27;</span>, <span class="string">&#x27;高中&#x27;</span>, <span class="string">&#x27;大学&#x27;</span>]&#125;</span><br><span class="line">df = pd.DataFrame(data)</span><br><span class="line"><span class="comment"># 定义一个映射字典，将教育水平映射为整数</span></span><br><span class="line">education_mapping = &#123;<span class="string">&#x27;小学&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;初中&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;高中&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;大学&#x27;</span>: <span class="number">4</span>&#125;</span><br><span class="line"><span class="comment"># 使用映射字典将教育水平转换为整数</span></span><br><span class="line">df[<span class="string">&#x27;Education_Ordinal&#x27;</span>] = df[<span class="string">&#x27;Education&#x27;</span>].<span class="built_in">map</span>(education_mapping)</span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  Education  Education_Ordinal</span><br><span class="line">0        小学                  1</span><br><span class="line">1        初中                  2</span><br><span class="line">2        高中                  3</span><br><span class="line">3        大学                  4</span><br></pre></td></tr></table></figure>
+
+<p>这样一来，我们就不仅保留了分类信息，还向模型传达了特征之间的大小顺序。这种数值化的过程是模型能够进行数学计算的基础。</p>
+<hr>
+<h3 id="定类特征"><a href="#定类特征" class="headerlink" title="定类特征"></a>定类特征</h3><p>但是如果我们遇到了定类特征，我们就没法使用刚才的策略处理数据了。</p>
+<p>定类特征与定序特征不同，它们没有内在的顺序关系。例如，颜色（红色、绿色、蓝色）或者性别（男、女）就是典型的定类特征。对于这些特征，我们不能简单地将它们映射为整数，因为这样会引入一种虚假的顺序关系，例如“红色”被映射为1，“绿色”被映射为2，这会让模型误以为“绿色”比“红色”更大。</p>
+<p>但是工程师们找到了这个问题的巧妙解决方案，那就是使用<strong>独热编码 (One-Hot Encoding)</strong>。  </p>
+<p>就拿颜色来说，我们知道颜色之间没有大小之分，那么我们就不给它们分配不同的竖直，而是为每一个颜色创建一个独立的二元特征。例如，我们可以为红色、绿色和蓝色分别创建三个特征：</p>
+<table>
+<thead>
+<tr>
+<th align="center">红色</th>
+<th align="center">绿色</th>
+<th align="center">蓝色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+</tbody></table>
+<p>而创建的这些特征，我们称之为<strong>虚拟特征 (Dummy Features)</strong>。每个虚拟特征都是一个二元特征，表示一个类别是否存在。如果一个样本是红色的，那么只有在红色特征上会有一个1，其他特征都是0，以此类推。这样，每一个类别在空间中都是正交且平等的，模型能够识别出它们是不同的状态，但是不会误以为它们之间存在大小关系。</p>
+<p>在scikit-learn中，我们可以使用<code>OneHotEncoder</code>类来实现独热编码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> OneHotEncoder</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 创建一个包含定类特征的数组</span></span><br><span class="line">data = np.array([[<span class="string">&#x27;红色&#x27;</span>], [<span class="string">&#x27;绿色&#x27;</span>], [<span class="string">&#x27;蓝色&#x27;</span>]])</span><br><span class="line"><span class="comment"># 创建一个OneHotEncoder对象</span></span><br><span class="line">encoder = OneHotEncoder(sparse=<span class="literal">False</span>)</span><br><span class="line"><span class="comment"># 对数据进行独热编码</span></span><br><span class="line">data_encoded = encoder.fit_transform(data)</span><br><span class="line"><span class="built_in">print</span>(data_encoded)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[1. 0. 0.]</span><br><span class="line"> [0. 1. 0.]</span><br><span class="line"> [0. 0. 1.]]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="丢弃首列"><a href="#丢弃首列" class="headerlink" title="丢弃首列"></a>丢弃首列</h4><p>在独热编码中，如果我们有n个类别，那么我们会创建n个二元特征。但是实际上，我们只需要n-1个特征就可以唯一地表示所有的类别了。因为如果我们知道了前n-1个特征的值，我们就可以推断出第n个特征的值。例如，如果我们有三个颜色（红色、绿色、蓝色），我们只需要创建两个特征（红色和绿色），如果一个样本在红色和绿色特征上都是0，那么我们就知道它是蓝色的。</p>
+<p>因此，在独热编码中，我们通常会丢弃首列（drop&#x3D;&#39;first&#39;），以避免引入冗余特征。这不仅可以减少特征的数量，还可以避免多重共线性的问题。</p>
+<hr>
+<h2 id="训练集与测试集的划分"><a href="#训练集与测试集的划分" class="headerlink" title="训练集与测试集的划分"></a>训练集与测试集的划分</h2><p>我们已经知道，我们会把整个数据集分为训练集和测试集。训练集用于训练模型，而测试集用于评估模型的性能。但是你有没有想过，我们该如何划分训练集和测试集呢？我们应该随机划分吗？还是按照时间顺序划分呢？或者按照某些特定的规则划分呢？</p>
+<p>首先简短概括一下过拟合和欠拟合。过拟合是指模型在训练集上表现得非常好，但在测试集上表现得很差。这通常是因为模型过于复杂，捕捉到了训练数据中的噪声和异常值，而不是学习到了数据的真实模式。欠拟合则是指模型在训练集和测试集上都表现得很差。这通常是因为模型过于简单，无法捕捉到数据中的复杂关系。</p>
+<p>因此为了保证模型真的在训练集中学到了东西，找到了规律，而不是死记硬背，我们需要确保训练集和测试集之间的分布是相似的。也就是说，训练集和测试集应该来自同一个总体，并且具有相似的特征分布和标签分布。</p>
+<p>用常用的UCI Wine Dataset作为例子，在scikit-learn中，我们可以使用<code>train_test_split</code>函数来随机划分训练集和测试集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_wine</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载UCI Wine Dataset</span></span><br><span class="line">wine = load_wine()</span><br><span class="line">X, y = wine.data, wine.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分训练集和测试集</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>, stratify=y)</span><br></pre></td></tr></table></figure>
+
+<p><code>stratify=y</code>参数确保了训练集和测试集中的类别分布与原始数据集相同，这有助于提高模型的泛化能力。</p>
+<p>在这里有一个微妙的博弈。如果我们留给模型训练的数据太少，那么模型就无法学到足够的规律，导致欠拟合。但是如果我们留给模型训练的数据太多，那么我们就没有足够的数据来对模型的泛化能力做出评估，可能会导致过拟合。因此对于UCI Wine这样的中等规模数据集，通常我们会选择将20%到30%的数据作为测试集，剩下的70%到80%的数据作为训练集。</p>
+<p>还有一个很有意思的细节：有资深算法工程师会选择在完成模型评估后，通常会合并训练集和测试集，利用完整的数据集来重新训练模型，以期获得更好的性能。但是这样做可能会导致更差的泛化能力。为什么？因为我们在评估模型性能时，使用了测试集来评估模型的泛化能力。如果我们在完成评估后又将测试集的数据用于训练，那么我们就失去了一个独立的测试集来评估模型的性能了。这样一来，我们就无法确定模型在未见过的数据上的表现了，可能会导致过拟合。因此，在实际应用中，我们通常会保留一个独立的测试集来评估模型的性能，而不是将其用于训练。</p>
+<hr>
+<h2 id="特征缩放"><a href="#特征缩放" class="headerlink" title="特征缩放"></a>特征缩放</h2><p>在我们刚才的葡萄酒数据集中，Alcohol的数值通常在10-15之间，但是Proline的含量在300-1500之间。这种特征值范围的巨大差异可能会导致某些机器学习算法（例如KNN、SVM等）在训练过程中对Proline特征过于敏感，而忽略了Alcohol特征的重要性。因此，我们需要对特征进行缩放，使得它们在相似的数值范围内，这样模型才能更好地学习到每个特征的贡献。</p>
+<p><strong>特征缩放 (Feature Scaling)</strong> 做的就是这件事，用于将不同特征的数值范围调整到相似的尺度上。</p>
+<p>我们常用的特征缩放方法包括<strong>标准化 (Standardization)</strong> 和<strong>归一化 (Normalization)</strong>。</p>
+<hr>
+<h3 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h3><p>归一化相对简单。它寻找数据集中的极值，然后线性地将所有样本压缩到一个固定的范围内，也就是Min-Max Scaling。归一化的公式如下：</p>
+<p>$$X&#39; &#x3D; \frac{X - X_{min}}{X_{max} - X_{min}}$$</p>
+<p>其中，$X$是原始特征值，$X_{min}$和$X_{max}$分别是该特征的最小值和最大值。归一化将特征值线性地映射到0和1之间，这样不同特征的数值范围就变得相似了。</p>
+<p>归一化虽然能够保证量级统一，但是它对异常值非常敏感。如果数据集中存在异常值，那么归一化可能会将大部分数据压缩到一个很小的范围内，从而影响模型的性能。</p>
+<p>因此...</p>
+<hr>
+<h3 id="标准化"><a href="#标准化" class="headerlink" title="标准化"></a>标准化</h3><p>...在大多数机器学习任务中，我们更倾向于使用标准化。标准化的数学逻辑是：</p>
+<p>$$X&#39; &#x3D; \frac{X - \mu}{\sigma}$$</p>
+<p>通过减去均值 $\mu$ 并除以标准差 $\sigma$，我们把特征转化为了一个均值为0，方差为1的标准正态分布。</p>
+<p>这样我们不仅保留了异常值的信息，同时还使得不同特征的数值范围变得相似了。这就能让梯度下降在搜索全局最优解的时候更加稳定且更快速的收敛。</p>
+<p>在scikit-learn中，我们可以使用<code>StandardScaler</code>类来实现标准化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 创建一个包含特征值的数组</span></span><br><span class="line">data = np.array([[<span class="number">1</span>, <span class="number">5</span>], [<span class="number">2</span>, <span class="number">6</span>], [<span class="number">3</span>, <span class="number">7</span>], [<span class="number">4</span>, <span class="number">8</span>]])</span><br><span class="line"><span class="comment"># 创建一个StandardScaler对象</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line"><span class="comment"># 对数据进行标准化</span></span><br><span class="line">data_scaled = scaler.fit_transform(data)</span><br><span class="line"><span class="built_in">print</span>(data_scaled)</span><br></pre></td></tr></table></figure>
+
+<p>标准化不仅仅移除了偏差，同时也在重塑数据的分布。数据重塑后，分布更加对称，且具有相似的尺度，这有助于提高模型的性能和泛化能力。但是如果我们原本的数据集的分布非常偏斜，那么标准化可能无法完全解决这个问题。在这种情况下，我们可能需要考虑其他的变换方法，例如对数变换或者Box-Cox变换，以使数据的分布更加接近正态分布。</p>
+<hr>
+<h2 id="特征选择"><a href="#特征选择" class="headerlink" title="特征选择"></a>特征选择</h2><p>经过特征缩放我们保证每一个特征都能公平地被模型学习，但是我们如何知道哪些特征是重要的，哪些特征是冗余的？</p>
+<p><strong>特征选择 (Feature Selection)</strong> 就是用来解决这个问题的。它基本上就像是一个剪辑师，剪掉不重要的支线剧情，让模型专注于主线剧情。通过特征选择，我们可以提高模型的性能，减少过拟合，并且让模型更容易解释。这么做有四大好处啊：</p>
+<ol>
+<li>简化模型：通过去掉不重要的特征，我们可以简化模型的结构，使得模型更容易理解和解释。</li>
+<li>提高性能：去掉冗余的特征可以减少模型的复杂度，从而提高模型的泛化能力，减少过拟合的风险。</li>
+<li>降低计算成本：特征选择可以减少模型训练和预测所需的计算资源，特别是在处理高维数据时。</li>
+<li>提高模型的可解释性：通过选择重要的特征，我们可以更好地理解模型的决策过程，识别出哪些特征对预测结果有重要影响。</li>
+</ol>
+<p>其中我们做特征选择的主要原因，就是为了防止过拟合。</p>
+<p>我们主要把我们的目光聚焦到两种特征选择技术：<strong>L1 正则化 (L1 Regularization)</strong> 和 <strong>序列后向选择 (Sequential Backward Selection)</strong>。</p>
+<hr>
+<h3 id="L1-正则化"><a href="#L1-正则化" class="headerlink" title="L1 正则化"></a>L1 正则化</h3><p>我们在之前第三章就聊过L2正则化了。你看公式的最后面：</p>
+<p>$$J(\theta) &#x3D; \frac{1}{m} \sum_{i&#x3D;1}^{m} L(h_\theta(x^{(i)}), y^{(i)}) + \lambda \sum_{j&#x3D;1}^{n} \theta_j^2$$</p>
+<p>你会发现它的惩罚项是权重的平方和 $||w||_2^2$。但是由于L2正则化的惩罚项是连续且可微的，所以它会将权重缩小到接近于零，但不会完全变为零。这意味着，虽然L2正则化可以减少模型的复杂度，但它并不能真正地进行特征选择，因为所有的特征仍然保留在模型中。</p>
+<p>那么L1正则化的惩罚项是什么呢？它的惩罚项是权重的绝对值和 $||w||_1$。同样在后面：</p>
+<p>$$J(\theta) &#x3D; \frac{1}{m} \sum_{i&#x3D;1}^{m} L(h_\theta(x^{(i)}), y^{(i)}) + \lambda \sum_{j&#x3D;1}^{n} |\theta_j|$$</p>
+<p>由于L1正则化的惩罚项是非连续且不可微的，所以它会将一些权重完全变为零。这意味着，L1正则化不仅可以减少模型的复杂度，还可以真正地进行特征选择，因为它会将不重要的特征的权重变为零，从而将其从模型中剔除。</p>
+<p>我们可以尝试使用图像来思考这个问题。如果你在二维平面上画出等值线，你会发现 $w_1^2 + w_2^2 &#x3D; c$ 形成的是一个圆。由于圆在各个方向上都是平滑对称的，这意味着它对于所有权重的压制是雨露均沾的，不会偏向于某一个特征。</p>
+<p>而L1的惩罚项公式 $|w_1| + |w_2| &#x3D; c$ 描述的不再是一个圆，而是一个旋转了45度的正方形。这个正方形的边界上有很多尖角，这些尖角对应于某些权重为零的情况。这就意味着，L1正则化更倾向于将一些权重压缩到零，从而实现特征选择.</p>
+<p>如果我们在图像上初始化一个起始点，并且沿着梯度下降的方向进行优化，我们会发现L1正则化的路径更容易碰到那些尖角，从而使得某些权重变为零。而L2正则化的路径则更平滑，不太可能碰到那些尖角，因此很难将权重完全压缩到零。</p>
+<p>因此，这就是为什么我们说L2会让参数向原点收缩，而L1会产生稀疏解的原因了。</p>
+<hr>
+<p>我们如何控制模型剔除特征的狠劲？在scikit-learn中，我们可以通过调整正则化强度参数 C 来控制惩罚力度。C是正则化强度的倒数，C越小，正则化强度越大，模型越倾向于剔除特征；C越大，正则化强度越小，模型越倾向于保留特征。因此，如果我们想要一个更稀疏的模型，我们可以选择一个较小的C值；如果我们想要一个更密集的模型，我们可以选择一个较大的C值。</p>
+<hr>
+<p>所以你可以清楚的看到在代码里，你会发现应用L1正则化的模型会有很多权重被压缩到零，而应用L2正则化的模型则会有所有权重都被缩小，但没有一个权重完全变为零。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 创建一个包含特征值的数组</span></span><br><span class="line">X = np.array([[<span class="number">1</span>, <span class="number">5</span>], [<span class="number">2</span>, <span class="number">6</span>], [<span class="number">3</span>, <span class="number">7</span>], [<span class="number">4</span>, <span class="number">8</span>]])</span><br><span class="line">y = np.array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line"><span class="comment"># 创建一个LogisticRegression对象，使用L1正则化</span></span><br><span class="line">model_l1 = LogisticRegression(penalty=<span class="string">&#x27;l1&#x27;</span>, solver=<span class="string">&#x27;liblinear&#x27;</span>)</span><br><span class="line">model_l1.fit(X, y)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;L1正则化的权重:&quot;</span>, model_l1.coef_)</span><br><span class="line"><span class="comment"># 创建一个LogisticRegression对象，使用L2正则化</span></span><br><span class="line">model_l2 = LogisticRegression(penalty=<span class="string">&#x27;l2&#x27;</span>)</span><br><span class="line">model_l2.fit(X, y)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;L2正则化的权重:&quot;</span>, model_l2.coef_)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">L1正则化的权重: [[0. 0.]]</span><br><span class="line">L2正则化的权重: [[0.5 0.5]]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="序列后向选择"><a href="#序列后向选择" class="headerlink" title="序列后向选择"></a>序列后向选择</h3><p><strong>序列后向选择 (Sequential Backward Selection)</strong> 像一场残酷的淘汰赛，它的目标是将一个初始的 $d$ 维特征空间逐步缩小到一个更小的 $k$ 维特征子空间，其中 $k &lt; d$。这个过程是通过迭代地删除最不重要的特征来实现的。</p>
+<p>但是要做到这一点，我们要定义一个衡量标准，我们称之为 <strong>Criterion Function ($J$)</strong>，它用于评估每个特征子集的性能。这个函数可以是模型的准确率、AUC、F1分数等任何能够反映模型性能的指标。  </p>
+<p>随后，SBS会一轮一轮进行，并在每一轮中尝试分别剔除现有的每一个特征，并评估使用剩下特征训练的模型性能如何。它会选择那个剔除后性能下降最小的特征进行删除。这个过程会一直持续，直到我们达到预定的特征数量 $k$。</p>
+<p>就跟大逃杀一样。</p>
+<p>我们可以使用公式来描述这个过程：</p>
+<p>$$\text{SBS}(X, y, k) &#x3D; \arg\min_{j} J(X_{-j}, y)$$</p>
+<p>其中，$X_{-j}$ 表示从特征集合 $X$ 中剔除第 $j$ 个特征后的子集，$J(X_{-j}, y)$ 是使用这个子集训练模型后得到的性能指标。SBS会选择那个使得性能指标最小化的特征进行剔除。</p>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-text">异常值处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-text">缺失值处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%A0%B7%E6%9C%AC%E6%88%96%E7%89%B9%E5%BE%81"><span class="toc-text">删除样本或特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A1%AB%E5%85%85%E7%BC%BA%E5%A4%B1%E5%80%BC"><span class="toc-text">填充缺失值</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Transformer-%E5%92%8C-Estimator"><span class="toc-text">Transformer 和 Estimator</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E9%9D%9E%E6%95%B0%E5%80%BC%E4%BF%A1%E6%81%AF"><span class="toc-text">处理非数值信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E5%BA%8F%E7%89%B9%E5%BE%81"><span class="toc-text">定序特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%B1%BB%E7%89%B9%E5%BE%81"><span class="toc-text">定类特征</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%A2%E5%BC%83%E9%A6%96%E5%88%97"><span class="toc-text">丢弃首列</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E9%9B%86%E4%B8%8E%E6%B5%8B%E8%AF%95%E9%9B%86%E7%9A%84%E5%88%92%E5%88%86"><span class="toc-text">训练集与测试集的划分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E7%BC%A9%E6%94%BE"><span class="toc-text">特征缩放</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E4%B8%80%E5%8C%96"><span class="toc-text">归一化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-text">标准化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9"><span class="toc-text">特征选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#L1-%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-text">L1 正则化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%90%8E%E5%90%91%E9%80%89%E6%8B%A9"><span class="toc-text">序列后向选择</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1773927775531" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
