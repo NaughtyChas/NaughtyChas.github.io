@@ -1,0 +1,1234 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Cpt5: 数据降维 - Naucha</title>
+
+  
+    <meta name="description" content="我们发现即使我们对数据进行了预处理，使用这些干净的数据直接进行分析和建模可能仍然存在一些问题。机器学习发展至今，需要处理的数据集也跟随问题的复杂性不断增加，数据集的维度也在不断增加。 这些高维数据集可能包含许多特征，但其中一些特征可能是冗余的，或者与目标变量没有强相关性。这些冗余或无关的特征可能会导致模型过拟合，降低模型的泛化能力。 因此，我们也有相对应的解决方案。在这一章中，我们来看看有关数据降">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cpt5: 数据降维">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt5/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="我们发现即使我们对数据进行了预处理，使用这些干净的数据直接进行分析和建模可能仍然存在一些问题。机器学习发展至今，需要处理的数据集也跟随问题的复杂性不断增加，数据集的维度也在不断增加。 这些高维数据集可能包含许多特征，但其中一些特征可能是冗余的，或者与目标变量没有强相关性。这些冗余或无关的特征可能会导致模型过拟合，降低模型的泛化能力。 因此，我们也有相对应的解决方案。在这一章中，我们来看看有关数据降">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-03-20T13:09:00.000Z">
+<meta property="article:modified_time" content="2026-03-24T13:09:58.670Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1774357807660">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt5/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt5: 数据降维","description":"我们发现即使我们对数据进行了预处理，使用这些干净的数据直接进行分析和建模可能仍然存在一些问题。机器学习发展至今，需要处理的数据集也跟随问题的复杂性不断增加，数据集的维度也在不断增加。\n这些高维数据集可能包含许多特征，但其中一些特征可能是冗余的，或者与目标变量没有强相关性。这些冗余或无关的特征可能会导致模型过拟合，降低模型的泛化能力。\n因此，我们也有相对应的解决方案。在这一章中，我们来看看有关...","url":"https://naughtychas.github.io/notes/COMP3314/cpt5/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3314" placeholder="在 COMP3314 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="分治法">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        分治法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt5/"><span class="title">Cpt5: 数据降维</span></a><a class="item title" href="/notes/COMP3314/cpt4/"><span class="title">Cpt4: 数据预处理</span></a><a class="item title" href="/notes/COMP3314/cpt3/"><span class="title">Cpt3: 逻辑回归，SVM和KNN</span></a><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">Cpt2: 感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-03-24T13:09:58.670Z">2026-03-24</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-03-20T13:09:00.000Z">2026-03-20</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Cpt5: 数据降维</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>我们发现即使我们对数据进行了预处理，使用这些干净的数据直接进行分析和建模可能仍然存在一些问题。机器学习发展至今，需要处理的数据集也跟随问题的复杂性不断增加，数据集的维度也在不断增加。</p>
+<p>这些高维数据集可能包含许多特征，但其中一些特征可能是冗余的，或者与目标变量没有强相关性。这些冗余或无关的特征可能会导致模型过拟合，降低模型的泛化能力。</p>
+<p>因此，我们也有相对应的解决方案。在这一章中，我们来看看有关数据降维，你需要了解的基本概念和方法。</p>
+<hr>
+<h2 id="什么是数据降维？"><a href="#什么是数据降维？" class="headerlink" title="什么是数据降维？"></a>什么是数据降维？</h2><p>首先我们需要认识到，我们为什么这么需要数据降维。</p>
+<p>假设我们的数据集只有两个维度，我们从一个单位正方形中选择一个随机的点，那么这个点距离正方形边界距离小于0.001的概率是 &lt;0.4%。  </p>
+<p>哦哦但是如果我们考虑一个10000维的数据集，我们在这个超立方体中选择一个随机的点，那么这个点距离边界距离小于0.001的概率是 &gt;99.99999%。</p>
+<p>同样如果还是这两个数据集，我们在里面随机选择两个点，那么对于2D数据集来说，平均距离是0.52，而对于10000维的数据集来说，平均距离是408.25。边界距离的数据告诉我们，在高维空间中，数据点更可能位于边界附近，而不是中心区域。而平均距离的数据告诉我们，在高维空间中，数据点之间的距离变得非常大，这可能导致模型难以捕捉到数据之间的关系。</p>
+<p>因此，我们首先想到的第一对策就是，能不能把这些高维数据“精简化”，看看有没有方法丢弃一些我们不需要的特征，或者把一些特征合并成一个新的特征，这样我们就可以在一个更低维的空间中进行分析和建模了。</p>
+<p>我们常说的 **数据降维 (Dimensionality Reduction)**就是这样的一个过程，它是指将高维数据映射到一个更低维的空间中，同时尽可能保留原始数据的结构和信息。这样一来，我们使用这些数据训练出来的模型就更加简单，泛化能力也更强了。</p>
+<hr>
+<h2 id="投影"><a href="#投影" class="headerlink" title="投影"></a>投影</h2><p>工程师想出来的直接对策之一就是 <strong>投影(Projection)</strong>。投影的思想简单粗暴，就是把高维的数据想办法投影到一个更低维的空间中去。</p>
+<p>为什么我们能够这样做，同时不需要考虑夸张的信息丢失？在绝大多数的数据集中，特征之间是存在相关性的。有些特征是冗余的，而有些特征之间存在强相关性。那么我们可以选择合并这些相关特征，同时丢弃一些冗余的特征，这样我们就可以在一个更简单的空间中进行分析和建模了。</p>
+<p><img src="https://files.seeusercontent.com/2026/03/23/ao4K/pasted-image-1774259383022.webp" alt="pasted-image-1774259383022.webp"></p>
+<p>如图所示，加入我们有一个三维数据集，而我们想把它投影到一个二维的空间中去，那么我们就可以选择一个平面，把这个三维数据集投影到这个平面上去。这样我们就得到了一个新的二维数据集。</p>
+<hr>
+<p>但是投影不是万金油，它有一个很大的问题，就是投影比较吃数据集的分布情况。</p>
+<p>下图是一个瑞士卷形状的数据集，你可以很清楚地在3D图像中看出来。<del>mika狂喜</del> 但是当我们把它投影到一个二维的空间中去的时候，我们就完全看不出来这个数据集的结构了：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/23/2kFw/pasted-image-1774259615403.webp" alt="pasted-image-1774259615403.webp"></p>
+<p>直接丢失 $x_3$ 的信息会导致Squash，被压扁了。不是很好。</p>
+<p>因此，我们需要一些更高级的降维方法，来帮助我们更好地保留数据集的结构和信息。其中一个解决方案就是 Manifold Learning：</p>
+<hr>
+<h3 id="流形学习"><a href="#流形学习" class="headerlink" title="流形学习"></a>流形学习</h3><p><strong>流形学习(Manifold Learning)</strong> 就能够很好的解决瑞士卷问题。</p>
+<p>首先我们要知道什么是流形。<strong>流形(Manifold)</strong> 是一个数学概念，它是一个局部类似于欧几里得空间的拓扑空间。简单来说，流形就是一个在局部看起来像平坦空间的曲面或者空间。比如说，地球表面就是一个流形，在局部看起来像平坦的二维空间，但实际上它是一个三维的球面。</p>
+<p>虽然我们的数据集可能存在于一个高维空间中，但它实际上可能存在于一个更低维的流形上。对于瑞士卷，我们可以将它看作是一个二维平面卷起来，形成三维结构。因此，我们可以使用流形学习的方法来找到这个二维流形，并将数据点映射到这个流形上去。这样我们就能够在一个更低维的空间中进行分析和建模了，同时也能够保留数据集的结构和信息。</p>
+<p>经过流形学习得出的低维展开一般是是简单可分的，但是经过流形学习降维的数据可能还不如原始数据更难以分离。比如下图还是瑞士卷形状的数据集，但是分布不一：一个顺着流形面方向分布，而另一个垂直于流形面方向分布：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/23/wOl7/pasted-image-1774260108518.webp" alt="pasted-image-1774260108518.webp"></p>
+<p>所以我们还需要一些其他的降维方法来帮助我们更好地保留数据集的结构和信息。</p>
+<hr>
+<h2 id="主成分分析-PCA"><a href="#主成分分析-PCA" class="headerlink" title="主成分分析 (PCA)"></a>主成分分析 (PCA)</h2><p>主成分分析的内容在之前的笔记中也有所提及，有兴趣可以来看一看</p>
+<div class="tag-plugin link dis-select"><a class="link-card rich" title="Chapter&nbsp;8:&nbsp;PCA" href="/notes/COMP3354/chapter8/" cardlink autofill="icon,desc"><div class="top"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div><span class="cap link footnote">https://naughtychas.github.io/notes/COMP3354/chapter8/</span></div><div class="bottom"><span class="title">Chapter&nbsp;8:&nbsp;PCA</span><span class="cap desc footnote"></span></div></a></div>
+
+<p>但是鉴于我觉得当时写的比较乱七八糟的，我们在这里重新整理一下吧。</p>
+<hr>
+<p>主成分分析，全称Principal Component Analysis，简称PCA，可以说是目前最流行的数据降维方法了。</p>
+<p>还记得刚才我们说的投影吗？PCA做的事情就是在所有可能的投影中，找到一个最优的投影，这个投影能够最大程度地保留数据集的结构和信息。因此，我们要找到那个能够使得数据点之间的距离最大化的超平面。</p>
+<hr>
+<h3 id="方差"><a href="#方差" class="headerlink" title="方差"></a>方差</h3><p>为了选择最佳超平面，我们需要最大限度地保留数据集的方差。我们可以将这个过程理解为在高维空间中寻找一个“最有信息量”的投影方向。</p>
+<p>就像你要为一根法棍拍一张照片。如果你从侧面拍摄，你会看到法棍的长度和宽度，这样你就能够获得更多的信息。相反，如果你从顶部拍摄，你只能看到法棍的宽度，而无法看到它的长度，这样你就会丢失一些信息。</p>
+<p>在数据集中，方差能够衡量数据在某个方向上的分布广度，也可以理解成“信息量”。因此，我们希望找到一个投影方向，使得数据在这个方向上的方差最大化，这样我们就能够保留更多的信息了。方差大的方向意味着数据点在这个方向上分布更广，法棍就看起来更长；反之，方差小的方向意味着数据点在这个方向上分布更窄，法棍就看起来更不像法棍。</p>
+<p>这就引出了主成分的概念。</p>
+<hr>
+<h3 id="主成分"><a href="#主成分" class="headerlink" title="主成分"></a>主成分</h3><p><strong>主成分(Principal Component)</strong> 是指在数据集中方差最大的方向，也可以理解成数据集中最有信息量的方向。第一个主成分是方差最大的方向，第二个主成分是与第一个主成分正交且方差次大的方向，依此类推。</p>
+<p><img src="https://files.seeusercontent.com/2026/03/23/w5nZ/pasted-image-1774266522884.webp" alt="pasted-image-1774266522884.webp"></p>
+<p>你能看出我们尝试将一个长条形的蓝色的数据集投影到一维轴线上。数据在c1方向上的方差最大，因此c1是第一个主成分。数据在c2方向上的方差次大，因此c2是第二个主成分。如果这时候我们选择按照c1方向保留信息，那么我们就尽可能保留了最多的原始数据信息。</p>
+<p>那么我们肯定不能靠人用眼睛来判断主成分方向。我们需要告诉计算机如何使用数学工具计算出任何数据集的主成分。</p>
+<hr>
+<h3 id="奇异值分解"><a href="#奇异值分解" class="headerlink" title="奇异值分解"></a>奇异值分解</h3><p>PCA有传统的旧方法来算出主成分的方法，这需要我们对数据集计算协方差矩阵，然后对这个矩阵进行特征值分解，最后根据特征值的大小来选择主成分的方向。但是对于现代的数据集来说，这个方法可能会非常慢，因为计算协方差矩阵和进行特征值分解的计算复杂度都很高。那么有没有方法去找到主成分的方向，而不需要计算协方差矩阵和进行特征值分解呢？</p>
+<p>隆重介绍，<strong>奇异值分解(Singular Value Decomposition, SVD)</strong>。与其计算协方差矩阵并进行特征值分解，不如直接对数据矩阵进行奇异值分解。</p>
+<p>SVD的核心逻辑是：对于一个给定的数据矩阵 $X$，其中：</p>
+<p>$$X \in \mathbb{R}^{n \times d}$$</p>
+<p>我们说 $n$ 是数据点的数量，$d$ 是特征的数量。那么我们可以对这个矩阵进行奇异值分解，得到三个矩阵 $U$、$\Sigma$ 和 $V^T$，使得：</p>
+<p>$$X &#x3D; U \Sigma V^T$$</p>
+<p>其中：</p>
+<ul>
+<li><p>$U \in \mathbb{R}^{n \times n}$，列向量是左奇异向量，列向量两两正交，且都是单位向量。这对于数据来说意味着，每个数据点在不同方向上的投影是相互独立的，并且每个投影的长度都是1，这样我们就能够更好地理解数据在不同方向上的分布情况了。</p>
+</li>
+<li><p>$\Sigma \in \mathbb{R}^{n \times d}$ 是准对角矩阵，只有主对角线可能有非零元素，其他地方一定是0。我们叫这些非零元素为奇异值，它们按照从大到小的顺序排列。</p>
+<p>  很多人不理解奇异值究竟代表什么含义，其实它们代表了数据在不同方向上的重要程度。每个奇异值 $\sigma_i$ 就表示了数据在第i个主成分方向上的方差大小，也就是数据在这个方向上的分布广度。</p>
+<p>  我们会将奇异值按照从大到小的顺序排列，这样我们就能够知道哪些主成分方向是最重要的，哪些主成分方向是次要的了。通常来说，我们会选择前k个奇异值对应的主成分方向来进行降维，这样我们就能够保留数据中最重要的信息了。</p>
+</li>
+<li><p>$V^T \in \mathbb{R}^{d \times d}$，列向量是右奇异向量，同样也是正交矩阵。在这个矩阵中， $V$ 的列向量对应于数据集的特征方向，也就是我们之前提到的主成分方向。</p>
+</li>
+</ul>
+<hr>
+<p>数学逻辑就是上面这样，那么直觉上怎么理解？我们把 $X$ 看作是一个线性变换。我们输入一个 $R^d$ 的向量，经过这个线性变换之后，我们得到一个 $R^n$ 的向量。而SVD告诉我们这个变换可以拆成三步，也就是 $$X &#x3D; U \Sigma V^T$$。</p>
+<p>想象一下我们把一团数据标准化，然后尝试进行SVD。首先：</p>
+<ol>
+<li><p>由于这个矩阵代表的是原始空间的主成分方向，$V^T$代表我们在输入空间内做一个旋转，尝试将坐标轴与数据集的主方向对齐。</p>
+</li>
+<li><p>接下来我们要做的是把这些数据在这些方向上“拉开”，让它们的分布反映原始数据的方差。$\Sigma$表示我们在这个新的坐标系中进行缩放，而每个奇异值 $$\sigma_i$$ 就表示我们在第i个主成分方向上的缩放程度。</p>
+</li>
+<li><p>最后，我们已经在主成分空间中完成了投影和拉伸，现在我们要做的就是把这些数据“搬回”原始空间，让它们的位置和方向能够正确表示。$U$就是这样一个搬运工，表示我们要在输出空间内再做一次旋转，来将数据点映射到最终的空间中去。</p>
+</li>
+</ol>
+<hr>
+<h3 id="投影到主成分空间"><a href="#投影到主成分空间" class="headerlink" title="投影到主成分空间"></a>投影到主成分空间</h3><p>一旦我们找到并且选择了前k个主成分方向，我们就可以将数据点投影到这些主成分方向上去，得到一个新的低维数据集。</p>
+<p>在数学上，我们通过下面的变换来投影数据点：</p>
+<p>$$x &#x3D; [x_1, x_2, ..., x_d], x \in \mathbb{R}^d$$</p>
+<p>$$\downarrow xW, W \in \mathbb{R}^{d \times k}$$</p>
+<p>$$z &#x3D; [z_1, z_2, ..., z_k], z \in \mathbb{R}^k$$</p>
+<p>何意味？我们有一个原始数据点 $x$，通过乘以一个权重矩阵 $W$，我们得到了一个新的数据点 $z$，这个新的数据点就是在主成分空间中的表示了。这个权重矩阵 $W$ 的列向量就是我们之前选择的前k个主成分方向。</p>
+<hr>
+<h3 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h3><p>使用python的这些库，我们可以很轻松的使用封装好的PCA类来进行数据降维。还记得之前的葡萄酒数据集吗？我们来看看如何对这个数据集进行降维：</p>
+<h4 id="手动挡"><a href="#手动挡" class="headerlink" title="手动挡"></a>手动挡</h4><p>首先，我们来做标准化和数据分割：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">df_wine = pd.read_csv(<span class="string">&#x27;https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data&#x27;</span>, header=<span class="literal">None</span>)</span><br><span class="line">df_wine.columns = [<span class="string">&#x27;Class&#x27;</span>, <span class="string">&#x27;Alcohol&#x27;</span>, <span class="string">&#x27;Malic acid&#x27;</span>, <span class="string">&#x27;Ash&#x27;</span>, <span class="string">&#x27;Alcalinity of ash&#x27;</span>,    <span class="string">&#x27;Magnesium&#x27;</span>, <span class="string">&#x27;Total phenols&#x27;</span>, <span class="string">&#x27;Flavanoids&#x27;</span>, <span class="string">&#x27;Nonflavanoid phenols&#x27;</span>, <span class="string">&#x27;Proanthocyanins&#x27;</span>, <span class="string">&#x27;Color intensity&#x27;</span>, <span class="string">&#x27;Hue&#x27;</span>, <span class="string">&#x27;OD280/OD315 of diluted wines&#x27;</span>, <span class="string">&#x27;Proline&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># iloc[:, 1:]表示选择所有行，除了第一列以外的所有列作为特征；iloc[:, 0]表示选择所有行，第一列作为标签</span></span><br><span class="line">X, y = df_wine.iloc[:, <span class="number">1</span>:].values, df_wine.iloc[:, <span class="number">0</span>].values</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.3</span>, stratify=y, random_state=<span class="number">0</span>)</span><br><span class="line">sc = StandardScaler()</span><br><span class="line">X_train_std = sc.fit_transform(X_train)</span><br><span class="line">X_test_std = sc.fit.transform(X_test)</span><br></pre></td></tr></table></figure>
+
+<p>随后，我们来直接对标准化后的训练数据进行奇异值分解：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接对标准化后的训练数据进行奇异值分解</span></span><br><span class="line">U, s, Vt = np.linalg.svd(X_train_std)</span><br><span class="line"><span class="built_in">print</span>(Vt.shape) <span class="comment"># (13, 13)</span></span><br><span class="line"><span class="built_in">print</span>(Vt[:<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择前两个主成分方向</span></span><br><span class="line"><span class="built_in">print</span>(X_train[<span class="number">0</span>])</span><br><span class="line">W = Vt.T[:, :<span class="number">2</span>] <span class="comment"># .T表示转置</span></span><br><span class="line"><span class="built_in">print</span>(W)</span><br><span class="line">X_train_pca = X_train_std.dot(W) </span><br><span class="line"><span class="comment"># 这里我们直接使用了矩阵乘法来进行投影，X_train_std是一个(n_samples, n_features)的矩阵，W是一个(n_features, n_components)的矩阵，结果是一个(n_samples, n_components)的矩阵，也就是我们降维后的数据集了。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(X_train_pca[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<p>经过奇异值分解后，我们就可以得到一个新的数据集，这个数据集在主成分空间中表示了原始数据集的结构和信息了。</p>
+<hr>
+<h4 id="自动挡"><a href="#自动挡" class="headerlink" title="自动挡"></a>自动挡</h4><p>说得好，但是有没有更简单的方法？</p>
+<p>我们直接用传奇伟大scikit-learn库中的PCA类来进行数据降维，几行就ok了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line">pca = PCA(n_components=<span class="number">2</span>)</span><br><span class="line">X_train_pca = pca.fit_transform(X_train_std)</span><br></pre></td></tr></table></figure>
+
+<p>完事了。你可以使用matplotlib来画出前后两个数据集的分布情况，你会发现结果是一样的。</p>
+<hr>
+<h4 id="方差比例"><a href="#方差比例" class="headerlink" title="方差比例"></a>方差比例</h4><p>方差比例告诉我们每个主成分方向上保留了原始数据集的方差的比例，解释了每个主成分方向上保留了多少信息。</p>
+<p>你可以通过<code>explained_variance_ratio_</code>属性来查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(pca.explained_variance_ratio_)</span><br></pre></td></tr></table></figure>
+
+<p>就好比说这个输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([0.39809123, 0.12190877, 0.09455811, 0.07313287, 0.06475628, 0.05660977, 0.04934809, 0.03530219, 0.02545516, 0.02144817, 0.01807942, 0.01608624,</span><br><span class="line">       0.01597406])</span><br></pre></td></tr></table></figure>
+
+<p>就说明有39%的方差被第一个主成分方向保留，12%的方差被第二个主成分方向保留，依此类推。</p>
+<p>通过这些数据，你就能够知道如果我们选择前k个主成分方向来进行降维，我们就能够保留原始数据集的多少信息。通常来说，我们会选择前k个主成分方向，使得它们的方差比例之和达到一个预设的阈值，比如说95%：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pca = PCA()</span><br><span class="line">pca.fit(X_train_std)</span><br><span class="line">cumsum = np.cumsum(pca.explained_variance_ratio_)</span><br><span class="line">k = np.argmax(cumsum &gt;= <span class="number">0.95</span>) + <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(k)</span><br></pre></td></tr></table></figure>
+
+<p>除了这种写法，你也可以直接在PCA类中设置<code>n_components=0.95</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pca = PCA(n_components=<span class="number">0.95</span>)</span><br><span class="line">X_train_pca = pca.fit_transform(X_train_std)</span><br><span class="line"><span class="built_in">print</span>(X_train_pca.shape)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="数据压缩"><a href="#数据压缩" class="headerlink" title="数据压缩"></a>数据压缩</h2><p>PCA不仅可以用来进行数据降维，还可以用来进行数据压缩。比如我们在MNIST上运用PCA压缩数据，我们就可以用更少的特征来表达原始数据，同时能够尽可能保留信息。</p>
+<p>原始的MNIST数据集有784个特征，每一个的分辨率都是28x28。使用PCA后，我们可以将这个数据集降维到一个更低的维度，比如说50维，这样我们就能够用更少的特征来表达原始数据了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> fetch_openml</span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line">mnist = fetch_openml(<span class="string">&#x27;mnist_784&#x27;</span>, version=<span class="number">1</span>)</span><br><span class="line">X = mnist.data.astype(<span class="string">&#x27;float64&#x27;</span>)</span><br><span class="line">y = mnist.target.astype(<span class="string">&#x27;int64&#x27;</span>)</span><br><span class="line">pca = PCA(n_components=<span class="number">50</span>)</span><br><span class="line">X_reduced = pca.fit_transform(X)</span><br><span class="line"><span class="built_in">print</span>(X_reduced.shape) <span class="comment"># (70000, 50)</span></span><br></pre></td></tr></table></figure>
+
+<p>更好的是，我们还可以通过逆变换来将降维后的数据重新映射回原始空间中去，这样我们就能够得到一个近似于原始数据的重建数据了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X_approx = pca.inverse_transform(X_reduced)</span><br><span class="line"><span class="built_in">print</span>(X_approx.shape) <span class="comment"># (70000, 784)</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="其他PCA的变体"><a href="#其他PCA的变体" class="headerlink" title="其他PCA的变体"></a>其他PCA的变体</h2><h3 id="随机PCA"><a href="#随机PCA" class="headerlink" title="随机PCA"></a>随机PCA</h3><p><strong>随机PCA (Randomized PCA)</strong> 是PCA的一种变体，它使用了一个随机化的算法来计算PCA。相比于传统的SVD算法，随机PCA在处理大规模数据集时效率更高，能够更快的找到前d个主成分方向。</p>
+<p>如果我们将 <code>svd_solver</code> 的超参数设置为 <code>&#39;randomized&#39;</code>，scikit-learn会使用一个随机化的算法来计算PCA，这个算法在处理大规模数据集时效率更高，能够更快的找到前d个主成分方向。相比于SVD来说，当k比d小很多时，随机化算法的计算复杂度更低，因此在处理大规模数据集时更为高效。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pca = PCA(n_components=<span class="number">2</span>, svd_solver=<span class="string">&#x27;randomized&#x27;</span>)</span><br><span class="line">X_train_pca = pca.fit_transform(X_train_std)</span><br></pre></td></tr></table></figure>
+
+<p>默认来讲，<code>svd_solver</code> 的参数默认设置为 <code>&#39;auto&#39;</code>，这意味着scikit-learn会根据数据集的大小和维度来自动选择使用SVD还是随机化算法。当数据集较小或者维度较低时，scikit-learn会选择使用SVD；当数据集较大或者维度较高时，scikit-learn会选择使用随机化算法。</p>
+<p>具体来说，当 $d &gt; 500 \text{AND} k &lt; 0.8d$ 的时候，scikit-learn会选择使用随机化算法来计算PCA；否则，scikit-learn会选择使用SVD来计算PCA。</p>
+<p>如果你想强制要求scikit-learn使用SVD来计算PCA，你可以将 <code>svd_solver</code> 的参数设置为 <code>&#39;full&#39;</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pythonpca = PCA(n_components=2, svd_solver=&#x27;full&#x27;)</span><br><span class="line">X_train_pca = pca.fit_transform(X_train_std)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="增量PCA"><a href="#增量PCA" class="headerlink" title="增量PCA"></a>增量PCA</h3><p>随机PCA在计算过程中，要求我们将整个数据集完整地加载到内存中去，这对于一些非常大的数据集来说可能会导致内存不足的问题。</p>
+<p>而 <strong>增量PCA (Incremental PCA)</strong> 则可以解决这个问题，它允许我们在数据集无法完全加载到内存中的情况下进行PCA计算。这样一来，我们不仅能够处理更大规模的数据集，甚至还能处理流式数据。</p>
+<p>比如说，我们可以把MNIST数据集分成100个小批次，每次只加载一个小批次的数据到内存中去进行PCA计算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> IncrementalPCA</span><br><span class="line">n_batches = <span class="number">100</span></span><br><span class="line">inc_pca = IncrementalPCA(n_components=<span class="number">87</span>)</span><br><span class="line"><span class="keyword">for</span> X_batch <span class="keyword">in</span> np.array_split(X, n_batches):</span><br><span class="line">    inc_pca.partial_fit(X_batch)</span><br><span class="line">X_reduced = inc_pca.transform(X)</span><br><span class="line"><span class="built_in">print</span>(X_reduced.shape) <span class="comment"># (70000, 87)</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="局部线性嵌入"><a href="#局部线性嵌入" class="headerlink" title="局部线性嵌入"></a>局部线性嵌入</h2><p>讲完PCA，我们来简单看一下另外一个流行的非线性降维方法。</p>
+<p><strong>局部线性嵌入 (Locally Linear Embedding, LLE)</strong> 是一种非线性降维方法，它通过保持数据点在局部邻域内的线性关系来进行降维。  </p>
+<p>LLE的核心思想是：每个数据点都可以通过它的k个最近邻来进行线性重构，然后我们希望在低维空间中保持这些线性重构关系不变。随后，LLE会在低维空间中找到一个新的表示，使得这些线性重构关系得到最好的保留。这种方法能够很好地展开流形结构的数据集，尤其是当数据集没有太多噪声的时候。</p>
+<p>还记得之前的瑞士卷数据集吗？我们可以选择去使用流形学习展开，但是如果我们使用LLE来进行降维，我们就能够更好地保留数据集的结构和信息。</p>
+<p><img src="https://files.seeusercontent.com/2026/03/24/Sb1t/pasted-image-1774343296796.webp" alt="pasted-image-1774343296796.webp"></p>
+<h3 id="LLE的数学原理"><a href="#LLE的数学原理" class="headerlink" title="LLE的数学原理"></a>LLE的数学原理</h3><p>对于每一个训练样本 $\mathbf{x}^{(i)}$，我们首先要告诉LLE要寻找它的k个最近邻，例如 <code>n_neighbors=10</code>。</p>
+<p>随后，LLE会尝试将 $\mathbf{x}^{(i)}$ 重建为一个它的k个最近邻的线性组合。要做到这一点，LLE会找到一组权重 $w_{i,j}$，使得 $\mathbf{x}^{(i)}$ 与</p>
+<p>$$\sum_{j&#x3D;1}^m w_{i,j} \mathbf{x}^{(j)}$$</p>
+<p>的距离尽可能最小化。并且在这个过程中，我们假定当 $\mathbf{x}^{(j)}$ 不是 $\mathbf{x}^{(i)}$ 的k个最近邻时，权重 $w_{i,j}$ 为0。</p>
+<hr>
+<p>所以总的来说，LLE要找到一组权重矩阵 $W$，使得每个数据点 $\mathbf{x}^{(i)}$ 都能够通过它的k个最近邻的线性组合来进行重建：</p>
+<p>$$\hat{W} &#x3D; \arg\min_W \sum_{i&#x3D;1}^m \left| \mathbf{x}^{(i)} - \sum_{j&#x3D;1}^m w_{i,j} \mathbf{x}^{(j)} \right|^2$$</p>
+<p>在这个过程中，我们还需要满足刚才提到的约束条件。这样重建过程能够确保一定依赖于邻居，并且权重具有归一性，不会导致重建结果的缩放问题。</p>
+<hr>
+<p>经过这一步的计算，包含权重 $\hat{w}_{i,j}$ 的权重矩阵 $\hat{W}$会将这些局部线性关系编码到全局训练数据集中去。然后，我们会将训练数据映射到一个k维的空间中去 ($k &lt; d$)，同时尽可能保留这些局部线性关系。我们通过下面的优化问题来实现这个目标：</p>
+<p>如果 $\mathbf{z}^{(i)}$ 表示 $\mathbf{x}^{(i)}$ 在k维空间中的表示，那么我们希望找到一组新的表示 $\mathbf{z}^{(i)}$，使得</p>
+<p>$$ \sum_{i&#x3D;1}^m \hat{w}_{i,j} \mathbf{z}^{(j)} $$</p>
+<p>的距离尽可能最小化。这意味着原始空间中的线性关系要在低维空间中尽可能得到保留。</p>
+<hr>
+<h2 id="其他降维方法"><a href="#其他降维方法" class="headerlink" title="其他降维方法"></a>其他降维方法</h2><p>除了PCA和LLE之外，还有很多其他的降维方法，有些也能够在scikit-learn中找到对应的实现。比如下面这些：</p>
+<ul>
+<li><p><strong>随机投影 (Random Projection)</strong>：通过使用一个随机矩阵来将数据投影到一个更低维的空间中去。这个方法的计算效率非常高，适用于处理大规模数据集。</p>
+</li>
+<li><p><strong>多维度缩放 (Multidimensional Scaling, MDS)</strong>：通过保持数据点之间的距离关系来进行降维。这个方法适用于处理非线性结构的数据集。</p>
+</li>
+<li><p><strong>Isomap</strong>: 通过保持数据点之间的地理距离来进行降维。这个方法适用于处理具有流形结构的数据集。</p>
+</li>
+<li><p><strong>t分布随机邻域嵌入 (t-Distributed Stochastic Neighbor Embedding, t-SNE)</strong>：通过保持数据点之间的概率分布关系来进行降维。这个方法适用于处理高维数据集，尤其是当数据集具有复杂结构的时候。</p>
+</li>
+<li><p><strong>线性判别分析 (Linear Discriminant Analysis, LDA)</strong>：通过最大化类间距离和最小化类内距离来进行降维。这个方法适用于处理有标签的数据集，尤其是当数据集具有多个类别的时候。</p>
+</li>
+</ul>
+<p>这些方法各有优缺点，适用于不同类型的数据集和不同的降维需求。选择合适的降维方法需要根据具体的数据集和任务来进行判断。</p>
+<hr>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>学完理论，现在可以来一起看看这些练习，巩固一下我们学到的内容吧：</p>
+<ol>
+<li>对数据集特征进行降维的主要目的是什么？我们对特征进行降维，有没有什么潜在的风险？</li>
+</ol>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>我们对数据集特征进行降维，主要是为了减少数据的维度，从而降低模型的复杂度，提高模型的泛化能力，同时也能够更好地可视化数据集。通过降维，我们可以去掉一些冗余或者无关的特征，保留那些对目标变量有重要影响的特征，这样我们就能够更好地捕捉到数据之间的关系了。</p> <p>主要风险是，降维可能会导致信息的丢失。如果我们选择的降维方法不合适，或者我们选择的主成分方向没有保留足够的信息，那么我们就可能会丢失一些重要的特征，从而导致模型的性能下降了。因此，在进行降维的时候，我们需要仔细选择合适的降维方法，并且要根据数据集的特点来选择合适的主成分方向，以确保我们能够保留足够的信息来训练出一个好的模型。</p> </div></details>
+
+<ol start="2">
+<li>什么是 Curse of Dimensionality？它对数据分析和建模有什么影响？</li>
+</ol>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>维度灾难指的是随着数据集的维度增加，数据点之间也越来越分散，导致模型难以捕捉到数据之间的关系，从而影响模型的性能。</p> <p>维度灾难增加模型的复杂度，导致模型过拟合，降低模型的泛化能力。同时，维度灾难还会增加计算的复杂度，导致模型训练和预测的时间变长。因此，在处理高维数据集时，我们需要考虑使用降维方法来减少数据的维度，从而缓解维度灾难带来的问题。</p> </div></details>
+
+<ol start="3">
+<li>一旦数据集的维度被降维，有没有什么方法将这些降维后的数据重新映射回原始空间中去？如果有，这个过程是如何实现的？</li>
+</ol>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>有的兄弟有的。我们可以通过逆变换来将降维后的数据重新映射回原始空间中去。以PCA为例，我们在进行PCA降维的时候，我们会得到一个权重矩阵 $W$，这个矩阵的列向量就是我们选择的主成分方向。那么我们就可以通过下面的变换来将降维后的数据重新映射回原始空间中去：</p> <p>$$\hat{X} &#x3D; Z W^T$$</p> <p>其中 $Z$ 是降维后的数据集，$W^T$ 是权重矩阵的转置。通过这个变换，我们就能够得到一个近似于原始数据集的重建数据了。</p> </div></details>
+
+<ol start="4">
+<li>如果我们的数据集是非线性的，那么PCA对于这个数据集来说还会有效吗？如果不有效，我们应该使用什么样的降维方法来处理非线性数据集？</li>
+</ol>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>非线性数据集指的是数据点之间的关系不是线性的，而是存在一些复杂的非线性关系。</p> <p>首先要明确说明的是，PCA一般用于处理线性数据集，对于非线性数据集来说，PCA可能无法很好地保留数据集的结构和信息。</p> <p>因此，如果我们需要处理非线性数据集，我们可以考虑使用一些非线性降维方法，比如说流形学习方法（如LLE、Isomap）或者t-SNE等。这些方法能够更好地保留非线性数据集的结构和信息，从而帮助我们更好地分析和建模了。</p> </div></details>
+
+<ol start="5">
+<li>如果我们对一个1000维的数据集执行PCA，并且我们将可解释方差比例设置为0.95，那么我们最终得到的降维后的数据集的维度会是多少？这个维度是如何确定的？</li>
+</ol>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>我们最后得到的降维后维度是一个自动确定的整数 $d$，使得前$d$个主成分方向的方差比例之和达到0.95。  </p> <p>PCA会计算每个主成分的方差贡献，然后从大到小排序，直到累计方差比例达到阈值0.95。这个过程是：</p> <ul> <li><p>首先，对原始数据中心化计算协方差矩阵</p> </li> <li><p>然后得到所有主成分的特征值</p> </li> <li><p>最后从最大的特征值开始累加，直到累计方差比例达到0.95为止，那个时候的主成分数量就是我们最终得到的降维后数据集的维度了。</p> </li> </ul> <p>所以说，只有1000维和0.95两个参数是无法直接确定降维后数据集的维度的，我们还需要知道每个主成分的方差贡献情况，才能够确定最终的降维后数据集的维度。如果数据高度冗余，可能只需要几十个主成分就能够达到95%的方差比例；如果数据比较分散，可能需要几百个主成分才能够达到95%的方差比例了。</p> </div></details>
+
+<ol start="6">
+<li>在什么情况下我们会使用原版PCA，增量PCA和随机PCA？</li>
+</ol>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>PCA适用于处理小规模数据集或者维度较低的数据集，因为它的计算复杂度较高，尤其是在计算协方差矩阵和进行特征值分解的时候。</p> <p>增量PCA用于处理大规模数据集，或者流式数据集，因为它允许我们在数据集无法完全加载到内存中的情况下进行PCA计算。</p> <p>而随机PCA适用于处理大规模数据集，尤其是当数据集的维度较高时，因为它使用了一个随机化的算法来计算PCA，能够更快的找到前d个主成分方向。</p> </div></details>
+
+<ol start="7">
+<li>我们如何评判一个降维算法的性能？</li>
+</ol>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>评判一个降维算法的性能可以从以下几个方面来考虑：</p> <ul> <li><p><strong>保留信息的程度</strong>：我们可以通过查看降维后数据集的方差比例来评判降维算法的性能。方差比例越高，说明降维后数据集保留了更多的信息。</p> </li> <li><p><strong>模型性能</strong>：我们可以使用降维后的数据集来训练一个模型，然后评估这个模型的性能。如果降维后的数据集能够帮助我们训练出一个性能更好的模型，那么说明这个降维算法的性能不赖。</p> </li> <li><p><strong>可视化效果</strong>：我们可以将降维后的数据集进行可视化，比如matplotlib，看看它是否能够更好地展示数据集的结构和信息。如果降维后的数据集能够更好地展示数据集的结构和信息，那么说明这个降维算法的性能不错。</p> </li> </ul> </div></details>
+
+<ol start="8">
+<li>链式使用两个降维方法是不是一个好主意？</li>
+</ol>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><p>有可能，但也有可能不是。链式使用两个降维方法可能会导致信息的丢失，因为每个降维方法都会对数据集进行一定程度的压缩和变换，如果我们连续使用两个降维方法，那么我们就可能会丢失更多的信息了。</p> <p>因此，在链式使用两个降维方法之前，我们需要仔细评估每个降维方法的性能，并且要确保它们能够互相补充，而不是互相干扰了。比如说，我们可以先使用PCA来进行初步的降维，然后再使用t-SNE来进行更细致的降维，这样我们就能够更好地保留数据集的结构和信息。</p> </div></details>
+
+<hr>
+<ol start="9">
+<li>我们载入MNIST数据集，并将其分成训练集和测试集。前60000个样本作为训练集，后10000个样本作为测试集。</li>
+</ol>
+<p>我们在这些数据集上训练一个随机森林分类器，并记录下训练时长，并评判模型的性能。</p>
+<p>然后，我们使用PCA，选择0.95作为可解释方差比例来对数据进行降维，然后我们在这些数据上训练一个新的随机森林分类器，并记录下训练时长，并评判模型的性能。</p>
+<p>那我问你：</p>
+<ul>
+<li><p>使用PCA后的数据训练模型的时长和使用原始数据训练模型的时长哪个更长？为什么？</p>
+</li>
+<li><p>使用PCA后的数据训练模型的性能如何？与使用原始数据训练的模型相比，是否有提升或下降？</p>
+</li>
+</ul>
+<details class="tag-plugin colorful folding" ><summary><p>题解</p>
+</summary><div class="body"><ul> <li><p>使用PCA后的数据训练模型的时长通常会更短，因为降维后的数据集具有更少的特征，这样模型在训练过程中需要处理的数据量就会减少，从而加快了训练的速度。</p> </li> <li><p>使用PCA后的数据训练模型的性能可能会有所下降，因为降维过程会丢失一部分信息。然而，如果选择的主成分方向能够保留足够的信息，那么降维后的模型性能可能与原始数据训练的模型性能相当，甚至在某些情况下可能会更好，因为它减少了噪声和冗余特征的影响。</p> </li> </ul> </div></details>
+
+
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4%EF%BC%9F"><span class="toc-text">什么是数据降维？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1"><span class="toc-text">投影</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E5%BD%A2%E5%AD%A6%E4%B9%A0"><span class="toc-text">流形学习</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90-PCA"><span class="toc-text">主成分分析 (PCA)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%B7%AE"><span class="toc-text">方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%88%90%E5%88%86"><span class="toc-text">主成分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3"><span class="toc-text">奇异值分解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E5%88%B0%E4%B8%BB%E6%88%90%E5%88%86%E7%A9%BA%E9%97%B4"><span class="toc-text">投影到主成分空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E8%B7%B5"><span class="toc-text">代码实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E6%8C%A1"><span class="toc-text">手动挡</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%8C%A1"><span class="toc-text">自动挡</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%B7%AE%E6%AF%94%E4%BE%8B"><span class="toc-text">方差比例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9"><span class="toc-text">数据压缩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96PCA%E7%9A%84%E5%8F%98%E4%BD%93"><span class="toc-text">其他PCA的变体</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BAPCA"><span class="toc-text">随机PCA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E9%87%8FPCA"><span class="toc-text">增量PCA</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E7%BA%BF%E6%80%A7%E5%B5%8C%E5%85%A5"><span class="toc-text">局部线性嵌入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LLE%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="toc-text">LLE的数学原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95"><span class="toc-text">其他降维方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0"><span class="toc-text">练习</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1774357807662" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
