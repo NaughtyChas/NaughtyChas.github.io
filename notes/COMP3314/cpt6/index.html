@@ -1,0 +1,1193 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Cpt6: 模型评估与调参 - Naucha</title>
+
+  
+    <meta name="description" content="上一章是降维，这一章来点没有那么重理论的东西：我们来看看当你训练完模型，如何评价模型的好坏，以及如何调参来让模型更好。  我们不妨来通过一个真实数据集来讲解这一章的内容。   我们要是用的数据集叫做BCWD，是一个乳腺癌数据集，包含了569条数据，每条数据有30个特征，最后还有一个标签，表示这个数据是良性还是恶性。 我们先来看看这个数据集的基本情况： 1234import pandas as pd">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cpt6: 模型评估与调参">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt6/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="上一章是降维，这一章来点没有那么重理论的东西：我们来看看当你训练完模型，如何评价模型的好坏，以及如何调参来让模型更好。  我们不妨来通过一个真实数据集来讲解这一章的内容。   我们要是用的数据集叫做BCWD，是一个乳腺癌数据集，包含了569条数据，每条数据有30个特征，最后还有一个标签，表示这个数据是良性还是恶性。 我们先来看看这个数据集的基本情况： 1234import pandas as pd">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-03-20T13:09:00.000Z">
+<meta property="article:modified_time" content="2026-03-26T09:11:39.019Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1774516437797">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt6/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt6: 模型评估与调参","description":"上一章是降维，这一章来点没有那么重理论的东西：我们来看看当你训练完模型，如何评价模型的好坏，以及如何调参来让模型更好。\n\n我们不妨来通过一个真实数据集来讲解这一章的内容。  \n我们要是用的数据集叫做BCWD，是一个乳腺癌数据集，包含了569条数据，每条数据有30个特征，最后还有一个标签，表示这个数据是良性还是恶性。\n我们先来看看这个数据集的基本情况：\n1234import pandas as...","url":"https://naughtychas.github.io/notes/COMP3314/cpt6/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3314" placeholder="在 COMP3314 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="分治法">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        分治法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt6/"><span class="title">Cpt6: 模型评估与调参</span></a><a class="item title" href="/notes/COMP3314/cpt5/"><span class="title">Cpt5: 数据降维</span></a><a class="item title" href="/notes/COMP3314/cpt4/"><span class="title">Cpt4: 数据预处理</span></a><a class="item title" href="/notes/COMP3314/cpt3/"><span class="title">Cpt3: 逻辑回归，SVM和KNN</span></a><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">Cpt2: 感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-03-26T09:11:39.019Z">2026-03-26</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-03-20T13:09:00.000Z">2026-03-20</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Cpt6: 模型评估与调参</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>上一章是降维，这一章来点没有那么重理论的东西：我们来看看当你训练完模型，如何评价模型的好坏，以及如何调参来让模型更好。</p>
+<hr>
+<p>我们不妨来通过一个真实数据集来讲解这一章的内容。  </p>
+<p>我们要是用的数据集叫做BCWD，是一个乳腺癌数据集，包含了569条数据，每条数据有30个特征，最后还有一个标签，表示这个数据是良性还是恶性。</p>
+<p>我们先来看看这个数据集的基本情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data&#x27;</span>, header=<span class="literal">None</span>)</span><br><span class="line"><span class="built_in">print</span>(df.shape)  <span class="comment"># (569, 32)</span></span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>随后，我们将这30个特征赋值到X中，标签赋值到y中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">X = df.loc[:, <span class="number">2</span>:].values</span><br><span class="line">y = df.loc[:, <span class="number">1</span>].values</span><br><span class="line">le = LabelEncoder()</span><br><span class="line">y = le.fit_transform(y)</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">1</span>, stratify=y)</span><br></pre></td></tr></table></figure>
+
+<p>其中我们通过使用 <code>LabelEncoder</code> 把原本的标签M和B转换成了0和1，方便后续的模型训练。</p>
+<p>接下来，我们可以把原本的数据集进行标准化和降维。与其说我们直接把每一步都分开来写，我们实际上也可以使用sklearn提供的管线（Pipeline）来把这些步骤串联起来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklelarn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> make_pipeline</span><br><span class="line"></span><br><span class="line">pipe_lr = make_pipeline(StandardScaler(), PCA(n_components=<span class="number">2</span>), LogisticRegression(random_state=<span class="number">1</span>, solver=<span class="string">&#x27;lbfgs&#x27;</span>))</span><br><span class="line">pipe_lr.fit(X_train, y_train)</span><br><span class="line">y_pred = pipe_lr.predict(X_test)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Test Accuracy: %.3f&#x27;</span> % pipe_lr.score(X_test, y_test))</span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们使用 <code>make_pipeline</code> 定义一个管线，托管给变量 <code>pipe_lr</code>，这个管线包含了三个步骤，依次执行数据标准化，PCA降维，最后训练一个逻辑回归模型。</p>
+<p>所以方便之处就是，我们可以直接调用 <code>pipe_lr.fit()</code> 来训练整个管线，调用 <code>pipe_lr.predict()</code> 来进行预测，调用 <code>pipe_lr.score()</code> 来评估模型的准确率。</p>
+<hr>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>经过上面的例子，我们就应该能够得到一个针对乳腺癌数据集的模型了，那么我们如何来评估这个模型的好坏呢？</p>
+<p>在训练机器学习模型的时候，我们需要考虑模型对于未曾见过的数据表现究竟如何，而方差和偏差就是我们评估模型性能的两个重要指标。方差指的是模型对于训练数据的拟合程度，偏差指的是模型对于未见过的数据的预测能力。</p>
+<p>所以，<strong>验证 (Validation)</strong> 指的是在训练过程中评估模型性能的过程。在这里我们介绍两个主要验证方法，分别是 <strong>留出法 (Holdout validation)</strong> 和 <strong>K折交叉验证 (K-fold cross-validation)</strong>。</p>
+<h3 id="留出法"><a href="#留出法" class="headerlink" title="留出法"></a>留出法</h3><p>留出法可能是最经典，最受欢迎的验证方法了。</p>
+<p>留出法的基本思想是将数据集划分成训练集和测试集两部分。训练集用来训练模型，让模型来根据这些数据自己调整，找到最佳参数；而测试集则用来评估模型的性能，看看模型在未见过的数据上的表现如何。测试集自始至终都不参与模型的训练过程，只有在最后评估模型性能的时候才会用到。</p>
+<p>就像高中生准备高考。他们会在平时的学习中刷题来训练自己，这些练习题就相当于训练集；而高考就是测试集，只有在高考的时候才会用到，来评价各个“模型”的性能，平常这个题库是不会被泄露出去的。</p>
+<hr>
+<p>在训练模型过程中，调整参数几乎可以说是最核心的环节，但是仅仅让模型去调整参数也不够，我们有时候还需要考虑 <strong>超参数 (Hyperparameters)</strong> 的调整。  </p>
+<p>超参数是指那些在模型训练之前需要设置的参数，比如说学习率，正则化强度，树的深度等等。虽然超参数不会在模型学习过程中被自动调整，但是超参数的调整会间接影响参数的调整，进而直接影响模型的性能。因此，我们不仅要让模型找到最佳的参数，我们还需要找到能够让模型发挥最佳性能的超参数。</p>
+<p>由于模型不会再训练集上进行超参数调整，因此我们目前广泛使用的留出法会在分离训练集和测试集的基础上，再从训练集中划分出一个验证集来进行超参数调整。</p>
+<hr>
+<p>如果使用带验证集的留出法，我们使用数据集的流程大概是：</p>
+<ol>
+<li><p>将整个数据集划分成训练集和测试集，然后我们在训练集里面再划分出一个验证集，用来进行超参数调整。</p>
+</li>
+<li><p>首先我们使用机器学习算法在训练集上进行训练，调整权重，得到一个模型。</p>
+</li>
+<li><p>接下来为了了调整超参数，我们会在验证集上评估模型的性能，根据验证集的表现来调整超参数，直到找到一个最佳的超参数组合。</p>
+</li>
+<li><p>最后，我们使用测试集来评估最终模型的性能，看看它在未见过的数据上的表现如何。</p>
+</li>
+</ol>
+<hr>
+<h3 id="K折交叉验证"><a href="#K折交叉验证" class="headerlink" title="K折交叉验证"></a>K折交叉验证</h3><p>留出法会带来一个关键缺点。模型的性能可能会因为我们划分训练集和验证集的方式不同而有很大的差异。比如说，如果我们在划分数据集的时候，恰好把一些重要的样本划分到了验证集中，那么模型在验证集上的表现可能会非常差；反之，如果我们把这些重要的样本划分到了训练集中，那么模型在验证集上的表现可能会非常好。</p>
+<p><strong>K折交叉验证 (K-fold cross-validation)</strong> 就是为了解决这个问题而提出的。  </p>
+<p>K折交叉验证的基本思想是将数据集划分成K个大小相等的子集，然后进行K次训练和验证。在每次训练和验证过程中，我们使用K-1个子集作为训练集，剩下的一个子集作为验证集。这样，我们就可以在不同的划分方式下评估模型的性能，最终得到一个更稳定，更可靠的性能评估结果。</p>
+<p>下面就是K折交叉验证的示意图：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/26/eB6b/pasted-image-1774509513211.webp" alt="pasted-image-1774509513211.webp"></p>
+<p>上图能看出来我们把整个训练集划分成了10个子集，所以我们的 $K &#x3D; 10$。 在第一次迭代中，我们选择前九个子集作为训练集，最后一个作为验证集。一次迭代我们得出来的性能评估结果，叫做 $E_1$。</p>
+<p>在第二次迭代中，我们选择前八个子集和最后一个子集作为训练集，剩下的那个子集作为验证集，得到性能评估结果 $E_2$。以此类推，我们总共进行10次迭代，得到10个性能评估结果 $E_1, E_2, ..., E_{10}$。</p>
+<p>最后，我们可以通过计算这10个性能评估结果的平均值来得到模型的最终性能评估结果:</p>
+<p>$$E &#x3D; \frac{1}{K} \sum_{i&#x3D;1}^{K} E_i$$</p>
+<p>当我们使用K折交叉验证找到了一个最佳的超参数组合之后，我们可以使用这个超参数组合在整个训练集上重新训练模型，然后在测试集上评估模型的性能。</p>
+<hr>
+<p>在绝大多数情况下，K的值通常被设置为10。对于规模较小的数据集，K的值可以设置得更大一些，比如说20或者30；对于规模较大的数据集，K的值可以设置得更小一些，比如说5或者10。提升K值可以导致每次训练和验证的样本数量增加，从而得到更稳定的性能评估结果，但同时也会增加计算成本。</p>
+<p>反之，对于大规模数据集来说，我们可能会选择较小的K值来减少计算成本，但这可能会导致性能评估结果的方差增加。</p>
+<hr>
+<h3 id="留一交叉验证"><a href="#留一交叉验证" class="headerlink" title="留一交叉验证"></a>留一交叉验证</h3><p>K折交叉验证的一个特殊情况是当K等于数据集的样本数量时，这种方法被称为 <strong>留一交叉验证 (Leave-One-Out Cross-Validation, LOOCV)</strong>。</p>
+<p>留一交叉验证会将数据集中的每一个样本都单独作为验证集，其余样本作为训练集，进行K次训练和验证。也就是 $k &#x3D; n$，其中 $n$ 是数据集的样本数量。因此，我们最好是在样本数量较小的数据集上使用留一交叉验证，因为它的计算成本非常高。不过好处就是它可以最大程度地利用数据集中的每一个样本来评估模型的性能，从而得到一个非常稳定的性能评估结果。</p>
+<hr>
+<h3 id="Stratified-K折交叉验证"><a href="#Stratified-K折交叉验证" class="headerlink" title="Stratified K折交叉验证"></a>Stratified K折交叉验证</h3><p>也叫做分层K折交叉验证。在这里，我们会在划分数据集的时候，保持每个子集中各个类别的样本比例与整个数据集中的比例相同。这样可以确保每个子集中都包含了足够的样本来评估模型的性能，尤其是在处理不平衡数据集时非常有用。</p>
+<p>还记得之前在scikit-learn中我们划分训练集和测试集的时候，使用了 <code>stratify=y</code> 参数吗？差不多也是这个意思，就是在划分数据集的时候保持各个类别的样本比例不变。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> StratifiedKFold</span><br><span class="line">kfold = StratifiedKFold(n_splits=<span class="number">10</span>, random_state=<span class="number">1</span>).split(X_train, y_train)</span><br><span class="line">scores = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k, (train, test) <span class="keyword">in</span> <span class="built_in">enumerate</span>(kfold):</span><br><span class="line">    pipe_lr.fit(X_train[train], y_train[train])</span><br><span class="line">    score = pipe_lr.score(X_train[test], y_train[test])</span><br><span class="line">    scores.append(score)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Fold: %2d, Class dist.: %s, Acc: %.3f&#x27;</span> % (k+<span class="number">1</span>, np.bincount(y_train[train]), score))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\nCV accuracy: %.3f +/- %.3f&#x27;</span> % (np.mean(scores), np.std(scores)))</span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，我们首先使用 <code>StratifiedKFold</code> 来创建一个分层K折交叉验证的对象，然后我们在每次迭代中使用这个对象来划分训练集和验证集，最后评估模型的性能并计算平均准确率和标准差。  </p>
+<hr>
+<h2 id="学习曲线和验证曲线"><a href="#学习曲线和验证曲线" class="headerlink" title="学习曲线和验证曲线"></a>学习曲线和验证曲线</h2><p>这两个曲线是我们在评估模型性能和调参过程中非常有用的工具。我们可以将模型的性能表现可视化出来，从而更直观地理解模型的学习过程和超参数调整的效果。</p>
+<h3 id="学习曲线"><a href="#学习曲线" class="headerlink" title="学习曲线"></a>学习曲线</h3><p><strong>学习曲线 (Learning curve)</strong> 更偏重揭示模型的学习情况，它展示了模型在训练集和验证集上的性能随着训练样本数量的增加而变化的情况。有助于我们判断模型是否存在过拟合或者欠拟合的问题。</p>
+<p>例如下图：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/26/aq7V/pasted-image-1774510842598.webp" alt="pasted-image-1774510842598.webp"></p>
+<p>左上展示的是High Bias，也就是高偏差。换算到人话讲就是，模型的表现不是很好。我们能看见虽然Training Acc和Validation Acc的曲线非常接近，但是它们都远远低于Desired Accuracy。这说明模型在训练集和测试集上的表现都不太好，可能是因为模型过于简单，无法捕捉到数据中的复杂关系。</p>
+<p>右上是High Variance，高方差。与高偏差不一样，高方差的模型在训练集上的表现不赖，但是在测试集上的表现却很差，并且两者之间的差距很大。你可以从图上看出，尽管两条曲线都比较接近Desired Acc，但是两条曲线间隔太大了。这通常是因为模型过于复杂，过度拟合了训练数据中的噪声，导致在未见过的数据上表现不佳。</p>
+<p>右下是Good Fit的情况，你能看出Training Acc和Validation Acc的曲线不仅非常接近，而且也随着训练样本的增加越来越靠近Desired Accuracy。这就是我们希望看到的情况，说明模型在训练集和测试集上的表现都不错，并且随着训练样本的增加，模型的性能也在不断提升。</p>
+<hr>
+<p>比如，我们可以借助matplotlib来绘制学习曲线：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> learning_curve</span><br><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"></span><br><span class="line">mpl.rcParams[<span class="string">&#x27;font.size&#x27;</span>] = <span class="number">12</span></span><br><span class="line">pipe_lr = make_pipeline(StandardScaler(), LogisticRegression(penalty=<span class="string">&#x27;l2&#x27;</span>), random_state=<span class="number">1</span>, solver=<span class="string">&#x27;liblinear&#x27;</span>)</span><br><span class="line">train_sizes, train_scores, test_scores = learning_curve(estimator=pipe_lr, X=X_train, y=y_train, train_sizes=np.linspace(<span class="number">0.1</span>, <span class="number">1.0</span>, <span class="number">10</span>), cv=<span class="number">10</span>, n_jobs=<span class="number">1</span>)</span><br><span class="line">train_mean = np.mean(train_scores, axis=<span class="number">1</span>)</span><br><span class="line">train_std = np.std(train_scores, axis=<span class="number">1</span>)</span><br><span class="line">test_mean = np.mean(test_scores, axis=<span class="number">1</span>)</span><br><span class="line">test_std = np.std(test_scores, axis=<span class="number">1</span>)</span><br><span class="line">plt.plot(train_sizes, train_mean, color=<span class="string">&#x27;blue&#x27;</span>, marker=<span class="string">&#x27;o&#x27;</span>, markersize=<span class="number">5</span>, label=<span class="string">&#x27;Training accuracy&#x27;</span>)</span><br><span class="line">plt.fill_between(train_sizes, train_mean + train_std, train_mean - train_std, alpha=<span class="number">0.15</span>, color=<span class="string">&#x27;blue&#x27;</span>)</span><br><span class="line">plt.plot(train_sizes, test_mean, color=<span class="string">&#x27;green&#x27;</span>, linestyle=<span class="string">&#x27;--&#x27;</span>, marker=<span class="string">&#x27;s&#x27;</span>, markersize=<span class="number">5</span>, label=<span class="string">&#x27;Validation accuracy&#x27;</span>)</span><br><span class="line">plt.fill_between(train_sizes, test_mean + test_std, test_mean - test_std, alpha=<span class="number">0.15</span>, color=<span class="string">&#x27;green&#x27;</span>)</span><br><span class="line">plt.grid()</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Number of training samples&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Accuracy&#x27;</span>)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.ylim([<span class="number">0.8</span>, <span class="number">1.03</span>])</span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="验证曲线"><a href="#验证曲线" class="headerlink" title="验证曲线"></a>验证曲线</h3><p>与学习曲线不同，<strong>验证曲线 (Validation curve)</strong> 更偏向于揭示模型的超参数调整情况。它展示某个特定的超参数的不同取值下，模型在训练集和验证集上的性能表现。通过观察验证曲线，我们可以判断模型对于不同超参数取值的敏感程度，从而找到一个最佳的超参数组合。</p>
+<p>比如下面这个图就展示了Acc与正则化强度超参数C的关系：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/26/iE5i/pasted-image-1774511878438.webp" alt="pasted-image-1774511878438.webp"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> validation_curve</span><br><span class="line">param_range = [<span class="number">0.001</span>, <span class="number">0.01</span>, <span class="number">0.1</span>, <span class="number">1.0</span>, <span class="number">10.0</span>, <span class="number">100.0</span>]</span><br><span class="line">train_scores, test_scores = validation_curve(estimator=pipe_lr, X=X_train, y=y_train,param_name=<span class="string">&#x27;logisticregression__C&#x27;</span>, param_range=param_range, cv=<span class="number">10</span>)</span><br><span class="line">train_mean = np.mean(train_scores, axis=<span class="number">1</span>)</span><br><span class="line">train_std = np.std(train_scores, axis=<span class="number">1</span>)</span><br><span class="line">test_mean = np.mean(test_scores, axis=<span class="number">1</span>)</span><br><span class="line">test_std = np.std(test_scores, axis=<span class="number">1</span>)</span><br><span class="line">plt.plot(param_range, train_mean, color=<span class="string">&#x27;blue&#x27;</span>, marker=<span class="string">&#x27;o&#x27;</span>, markersize=<span class="number">5</span>, label=<span class="string">&#x27;Training accuracy&#x27;</span>)</span><br><span class="line">plt.fill_between(param_range, train_mean + train_std, train_mean - train_std, alpha=<span class="number">0.15</span>, color=<span class="string">&#x27;blue&#x27;</span>)</span><br><span class="line">plt.plot(param_range, test_mean, color=<span class="string">&#x27;green&#x27;</span>, linestyle=<span class="string">&#x27;--&#x27;</span>, marker=<span class="string">&#x27;s&#x27;</span>, markersize=<span class="number">5</span>, label=<span class="string">&#x27;Validation accuracy&#x27;</span>)</span><br><span class="line">plt.grid()</span><br><span class="line">plt.xscale(<span class="string">&#x27;log&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Parameter C&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Accuracy&#x27;</span>)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.ylim([<span class="number">0.8</span>, <span class="number">1.03</span>])</span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="网格搜索"><a href="#网格搜索" class="headerlink" title="网格搜索"></a>网格搜索</h2><p>在前面我们提到了超参数调整的重要性，那么我们如何来找到一个最佳的超参数组合呢？</p>
+<p><strong>网格搜索 (Grid Search)</strong> 就是一个非常常用的超参数调整方法。它的基本思想是定义一个超参数的搜索空间，然后在这个搜索空间中进行穷举式的搜索，找到一个最佳的超参数组合。有点像暴力枚举，虽然效率不高，但是它可以保证找到一个全局最优的超参数组合。</p>
+<p>但正因为它像暴力枚举，所以当搜索空间比较大，或者模型比较复杂的时候，网格搜索的计算成本就会非常高。因此，在实际应用中，我们通常会结合一些启发式的方法来缩小搜索空间，比如说随机搜索。</p>
+<p>如果选用随机搜索，那么在scikit-learn中，我们可以使用提供的 <code>RandomizedSearchCV</code> 来进行随机搜索。我们需要对随机搜索指定一个上限，来控制搜索的迭代次数，这样就可以在一定程度上控制计算成本，同时也能找到一个比较好的超参数组合：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RandomizedSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> make_pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> uniform</span><br><span class="line">pipe_lr = make_pipeline(StandardScaler(), LogisticRegression(random_state=<span class="number">1</span>, solver=<span class="string">&#x27;liblinear&#x27;</span>))</span><br><span class="line">param_dist = &#123;<span class="string">&#x27;logisticregression__C&#x27;</span>: uniform(loc=<span class="number">0.001</span>, scale=<span class="number">100.0</span>)&#125;</span><br><span class="line">random_search = RandomizedSearchCV(estimator=pipe_lr, param_distributions=param_dist, n_iter=<span class="number">100</span>, cv=<span class="number">10</span>, random_state=<span class="number">1</span>)</span><br><span class="line">random_search.fit(X_train, y_train)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Best: %f using %s&#x27;</span> % (random_search.best_score_, random_search.best_params_))</span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，我们定义了一个超参数搜索空间，其中 <code>C</code> 的取值是从0.001到100之间的均匀分布。我们使用 <code>RandomizedSearchCV</code> 来进行随机搜索，指定了搜索的迭代次数和交叉验证的折数。最后，我们可以通过 <code>best_score_</code> 和 <code>best_params_</code> 来查看最佳的性能评估结果和对应的超参数组合。</p>
+<hr>
+<h2 id="嵌套交叉验证"><a href="#嵌套交叉验证" class="headerlink" title="嵌套交叉验证"></a>嵌套交叉验证</h2><p><strong>嵌套交叉验证 (Nested Cross-Validation)</strong> 是一种更为复杂的验证方法，它结合了K折交叉验证和网格搜索的思想，来同时评估模型的性能和调整超参数。</p>
+<p>不变的是，我们仍然会将数据集划分成K个子集，然后进行K次训练和验证。但区别在于与其说是仅对训练集进行循环切分，我们这次对整个数据集进行循环切分。外层循环中，我们首先将整个数据集分成训练集和测试集，然后在内层循环中，我们再对刚才分出来的训练集进行K折交叉验证，来调整超参数。最后，我们使用外层循环中的测试集来评估最终模型的性能。</p>
+<p>因此，相比于K折交叉验证，我们将测试集的划分放在了外层循环中，这样就可以在每次迭代中都使用一个独立的测试集来评估模型的性能，从而得到一个更为可靠的性能评估结果。</p>
+<p><img src="https://files.seeusercontent.com/2026/03/26/e8aE/pasted-image-1774512619451.webp" alt="pasted-image-1774512619451.webp"></p>
+<hr>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gs = GridSearchCV(estimator=pipe_svc, param_grid=param_grid, scoring=<span class="string">&#x27;accuracy&#x27;</span>, cv=<span class="number">2</span>)</span><br><span class="line">scores = cross_val_score(gs,X_train, y_train, scoring=<span class="string">&#x27;accuracy&#x27;</span>, cv=<span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;CV accuracy: %.3f +/- %.3f&#x27;</span> % (np.mean(scores), np.std(scores)))</span><br></pre></td></tr></table></figure>
+
+<p>返回的平均交叉验证准确率和标准差可以帮助我们评估模型的性能，并且可以比较不同模型或者不同超参数组合的性能表现。</p>
+<p>同样我们也可以使用嵌套交叉验证来与SVM模型进行比较:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line">gs = GridSearchCV(estimator=DecisionTreeClassifier(random_state=<span class="number">0</span>), param_grid=[&#123;<span class="string">&#x27;max_depth&#x27;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="literal">None</span>]&#125;], scoring=<span class="string">&#x27;accuracy&#x27;</span>, cv=<span class="number">2</span>)</span><br><span class="line">scores = cross_val_score(gs, X_train, y_train, scoring=<span class="string">&#x27;accuracy&#x27;</span>, cv=<span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;CV accuracy: %.3f +/- %.3f&#x27;</span> % (np.mean(scores),</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CV accuracy: 0.934 +/- 0.016</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="模型的评估"><a href="#模型的评估" class="headerlink" title="模型的评估"></a>模型的评估</h2><p>直到我们该如何验证模型的性能之后，我们需要考虑如何科学地评估模型的性能了。</p>
+<p>在评估模型性能的时候，我们通常会使用一些常见的性能评估指标，比如说准确率，精确率，召回率，F1分数等等。不同的指标适用于不同的场景，我们需要根据具体的问题来选择合适的指标。</p>
+<h3 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h3><p><strong>混淆矩阵 (Confusion Matrix)</strong> 可能是机器学习中最常用的性能评估工具了。它是一个二维矩阵，用来描述分类模型的性能。混淆矩阵中的每个元素都表示模型在不同类别上的预测结果和实际结果的关系，如下图所示：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/26/Neu7/pasted-image-1774514303297.webp" alt="pasted-image-1774514303297.webp"></p>
+<p>按照默认来讲，混淆矩阵左上角的元素表示真正例 (True Positives, TP)，右上角的元素表示假正例 (False Negatives, FN)，左下角的元素表示假负例 (False Positives, FP)，右下角的元素表示真负例 (True Negatives, TN)。</p>
+<p>掰开来看，真正例 (TP) 是指模型正确地将正类样本预测为正类的数量；假正例 (FP) 是指模型错误地将负类样本预测为正类的数量；假负例 (FN) 是指模型错误地将正类样本预测为负类的数量；真负例 (TN) 是指模型正确地将负类样本预测为负类的数量。</p>
+<p>我们可以直接调用 <code>sklearn.metrics</code> 模块中的 <code>confusion_matrix</code> 函数来计算混淆矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line">pipe_scv.fit(X_train, y_train)</span><br><span class="line">y_pred = pipe_scv.predict(X_test)</span><br><span class="line">confmat = confusion_matrix(y_true=y_test, y_pred=y_pred)</span><br><span class="line"><span class="built_in">print</span>(confmat)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[71 1]</span><br><span class="line"> [ 2 40]]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">2.5</span>, <span class="number">2.5</span>))</span><br><span class="line">ax.matshow(confmat, cmap=plt.cm.Blues, alpha=<span class="number">0.3</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(confmat.shape[<span class="number">0</span>]):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(confmat.shape[<span class="number">1</span>]):</span><br><span class="line">        ax.text(x=j, y=i, s=confmat[i, j], va=<span class="string">&#x27;center&#x27;</span>, ha=<span class="string">&#x27;center&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Predicted label&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;True label&#x27;</span>)</span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://files.seeusercontent.com/2026/03/26/Wsw2/pasted-image-1774514471577.webp" alt="pasted-image-1774514471577.webp"></p>
+<p>你会发现默认来说混淆矩阵的布局没有按照我们刚才所说的那样，左上角是TP，右下角是TN。为了解决这个问题，我们可以在调用 <code>confusion_matrix</code> 函数的时候，指定 <code>labels</code> 参数来调整混淆矩阵的布局：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">confmat = confusion_matrix(y_true=y_test, y_pred=y_pred, labels=[<span class="number">1</span>, <span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(confmat)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[40  2]</span><br><span class="line"> [ 1 71]]</span><br></pre></td></tr></table></figure>
+
+<p>至于为什么 <code>labels</code> 参数的值是 <code>[1, 0]</code>，而不是 <code>[0, 1]</code>，这是因为在我们的数据集中，正类样本被编码为1，负类样本被编码为0。通过指定 <code>labels=[1, 0]</code>，我们告诉函数将正类样本放在混淆矩阵的第一行和第一列，而将负类样本放在第二行和第二列。这样就可以得到我们期望的混淆矩阵布局了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">le.transform([<span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;B&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([1, 0], dtype=int64)</span><br></pre></td></tr></table></figure>
+
+<p>你会发现，正类样本M被编码为1，负类样本B被编码为0，这就是我们在指定 <code>labels</code> 参数时使用 <code>[1, 0]</code> 的原因了。</p>
+<hr>
+<h3 id="误差与准确率"><a href="#误差与准确率" class="headerlink" title="误差与准确率"></a>误差与准确率</h3><p><strong>误差 (Error)</strong> 是指模型在测试集上的错误预测的比例，计算公式为：</p>
+<p>$$\text{Error(ERR)} &#x3D; \frac{FP + FN}{TP + FP + FN + TN}$$</p>
+<p>用来衡量模型的错误率，误差越小，模型的性能越好。直觉上来讲，误差描述的是模型把正类样本预测成负类样本，或者把负类样本预测成正类样本的比例。也就是说，在给定所有的预测结果中，模型错误预测的比例。</p>
+<p><strong>准确率 (Accuracy)</strong> 是指模型在测试集上的正确预测的比例，计算公式为：</p>
+<p>$$\text{Accuracy(ACC)} &#x3D; \frac{TP + TN}{TP + FP + FN + TN}$$</p>
+<p>用来衡量模型在测试集上的整体性能，准确率越高，模型的性能越好。</p>
+<p>准确率衡量的是模型在给定的所有预测结果中，正确的预测结果所占的比例。</p>
+<p>准确率实际上与误差是互补的关系，因为它们的分子加起来等于总的样本数量，所以我们可以通过以下公式来计算准确率：</p>
+<p>$$\text{Accuracy(ACC)} &#x3D; 1 - \text{Error(ERR)}$$</p>
+<hr>
+<h3 id="真正率与假正率"><a href="#真正率与假正率" class="headerlink" title="真正率与假正率"></a>真正率与假正率</h3><p><strong>真正率 (True Positive Rate, TPR)</strong> 也叫做召回率 (Recall)，是指模型正确地将正类样本预测为正类的比例，计算公式为：<br>$$\text{TPR} &#x3D; \frac{TP}{TP + FN}$$</p>
+<p>如果一个模型最后能够得到一个较高的真正率，那么就意味着你的模型能够在所有应当是正类的样本中，正确地识别出大部分的正类样本。换句话说，真正率高的模型能够更好地捕捉到正类样本，从而减少漏报的情况。</p>
+<p><strong>假正率 (False Positive Rate, FPR)</strong> 是指模型错误地将负类样本预测为正类的比例，计算公式为：<br>$$\text{FPR} &#x3D; \frac{FP}{FP + TN}$$</p>
+<p>逻辑与真正率相反，如果一个模型最后能够得到一个较低的假正率，那么就意味着你的模型能够在所有应当是负类的样本中，正确地识别出大部分的负类样本。换句话说，假正率低的模型能够更好地避免误报的情况。</p>
+<p>就好比说我们在一个罕见症数据集上训练了一个预测模型，如果这个模型的真正率很高，那么它能够正确地识别出大部分的罕见症患者，从而帮助医生更好地进行诊断和治疗，相反，如果这个模型的假正率很高，那么它可能会误将一些健康人预测为罕见症患者，从而导致不必要的担忧和医疗资源的浪费。</p>
+<hr>
+<h3 id="精确度与召回率"><a href="#精确度与召回率" class="headerlink" title="精确度与召回率"></a>精确度与召回率</h3><p>召回率我们刚才说过了，就是真正率。<strong>精确度 (Precision)</strong> 是指模型正确地将正类样本预测为正类的比例，计算公式为：<br>$$\text{Precision(Prec)} &#x3D; \frac{TP}{TP + FP}$$</p>
+<p>精确度衡量的是在所有被模型预测为正类的样本中，真正的正类样本所占的比例。如果模型的精确度越高，那么就代表着在所有模型预测为正类的样本中，真正的正类样本所占的比例越高。换句话说，精确度高的模型能够更好地避免误报的情况。</p>
+<hr>
+<h3 id="F1分数"><a href="#F1分数" class="headerlink" title="F1分数"></a>F1分数</h3><p>了解了所有的拼图之后，我们就可以使用这些数据来构建一个综合的性能评估指标了，这个指标就是 <strong>F1分数 (F1 Score)</strong>。</p>
+<p>F1分数是精确度和召回率的调和平均数，计算公式为：</p>
+<p>$$\text{F1} &#x3D; 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$$</p>
+<p>F1分数的取值范围在0和1之间，F1分数越高，模型的性能越好。F1分数能够综合考虑模型的精确度和召回率，从而提供一个更全面的性能评估指标。</p>
+<p>在实战中，当你观测到你训练的模型的F1分数很低的时候，你就可以通过观察模型的精确度和召回率来判断模型是过于注重精确度，还是过于注重召回率了。比如说，如果模型的精确度很高，但是召回率很低，那么就说明模型过于注重精确度，导致了漏报；反之，如果模型的召回率很高，但是精确度很低，那么就说明模型过于注重召回率，导致了误报。</p>
+<hr>
+<h3 id="ROC曲线与AUC"><a href="#ROC曲线与AUC" class="headerlink" title="ROC曲线与AUC"></a>ROC曲线与AUC</h3><p><strong>ROC曲线 (Receiver Operating Characteristic Curve)</strong> 是一个用来评估二分类模型性能的工具。它展示了模型在不同的阈值下的真正率和假正率之间的关系。  </p>
+<p>ROC曲线图的横轴表示假正率(FPR)，纵轴表示真正率(TPR)。通过观察ROC曲线，我们可以判断模型在不同的阈值下的性能表现，从而选择一个合适的阈值来平衡真正率和假正率。</p>
+<p>下面是一段绘制ROC曲线的代码，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_curve, auc</span><br><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> interp</span><br><span class="line">pipe_lr = make_pipeline(StandardScaler(), PCA(n_components=<span class="number">2</span>), LogisticRegression(penalty=<span class="string">&#x27;l2&#x27;</span>, random_state=<span class="number">1</span>, C=<span class="number">100.0</span>, solver=<span class="string">&#x27;liblinear&#x27;</span>))</span><br><span class="line">X_train2 = X_train[:, [<span class="number">4</span>, <span class="number">14</span>]]</span><br><span class="line">cv = <span class="built_in">list</span>(StratifiedKFold(n_splits=<span class="number">3</span>, random_state=<span class="number">1</span>).split(X_train, y_train))</span><br><span class="line">fig = plt.figure(figsize=(<span class="number">7</span>, <span class="number">5</span>))</span><br><span class="line">mean_tpr = <span class="number">0.0</span></span><br><span class="line">mean_fpr = np.linspace(<span class="number">0</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line">all_tpr = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, (train, test) <span class="keyword">in</span> <span class="built_in">enumerate</span>(cv):</span><br><span class="line">    probas = pipe_lr.fit(X_train2[train], y_train[train]).predict_proba(X_train2[test])</span><br><span class="line">    fpr, tpr, thresholds = roc_curve(y_train[test], probas[:, <span class="number">1</span>], pos_label=<span class="number">1</span>)</span><br><span class="line">    mean_tpr += interp(mean_fpr, fpr, tpr)</span><br><span class="line">    mean_tpr[<span class="number">0</span>] = <span class="number">0.0</span></span><br><span class="line">    roc_auc = auc(fpr, tpr)</span><br><span class="line">    plt.plot(fpr, tpr, label=<span class="string">&#x27;ROC fold %d (area = %0.2f)&#x27;</span> % (i+<span class="number">1</span>, roc_auc))</span><br><span class="line">plt.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], linestyle=<span class="string">&#x27;--&#x27;</span>, color=<span class="string">&#x27;gray&#x27;</span>, linewidth=<span class="number">2</span>)</span><br><span class="line">mean_tpr /= <span class="built_in">len</span>(cv)</span><br><span class="line">mean_tpr[-<span class="number">1</span>] = <span class="number">1.0</span></span><br><span class="line">mean_auc = auc(mean_fpr, mean_tpr)</span><br><span class="line">plt.plot(mean_fpr, mean_tpr, color=<span class="string">&#x27;blue&#x27;</span>, label=<span class="string">&#x27;Mean ROC (area = %0.2f)&#x27;</span> % mean_auc, lw=<span class="number">2</span>, alpha=<span class="number">0.8</span>)</span><br><span class="line">plt.xlim([-<span class="number">0.05</span>, <span class="number">1.05</span>])</span><br><span class="line">plt.ylim([-<span class="number">0.05</span>, <span class="number">1.05</span>])</span><br><span class="line">plt.xlabel(<span class="string">&#x27;False Positive Rate&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;True Positive Rate&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Receiver Operating Characteristic&#x27;</span>)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>最后你得到的结果看起来大概是：</p>
+<p><img src="https://files.seeusercontent.com/2026/03/26/orL4/pasted-image-1774515388507.webp" alt="pasted-image-1774515388507.webp"></p>
+<p>你会发现ROC曲线看起来像是一个弓形，那么我们该怎么读懂ROC图呢？我们可以通过观察ROC曲线与对角线之间的面积来评估模型的性能。ROC曲线越接近左上角，模型的性能就越好；ROC曲线越接近对角线，模型的性能就越差。</p>
+<p>因此如果你训练的模型的ROC图在很早阶段就接近左上角，那么就说明你的模型的性能非常好；如果你的模型的ROC图在很晚阶段才接近左上角，那么就说明你的模型的性能一般；如果你的模型的ROC图一直接近对角线，那么就说明你的模型的性能很差。</p>
+<p>知道了ROC曲线之后，我们就可以通过计算ROC曲线下的面积来得到一个更为综合的性能评估指标了，这个指标就是AUC。<strong>AUC (Area Under the Curve)</strong> 是指ROC曲线下的面积，AUC的取值范围在0和1之间，AUC越高，模型的性能越好。AUC能够综合考虑模型在不同阈值下的性能表现，从而提供一个更全面的性能评估指标。</p>
+<hr>
+<h3 id="多分类的性能评估"><a href="#多分类的性能评估" class="headerlink" title="多分类的性能评估"></a>多分类的性能评估</h3><p>我们刚才讲述的性能评估指标都是针对二分类模型的，那么如果我们训练的是一个多分类模型，我们该如何来评估它的性能呢？</p>
+<p>对于多分类模型，我们可以使用一些扩展的性能评估指标，比如说<strong>宏平均 (Macro Average)</strong> 和<strong>微平均 (Micro Average)</strong>。</p>
+<p><strong>宏平均 (Macro Average)</strong> 是指对每个类别的性能评估指标进行平均，计算公式为：</p>
+<p>$$\text{Macro Average} &#x3D; \frac{1}{N} \sum_{i&#x3D;1}^{N} \text{Metric}_i$$</p>
+<p>例如，宏平均精确度的计算公式就是：</p>
+<p>$$\text{PRE}_{macro} &#x3D; \frac{PRE_1 + PRE_2 + \cdots + PRE_k}{k}$$</p>
+<p><strong>微平均 (Micro Average)</strong> 是指将所有类别的性能评估指标进行加权平均，计算公式为：</p>
+<p>$$\text{Micro Average} &#x3D; \frac{\sum_{i&#x3D;1}^{N} TP_i}{\sum_{i&#x3D;1}^{N} TP_i + \sum_{i&#x3D;1}^{N} FP_i}$$</p>
+<p>例如，微平均精确度的计算公式就是：</p>
+<p>$$\text{PRE}_{micro} &#x3D; \frac{TP_1 + TP_2 + \cdots + TP_k}{TP_1 + TP_2 + \cdots + TP_k + FP_1 + FP_2 + \cdots + FP_k}$$</p>
+<hr>
+<p>那么两个衡量方式有什么区别呢？</p>
+<p>宏平均是对每个类别的性能评估指标进行平均，因此它对每个类别的权重是相等的。换句话说，宏平均会把每个类别看作同等重要的，即使某些类别的样本数量非常少，宏平均也会给予它们同样的权重。</p>
+<p>而微平均是对所有类别的性能评估指标进行加权平均，因此它会根据每个类别的样本数量来调整权重。换句话说，微平均会把样本数量较多的类别看作更重要的，即使某些类别的样本数量非常少，微平均也会给予它们较小的权重。</p>
+<p>要将这些理论映射到真正的情况中，我们可以想象一个数据集，其中不同类别的样本数量非常不平衡。比如说，类别A有1000个样本，类别B有100个样本，类别C只有10个样本。因为A的样本量比较多，所以模型对于类别A的性能表现可能会非常好，而对于样本数量较少的类别，尤其是C，可能会表现得非常差。</p>
+<p>在这种情况下，如果你使用宏平均来评估模型的性能，那么你会发现模型的宏平均性能可能会非常差，因为它会把每个类别看作同等重要的，即使类别C的样本数量非常少，宏平均也会给予它同样的权重，从而导致整体性能评估结果较低；相反，如果你使用微平均来评估模型的性能，那么你得到的平均性能大概没有宏平均表现出来的那么差，因为微平均会根据每个类别的样本数量来调整权重，即使类别C的样本数量非常少，微平均也会给予它较小的权重，从而导致整体性能评估结果较高。</p>
+<hr>
+<h2 id="不平衡数据集"><a href="#不平衡数据集" class="headerlink" title="不平衡数据集"></a>不平衡数据集</h2><p>在实际生活中，我们经常会遇到不平衡数据集，也就是说，在数据集中某些类别的样本数量远远多于其他类别的样本数量。比如说，在一个医疗数据集中，健康人可能占绝大多数，而患病的人可能只有少数；在一个欺诈检测数据集中，正常交易可能占绝大多数，而欺诈交易可能只有少数。</p>
+<p>我们不妨来真正去试一下不平衡数据集的情况。在原来的乳腺癌数据集中，良性样本占了357个，而恶性样本只有212个。我们可以通过以下代码来创建一个不平衡的数据集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X_imb = np.vstack((X[y == <span class="number">0</span>], X[y == <span class="number">1</span>][:<span class="number">40</span>]))</span><br><span class="line">y_imb = np.hstack((y[y == <span class="number">0</span>], y[y == <span class="number">1</span>][:<span class="number">40</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>如果我们训练的模型啥也不干，只会一个劲嗯报class0，那么在这个不平衡的数据集上，模型仍然能达到一个很高的准确率；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y_pred = np.zeros(y_imb.shape[<span class="number">0</span>])</span><br><span class="line">np.mean(y_pred == y_imb) * <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">89.92443324937027</span><br></pre></td></tr></table></figure>
+
+<p>你会发现，模型的准确率达到了89.92%，看起来好像模型的性能非常好，但实际上模型什么都没学到，它只是一个只会预测负类样本的模型而已。因为在这个不平衡的数据集中，负类样本占了绝大多数，所以即使模型什么都不干，只要一直预测负类样本，就能得到一个很高的准确率。换你你也肯定这么干啊，反正准确率高了就行了。</p>
+<p>所以在实际实践中，我们处理这些不平衡数据集的时候，我们通常会使用一些特殊的技术来处理这些不平衡的数据，比如说过采样 (Oversampling)，欠采样 (Undersampling)，或者是使用一些专门针对不平衡数据集设计的算法，比如说SMOTE (Synthetic Minority Over-sampling Technique)。</p>
+<p><strong>过采样 (Oversampling)</strong> 是指通过复制少数类样本来增加少数类样本的数量，从而平衡数据集。比如说，在我们的不平衡数据集中，恶性样本只有40个，我们可以通过复制这些恶性样本来增加它们的数量，从而使得恶性样本和良性样本的数量更加接近。</p>
+<p><strong>欠采样 (Undersampling)</strong> 是指通过删除多数类样本来减少多数类样本的数量，从而平衡数据集。比如说，在我们的不平衡数据集中，良性样本有357个，我们可以通过删除一些良性样本来减少它们的数量，从而使得恶性样本和良性样本的数量更加接近。</p>
+<p>而我们的重头戏，<strong>SMOTE (Synthetic Minority Over-sampling Technique)</strong> 是一种基于过采样的技术，它通过在特征空间中生成新的少数类样本来增加少数类样本的数量，从而平衡数据集。SMOTE通过在特征空间中找到少数类样本的近邻，然后在这些近邻之间插值来生成新的少数类样本。这样就可以增加少数类样本的数量，同时也能保持数据集的多样性，从而提高模型的性能。</p>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81"><span class="toc-text">验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%95%99%E5%87%BA%E6%B3%95"><span class="toc-text">留出法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K%E6%8A%98%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-text">K折交叉验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%95%99%E4%B8%80%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-text">留一交叉验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stratified-K%E6%8A%98%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-text">Stratified K折交叉验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF%E5%92%8C%E9%AA%8C%E8%AF%81%E6%9B%B2%E7%BA%BF"><span class="toc-text">学习曲线和验证曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF"><span class="toc-text">学习曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%9B%B2%E7%BA%BF"><span class="toc-text">验证曲线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC%E6%90%9C%E7%B4%A2"><span class="toc-text">网格搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-text">嵌套交叉验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AF%84%E4%BC%B0"><span class="toc-text">模型的评估</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5"><span class="toc-text">混淆矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AF%E5%B7%AE%E4%B8%8E%E5%87%86%E7%A1%AE%E7%8E%87"><span class="toc-text">误差与准确率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9C%9F%E6%AD%A3%E7%8E%87%E4%B8%8E%E5%81%87%E6%AD%A3%E7%8E%87"><span class="toc-text">真正率与假正率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E7%A1%AE%E5%BA%A6%E4%B8%8E%E5%8F%AC%E5%9B%9E%E7%8E%87"><span class="toc-text">精确度与召回率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#F1%E5%88%86%E6%95%B0"><span class="toc-text">F1分数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ROC%E6%9B%B2%E7%BA%BF%E4%B8%8EAUC"><span class="toc-text">ROC曲线与AUC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%88%86%E7%B1%BB%E7%9A%84%E6%80%A7%E8%83%BD%E8%AF%84%E4%BC%B0"><span class="toc-text">多分类的性能评估</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%B9%B3%E8%A1%A1%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">不平衡数据集</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1774516437800" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
