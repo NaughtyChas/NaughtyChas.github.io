@@ -17,29 +17,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>Naucha</title>
+  <title>快速傅里叶变换 - Naucha</title>
 
   
-    <meta name="description" content="testing">
+    <meta name="description" content="你一定在某些地方听说过FFT的大名。 快速傅里叶变换 (Fast Fourier Transform) 在计算机科学中相关重要。我们用它来做信号处理，图像压缩，大整数乘法等等，并且最重要的是，它是算法设计中将数学性质和算法结构完美结合的典中典。 上一届学到的Strassen矩阵乘法用了巧妙的数学构造优化了复杂的$O(n^3)$。FFT也是一样。多项式乘法（也就是卷积）最直观的算法是$O(n^2)$">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Naucha">
-<meta property="og:url" content="https://naughtychas.github.io/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+<meta property="og:title" content="快速傅里叶变换">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3352/pt2/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="testing">
+<meta property="og:description" content="你一定在某些地方听说过FFT的大名。 快速傅里叶变换 (Fast Fourier Transform) 在计算机科学中相关重要。我们用它来做信号处理，图像压缩，大整数乘法等等，并且最重要的是，它是算法设计中将数学性质和算法结构完美结合的典中典。 上一届学到的Strassen矩阵乘法用了巧妙的数学构造优化了复杂的$O(n^3)$。FFT也是一样。多项式乘法（也就是卷积）最直观的算法是$O(n^2)$">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-01-28T10:32:00.000Z">
+<meta property="article:modified_time" content="2026-02-06T06:38:25.210Z">
 <meta property="article:author" content="Naucha">
+<meta property="article:tag" content="分治法">
+<meta property="article:tag" content="快速傅里叶变换">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
   
   
   
-  
+  <meta name="keywords" content=",">
 
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1774702532047">
+  <link rel="stylesheet" href="/css/main.css?v=1774702531951">
 
 
   
@@ -48,12 +52,12 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Naucha","description":"testing","url":"https://naughtychas.github.io"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3352/pt2/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"快速傅里叶变换","description":"你一定在某些地方听说过FFT的大名。\n快速傅里叶变换 (Fast Fourier Transform) 在计算机科学中相关重要。我们用它来做信号处理，图像压缩，大整数乘法等等，并且最重要的是，它是算法设计中将数学性质和算法结构完美结合的典中典。\n上一届学到的Strassen矩阵乘法用了巧妙的数学构造优化了复杂的$O(n^3)$。FFT也是一样。多项式乘法（也就是卷积）最直观的算法是$O(n^...","url":"https://naughtychas.github.io/notes/COMP3352/pt2/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
 
-<div class="l_body index" id="start" layout="notes" type="undefined" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
@@ -63,7 +67,7 @@
 <nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
 </div>
 <div class="widgets">
-<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3314" placeholder="在 COMP3314 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3352" placeholder="在 COMP3352 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
 
 
 
@@ -90,7 +94,7 @@
   <div class="tag-subtree leaf-tag" data-tag="">
     
   
-  <a class="link" href="/notebooks/COMP3314/">
+  <a class="link" href="/notebooks/COMP3352/">
     <span class="toc-text">
       
         所有笔记
@@ -113,7 +117,7 @@
   <div class="tag-subtree leaf-tag" data-tag="分治法">
     
   
-  <a class="link" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
+  <a class="link" href="/notebooks/COMP3352/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
     <span class="toc-text">
       
         
@@ -135,10 +139,35 @@
   
   
   
-  <div class="tag-subtree leaf-tag expanded" data-tag="归并排序">
+  <div class="tag-subtree leaf-tag" data-tag="动态规划">
     
   
-  <a class="link active" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+  <a class="link" href="/notebooks/COMP3352/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        动态规划
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP3352/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
     <span class="toc-text">
       
         
@@ -155,65 +184,315 @@
   </div>
 
       
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="快速傅里叶变换">
+    
+  
+  <a class="link" href="/notebooks/COMP3352/tags/%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        快速傅里叶变换
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
     </div>
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt6/"><span class="title">Cpt6: 模型评估与调参</span></a><a class="item title" href="/notes/COMP3314/cpt5/"><span class="title">Cpt5: 数据降维</span></a><a class="item title" href="/notes/COMP3314/cpt4/"><span class="title">Cpt4: 数据预处理</span></a><a class="item title" href="/notes/COMP3314/cpt3/"><span class="title">Cpt3: 逻辑回归，SVM和KNN</span></a><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">Cpt2: 感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3352/pt3/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3352/pt1/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3352/pt2/"><span class="title">快速傅里叶变换</span></a><a class="item title" href="/notes/COMP3352/begin/"><span class="title">COMP3352 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
 
-<div class="post-list post">
-  
-    <a
-      class="post-card post"
-      href="/notes/COMP3314/cpt1/?tag=归并排序"
-    >
-      
-<article class="md-text">
-  
-  <h2 class="post-title">Cpt1: 机器学习介绍</h2>
-  <div class="excerpt">
-    <p>
-      
-        实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分：
-https://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&amp;nbsp;1&amp;nbsp;&amp;&amp;nbsp;...
-      
-    </p>
-  </div>
-  <div class="meta cap">
-    
-    <span class="cap" id="post-meta">
-      <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
-      <time datetime="2026-02-11T14:42:24.808Z">2026-02-11</time>
-    </span>
-    
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">分治法</span>
-        </span>
-      
-        <span class="cap breadcrumb" >
-          <span class="tag">归并排序</span>
-        </span>
-      
-    
-  </div>
-</article>
 
-    </a>
-  
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3352/">COMP3352</a>
+
 </div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-02-06T06:38:25.210Z">2026-02-06</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-28T10:32:00.000Z">2026-01-28</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>快速傅里叶变换</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>你一定在某些地方听说过FFT的大名。</p>
+<p><strong>快速傅里叶变换 (Fast Fourier Transform)</strong> 在计算机科学中相关重要。我们用它来做信号处理，图像压缩，大整数乘法等等，并且最重要的是，它是算法设计中将数学性质和算法结构完美结合的典中典。</p>
+<p>上一届学到的Strassen矩阵乘法用了巧妙的数学构造优化了复杂的$O(n^3)$。FFT也是一样。多项式乘法（也就是卷积）最直观的算法是$O(n^2)$，为了打破这个平静，我们必须使用分治策略。</p>
+<p>但FFT比归并或者Strassen更进一步：它不只是简单的却分数组，还引入了复数域的数学性质来配合分治。</p>
+<h2 id="多项式乘法的表示"><a href="#多项式乘法的表示" class="headerlink" title="多项式乘法的表示"></a>多项式乘法的表示</h2><p>首先我们要明白我们在解决什么问题。我们想要尝试解决的问题是多项式乘法，或者更广义地说，两个序列的卷积。  </p>
+<p>例如我们在这里有一个多项式：</p>
+<p>$$A(x) &#x3D; a_0 + a_1x + \dots + a_{n-1}x^{n-1}$$</p>
+<p>可以用 <strong>系数表示法</strong> 来定义。就比如一个向量 $[a_0, a_1, ...]$ 。</p>
+<p>如果你想要算出两个多项式$A(x)$ 和 $B(x)$ 的乘积 $C(x) &#x3D; A(x) \cdot B(x)$，你会发现这个过程非常麻烦。<br>由于每一项 $a_{i}x^{i}$ 都需要和 $b_{j}x^{j}$ 相乘，结果会贡献到 $x^{i + j}$这一项上。这就是卷积。如果你暴力求职，那么你需要对这些系数两层循环，复杂度来到了 $O(n^2)$，慢的要死。</p>
+<hr>
+<p>但实际上除了系数表示法， 我们还可以使用 <strong>点值表示法</strong> 来确定多项式。一个 $n - 1$ 次的多项式，可以被 $n$ 个不同的点唯一确认。这就好比两点确定一条直线，三点确定一条抛物线一样：</p>
+<p><img src="https://s2.loli.net/2026/01/29/GDEuiMnjHwlNWUT.png" alt="image.png"></p>
+<p>$$p(x) &#x3D; 1 + x - 3x^2 + x^3$$</p>
+<p>这里我们知道可以对多项式AB来进行采样：</p>
+<ul>
+<li>$A$ : $(x_0, y_a0)$, $(x_1, y_a1)$</li>
+<li>$B$ : $(x_0, y_b0)$, $(x_1, y_b1)$</li>
+</ul>
+<p>这时候如果我们想要求得多项式乘积的值将会非常简单。因为 $C(x) &#x3D; A(x) \cdot B(x)$，所以你只需要将对应 $y$ 值乘起来即可：$y_c0 &#x3D; y_a0 \cdot y_b0$，相同的$x$坐标值的$y$值乘起来。</p>
+<p>那么我们该如何采样？要计算$C(x) &#x3D; A(x) \times B(x)$，我们必须保证$A$和$B$实在同一组x坐标上进行采样的。因此，我们的操作流程是：</p>
+<ol>
+<li>选取一组公共的$x$点集：$x_0, x_1, ..., x_k$</li>
+<li>算出$A$在这些点的值：$y_{a0}, y_{a1}, ...$</li>
+<li>同理，算出$B$的值：$y_{b0}, y_{b1}, ...$</li>
+<li>最后能够得出这些点在C的值必然是 $(x_0, y_{a0} \cdot y_{b0}), (x_1, y_{a1} \cdot y_{b1})$。</li>
+</ol>
+<p>如此，我们只需要遍历一遍数组即可。复杂度来到 $O(n)$。</p>
+<hr>
+<p>你有没有想过万一我指定了$n$个点值，但是结果对应了两个不同的多项式怎么办？或者找不到任意多项式该咋办？你如何证明点值表示法一定能够使用点值来确定唯一的一个多项式？</p>
+<p>设一个次数小于$n$的多项式：</p>
+<p>$$A(x) &#x3D; a_0 + a_{1}x + a_{2}x^2 + ... + a_{n-1}x^{n-1}$$</p>
+<p>我们要找多项式的系数 $a_0, a_1, ..., a_{n-1}$， 如果我们知道$n$个点$(x_0, y_0), ..., (x_{n-1}, y_{n-1})$，我们可以列出$n$个方程：</p>
+<p>$$a_0 + a_1x_0 + \dots + a_{n-1}x_0^{n-1} &#x3D; y_0$$ $$...$$ $$a_0 + a_1x_{n-1} + \dots + a_{n-1}x_{n-1}^{n-1} &#x3D; y_{n-1}$$</p>
+<p>把这个方程组写成矩阵形式：</p>
+<p>$$\begin{bmatrix}<br>1 &amp; x_0 &amp; x_0^2 &amp; \dots &amp; x_0^{n-1} \\<br>1 &amp; x_1 &amp; x_1^2 &amp; \dots &amp; x_1^{n-1} \\<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \dots &amp; x_{n-1}^{n-1}<br>\end{bmatrix} \cdot \begin{bmatrix}<br>a_0 \\ a_1 \\ \vdots \\ a_{n-1}<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>y_0 \\ y_1 \\ \vdots \\ y_{n-1}<br>\end{bmatrix}$$</p>
+<p>中间那个充满了 $x$ 的矩阵就是 <strong>Vandermonde 矩阵</strong>。</p>
+<p>只要 $x_0, \dots, x_{n-1}$ 这些点互不相同，Vandermonde 矩阵的行列式就不为 0，也就是矩阵可逆。<br>这意味着对于任意一组给定的$y$值，方程组有且仅有唯一解。这从数学上保证了点值表示法是稳健的。</p>
+<hr>
+<p>我们直到该如何选点了，也确定点值表示法非常稳健，那么选点数量有没有要求？</p>
+<p>如果你有两个$n-1$次多项式相乘，结果$C(x)$的次数会来到$2(n-1)$，也就是接近$2n$次。要唯一确定一个$2n$次的多项式，我们需要$2n$个点，而不是$n$个点。说得好，但是为什么呢？</p>
+<p>由于多项式$A(x)$和$B(x)$的最高次数都是$n - 1$。它们的乘积$C(x) &#x3D; A(x) \cdot B(x)$，最高次数来到了$(n - 1) + (n - 1) &#x3D; 2n - 2$，由于第一项是0次，所以$C(x)$一共有$2n-1$个系数。<br>要唯一确定一个系数为$2n - 1$的多项式，我们至少需要$2n - 1$个点。</p>
+<p>所以我们在选点的时候，虽然$A$和$B$本身只需要$n$个点就能够确定，但是为了给结果$C(x)$留足空间，我们需要在一开始就选取$2n$个点，或者更多。  </p>
+<p>在算法实现里为了方便，一般我们会凑成2的幂次数量来选点。</p>
+<hr>
+<p>以上就是FFT的核心思想了。由于我们使用点值处理乘法这么快，我们的策略是：</p>
+<ol>
+<li>求值：将多项式从抽象的系数提炼成点值</li>
+<li>点乘：将点值花$O(n)$的时间算出结果点值</li>
+<li>插值&#x2F;逆变换：由于点值表示法是可逆的，所以我们将得出的结果点值转化回系数。</li>
+</ol>
+<p>但是如果我们随机选取 $n$个点，好比说 $x_0, ..., x_{n-1}$，带入多项式求值。</p>
+<p>你需要计算$n$次，每次耗时$O(n)$。为什么？假设我们要计算一个多项式在点$k$的取值：</p>
+<p>$$P(k) &#x3D; a_0 + a_1k + a_2k^2 + ... + a_{n-1}k^{n-1}$$</p>
+<p>如果点是普通整数，例如1, 2, 3，那么每一项$k^j$都需要单独进行计算。计算$k^j$的代价是$O(j)$，整个多项式在一个点上的计算代价就是$O(n)$。要把这$n$个点全部计算出来，就是 $O(n^2)$</p>
+<p>所以到头来我们这一圈还没有解决根本问题，最后的复杂度还是$O(n^2)$。</p>
+<p>FFT要做的是找到一种极快的方法，来完成这个传送过程。我们不能随便选点，相反，我们需要有策略地选取点值。</p>
+<hr>
+<h2 id="单位根"><a href="#单位根" class="headerlink" title="单位根"></a>单位根</h2><p>这一部分我们主要解决选点问题。</p>
+<p>FFT的巧妙之处就在于选择单位根。单位根的模长始终是1，所以无论指数多大，数值大小都不会爆炸。例如，$\omega_{n}^{j} &#x3D; e^{2\pi k&#x2F;n}$，不管$j$多大，结构总是单位圆上的一个点，大小始终是1。这就避免了数值溢出和精度问题。  </p>
+<p>同时，单位根的对称性能够让我们把计算拆分成一半一半，从而把复杂度降到$O(n \log{n})$</p>
+<p>我们想象复数平面上的单位圆。在这个圆上的任何一个点，无论你怎么做乘法，结果仍然会在这个圆上。<br>我们需要在这个圆上均匀的切$n$刀。这些切点就叫$n$次单位根。也就是满足$\omega^{n} &#x3D; 1$的复数$\omega$。就像一个时钟。如果$n &#x3D; 4$，那么这四个点就分别在3, 12, 9, 6点钟位置。   </p>
+<p>我们定位 <strong>主单位根 (Principal Root of Unity)</strong> $\omega_{n}$ 为逆时针方向的第一个刻度：</p>
+<p>$$\omega_n &#x3D; e^{i \frac{2\pi}{n}} &#x3D; \cos(\frac{2\pi}{n}) + i\sin(\frac{2\pi}{n})$$</p>
+<p>如果你不熟悉欧拉公式 $e^{ix}$，只需要把它想象成一个旋转操作：$\omega_n$代表旋转$1&#x2F;n$圈。  </p>
+<p>那么我们就知道这$n$个点实际上就是$\omega_n$的幂：$\omega_n^0, \omega_n^1, \omega_n^2, \dots, \omega_n^{n-1}$。  </p>
+<p>单位根有一个关键性质：$\omega_n^{n&#x2F;2} &#x3D; -1, \quad \omega_n^{n&#x2F;4} &#x3D; i$，这些对称性意味着我们可以把多项式的计算拆成两半再合并。这让分治法成为可能。我们可以先把规模减半，递归计算，然后使用单位根的对称性快速合并。  </p>
+<p>如果选择普通点，这种对称性就不复存在，分治就没办法使用，复杂度就一直停留在$O(n^2)$。</p>
+<hr>
+<h2 id="折半引理"><a href="#折半引理" class="headerlink" title="折半引理"></a>折半引理</h2><p>为什么选这些点就能够使用分治法？</p>
+<p>如果想要在这些点上使用分治，那么这些点就可以在拆分后，从规模为$n$的多项式拆成两个规模为$n&#x2F;2$的子问题。换句话说，这就要求我们选的这$n$个点，在平方之后能够变成$n&#x2F;2$个点。  </p>
+<p>这里就很明显了，由于我们使用了复数，以$n&#x3D;8$为例，我们需要计算多项式在八个点上的值：</p>
+<p>$${\omega_8^0, \omega_8^1, \omega_8^2, \omega_8^3, \omega_8^4, \omega_8^5, \omega_8^6, \omega_8^7}$$</p>
+<p>如果将所有的点平方，你会发现：</p>
+<ul>
+<li>$\omega_8^0$ (0度) 平方 $\to$ $\omega_8^0$ (0度)</li>
+<li>$\omega_8^1$ (45度) 平方 $\to$ $\omega_8^2$ (90度)</li>
+<li>...</li>
+<li>$\omega_8^4$ (180度) 平方 $\to$ $\omega_8^8$ (360度 &#x3D; 0度) <strong>(与第一点重合)</strong></li>
+<li>$\omega_8^5$ (225度) 平方 $\to$ $\omega_8^{10} &#x3D; \omega_8^2$ (90度) <strong>(与第二点重合)</strong></li>
+</ul>
+<p>以此类推，我们会发现这$n$个单位根进行平方操作后就变成了$n&#x2F;2$个点，因为有一半的数值回合现有的点值重合。这$n&#x2F;2$个新点，就刚好是$n&#x2F;2$次单位根。  </p>
+<p>$$(\omega_n^k)^2 &#x3D; \omega_{n&#x2F;2}^k$$</p>
+<p>这意味着我们在顶层有 $n$ 个输入点。进入下一子问题层时，我们只需要处理 $n&#x2F;2$ 个点。</p>
+<hr>
+<h2 id="FFT的前向算法"><a href="#FFT的前向算法" class="headerlink" title="FFT的前向算法"></a>FFT的前向算法</h2><p>有了这个性质，我们就可以真正开始构建算法了。</p>
+<hr>
+<p>首先，我们要分。</p>
+<p>我们要计算$A(x)$在$n$个单位根上的值。我们不能像归并排序那样把数组左边和右边切开，实际上，我们需要按照下标的奇偶性来切分：</p>
+<p>假设原始的多项式是：</p>
+<p>$$A(x) &#x3D; a_{0} + a_{1}x + a_{2}x^2 + ... + a_{n}x^n$$</p>
+<p>我们可以把系数分成两组，分别是：</p>
+<p>$a_0 + a_{2}x^2 + a_{4}x^4 + ...$ 是偶数下标<br>$a_{1}x + a_{3}x^3 + a_{5}x^5 + ...$ 是奇数下标</p>
+<p>我们希望把这两部分都写成某个多项式在$x^2$上的形式，于是这里我们定义：  </p>
+<p>$$A_{\text{even}}(z) &#x3D; a_0 + a_{2}z + a_{4}z^2 + ...$$<br>$$A_{\text{odd}}(z) &#x3D; a_1 + a_{3}z + a_{5}z^2 + ...$$</p>
+<p>观察上方的规律，我们可以得到偶数部分可以用 $A_{\text{even}}(x^2)$ 表示，同理，奇数部分可以用 $x \cdot A_{\text{odd}}(x^2)$ 表示。</p>
+<p>因此，合并原来的多项式就是：</p>
+<p>$$A(x) &#x3D; A_{\text{even}}(x^2) + x \cdot A_{\text{odd}}(x^2)$$</p>
+<hr>
+<p>接下来我们递归调用FFT，分别计算：</p>
+<ul>
+<li>$A_{\text{even}}(x)$ 在 $n&#x2F;2$个点 ${\omega_{n&#x2F;2}^0, ..., \omega_{n&#x2F;2}^{n&#x2F;2-1}}$上的值</li>
+<li>$A_{\text{odd}}(x)$ 在 $n&#x2F;2$个点 ${\omega_{n&#x2F;2}^0, ..., \omega_{n&#x2F;2}^{n&#x2F;2-1}}$上的值</li>
+</ul>
+<p>怎么来的？由于我们已经知道：</p>
+<p>$$A(x) &#x3D; A_{\text{even}}(x^2) + x \cdot A_{\text{odd}}(x^2)$$</p>
+<p>所以如果我们要计算 $A(\omega_{n}^k)$，就变成了：</p>
+<p>$$A(\omega_{n}^k) &#x3D; A_{\text{even}}((\omega_{n}^k)^2) + \omega_{n}^k \cdot A_{odd}((\omega_{n}^k)^2)$$</p>
+<p>由于：</p>
+<p>$$(\omega_{n}^k)^2 &#x3D; \omega_{n}^{2k} &#x3D; \omega_{n&#x2F;2}^k$$</p>
+<p>这说明当我们在$n$个单位根上计算$A(x)$时，实际上只需要在$n&#x2F;2$个单位根上计算 $A_{even}(x)$ 和 $A_{odd}(x)$即可。</p>
+<hr>
+<p>分治完毕后我们要合并。我们拿到了两个子问题的结果数组，就把他们叫 $y_{\text{even}}$ 和 $y_{\text{odd}}$ 吧。我们要把它们拼回 $n$ 个结果。</p>
+<p>结果公式可以从上面的公式推导出来，就是：</p>
+<p>$$A(\omega_{n}^k) &#x3D; A_{\text{even}}(\omega_{n}^{2k}) + \omega_{n}^k \cdot A_{\text{odd}}(\omega_{n}^{2k})$$</p>
+<p>利用性质 $\omega_{n}^{2k} &#x3D; \omega_{n&#x2F;2}^k$，我们可以知道对于从0到 $n&#x2F;2 - 1$的$k$来说：</p>
+<p>前半部分的结果就是：</p>
+<p>$$y_k &#x3D; y_{\text{even}}[k] + \omega_{n}^k \cdot y_{\text{odd}}[k]$$</p>
+<p>而后半部分的结果就是：</p>
+<p>$$y_{k + n&#x2F;2} &#x3D; y_{\text{even}}[k] - \omega_{n}^k \cdot y_{\text{odd}}[k]$$</p>
+<p>这就是大名鼎鼎的蝴蝶操作。</p>
+<hr>
+<h3 id="蝴蝶操作"><a href="#蝴蝶操作" class="headerlink" title="蝴蝶操作"></a>蝴蝶操作</h3><p>那么你很迷惑这些公式是什么意思，前半部分和后半部分到底是什么东西。<br>蝴蝶操作的前后半公式往往难以理解。首先我们在前面推导出了最基本的拆分公式：</p>
+<p>$$P(x) &#x3D; P_{\text{even}}(x^2) + x \cdot P_{\text{odd}}(x^2)$$</p>
+<p>这个公式告诉我们，如果你想算出多项式$P$在点$x$的值，你只需要算出两个小多项式$P_{\text{even}}$和$P_{\text{odd}}$在$x^2$点的值，然后代入公式计算即可。</p>
+<p>而在FFT中我们要计算的是$P$在$n$个单位根上的值： $\omega_{n}^0, \omega_{n}^1, ..., \omega_{n}^{n - 1}$</p>
+<p>我们把这些$n$个点分成两组。  </p>
+<p>前半组是 $k &#x3D; 0$ 到 $n&#x2F;2 - 1$。如果$n &#x3D; 8$，那么$k &#x3D; 0, 1, 2, 3$<br>那么后半组就是 $k &#x3D; n&#x2F;2$ 到 $n - 1$。在上面的例子中就是$k &#x3D; 4, 5, 6, 7$</p>
+<hr>
+<p>先来看前半组的推导。如果我们要计算第 $k$个点的值，我们就把$x &#x3D; \omega_{n}^k$带入核心公式：</p>
+<p>$$P(\omega_n^k) &#x3D; P_{even}((\omega_n^k)^2) + \omega_n^k \cdot P_{odd}((\omega_n^k)^2)$$</p>
+<p>利用折半引理 $\omega_{n}^{2k} &#x3D; \omega_{n&#x2F;2}^k$：</p>
+<p>$$P(\omega_n^k) &#x3D; P_{even}(\omega_{n&#x2F;2}^k) + \omega_n^k \cdot P_{odd}(\omega_{n&#x2F;2}^k)$$</p>
+<p>其中，$P_{\text{even}}(\omega_{n&#x2F;2}^k)$就是我们递归调用<code>FFT(even)</code>返回的结果数组中的第$k$个元素，我们记作$y_{even}[k]$。同理，$P_{\text{odd}}(\omega_{n&#x2F;2}^k)$就是调用<code>FFT(odd)</code>中的第$k$个元素，记作$y_{\text{odd}}[k]$。</p>
+<p>前半部分的公式就变成了：</p>
+<p>$$y[k] &#x3D; y_{\text{even}}[k] + \omega_{n}^k \cdot y_{\text{odd}}[k]$$</p>
+<hr>
+<p>前半部分还算比较简单，后半部分的推导就比较令人迷惑了。  </p>
+<p>后半部分的点，可以写成$k&#39; &#x3D; k + n&#x2F;2$，其中$k$还是从0到$n&#x2F;2 - 1$。比如$n &#x3D; 8$，第四个点就是$0 + 4$，第五个点就是$1 + 4$。</p>
+<p>因此，在整理索引后，我们把 $x &#x3D; \omega_{n}^{k + n&#x2F;2}$ 带入核心公式：</p>
+<p>$$P(\omega_n^{k+n&#x2F;2}) &#x3D; P_{even}((\omega_n^{k+n&#x2F;2})^2) + \omega_n^{k+n&#x2F;2} \cdot P_{odd}((\omega_n^{k+n&#x2F;2})^2)$$</p>
+<p>首先来看看平方部分。我们需要计算$(\omega_{n}^{k + n&#x2F;2})^2$：</p>
+<p>$$(\omega_{n}^{k+n&#x2F;2})^2 &#x3D; \omega_{n}^{2k+n} &#x3D; \omega_n^{2k} \cdot \omega_{n}^n$$</p>
+<p>由于$\omega_n^n &#x3D; 1$，转了一圈回到原点，因此：</p>
+<p>$$&#x3D; \omega_n^{2k} \cdot 1 &#x3D; \omega_{n&#x2F;2}^{k}$$</p>
+<p>你发现后半部分输入值的平方与前半部分输入值的平方是一模一样的。这意味着$P_{even}$和$P_{odd}$不需要重新计算，我们只需要复用前半部分拿到的$y_{even}[k]$和$y_{odd}[k]$就可以了。</p>
+<p>然后来看看编号的系数部分 $x &#x3D; \omega_{n}^{k + n&#x2F;2}$：</p>
+<p>$$\omega_{n}^{k + n&#x2F;2} &#x3D; \omega_{n}^k \cdot \omega_{n}^{n&#x2F;2}$$</p>
+<p>由于$\omega_n$是把圆切成$n$份，$\omega_n^{n&#x2F;2}$就是切了$n&#x2F;2$份，也就是转了180度。<br>在复平面上，转180°就是等于乘以-1，因此：</p>
+<p>$$\omega_n^{k + n&#x2F;2} &#x3D; -\omega_n^k$$</p>
+<p>最后，我们把上面两点结合起来，带回原式：</p>
+<p>$$P(\omega_n^{k+n&#x2F;2}) &#x3D; P_{even}(\dots) + (-\omega_n^k) \cdot P_{odd}(\dots)$$<br>$$y[k + n&#x2F;2] &#x3D; y_{even}[k] - \omega_n^k \cdot y_{odd}[k]$$</p>
+<p>OK了。这里的蝴蝶操作就是利用了复数的对称性来化简计算。前半个圆上面的点$k$结果是$A + \omega^k B$，后半个是$A - \omega^k B$。这里的 $A(y_{even}[k])$ 和 $B(y_{odd}[k])$ 对于这两个点是完全共用的，区别就在于中间的加号变成了减号。  </p>
+<hr>
+<h2 id="FFT逆变换"><a href="#FFT逆变换" class="headerlink" title="FFT逆变换"></a>FFT逆变换</h2><p>如果说前向FFT就是把稀疏表示转换成点值表示，那么逆变换的作用就是把这个过程反过来。</p>
+<p>通过计算前向FFT，我们得到了一个长度为$n$的序列在$n$个单位根上的取值。而逆向FFT要做的是输入单位根的取值，来输出原始的多项式系数。</p>
+<p>换句话说，逆向FFT就是把取值重新组合，恢复原始信号或系数。我们在点值界完成了乘法，现在手中拿着$n$个点值$y_0, y_1, ..., y_{n-1}$。我们的目标是求出系数向量 $a &#x3D; [a_0, a_1, ..., a_{n-1}]$</p>
+<hr>
+<p>回顾一下前向变换，我们做的事本质上就是一个矩阵乘法：</p>
+<p>$$y &#x3D; V \cdot a$$</p>
+<p>$y_0, y_1, ..., y_{n-1}$合并写成一个向量$y$，输入系数 $a_0, a_1, ..., a_{n-1}$写成向量$a$。其中V就是充满了$\omega$的范德蒙德矩阵。如果我们要求出$a$，只需要将范德蒙德矩阵移到等式左边：</p>
+<p>$$a &#x3D; V^{-1} \cdot y$$</p>
+<p>所以，逆变换的问题等价于，我们求矩阵$V$的逆矩阵$V^{-1}$长什么样？</p>
+<hr>
+<p>还记得范德蒙德矩阵吗？</p>
+<p>$$\begin{bmatrix}<br>1 &amp; x_0 &amp; x_0^2 &amp; \dots &amp; x_0^{n-1} \\<br>1 &amp; x_1 &amp; x_1^2 &amp; \dots &amp; x_1^{n-1} \\<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \dots &amp; x_{n-1}^{n-1}<br>\end{bmatrix}$$</p>
+<p>原矩阵$V$中的元素是$\omega_{n}^{jk}$，而它的逆矩阵$V^{-1}$里面的元素都是 $\frac{1}{n} \omega_{n}^{-jk}$。唯二区别在于：</p>
+<ol>
+<li>指数里的$\omega$全部变成了$\omega^{-1}$</li>
+<li>所有的元素多除了一个 $n$。</li>
+</ol>
+<p>所以实际上要计算 $V^{-1}$，我们不需要使用高斯消元法这种$O(n^3)$的算法就行了。直接套用这个规律就可以了！</p>
+<hr>
+<p>如此，逆向FFT的步骤就是：</p>
+<ol>
+<li>直接调用刚才的FFT函数</li>
+<li>由于逆矩阵的变化非常简单，这时候我们只需要把单位根参数从$\omega_n$换成$\omega_{n}^{-1}$。在复平面上，$\omega_n^{-1} &#x3D; e^{-i2{\pi}&#x2F;n}，相当于角度取负$</li>
+<li>最后，拿到FFT返回的结果数组后，我们将里面的每一个数字都除以$n$。</li>
+</ol>
+<hr>
+<h2 id="完整流程"><a href="#完整流程" class="headerlink" title="完整流程"></a>完整流程</h2><p>到此，我们已经完成了对于整个FFT过程的全部讲解。我们来总结一下吧。</p>
+<p>如果我们要计算$C(x) &#x3D; A(x) \times B(x)$， 假设$A$与$B$的次数都是$n-1$。我们会经过下列流程：</p>
+<ol>
+<li><strong>准备</strong></li>
+</ol>
+<p>  结果$C$的次数是$2n - 2$。我们要把$A$与$B$的系数数组补$0$，补到长度为$N$为止。<br>  $N$是大于$2n - 2$的2的幂次，比如说$2n$。</p>
+<ol start="2">
+<li><strong>求值</strong></li>
+</ol>
+<p>  <code>y_a = FFT(A, N, ω)</code><br>  <code>y_b = FFT(B, N, ω)</code></p>
+<p>  这一步我们耗时 $2 \times O(N\log N)$。</p>
+<ol start="3">
+<li><strong>点乘</strong></li>
+</ol>
+<p>  <code>y_c = [ y_a[0]*y_b[0], ..., y_a[N-1]*y_b[N-1] ]</code><br>  这一步耗时$O(N)$。</p>
+<ol start="4">
+<li><strong>插值取逆</strong></li>
+</ol>
+<p>  <code>coeffs_c = FFT(y_c, N, ω^-1)</code><br>  然后我们将<code>coeffs_c</code>中的每一个数字除以$N$。<br>  这一步耗时$O(N\log N)$。</p>
+<p>总复杂度就是：</p>
+<p>$$O(N\log N) + O(N) + O(N\log N) &#x3D; \mathbf{O(N\log N)}$$</p>
+<p>相当于暴力的$O(N^2)$，当$N$的值非常大时，这个算法快不少。这就是为什么现在我们能够在计算机上快速处理音频，图像以及大数据计算的原因。</p>
+
+
+  <div class="tag-list">
+    
+      
+      <a class="tag" href="/notebooks/COMP3352/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">分治法</a>
+    
+      
+      <a class="tag" href="/notebooks/COMP3352/tags/%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/">快速傅里叶变换</a>
+    
+  </div>
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
 
 
 
 <footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-text">多项式乘法的表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%BD%8D%E6%A0%B9"><span class="toc-text">单位根</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%98%E5%8D%8A%E5%BC%95%E7%90%86"><span class="toc-text">折半引理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FFT%E7%9A%84%E5%89%8D%E5%90%91%E7%AE%97%E6%B3%95"><span class="toc-text">FFT的前向算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%9D%B4%E8%9D%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">蝴蝶操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FFT%E9%80%86%E5%8F%98%E6%8D%A2"><span class="toc-text">FFT逆变换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">完整流程</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -635,7 +914,7 @@ https://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&amp;nbsp;1&amp;nbs
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1774702532050" defer></script>
+<script src="/js/main.js?v=1774702531954" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -707,6 +986,30 @@ https://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&amp;nbsp;1&amp;nbs
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
 
 
 

@@ -23,13 +23,13 @@
     <meta name="description" content="分治法分治法的核心思想正如同他的名字一样：分而治之。   想象一下你想要整理一副散落满地的扑克牌，直接面对52张乱序的牌可能会让人感到无从下手。但是如果你只需要整理其中的一张牌，那么这一张牌自己就是有序的，在这之上我们就可以将整理一张牌的问题扩大规模到两张牌，随后52张。这样每一步任务的难度都非常简单。 分治法的核心策略就是：不断地将大问题切分成原本问题的一半，直到问题变得极小（我们叫它Base">
 <meta property="og:type" content="website">
 <meta property="og:title" content="分治法的核心与归并排序">
-<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3352/divide'n'conquer/">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3352/pt1/">
 <meta property="og:site_name" content="Naucha">
 <meta property="og:description" content="分治法分治法的核心思想正如同他的名字一样：分而治之。   想象一下你想要整理一副散落满地的扑克牌，直接面对52张乱序的牌可能会让人感到无从下手。但是如果你只需要整理其中的一张牌，那么这一张牌自己就是有序的，在这之上我们就可以将整理一张牌的问题扩大规模到两张牌，随后52张。这样每一步任务的难度都非常简单。 分治法的核心策略就是：不断地将大问题切分成原本问题的一半，直到问题变得极小（我们叫它Base">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-01-21T08:11:00.000Z">
-<meta property="article:modified_time" content="2026-01-29T08:53:27.133Z">
+<meta property="article:modified_time" content="2026-03-26T14:04:29.217Z">
 <meta property="article:author" content="Naucha">
 <meta property="article:tag" content="分治法">
 <meta property="article:tag" content="归并排序">
@@ -43,7 +43,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1774530110105">
+  <link rel="stylesheet" href="/css/main.css?v=1774702531949">
 
 
   
@@ -52,7 +52,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3352/divide'n'conquer/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"分治法的核心与归并排序","description":"分治法分治法的核心思想正如同他的名字一样：分而治之。  \n想象一下你想要整理一副散落满地的扑克牌，直接面对52张乱序的牌可能会让人感到无从下手。但是如果你只需要整理其中的一张牌，那么这一张牌自己就是有序的，在这之上我们就可以将整理一张牌的问题扩大规模到两张牌，随后52张。这样每一步任务的难度都非常简单。\n分治法的核心策略就是：不断地将大问题切分成原本问题的一半，直到问题变得极小（我们叫它Ba...","url":"https://naughtychas.github.io/notes/COMP3352/divide'n'conquer/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3352/pt1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"分治法的核心与归并排序","description":"分治法分治法的核心思想正如同他的名字一样：分而治之。  \n想象一下你想要整理一副散落满地的扑克牌，直接面对52张乱序的牌可能会让人感到无从下手。但是如果你只需要整理其中的一张牌，那么这一张牌自己就是有序的，在这之上我们就可以将整理一张牌的问题扩大规模到两张牌，随后52张。这样每一步任务的难度都非常简单。\n分治法的核心策略就是：不断地将大问题切分成原本问题的一半，直到问题变得极小（我们叫它Ba...","url":"https://naughtychas.github.io/notes/COMP3352/pt1/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -139,6 +139,31 @@
   
   
   
+  <div class="tag-subtree leaf-tag" data-tag="动态规划">
+    
+  
+  <a class="link" href="/notebooks/COMP3352/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        动态规划
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
   <div class="tag-subtree leaf-tag" data-tag="归并排序">
     
   
@@ -188,7 +213,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3352/FFT/"><span class="title">快速傅里叶变换</span></a><a class="item title" href="/notes/COMP3352/divide'n'conquer/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3352/begin/"><span class="title">COMP3352 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3352/pt3/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3352/pt1/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3352/pt2/"><span class="title">快速傅里叶变换</span></a><a class="item title" href="/notes/COMP3352/begin/"><span class="title">COMP3352 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -208,7 +233,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3352/">COMP3352</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-01-29T08:53:27.133Z">2026-01-29</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-21T08:11:00.000Z">2026-01-21</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-03-26T14:04:29.217Z">2026-03-26</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-21T08:11:00.000Z">2026-01-21</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -560,31 +585,6 @@
 <hr>
 <p>分治这一部分就讲完了。最后的最后，</p>
 <p><strong>我恨递归。</strong></p>
-<p>两个 $n \times n$ 的矩阵 $A$ 和 $B$ 相乘，得到 $C$。<br>暴力做法是 $O(n^3)$。<br>如果我们把矩阵切成 4 块 $n&#x2F;2 \times n&#x2F;2$ 的子矩阵：<br>$$<br>\begin{pmatrix} A_{11} &amp; A_{12} \ A_{21} &amp; A_{22} \end{pmatrix}<br>\times<br>\begin{pmatrix} B_{11} &amp; B_{12} \ B_{21} &amp; B_{22} \end{pmatrix}<br>$$<br>根据矩阵乘法规则，我们要计算 8 个子矩阵的乘积（$A_{11}B_{11}, A_{12}B_{21}$ 等等）。<br>递归式：$T(n) &#x3D; 8T(n&#x2F;2) + O(n^2)$（加法是 $n^2$）。<br>主定理：$\log_2 8 &#x3D; 3$。<br><strong>结论：</strong> 依然是 $O(n^3)$。没用。</p>
-<h4 id="2-Strassen-的魔法-Slide-50"><a href="#2-Strassen-的魔法-Slide-50" class="headerlink" title="2. Strassen 的魔法 (Slide 50)"></a>2. Strassen 的魔法 (Slide 50)</h4><p>Volker Strassen 在 1969 年发现了一个惊人的事实：你不需要 8 次乘法，<strong>7 次就够了</strong>！</p>
-<p>他在 Slide 50 列出了一堆看起来像天书一样的公式（$M_1$ 到 $M_7$）。你<strong>不需要背诵这些公式</strong>（就像你不需要背诵圆周率后100位）。<br>你只需要理解他的核心思想：<br>他构造了 7 个复杂的中间矩阵（$M$），每个 $M$ 都是通过一次子矩阵乘法得到的。<br>然后，通过在这个 7 个 $M$ 之间做加减法，神奇地还原出了结果矩阵 $C$ 的四个部分。</p>
-<p><strong>代价与收益：</strong></p>
-<ul>
-<li><strong>代价：</strong> 加法和减法的次数变多了（Slide 50 说用了 18 次加减法）。但这影响的只是 $O(n^2)$ 前面的常数。</li>
-<li><strong>收益：</strong> 乘法次数从 8 降到了 7。这改变了递归树的<strong>分支数量</strong>，直接改变了复杂度指数。</li>
-</ul>
-<h4 id="3-最终分析"><a href="#3-最终分析" class="headerlink" title="3. 最终分析"></a>3. 最终分析</h4><p>递归式：<br>$$T(n) &#x3D; 7T(n&#x2F;2) + O(n^2)$$</p>
-<p>主定理比较：</p>
-<ul>
-<li>叶子：$n^{\log_2 7} \approx n^{2.808}$</li>
-<li>根部：$n^2$<br>显然 $2.808 &gt; 2$，叶子占主导。<br>复杂度 &#x3D; <strong>$O(n^{2.808})$</strong>。</li>
-</ul>
-<p>这就是为什么 Slide 51 说这是一个里程碑。虽然 $2.8$ 和 $3$ 看起来差的不多，但在数学上，它打破了 $O(n^3)$ 是矩阵乘法下界的迷信。后续的算法（如 Coppersmith-Winograd）只是在 Strassen 的思路上继续把指数往下压。</p>
-<hr>
-<p><strong>FINAL STOP &amp; CHECK</strong></p>
-<p>至此，我们已经讲完了整份课件。</p>
-<p>总结一下这一章的“代数分治”：</p>
-<ol>
-<li><strong>直接分治往往没有用：</strong> 如果你只是把 $n^2$ 的问题拆成 4 个 $n&#x2F;2$ 的问题，或者把 $n^3$ 拆成 8 个，复杂度是不会变的。</li>
-<li><strong>核心在于减少子问题数量 ($a$)：</strong> Karatsuba 把 4 变成 3，Strassen 把 8 变成 7。</li>
-<li><strong>手段是“加法换乘法”：</strong> 利用代数恒等式，增加廉价的加减法操作，来节省昂贵的递归乘法操作。</li>
-</ol>
-<p>对于这最后一部分，或者整份课件的任何内容，你还有什么疑问吗？</p>
 
 
   <div class="tag-list">
@@ -631,7 +631,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E9%80%92%E6%8E%A8%E5%BC%8F"><span class="toc-text">归并递推式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E4%B8%8E%E4%B8%A5%E8%B0%A8%E6%80%A7%E8%AF%81%E6%98%8E"><span class="toc-text">数学推导与严谨性证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F%EF%BC%9A%E4%B8%BB%E5%AE%9A%E7%90%86"><span class="toc-text">万能公式：主定理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%97%AE%E9%A2%98"><span class="toc-text">选择问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E5%88%86%E4%B8%8E%E4%B8%A2%E5%BC%83"><span class="toc-text">切分与丢弃</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E4%BD%8D%E6%95%B0%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0"><span class="toc-text">中位数的中位数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E8%BF%91%E7%82%B9%E5%AF%B9%E9%97%AE%E9%A2%98"><span class="toc-text">最近点对问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E6%95%B0%E9%82%BB%E5%B1%85%E5%8E%9F%E5%88%99"><span class="toc-text">常数邻居原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E9%80%9F%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97"><span class="toc-text">加速代数运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E4%B9%98%E6%B3%95-Karatsuba%E7%AE%97%E6%B3%95"><span class="toc-text">整数乘法 &#x2F; Karatsuba算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95-Strassen%E7%AE%97%E6%B3%95"><span class="toc-text">矩阵乘法 &#x2F; Strassen算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Strassen-%E7%9A%84%E9%AD%94%E6%B3%95-Slide-50"><span class="toc-text">2. Strassen 的魔法 (Slide 50)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%9C%80%E7%BB%88%E5%88%86%E6%9E%90"><span class="toc-text">3. 最终分析</span></a></li></ol></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">分治法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E9%80%92%E6%8E%A8%E5%BC%8F"><span class="toc-text">归并递推式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E4%B8%8E%E4%B8%A5%E8%B0%A8%E6%80%A7%E8%AF%81%E6%98%8E"><span class="toc-text">数学推导与严谨性证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F%EF%BC%9A%E4%B8%BB%E5%AE%9A%E7%90%86"><span class="toc-text">万能公式：主定理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%97%AE%E9%A2%98"><span class="toc-text">选择问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E5%88%86%E4%B8%8E%E4%B8%A2%E5%BC%83"><span class="toc-text">切分与丢弃</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E4%BD%8D%E6%95%B0%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0"><span class="toc-text">中位数的中位数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E8%BF%91%E7%82%B9%E5%AF%B9%E9%97%AE%E9%A2%98"><span class="toc-text">最近点对问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E6%95%B0%E9%82%BB%E5%B1%85%E5%8E%9F%E5%88%99"><span class="toc-text">常数邻居原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E9%80%9F%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97"><span class="toc-text">加速代数运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E4%B9%98%E6%B3%95-Karatsuba%E7%AE%97%E6%B3%95"><span class="toc-text">整数乘法 &#x2F; Karatsuba算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95-Strassen%E7%AE%97%E6%B3%95"><span class="toc-text">矩阵乘法 &#x2F; Strassen算法</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -1054,7 +1054,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1774530110108" defer></script>
+<script src="/js/main.js?v=1774702531950" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
