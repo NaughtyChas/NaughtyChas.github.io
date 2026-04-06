@@ -20,16 +20,16 @@
   <title>动态规划 - Naucha</title>
 
   
-    <meta name="description" content="testing">
+    <meta name="description" content="动态规划 (Dynamic Programming) 一般用于解决那些具有重叠子问题和最优子结构性质的问题。它通过将问题分解成更小的子问题，并存储这些子问题的结果来避免重复计算，从而提高效率。 动态规划的核心思想和分治有些类似，但是我们引入了一个表格（通常是数组或矩阵）来存储子问题的结果，让我们能够在需要时直接查找，而不是重新计算。相比之下，理解动态规划相比分治更为复杂，因为我们需要仔细设计表格的">
 <meta property="og:type" content="website">
 <meta property="og:title" content="动态规划">
 <meta property="og:url" content="https://naughtychas.github.io/notes/COMP3352/pt3/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="testing">
+<meta property="og:description" content="动态规划 (Dynamic Programming) 一般用于解决那些具有重叠子问题和最优子结构性质的问题。它通过将问题分解成更小的子问题，并存储这些子问题的结果来避免重复计算，从而提高效率。 动态规划的核心思想和分治有些类似，但是我们引入了一个表格（通常是数组或矩阵）来存储子问题的结果，让我们能够在需要时直接查找，而不是重新计算。相比之下，理解动态规划相比分治更为复杂，因为我们需要仔细设计表格的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-03-26T14:05:00.000Z">
-<meta property="article:modified_time" content="2026-03-26T14:05:28.181Z">
+<meta property="article:modified_time" content="2026-03-30T13:10:48.170Z">
 <meta property="article:author" content="Naucha">
 <meta property="article:tag" content="动态规划">
 <meta name="twitter:card" content="summary">
@@ -42,7 +42,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1774702531954">
+  <link rel="stylesheet" href="/css/main.css?v=1775497768857">
 
 
   
@@ -51,7 +51,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3352/pt3/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"动态规划","description":"","url":"https://naughtychas.github.io/notes/COMP3352/pt3/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3352/pt3/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"动态规划","description":"动态规划 (Dynamic Programming) 一般用于解决那些具有重叠子问题和最优子结构性质的问题。它通过将问题分解成更小的子问题，并存储这些子问题的结果来避免重复计算，从而提高效率。\n动态规划的核心思想和分治有些类似，但是我们引入了一个表格（通常是数组或矩阵）来存储子问题的结果，让我们能够在需要时直接查找，而不是重新计算。相比之下，理解动态规划相比分治更为复杂，因为我们需要仔细设计...","url":"https://naughtychas.github.io/notes/COMP3352/pt3/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -212,7 +212,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3352/pt3/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3352/pt1/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3352/pt2/"><span class="title">快速傅里叶变换</span></a><a class="item title" href="/notes/COMP3352/begin/"><span class="title">COMP3352 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3352/pt4/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3352/pt3/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3352/pt1/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3352/pt2/"><span class="title">快速傅里叶变换</span></a><a class="item title" href="/notes/COMP3352/begin/"><span class="title">COMP3352 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -232,7 +232,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3352/">COMP3352</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-03-26T14:05:28.181Z">2026-03-26</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-03-26T14:05:00.000Z">2026-03-26</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-03-30T13:10:48.170Z">2026-03-30</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-03-26T14:05:00.000Z">2026-03-26</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -243,7 +243,473 @@
     </div>
     
   </div>
-  </div><article class="md-text content">
+  </div><article class="md-text content"><p><strong>动态规划 (Dynamic Programming)</strong> 一般用于解决那些具有重叠子问题和最优子结构性质的问题。它通过将问题分解成更小的子问题，并存储这些子问题的结果来避免重复计算，从而提高效率。</p>
+<p>动态规划的核心思想和分治有些类似，但是我们引入了一个表格（通常是数组或矩阵）来存储子问题的结果，让我们能够在需要时直接查找，而不是重新计算。相比之下，理解动态规划相比分治更为复杂，因为我们需要仔细设计表格的结构和填充顺序。</p>
+<p>首先我们要知道动态规划假定我们能够找到问题的<strong>最优子结构 (Optimal Substructure)</strong>。这意味着大问题的最优解能够由小问题的最优解推导出来。其次，我们需要识别<strong>重叠子问题 (Overlapping Subproblems)</strong>，这意味着我们在求解过程中会多次遇到相同的子问题。</p>
+<hr>
+<h2 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h2><p>首先来看看最经典的DP应用：<strong>背包问题 (Knapsack Problem)</strong>。</p>
+<p>在这个问题中，我们有一个背包，容量为 $W$ ，以及 $n$ 个物品，每个物品有一个重量和一个价值。我们的目标是选择一些物品放入背包，使得总重量不超过$W$，并且总价值最大。</p>
+<p>通过具象化，你可以想象bro正在进行太平洋标准银行差事。你背着一个容量为 $W$ 的背包，金库里有 $n$ 件物品，每个都有自己的重量 $w_i$ 和价值 $v_i$。你需要决定在警察赶到现场之前，带走哪些物品，以最大化你能带走的总价值，同时确保背包的重量不超过 $W$。</p>
+<p>如果你在这个情境下使用贪心算法的思想，你可能会选择那些单位重量价值最高的物品，试图最大化每一单位重量的价值。然而，这种策略并不总是能得到最优解。例如，如果你有一个非常重但价值极高的物品和几个轻但价值较低的物品，贪心算法可能会选择那些轻的物品，错过了那个重但价值更高的物品。</p>
+<p>而如果采用DP的思想，我们只会对于第 $i$件物品，选择拿还是不拿。相比贪心，我们这样做就能保证我们不会错过任何一个物品，最终得到最优解。</p>
+<hr>
+<h3 id="DP表"><a href="#DP表" class="headerlink" title="DP表"></a>DP表</h3><p>为了能够形式化这个逻辑可以构建一个二维表格，叫做DP表。在表中，行表示物品，列表示背包容量。表格中的每个单元格 $dp[i][w]$ 表示在考虑前 $i$ 个物品，并且背包剩余容量为 $j$ 的情况下，能够获得的最大价值。</p>
+<p>当你在考虑第 $i$ 个物品时，如果它的容量 $w_i$ 大于当前背包剩余容量 $j$，那么你别无选择，只能选择放弃。那么使用DP表的逻辑来讲，我们的状态转移可以被理解为：</p>
+<p>$$dp[i][j] &#x3D; dp[i-1][j]$$</p>
+<p>然而，如果你的背包还能塞得下 ($j \ge w_i$)，那么在这里会进行一个博弈：</p>
+<ol>
+<li><p>拿？：如果拿走，那么我们的收益将会变成 “ <strong>这物品的价值 $v_i$ 加上剩余容量 $j-w_i$ 的最大价值</strong> ”，也就是 $v_i + dp[i-1][j-w_i]$。</p>
+</li>
+<li><p>不拿？：如果我们不拿走这个物品，那么我们收获价值没变，同样背包容量也没变。因此，我们目前的收益仍然是 $dp[i-1][j]$。</p>
+</li>
+</ol>
+<p>因此，我们在这里就会进行一个比较，选择两者中较大的那个：</p>
+<p>$$dp[i][j] &#x3D; \max(dp[i-1][j], v_i + dp[i-1][j-w_i])$$</p>
+<p>而这个公式，就是我们在动态规划中所说的 <strong>状态转移方程 (State Transition Equation)</strong> 了。</p>
+<p>它描述了如何从一个状态（考虑前 $i-1$ 个物品和剩余容量 $j$）转移到另一个状态（考虑前 $i$ 个物品和剩余容量 $j$ 或 $j-w_i$）。通过不断地填充这个DP表，我们最终可以得到在考虑所有物品和背包容量为 $W$ 的情况下，能够获得的最大价值。</p>
+<hr>
+<h3 id="追踪DP表"><a href="#追踪DP表" class="headerlink" title="追踪DP表"></a>追踪DP表</h3><p>我们不妨来通过一个例子来试一试，遇到一个DP问题，该如何使用DP表来求解。</p>
+<p>我们现在拥有一个容量为 $W &#x3D; 4kg$ 的背包，而我们面前摆着四样物品：</p>
+<ul>
+<li>物品1：重量 $w_1 &#x3D; 1kg$，价值 $v_1 &#x3D; 2$。</li>
+<li>物品2：重量 $w_2 &#x3D; 3kg$，价值 $v_2 &#x3D; 3$。</li>
+<li>物品3：重量 $w_3 &#x3D; 2kg$，价值 $v_3 &#x3D; 2$。</li>
+<li>物品4：重量 $w_4 &#x3D; 2kg$，价值 $v_4 &#x3D; 1$。</li>
+</ul>
+<p>我们要构建一张表格，横轴 $j$ 表示背包当前的承重，在这个例子中取值为0, 1, 2, 3, 4；纵轴 $i$ 表示我们考虑的物品数量：</p>
+<p>根据Base Case，当背包容量为0，或者我们一件物品都不选的时候，总价值显然是0。因此，表格的第一行和第一列都应该被初始化为0：</p>
+<p>接着我们来看第一行，首先我们要考虑的物品是物品1（1kg, $2）。对于每个背包容量 $j$：</p>
+<p>当背包容量 $j &lt; 1$ 的时候装不下，所以 $dp &#x3D; 0$。但只要容量 $j \ge 1$，我们就可以选择拿走它，此时我们的价值就变成2。由于后面没有别的物品可以选择了，因此这一行剩下的格子都应该被填充为2：</p>
+<table>
+<thead>
+<tr>
+<th>$i \backslash j$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>接下来是第二行。我们要考虑的物品是物品2（3kg, $3）。在 $j &#x3D; 3$ 的时候，我们需要在不拿它和拿走它之间做决定。如果不拿，那么我们就继承 $dp &#x3D; 2$。如果拿走，那么我们需要在自身价值3和剩余价值 $dp[i-1][j-w_i] &#x3D; dp[1][0] &#x3D; 0$ 之间做比较。显然，拿走它的价值更高，因此我们在 $j&#x3D;3$ 的时候应该填充3。</p>
+<p>而当 $j &#x3D; 4$ 的时候，决策变得有趣了。如果不拿第2个物品，我们的价值为2。如果拿走，那么价值是其自身价值3加上背包腾出3kg空间后，在前一件物品中能选到的最大价值dp。$dp[i-1][j-w_i] &#x3D; dp[1][1] &#x3D; 2$。因此，拿走第2个物品的总价值是 $3 + 2 &#x3D; 5$，显然比不拿更好，所以我们在 $j&#x3D;4$ 的时候应该填充5：</p>
+<p>这一步的流程大概是，我们要决策 $dp[2][4]$，由于我们选择当前物品之后还剩下1kg，所以我们要去上一行，减去当前4kg的重量3kg，看看在剩余1kg的情况下，我们能选到的最大价值是多少。也就是找到 $dp[1][1] &#x3D; 2$。根据状态转移方程，我们就知道如果拿走第2个物品，我们的总价值是 $3 + 2 &#x3D; 5$，而不拿的话价值是2，所以我们选择拿走第2个物品：</p>
+<table>
+<thead>
+<tr>
+<th>$i \backslash j$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>5</td>
+</tr>
+</tbody></table>
+<p>同样的逻辑，填完剩下的格子，你会发现到了第三件和第四件物品时，由于他们的性价比不如前两件，因此表格最后的结果 $dp$ 依然为5。这意味着在这个约束下，全局最优解就是5：</p>
+<table>
+<thead>
+<tr>
+<th>$i \backslash j$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>5</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>5</td>
+</tr>
+</tbody></table>
+<hr>
+<p>填完表我们知道最大价值是5了，但我们并不知道这个5是由哪些物品组成的。为了追踪这个结果，我们可以从表格的右下角开始回溯：</p>
+<p>首先，对比 $dp[4][4]$ 和它正上方的邻居 $dp[3][4]$。如果这两个值相等，那么这意味着第四个物品的加入考量并没有提升我们的总价值，所以最优解里不包含第四个物品。所以我们可以上移到 $dp[3][4]$，继续对比上面的 $dp[2][4]$，你会发现仍然是一样的情况，说明第三件物品也没被选中。</p>
+<p>当我们站在 $dp[2][4]$ 上看 $dp[1][4]$，你会发现价值发生了变化。这说明第二件物品被选中了，因此，我们需要将背包容量减去第二件物品的重量3kg，得到剩余容量1kg，然后继续回溯到 $dp[1][1]$。在 $dp[1][1]$ 上，我们对比它和它上面的邻居 $dp[0][1]$，你会发现它们的值不同，这说明第一件物品也被选中了。</p>
+<p>经过一番回溯，我们就锁定了最优物品集就是 ${Item 1, Item 2}$。这种回溯的过程可以帮助我们从DP表中提取出具体的解，而不仅仅是知道最优值是多少。</p>
+<hr>
+<h2 id="区间动态规划"><a href="#区间动态规划" class="headerlink" title="区间动态规划"></a>区间动态规划</h2><p>掌握背包问题后，我们来看看DP的另一个经典变种：<strong>区间动态规划 (Interval Dynamic Programming)</strong>。</p>
+<p>区间动态规划通常用于解决那些需要考虑子区间或子序列的问题。它的核心思想是通过定义一个DP表来存储子区间的最优解，并通过状态转移方程来填充这个表格。简单来说，与其像是在背包问题中考虑物品和容量，我们在区间DP中考虑的是区间的起点和终点。</p>
+<h3 id="矩阵链乘法"><a href="#矩阵链乘法" class="headerlink" title="矩阵链乘法"></a>矩阵链乘法</h3><p><strong>矩阵链乘法 (Matrix Chain Multiplication)</strong> 是区间动态规划的一个经典例子。</p>
+<p>在进入具体的数学公式之前，我们先来想象一下手里有一串需要依次相乘的矩阵 $A_1, A_2, ..., A_n$。矩阵乘法虽然满足结合律，也就是说你可以先算前两个，也可以先算后两个，但是不同的计算顺序会导致标量乘法的次数不同，从而影响计算效率。</p>
+<p>比如我们要计算一个 $10 \times 100$ 的矩阵 $A$，乘以一个 $100 \times 5$ 的矩阵 $B$，随后在乘以一个 $5 \times 50$ 的矩阵 $C$。</p>
+<ul>
+<li><p>如果我们先计算 $(AB)C$，总开销是 $10 \times 100 \times 5 + 10 \times 5 \times 50 &#x3D; 7500$次乘法。而反过来：</p>
+</li>
+<li><p>如果我们计算 $A(BC)$，那么我们的总开销就变成了 $100 \times 5 \times 50 + 10 \times 100 \times 50 &#x3D; 75000$次乘法。</p>
+</li>
+</ul>
+<p>因此我们在矩阵链×问题中，我们的决策点不再是要不要拿某个物品，而是要在哪里切一刀。如果这一串矩阵排成一排，为了完成全局的计算，在最后一步我们一定是在某个位置 $k$ 把这一长串矩阵分成左右两个部分。也就是说，我们先算好了左边的积 $B &#x3D; (A_i \dots A_k)$，和右边的积 $C &#x3D; (A_{k+1} \dots A_j)$，然后我们再把 $B$ 和 $C$ 乘起来。这意味着要解决大区间 $(i, j)$ 的最优方案，我们必然包含了两个子区间 $(i, k)$ 和 $(k+1, j)$ 的最优解决方案。</p>
+<hr>
+<p>所以，我们定义 $M(i, j)$ 表示计算矩阵链 $A_i, A_{i+1}, ..., A_j$ 的最小标量乘法次数。如果 $i &#x3D; j$，也就是说区间内只有一个矩阵，那么我们不需要进行任何乘法，因此 $M(i, i) &#x3D; 0$。这就是我们的Base Case。</p>
+<p>而对于一个长度大于1的区间，我们需要枚举所有可能的切割点 $k$，其中 $i \le k &lt; j$。对于每一个切割点 $k$，我们需要计算左边区间 $(i, k)$ 的最小乘法次数 $M(i, k)$，右边区间 $(k+1, j)$ 的最小乘法次数 $M(k+1, j)$，以及将这两个结果相乘所需的乘法次数。这个乘法次数可以通过矩阵的维度来计算，具体来说是 $p_{i-1} \times p_k \times p_j$，其中 $p_{i-1}$ 是矩阵 $A_i$ 的行数，$p_k$ 是矩阵 $A_k$ 的列数（也是矩阵 $A_{k+1}$ 的行数），而 $p_j$ 是矩阵 $A_j$ 的列数。</p>
+<p>因此，我们的状态转移方程可以写成：</p>
+<p>$$M(i, j) &#x3D; \min_{i \le k &lt; j} { M(i, k) + M(k+1, j) + p_{i-1} \times p_k \times p_j }$$</p>
+<p>通过这个方程，我们可以递归地计算出整个矩阵链的最小乘法次数。我们从长度为1的区间开始，逐渐增加区间的长度，直到计算出 $M(1, n)$，这就是我们最终想要的结果。</p>
+<hr>
+<h2 id="最长公共子序列"><a href="#最长公共子序列" class="headerlink" title="最长公共子序列"></a>最长公共子序列</h2><p><strong>最长公共子序列 (Longest Common Subsequence, LCS)</strong> 是另一个经典的区间动态规划问题。如果你经常使用Git，那么Git中的diff功能就是基于最长公共子序列算法实现的。</p>
+<p>LCS的定义为：给定两个序列 $s$ 和 $t$，找到它们的最长公共子序列。一个序列 $u$ 是另一个序列 $s$ 的子序列，如果我们可以通过删除 $s$ 中的一些元素（可能是0个）而不改变剩余元素的顺序来得到 $u$。最长公共子序列就是在所有同时是 $s$ 和 $t$ 的子序列中长度最长的那个。</p>
+<p>我们首先从定义子问题开始。为了找到两条完整序列 $s$ 和 $t$ 的最长公共子序列，我们可以定义一个DP表 $L(i, j)$，其中 $i$ 和 $j$ 分别表示我们在序列 $s$ 和 $t$ 中考虑的前缀长度。具体来说，$L(i, j)$ 表示在序列 $s$ 的前 $i$ 个字符和序列 $t$ 的前 $j$ 个字符中，最长公共子序列的长度。</p>
+<hr>
+<p>还是用一个例子来看看，假设我们有两个字符串：</p>
+<p>$s &#x3D; &quot;ABCAB&quot;$，长度 $n &#x3D; 5$<br>$t &#x3D; &quot;BDCAB&quot;$，长度 $m &#x3D; 5$</p>
+<p>首先我们先建立一个大小为 $(n+1) \times (m+1)$ 的DP表 $L$，其中 $L(i, j)$ 表示在 $s$ 的前 $i$ 个字符和 $t$ 的前 $j$ 个字符中最长公共子序列的长度。如果其中的一个序列为空，那么它们的LCS长度必然为0。因此，我们将表格的第一行和第一列初始化为0：</p>
+<table>
+<thead>
+<tr>
+<th>$i \backslash j$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>接下来我们从左到右，从上到下逐格扫描填充。在每一个坐标 $(i, j)$，我们需要做一次数学判定：</p>
+<ol>
+<li>当字符匹配时：我们看到 $s[i]$ 和 $t[j]$ 是相同的字符，那这意味着我们发现了一个公共字符。然而这个字符必须建立在之前已经对其好的公共子序列的基础上。因此，我们看向左上角的格子 $L[i - 1][j - 1]$，并在这个值的基础上+1。也就是：</li>
+</ol>
+<p>$$L[i][j] &#x3D; L[i - 1][j - 1] + 1$$</p>
+<ol start="2">
+<li>当字符不匹配时：我们看到 $s[i]$ 和 $t[j]$ 是不同的字符，这意味着我们不能将它们同时包含在公共子序列中。因此，我们需要在两个方向上做出选择：要么我们放弃 $s[i]$，看看 $L[i - 1][j]$ 的值；要么我们放弃 $t[j]$，看看 $L[i][j - 1]$ 的值。我们取这两者中的较大值：</li>
+</ol>
+<p>$$L[i][j] &#x3D; \max(L[i - 1][j], L[i][j - 1])$$</p>
+<p>那么按照这个规则，在坐标 $(1, 1)$，我们看到 $s[1]$ 和 $t[1]$ 分别是 A和B，显然它们不匹配，所以我们取 $L[0][1]$ 和 $L[1][0]$ 的较大值，都是0，所以 $L[1][1] &#x3D; 0$。</p>
+<p>继续到坐标 $(1, 2)$，我们看到 $s[1]$ 和 $t[2]$ 分别是 A和D，仍然不匹配，所以我们取 $L[0][2]$ 和 $L[1][1]$ 的较大值，都是0，所以 $L[1][2] &#x3D; 0$。</p>
+<p>重复这一行，我们会发现当我们到达坐标 $(1, 4)$ 的时候，$s[1]$ 和 $t[4]$ 都是A，这时它们匹配了，所以我们取 $L[0][3] + 1$，也就是 $0 + 1 &#x3D; 1$，因此 $L[1][4] &#x3D; 1$。</p>
+<p>重复完成这一行的填充，最后我们得到：</p>
+<table>
+<thead>
+<tr>
+<th>$i \backslash j$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>使用同样的流程，我们可以继续往下填充第二行。我们再一起走一遍吧：</p>
+<p>在坐标 $(2, 1)$，我们看到 $s[2]$ 和 $t[1]$ 分别是B和B，它们匹配了，所以我们取 $L[1][0] + 1$，也就是 $0 + 1 &#x3D; 1$，因此 $L[2][1] &#x3D; 1$。</p>
+<p>在坐标 $(2, 2)$，我们看到 $s[2]$ 和 $t[2]$ 分别是B和D，它们不匹配，所以我们取 $L[1][2]$ 和 $L[2][1]$ 的较大值，分别是0和1，所以 $L[2][2] &#x3D; 1$。</p>
+<p>继续完成这一行的填充，直到最后 $(2, 5)$，我们发现 $s[2]$ 和 $t[5]$ 都是B，它们匹配了，所以我们取 $L[1][4] + 1$，也就是 $1 + 1 &#x3D; 2$，因此 $L[2][5] &#x3D; 2$：</p>
+<table>
+<thead>
+<tr>
+<th>$i \backslash j$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>继续按照这个流程，我们最终会填充完整个表格，最后在坐标 $(5, 5)$ 的时候，我们会得到 $L[5][5] &#x3D; 4$，这意味着字符串 $s$ 和 $t$ 的最长公共子序列的长度是4。</p>
+<table>
+<thead>
+<tr>
+<th>$i \backslash j$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<p>通过这个表格，我们不仅知道了最长公共子序列的长度是4，还可以通过回溯的方式来找到具体的最长公共子序列是什么。我们从坐标 $(5, 5)$ 开始，如果 $s[5]$ 和 $t[5]$ 匹配，那么我们就将这个字符加入到我们的LCS中，并且同时向左上角移动；如果不匹配，我们就向上或者向左移动，取决于哪个方向的值更大。通过这种方式，我们可以最终得到最长公共子序列的具体内容。</p>
+<p>最终的回溯顺序流程是：</p>
+<ol>
+<li><p>从坐标 $(5, 5)$ 开始，我们看到 $s[5]$ 和 $t[5]$ 都是B，它们匹配了，所以我们将B加入到LCS中，并且向左上角移动到坐标 $(4, 4)$。</p>
+</li>
+<li><p>在坐标 $(4, 4)$，我们看到 $s[4]$ 和 $t[4]$ 都是A，它们匹配了，所以我们将A加入到LCS中，并且向左上角移动到坐标 $(3, 3)$。</p>
+</li>
+<li><p>在坐标 $(3, 3)$，我们看到 $s[3]$ 和 $t[3]$ 都是C，它们匹配了，所以我们将C加入到LCS中，并且向左上角移动到坐标 $(2, 2)$。</p>
+</li>
+<li><p>在坐标 $(2, 2)$，我们看到 $s[2]$ 和 $t[2]$ 分别是B和D，它们不匹配，所以我们比较 $L[1][2]$ 和 $L[2][1]$ 的值，发现 $L[2][1]$ 更大，所以我们向上移动到坐标 $(1, 2)$。</p>
+</li>
+<li><p>在坐标 $(1, 2)$，我们看到 $s[1]$ 和 $t[2]$ 分别是A和D，它们不匹配，所以我们比较 $L[0][2]$ 和 $L[1][1]$ 的值，发现 $L[1][1]$ 更大，所以我们向上移动到坐标 $(0, 2)$。</p>
+</li>
+<li><p>在坐标 $(0, 2)$，我们已经到达了第一行，这意味着我们已经完成了回溯过程。</p>
+</li>
+</ol>
+<p>通过这个回溯过程，我们得到了最长公共子序列是 &quot;BCAB&quot;。这个结果告诉我们，在字符串 $s$ 和 $t$ 中，最长的公共子序列是 &quot;BCAB&quot;，它的长度是4。</p>
+<hr>
+
 
   <div class="tag-list">
     
@@ -284,7 +750,10 @@
 <footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-text">背包问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DP%E8%A1%A8"><span class="toc-text">DP表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%BD%E8%B8%AADP%E8%A1%A8"><span class="toc-text">追踪DP表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E9%97%B4%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-text">区间动态规划</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E9%93%BE%E4%B9%98%E6%B3%95"><span class="toc-text">矩阵链乘法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97"><span class="toc-text">最长公共子序列</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -706,7 +1175,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1774702531955" defer></script>
+<script src="/js/main.js?v=1775497768858" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
