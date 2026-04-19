@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-03-20T13:09:00.000Z">
-<meta property="article:modified_time" content="2026-04-19T13:37:33.985Z">
+<meta property="article:modified_time" content="2026-04-19T16:49:53.751Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -41,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1776605874356">
+  <link rel="stylesheet" href="/css/main.css?v=1776617415158">
 
 
   
@@ -181,7 +181,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-04-19T13:37:33.985Z">2026-04-19</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-03-20T13:09:00.000Z">2026-03-20</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-04-19T16:49:53.751Z">2026-04-20</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-03-20T13:09:00.000Z">2026-03-20</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -244,7 +244,81 @@
 <p>举个例子，如果我们有一个集成模型叫做 <code>VotingClassifier</code>，它内部包含了三个基础分类器：<code>LogisticRegression</code>，<code>SVC</code> 和 <code>RandomForestClassifier</code>。当我们调用 <code>get_params</code> 方法时，集成模型可以为每一个子模型按照双下划线的格式分配唯一标签。</p>
 <p>例如随机森林的最大深度参数 <code>max_depth</code> ：<code>randomforestclassifier__max_depth</code>，为SVC的核函数参数 <code>kernel</code> 贴上标签：<code>svc__kernel</code>，为Logistic Regression的正则化参数 <code>C</code> 贴上标签：<code>logisticregression__C</code>。</p>
 <hr>
-<h2 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h2>
+<h2 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h2><p>实际上Bagging的全称叫 <strong>Bootstrap Aggregating</strong>。</p>
+<p>如果你想训练一个专家团队，但是所有人读的都是一模一样的教科书，那么到最后培养出来的这些专家思维方式很可能会高度趋同，而且一旦遇到书中没讲透的偏难怪题，它们非常有可能犯同样的错误。而Bagging做的就是为每个专家提供不同的教材，让它们在不同的视角下学习，从而培养出一支多样化的专家团队。</p>
+<p>Bagging的核心手段叫做 <strong>Bootstrap Sampling</strong>，叫做自助抽样法。如果原始数据集有 $n$ 个样本，那么与其说我们直接将它们分配给模型做训练，我们从这 $n$ 个样本中进行有放回的随机抽样，生成 $m$ 个新的训练子集，每个子集也包含 $n$ 个样本。由于是有放回的抽样，所以每个子集中可能会有重复的样本，而有些样本可能根本没有被抽到。</p>
+<p>这样的做法的目的是什么呢？虽然每个模型使用到的样本总量是一样的，但由于训练数据构成的微小差异，每一个模型最终学到的决策逻辑都可能略有不同。就好比我们每个人生长环境中的所有变量都不完全一样，因此我们长大后也成为了个性迥异的人。</p>
+<p>但是不同人格的人往往能够在不同的情境下发挥不同的优势，这样的团队就能够在面对各种各样的挑战时表现得更加出色。在机器学习中也是一样：当我们把不同的模型使用Voting聚合起来的之后，某些模型的过拟合就会被其他模型的正确预测抵消掉。</p>
+<p>因此，Bagging能够显著提升那些“不稳定模型”的准确性，例如没有剪枝的决策树。说到底Bagging的核心威力在于能够降低模型的方差（Variance），能够有效一直那些对数据扰动非常敏感的“不稳定模型”。</p>
+<p>但是Bagging并不适合所有模型，因为Bagging无法有效降低模型的偏差（Bias）。如果一个模型本身的假设空间过于有限，逻辑过于简单，大脑褶皱过于平坦，那么即便使用的Bagging组合再多，也没法捕捉到复杂的非线性数据规律。这就是为什么我们在实践中通常将Bagging和那些高方差，低偏差模型组合使用的原因，例如决策树。</p>
+<hr>
+<h3 id="OOB评估"><a href="#OOB评估" class="headerlink" title="OOB评估"></a>OOB评估</h3><p>有趣的是，如果我们动用一些数学逻辑：</p>
+<p>假设原始数据集 $D$ 的大小为 $n$ 个样本。在每一轮的Bagging中，我们通过有放回随机抽样来构建一个新的训练子集 $D_i$，这个子集的大小也是 $n$ 个样本。那么我们可以说，对于任何一个特定样本，它在一次抽样中不被选中的概率就是 $(1 - 1&#x2F;n)$。当 $n$ 趋于无穷大时，一个样本在构建 $D_i$时从未被选中的概率会收敛于：</p>
+<p>$$\lim_{n \to \infty} (1 - 1&#x2F;n)^n &#x3D; e^{-1} \approx 0.368$$</p>
+<p>也就是说，大约有36.8%的样本在每次抽样中都没有被选中，这些数据一定是某次训练中模型从来没见过的。我们叫这些数据为 <strong>Out-of-Bag (OOB) Samples</strong>，也就是袋外样本。</p>
+<p>这些样本简直就是天然的测试集啊！我们可以利用这些OOB样本来评估模型的性能，而不需要额外划分出一个独立的测试集。对于每个样本，我们可以统计它在多少次抽样中被选中，并且在这些抽样中对应的模型对它的预测结果是什么。通过比较这些预测结果与真实标签，我们就可以计算出模型的OOB误差率。</p>
+<hr>
+<h2 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h2><p>你可能联想到了Gradient Boosting，XGBoost，LightGBM等一众Boosting算法，但是在我们正式介绍Boosting之前，我们先来看看Boosting的核心思想是什么。</p>
+<p>在Boosting这里，我们不再并行训练一堆模型，而是采用串联的思路训练。</p>
+<p>在这个串联链路上，第一个“弱模型”会先对数据集进行学习，尝试解决问题，但是犯错肯定是必然的。但与其我们推倒重来，我们会引入第二个模型来盯着第一个模型的错题集去加强训练，以此类推。这意味着后续的每一个模型都在尽力弥补前面模型的短板，而这种接力的过程就像进化一样，能够从一开始的弱模型逐步演化成一个强大的模型。</p>
+<hr>
+<h2 id="Weighting-AdaBoost"><a href="#Weighting-AdaBoost" class="headerlink" title="Weighting &#x2F; AdaBoost"></a>Weighting &#x2F; AdaBoost</h2><p>由于我们需要来找出那些前面模型的错题集，Boosting的核心是通过训练集的权重分配来实现精准挑错。</p>
+<p>在最原始的Boosting算法中，我们会首先抽取一部分数据训练出第一个弱学习器 $C_1$，然后为了训练第二个模型 $C_2$，我们不只是简单的随机抽样，而是可以从训练集中挑选出50%之前被 $C_1$ 预测错了的样本，让 $C_2$ 重点关注这些样本进行训练。接着我们再训练第三个模型 $C_3$，这次我们会挑选那些让 $C_1$ $C_2$ 产生分歧的样本交给 $C_3$ 去专项训练。到了最后，通过这三位专家进行 Majority Voting，我们就能够得到一个非常强大的集成模型。</p>
+<hr>
+<p>上面的早期Boosting算法虽然能够提升模型性能，但它的效率并不高，因为每一轮都需要重新抽样和训练一个新的模型。后来，AdaBoost（Adaptive Boosting）算法的出现极大地优化了这个过程。</p>
+<p>在AdaBoost的每一轮迭代中，训练集中的每一个样本实际上并非平等，而是被赋予了一个权重，这个权重反映了这个样本的重要程度。初始时，所有样本的权重都是相等的，然而当第一个模型预测错了某个样本时，我们会增加这个样本的权重，这样在下一轮训练中，模型就会更加关注这个样本，从而有更大的机会纠正之前的错误。</p>
+<p>下面这个图应该能比较清晰的展示这个权重调整的过程：</p>
+<p><img src="https://files.seeusercontent.com/2026/04/19/Gl1e/pasted-image-1776615903021.webp" alt="pasted-image-1776615903021.webp"></p>
+<p>第一个图展示了第一个模型的首次预测。你会发现左边下面两个蓝色圆球的位置错了，因此在第二个图中你会发现它们变大了。这代表着我们增加了它们的权重，让第二个模型在训练的时候更加关注它们。将这个过程以此类推，到最后我们能够将所有的错题都纠正掉。</p>
+<hr>
+<h3 id="AdaBoost的流程"><a href="#AdaBoost的流程" class="headerlink" title="AdaBoost的流程"></a>AdaBoost的流程</h3><p>我们不妨用伪代码来看看AdaBoost是如何运作的。首先：</p>
+<ol>
+<li><p>我们将初始权重向量 $\mathbf{w}$ 初始化为均匀分布，即 $\sum_{i} w_i &#x3D; 1$</p>
+</li>
+<li><p>对于每一轮迭代 $j &#x3D; 1, 2, \ldots, M$，我们：</p>
+<p> a. 使用权重向量 $\mathbf{w}$ 来训练一个弱分类器 $C_j &#x3D; train(\mathbf{X}, \mathbf{y}, \mathbf{w})$。</p>
+<p> 其中， $\mathbf{X}$ 是训练数据，$\mathbf{y}$ 是对应的标签，$\mathbf{w}$ 是当前的权重分布。</p>
+<p> b. 使用这个模型来做一个预测看看： </p>
+<p> $$\hat{\mathbf{y}} &#x3D; predict(C_j, \mathbf{X})$$</p>
+<p> c. 随后我们要知道模型错了哪些。我们可以通过计算加权错误率 $\epsilon_j$ 来衡量模型的表现：</p>
+<p> $$\epsilon &#x3D; \mathbf{w} \cdot (\hat{y} \neq \mathbf{y})$$</p>
+<p> 计算过程中，我们会将权重向量 $\mathbf{w}$ 与一个指示函数进行点积，这个指示函数在模型预测错误的样本位置上为1，在正确的位置上为0。这样我们就能够得到一个加权错误率 $\epsilon_j$了。</p>
+<p> d. 接下来我们要计算这个模型的权重 $\alpha_j$，它反映了这个模型在集成中的重要程度：</p>
+<p> $$\alpha_j &#x3D; \frac{1}{2} \log \left( \frac{1 - \epsilon_j}{\epsilon_j} \right)$$</p>
+<p> 如果模型的错误率 $\epsilon_j$ 越小，那么 $\alpha_j$ 就越大，说明这个模型在集成中的话语权更重。反之，如果模型的错误率接近0.5，那么 $\alpha_j$ 就会接近0，说明这个模型对集成的贡献非常有限。</p>
+<p> e. 知道模型话语权后，我们就可以根据模型的表现来更新样本的权重了。更新权重的规则是：</p>
+<pre><code> 1. 分类正确的样本
+
+     对于分类正确的样本，我们定义权重更新公式为：
+
+     $$w_i := w_i \cdot e^{-\alpha_j}$$
+
+     由于指数项为负，权重会迅速变小。这意味着如果模型已经学会了这些点，那么下一轮就不需要花太多精力在上面了。
+
+ 2. 分类错误的样本
+
+     对于分类错误的样本，我们定义权重更新公式为：
+
+     $$w_i := w_i \cdot e^{\alpha_j}$$
+
+     反之，权重会按照指数级增长，那么在酿成大祸之前这些样本必须要被纠正掉。
+</code></pre>
+<p> f. 最后我们需要对权重向量进行归一化处理，确保它们的总和为1：</p>
+<p> $$\mathbf{w} :&#x3D; \frac{\mathbf{w}}{\sum_{i} w_i}$$</p>
+</li>
+<li><p>当我们完成了所有的迭代之后，我们就可以得到一个最终的集成模型了。对于一个新的输入样本 $\mathbf{x}$，我们可以通过加权投票的方式来得到最终的预测结果：</p>
+</li>
+</ol>
+<p>$$\hat{y} &#x3D; (\sum_j (\alpha_j \times predict(C_j, \mathbf{x})) &gt; 0)$$</p>
+<p>或者换种写法也行：</p>
+<p>$$\hat{y} &#x3D; sign \left( \sum_{j&#x3D;1}^M \alpha_j C_j(\mathbf{x}) \right)$$</p>
+<p>p.s. 你可能发现有些地方用了点乘，有些地方是乘号。具体来说，我们使用乘号 $\times$ 来表示样本与样本之间的乘积关系，而使用点乘 $\cdot$ 来专门表示两个向量之间的乘积关系。</p>
+<p>至此，你就已经学会如何更新你的AdaBoost模型了。你可以通过调整迭代次数 $M$，或者选择不同的弱分类器来进一步提升模型的性能。</p>
+<hr>
+<p>值得一提，AdaBoost虽然是一个非常强大的集成算法，但它也有一些局限性。首先，AdaBoost对异常值非常敏感，因为它会不断增加那些被错误分类的样本的权重，如果数据中存在噪声或者异常值，这些样本可能会获得过高的权重，从而导致模型过拟合。</p>
+<p>其次，AdaBoost通常适用于二分类问题，对于多分类问题的处理相对复杂，需要进行一些改进和调整。</p>
+<hr>
+
 
 </article>
 <div class="article-footer">
@@ -280,7 +354,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Voting"><span class="toc-text">Voting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Voting%E9%9B%86%E6%88%90%E7%AE%A1%E7%BA%BF"><span class="toc-text">Voting集成管线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Voting%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%80%A7"><span class="toc-text">Voting的正确性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%81%EF%BC%9F%E8%BD%AF%E7%A1%AC%E6%8A%95%E7%A5%A8%EF%BC%9F%EF%BC%81"><span class="toc-text">！？软硬投票？！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E4%BC%98"><span class="toc-text">调优</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bagging"><span class="toc-text">Bagging</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Voting"><span class="toc-text">Voting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Voting%E9%9B%86%E6%88%90%E7%AE%A1%E7%BA%BF"><span class="toc-text">Voting集成管线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Voting%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%80%A7"><span class="toc-text">Voting的正确性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%81%EF%BC%9F%E8%BD%AF%E7%A1%AC%E6%8A%95%E7%A5%A8%EF%BC%9F%EF%BC%81"><span class="toc-text">！？软硬投票？！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E4%BC%98"><span class="toc-text">调优</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bagging"><span class="toc-text">Bagging</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OOB%E8%AF%84%E4%BC%B0"><span class="toc-text">OOB评估</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Boosting"><span class="toc-text">Boosting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Weighting-AdaBoost"><span class="toc-text">Weighting &#x2F; AdaBoost</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AdaBoost%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-text">AdaBoost的流程</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -703,7 +777,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1776605874357" defer></script>
+<script src="/js/main.js?v=1776617415159" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
