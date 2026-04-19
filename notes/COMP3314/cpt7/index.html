@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
   
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 8.1.1">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,17 +17,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>归档 - Naucha</title>
+  <title>Cpt7: 集成学习 - Naucha</title>
 
   
-    <meta name="description" content="testing">
+    <meta name="description" content="我们在之前的章节中已经介绍了许多不同的单体模型，例如Logistic Regression, SVM, 决策树等等。然而在真正的实践中，单体模型由于各种因素，例如过拟合，欠拟合，数据噪声等等，往往无法达到理想的性能。 而 集成学习（Ensemble Learning） 的核心逻辑是，通过将不同的分类器进行组合来形成一个更强大的分类器（元分类器, Meta-Classifier），从而获得比任何单个">
 <meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="https://naughtychas.github.io/archives/2026/">
+<meta property="og:title" content="Cpt7: 集成学习">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt7/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="testing">
+<meta property="og:description" content="我们在之前的章节中已经介绍了许多不同的单体模型，例如Logistic Regression, SVM, 决策树等等。然而在真正的实践中，单体模型由于各种因素，例如过拟合，欠拟合，数据噪声等等，往往无法达到理想的性能。 而 集成学习（Ensemble Learning） 的核心逻辑是，通过将不同的分类器进行组合来形成一个更强大的分类器（元分类器, Meta-Classifier），从而获得比任何单个">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-03-20T13:09:00.000Z">
+<meta property="article:modified_time" content="2026-04-19T13:37:33.985Z">
 <meta property="article:author" content="Naucha">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
@@ -39,7 +41,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1776605874419">
+  <link rel="stylesheet" href="/css/main.css?v=1776605874356">
 
 
   
@@ -48,38 +50,238 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Naucha","description":"testing","url":"https://naughtychas.github.io"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt7/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt7: 集成学习","description":"我们在之前的章节中已经介绍了许多不同的单体模型，例如Logistic Regression, SVM, 决策树等等。然而在真正的实践中，单体模型由于各种因素，例如过拟合，欠拟合，数据噪声等等，往往无法达到理想的性能。\n而 集成学习（Ensemble Learning） 的核心逻辑是，通过将不同的分类器进行组合来形成一个更强大的分类器（元分类器, Meta-Classifier），从而获得比任...","url":"https://naughtychas.github.io/notes/COMP3314/cpt7/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
 
-<div class="l_body index" id="start" layout="undefined" type="undefined" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
 
 <div class="nav-area">
 
-<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
 </div>
 <div class="widgets">
-<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3314" placeholder="在 COMP3314 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/04/06/python/"><span class="title">Python从入门到放弃</span></a><a class="item title" href="/2025/11/19/MUSI2010/"><span class="title">Summary of MUSI2010 Music of China</span></a><a class="item title" href="/2025/01/25/ENGG1340%E7%AC%94%E8%AE%B0/"><span class="title">ENGG1340笔记</span></a><a class="item title" href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><span class="title">A2CS笔记</span></a><a class="item title" href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><span class="title">ASCS笔记</span></a><a class="item title" href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/"><span class="title">你说得对。</span></a><a class="item title" href="/2025/11/20/MUSI2081/"><span class="title">Summary of MUSI2081 Music in Western culture I</span></a><a class="item title" href="/2025/11/20/history/"><span class="title">博客重构 & 网站更新日志</span></a></div></widget>
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="分治法">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        分治法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt7/"><span class="title">Cpt7: 集成学习</span></a><a class="item title" href="/notes/COMP3314/cpt6/"><span class="title">Cpt6: 模型评估与调参</span></a><a class="item title" href="/notes/COMP3314/cpt5/"><span class="title">Cpt5: 数据降维</span></a><a class="item title" href="/notes/COMP3314/cpt4/"><span class="title">Cpt4: 数据预处理</span></a><a class="item title" href="/notes/COMP3314/cpt3/"><span class="title">Cpt3: 逻辑回归，SVM和KNN</span></a><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">Cpt2: 感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
-
- 
 
 
-<div class="navbar top"><div class="navbar-blur"><div class="navbar-container"><nav class="post"><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a class="active" href="/archives/">归档</a></nav></div></div></div><div class="post-list archives"><article class="" id="archive"><div class='archive-header h4'>2026</div><div class="archive-list"><a class='post fs14' href="/2026/04/06/python/"><time>04-06</time><span>Python从入门到放弃</span></a></div></article><article class="" id="archive"><div class='archive-header h4'>2025</div><div class="archive-list"><a class='post fs14' href="/2025/11/20/MUSI2081/"><time>11-20</time><span>Summary of MUSI2081 Music in Western culture I</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/11/20/history/"><time>11-20</time><span>博客重构 & 网站更新日志</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/11/19/MUSI2010/"><time>11-19</time><span>Summary of MUSI2010 Music of China</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/01/25/ENGG1340%E7%AC%94%E8%AE%B0/"><time>01-25</time><span>ENGG1340笔记</span></a></div></article><article class="" id="archive"><div class='archive-header h4'>2023</div><div class="archive-list"><a class='post fs14' href="/2023/07/01/A2CS%E7%AC%94%E8%AE%B0/"><time>07-01</time><span>A2CS笔记</span></a></div></article><article class="" id="archive"><div class='archive-header h4'>2022</div><div class="archive-list"><a class='post fs14' href="/2022/09/05/%E4%BD%A0%E8%AF%B4%E5%BE%97%E5%AF%B9/"><time>09-05</time><span>你说得对。</span></a></div><div class="archive-list"><a class='post fs14' href="/2022/09/01/ASCS%E7%AC%94%E8%AE%B0/"><time>09-01</time><span>ASCS笔记</span></a></div></article></div>
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-04-19T13:37:33.985Z">2026-04-19</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-03-20T13:09:00.000Z">2026-03-20</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Cpt7: 集成学习</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>我们在之前的章节中已经介绍了许多不同的单体模型，例如Logistic Regression, SVM, 决策树等等。然而在真正的实践中，单体模型由于各种因素，例如过拟合，欠拟合，数据噪声等等，往往无法达到理想的性能。</p>
+<p>而 <strong>集成学习（Ensemble Learning）</strong> 的核心逻辑是，通过将不同的分类器进行组合来形成一个更强大的分类器（元分类器, Meta-Classifier），从而获得比任何单个分类器都更好的泛化性能。</p>
+<p>简单来说，这就是一种集体智慧的集中体现。即使某个单体模型在特定数据分布上表现欠佳，但通过集成学习，我们将这些模型集思广益，战略性地结合这些模型的预测结果，我们最终能够得到一个更加准确且更稳健地预测结果。</p>
+<p>在本章中，我们会介绍三种核心技术：</p>
+<ul>
+<li><p><strong>Majority Voting</strong>：多数投票是最简单最直观的集成方案，它通过统计多个分类器的预测结果来决定最终的分类结果</p>
+</li>
+<li><p><strong>Bagging</strong>：Bagging（Bootstrap Aggregating）通过从原始数据集中随机采样生成多个子集，然后在每个子集上训练一个分类器，最后通过平均或投票的方式结合这些分类器的预测结果。</p>
+</li>
+<li><p><strong>Boosting</strong>：Boosting通过迭代地训练一系列弱分类器，每个分类器都试图纠正前一个分类器的错误。最终的预测结果是这些弱分类器的加权组合。</p>
+</li>
+</ul>
+<hr>
+<h2 id="Voting"><a href="#Voting" class="headerlink" title="Voting"></a>Voting</h2><p>我们首先要理解不同投票形式的区别：</p>
+<p><img src="https://files.seeusercontent.com/2026/04/19/Yxf3/pasted-image-1776603663206.webp" alt="pasted-image-1776603663206.webp"></p>
+<p>首先假设我们有这样十个分类器，每一个分类器都会输出二元分类的结果（0或1）：</p>
+<p>最理想的情况下，所有的分类器都能得出完全相同的结论，这种情况叫做 <strong>Unanimous Voting</strong>。这意味着所有的分类器都一致达成了强烈共识，而我们一般会认为这个结论是非常可靠的。但是这种情况在实际应用中非常罕见，因为不同的分类器可能会有不同的偏好和错误倾向。</p>
+<p>因此我们更多地以来赖于 <strong>Majority Voting</strong>，即多数投票。这种二分分类的情况下，最终的分类结果是由大多数分类器的预测结果决定的，也就是说选出来的类别必须超过50%的选票。比如在上图中，深色圆圈的预测结果大于50%，因此最终的分类结果是1。</p>
+<p>但是如果我们的任务是多分类问题，那么想要让某个决策大于50%就变得非常困难了。在这种情况下，我们通常会采用 <strong>Plurality Voting</strong>，即相对多数投票。也就是说我们不要求某个类别必须超过50%的选票，而是只要它的选票数比其他类别多就可以了。比如在上图最后一行，虽然没有任何一个类别的选票超过50%，但是类别1的选票数最多，因此最终的分类结果是1。</p>
+<hr>
+<h3 id="Voting集成管线"><a href="#Voting集成管线" class="headerlink" title="Voting集成管线"></a>Voting集成管线</h3><p>那么理论上听起来很棒，我们该如何在实践中实现Voting集成呢？</p>
+<p><img src="https://files.seeusercontent.com/2026/04/19/5vHd/pasted-image-1776604015289.webp" alt="pasted-image-1776604015289.webp"></p>
+<p>上图展示了一个典型的Voting集成管线。我们会从训练集出发，并行训练出多个不同的分类器，我们叫它们为 <strong>Base Classifiers</strong>，也就是基础分类器，也就是图中的 ${C_1, C_2, \ldots, C_m}$。</p>
+<p>当一个新的样本进入时，每一个基础分类器都会对这个样本进行预测，输出一个类别标签。随后，这些预测结果就会被送入一个集中的Voting机制进行汇总，最终集思广益产生一个更加稳健的最终预测。</p>
+<p>还记得在之前的章节中我们提过随机森林吗？随机森林就是一个典型的Voting集成模型，我们构建多个决策树作为基础分类器，然后通过多数投票的方式来决定最终的分类结果。</p>
+<hr>
+<h4 id="Voting的正确性"><a href="#Voting的正确性" class="headerlink" title="Voting的正确性"></a>Voting的正确性</h4><p>那么我们为什么一定说Voting能够提升模型的性能？为什么这种方式一定能够保证比单体模型更好呢？我们引入一个概念，叫做 <strong>集成误差（Ensemble Error）</strong>，它是指集成模型的预测结果与真实标签之间的误差率。</p>
+<p>假设我们在某个集成模型内雇佣了 $n$ 个基础分类器，每个分类器都会有几率犯错，我们记作 $\epsilon$。如果这些分类器是相互独立的（实际上确实是，它们相互各不商量，各凭本事），那么只有当超过绝大多数的分类器都犯错时，集成模型才会犯错。</p>
+<p>通过二项分布的推导，我们发现，只要每个分类器的表现能够比随机猜测更好（即 $\epsilon &lt; 0.5$），那么随着基础分类器数量的增加，集成模型的误差率会迅速下降，趋近于0。这就是为什么我们说Voting能够提升模型性能的原因。</p>
+<p>所以最后说回来，这个结论的前提是基础分类器之间必须是相互独立的，而且它们的错误不能高度相关。如果所有这些模型都犯了一样的错误，那么人多实际上并不会带来任何好处，反而可能会加剧错误的影响。</p>
+<hr>
+<h3 id="！？软硬投票？！"><a href="#！？软硬投票？！" class="headerlink" title="！？软硬投票？！"></a>！？软硬投票？！</h3><p>但是你就会想了，你说Voting有不同的机制，那么一共有哪些我们比较常用的Voting机制呢？</p>
+<p>首先最简单的，也是我们之前提到的，最原始的 <em>Majority Voting</em>*：统计所有模型的预测结果，选出得票数最多的类别作为最终的预测结果。</p>
+<p>本质上可以写成：</p>
+<p>$$\hat{y} &#x3D; mode {C_1(x), C_2(x), \ldots, C_m(x)}$$</p>
+<p>但是在现实中，并非所有模型的意见权重都应该是一样的。如果我们知道 $C_3$ 比 $C_1$ 和 $C_2$ 更加可靠，那么我们就应该赋予 $C_3$ 更高的权重 $w_j$，使得它在投票过程中对最终结果的贡献更大。我们管这个叫做 <strong>Weighted Majority Voting</strong>，即加权多数投票：</p>
+<p>$$\hat{y} &#x3D; arg \max_{i} \sum_{j&#x3D;1}^m w_j \chi_A(C_j(x) &#x3D; i)$$</p>
+<p>到这里，最后的预测结果 $\hat{y}$ 就不是简单的点名计票了，而是每个类别加权总票数的最大值。</p>
+<hr>
+<p>但是这仍然属于硬投票的一种变体，而硬头票会带来一些问题。就比如即使我们用了加权多数投票，万一你加权的专家也在胡扯，那岂不是会错的更离谱了？由于我们投票是要保证能够尽可能贴近事实，因此当我们处理最后的Voting的时候，也可以考虑按照事实的概率来进行投票，这就是 <strong>Soft Voting</strong>，即软投票。</p>
+<p>在软投票中，我们不仅仅看每个分类器的最终预测结果，而是看每个模型的输出的“置信程度”，也就是概率值。在scikit-learn中，许多分类器都提供了 <code>predict_proba</code> 方法，可以输出每个类别的预测概率。我们可以将这些概率进行加权平均，最终选择概率最高的类别作为最终的预测结果。</p>
+<p>也就是说每个模型会说：“我有$x$的把握这玩意是类别A，$y$的把握是类别B...”，然后集成模型做的事，就是把各个类别的加权平均概率计算出来，最后选定平均概率最高的类别作为最终预测。</p>
+<p>这种方式能够在保证专家意见的同时，在专家模型肯定的时候拥有更大的影响力，而在专家模型不确定的时候则会降低它的影响力，从而提高整体的预测性能。</p>
+<p>$$\hat{y} &#x3D; arg \max_{i} \sum_{j&#x3D;1}^m w_j p_ij$$</p>
+<hr>
+<h2 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h2><p>我们知道单模型的调优方法，但是对于集成模型来说，我们该如何调优？</p>
+<p>对于集成模型调优的方法还要看你使用的具体ML框架，但是主要的方法思路大差不差。在scikit-learn中，我们可以使用之前提到过的网格搜索 <code>GridSearchCV</code> 来进行集成模型的调优，但是我们要在这个基础上多做一步：</p>
+<p>由于scikit-learn中单模型方法都包含 <code>get_params</code> 方法，所以对于网格搜索来说，获取模型的超参数比较直接。但是对于集成模型来说，虽然没有直接的 <code>get_params</code> 方法，但是换个思路，你里面使用的每个基础分类器都是一个单模型，而单模型都有 <code>get_params</code> 方法，所以我们可以通过访问集成模型内部的基础分类器来获取它们的超参数。</p>
+<p>当外部调优器询问集成模型：“有哪些参数可以用来调整”的时候，集成模型要做的事就是不仅报出自己的参数，还要递归地报出它手下每一个分类器的参数，并给它们贴上唯一标签。</p>
+<p>举个例子，如果我们有一个集成模型叫做 <code>VotingClassifier</code>，它内部包含了三个基础分类器：<code>LogisticRegression</code>，<code>SVC</code> 和 <code>RandomForestClassifier</code>。当我们调用 <code>get_params</code> 方法时，集成模型可以为每一个子模型按照双下划线的格式分配唯一标签。</p>
+<p>例如随机森林的最大深度参数 <code>max_depth</code> ：<code>randomforestclassifier__max_depth</code>，为SVC的核函数参数 <code>kernel</code> 贴上标签：<code>svc__kernel</code>，为Logistic Regression的正则化参数 <code>C</code> 贴上标签：<code>logisticregression__C</code>。</p>
+<hr>
+<h2 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h2>
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
 <footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Voting"><span class="toc-text">Voting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Voting%E9%9B%86%E6%88%90%E7%AE%A1%E7%BA%BF"><span class="toc-text">Voting集成管线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Voting%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%80%A7"><span class="toc-text">Voting的正确性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%81%EF%BC%9F%E8%BD%AF%E7%A1%AC%E6%8A%95%E7%A5%A8%EF%BC%9F%EF%BC%81"><span class="toc-text">！？软硬投票？！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E4%BC%98"><span class="toc-text">调优</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bagging"><span class="toc-text">Bagging</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -501,7 +703,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1776605874420" defer></script>
+<script src="/js/main.js?v=1776605874357" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
@@ -573,6 +775,30 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
 
 
 
