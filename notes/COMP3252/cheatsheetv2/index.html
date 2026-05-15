@@ -1,0 +1,1759 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>COMP3252 Cheatsheet v2 - Naucha</title>
+
+  
+    <meta name="description" content="Part 1: 分治法🔹 1. 主定理 (Master Theorem)【识别信号】  题干给出递归式 T(n) &#x3D; aT(n&#x2F;b) + f(n)，要求给出渐近界 Θ(·) 或 O(·)。 关键词：solve recurrence, asymptotic bound, divide and conquer runtime。 ⚠️ 失效信号：若递归式为 T(n-1)、T(n&#x2F;2 + 1)、a&amp;lt">
+<meta property="og:type" content="website">
+<meta property="og:title" content="COMP3252 Cheatsheet v2">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3252/cheatsheetv2/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="Part 1: 分治法🔹 1. 主定理 (Master Theorem)【识别信号】  题干给出递归式 T(n) &#x3D; aT(n&#x2F;b) + f(n)，要求给出渐近界 Θ(·) 或 O(·)。 关键词：solve recurrence, asymptotic bound, divide and conquer runtime。 ⚠️ 失效信号：若递归式为 T(n-1)、T(n&#x2F;2 + 1)、a&amp;lt">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-05-10T07:47:00.000Z">
+<meta property="article:modified_time" content="2026-05-10T18:22:32.853Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1778855337280">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3252/cheatsheetv2/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"COMP3252 Cheatsheet v2","description":"Part 1: 分治法🔹 1. 主定理 (Master Theorem)【识别信号】\n\n题干给出递归式 T(n) = aT(n/b) + f(n)，要求给出渐近界 Θ(·) 或 O(·)。\n关键词：solve recurrence, asymptotic bound, divide and conquer runtime。\n⚠️ 失效信号：若递归式为 T(n-1)、T(n/2 + 1)、a...","url":"https://naughtychas.github.io/notes/COMP3252/cheatsheetv2/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3252/cheatsheetv2/"><span class="title">COMP3252 Cheatsheet v2</span></a><a class="item title" href="/notes/COMP3252/cheatsheet/"><span class="title">COMP3252 Cheatsheet</span></a><a class="item title" href="/notes/COMP3252/pt4/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3252/pt3/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3252/pt1/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3252/pt2/"><span class="title">快速傅里叶变换</span></a><a class="item title" href="/notes/COMP3252/begin/"><span class="title">COMP3252 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-05-10T18:22:32.853Z">2026-05-11</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-05-10T07:47:00.000Z">2026-05-10</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>COMP3252 Cheatsheet v2</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="Part-1-分治法"><a href="#Part-1-分治法" class="headerlink" title="Part 1: 分治法"></a>Part 1: 分治法</h1><h2 id="🔹-1-主定理-Master-Theorem"><a href="#🔹-1-主定理-Master-Theorem" class="headerlink" title="🔹 1. 主定理 (Master Theorem)"></a>🔹 1. 主定理 (Master Theorem)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>题干给出递归式 <code>T(n) = aT(n/b) + f(n)</code>，要求给出渐近界 <code>Θ(·)</code> 或 <code>O(·)</code>。</li>
+<li>关键词：<code>solve recurrence</code>, <code>asymptotic bound</code>, <code>divide and conquer runtime</code>。</li>
+<li>⚠️ <strong>失效信号</strong>：若递归式为 <code>T(n-1)</code>、<code>T(n/2 + 1)</code>、<code>a&lt;1</code>、或 <code>f(n)</code> 非多项式&#x2F;震荡（如 <code>2^n</code>, <code>n log n</code> 但差距非多项式级），主定理直接失效，必须改用递归树或迭代展开。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“分家产比大小”。<code>n^{log_b a}</code> 是递归树最底层所有叶子的总工作量（分下去的代价），<code>f(n)</code> 是每一层划分+合并的工作量（合起来的代价）。谁在数量级上碾压对方，谁就主导整棵树的总耗时。如果两者旗鼓相当，则每层代价累加，多出一个 <code>log n</code> 因子。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li>临界指数：<code>c = log_b a</code> （叶子层的增长阶）</li>
+<li><strong>Case 1（叶子主导）</strong>：若 <code>f(n) = O(n^{c-ε})</code>（<code>ε&gt;0</code> 为任意小常数） → <code>T(n) = Θ(n^c)</code><br><em>(释义：合并代价比叶子代价多项式级地小，总时间被底层递归调用数量统治)</em></li>
+<li><strong>Case 2（层层平衡）</strong>：若 <code>f(n) = Θ(n^c log^k n)</code>（<code>k≥0</code>） → <code>T(n) = Θ(n^c log^{k+1} n)</code><br><em>(释义：每层代价同阶，共 <code>log_b n</code> 层，总时间 &#x3D; 单层代价 × 层数。注意 log 指数要 +1！)</em></li>
+<li><strong>Case 3（根主导）</strong>：若 <code>f(n) = Ω(n^{c+ε})</code> 且满足正则条件 <code>a·f(n/b) ≤ d·f(n)</code>（<code>d&lt;1</code>） → <code>T(n) = Θ(f(n))</code><br><em>(释义：合并代价多项式级地大，且子问题代价衰减足够快，总时间被顶层&#x2F;根节点统治)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：画递归树。第 <code>i</code> 层有 <code>a^i</code> 个节点，每个规模 <code>n/b^i</code>，该层总代价为 <code>a^i · f(n/b^i)</code>。将所有层代价求和。Case 1 是几何递减级数（首项&#x2F;叶子最大）；Case 2 是每层相等（层数乘单层）；Case 3 是几何递增级数（末项&#x2F;根最大）。正则条件保证 Case 3 的子问题代价不会反弹。</li>
+<li><strong>数学符号</strong>：<code>T(n) = Σ_{i=0}^{log_b n} a^i f(n/b^i)</code>。比较 <code>f(n)</code> 与 <code>n^{log_b a}</code> 的阶，利用等比数列求和性质得主导项。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">由递归树展开，第 i 层代价为 a^i f(n/b^i)，共 log_b n 层。</span><br><span class="line">计算临界值 c = log_b a。比较 f(n) 与 n^c：</span><br><span class="line">- 若 f(n) 多项式小于 n^c，属 Case 1，T(n)=Θ(n^c)</span><br><span class="line">- 若 f(n) = Θ(n^c log^k n)，属 Case 2，T(n)=Θ(n^c log^&#123;k+1&#125; n)</span><br><span class="line">- 若 f(n) 多项式大于 n^c 且满足正则条件，属 Case 3，T(n)=Θ(f(n))</span><br><span class="line">代入本题参数得 T(n)=Θ(...)。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向速算</strong>：<code>a=2,b=2,f=n → c=1 → Case2 → O(n log n)</code>；<code>a=3,b=2,f=n → c≈1.58&gt;1 → Case1 → O(n^1.58)</code>；<code>a=2,b=4,f=n^{2/3} → c=0.5&lt;0.66 → Case3 → O(n^{2/3})</code>。</li>
+<li><strong>逆向反推</strong>：题干暗示 <code>O(n log n)</code> 且是分治 → 必为 <code>a=b, f(n)=Θ(n)</code>。若给 <code>O(n^2)</code> → 可能是 <code>a=4,b=2</code> 或 <code>f(n)=Θ(n^2)</code>。若题目故意给 <code>T(n)=2T(n/2)+n/log n</code> → 差距非多项式，主定理失效，需用递归树得 <code>O(n log log n)</code>。</li>
+<li><strong>考场避坑</strong>：<code>log^k n</code> 的 <code>k</code> 必须写对；Case 3 必须提一句“满足正则条件”；遇到 <code>T(n-1)</code> 直接写“主定理不适用，改用迭代法”。</li>
+</ul>
+<hr>
+<h2 id="🔹-2-归并排序与逆序对计数-Merge-Sort-Inversions"><a href="#🔹-2-归并排序与逆序对计数-Merge-Sort-Inversions" class="headerlink" title="🔹 2. 归并排序与逆序对计数 (Merge Sort &amp; Inversions)"></a>🔹 2. 归并排序与逆序对计数 (Merge Sort &amp; Inversions)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“排序”、“统计不一致对&#x2F;逆序对数量”、“O(n log n) 找满足 i&lt;j 且 A[i]&gt;A[j] 的对数”、“两个排列的差异度”。</li>
+<li>真题映射：Final Q1（QS vs US News 排名不一致对数）。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“两列已排好队的士兵合并”。逆序对就是“右边的人比左边的人矮，却排在后面”。合并时一旦发现右边当前的人更矮，说明他比左边剩余的所有人都矮。因为左边已经有序，不需要逐个比，直接<strong>批量计数</strong>左边还剩几个人。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>分治框架</strong>：<code>Sort(l, r)</code> → <code>mid=⌊(l+r)/2⌋</code> → 递归 <code>Sort(l, mid)</code> 与 <code>Sort(mid+1, r)</code> → <code>Merge(l, mid, r)</code></li>
+<li><strong>合并计数核心</strong>：维护指针 <code>i=l</code>（左半段）, <code>j=mid+1</code>（右半段）。临时数组 <code>Temp</code>。<ul>
+<li>若 <code>A[i] ≤ A[j]</code>：<code>Temp.push(A[i])</code>, <code>i++</code></li>
+<li>若 <code>A[i] &gt; A[j]</code>：<code>Temp.push(A[j])</code>, <code>j++</code>, <strong>逆序对计数 +&#x3D; (mid - i + 1)</strong></li>
+</ul>
+</li>
+<li><em>(释义：<code>mid-i+1</code> 是左半段当前未合并的元素个数。因左右子数组已递归有序，<code>A[j] &lt; A[i]</code> 必然意味着 <code>A[j]</code> 小于 <code>A[i...mid]</code> 的所有元素。这 <code>mid-i+1</code> 个元素在原数组中索引均小于 <code>j</code> 但值大于 <code>A[j]</code>，故一次性贡献这么多逆序对，不重不漏)</em></li>
+<li><strong>最终答案</strong>：递归返回时累加左、右、跨区三部分计数。</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：循环不变量：已合并部分有序，且已统计的逆序对覆盖所有跨左右子数组的配对。当 <code>A[i]&gt;A[j]</code> 时，由有序性，<code>A[j]</code> 与 <code>A[i...mid]</code> 均构成逆序。递归基 <code>n=1</code> 逆序为0。归纳保证全局正确。合并过程遍历所有跨区对，且利用局部有序性在 O(1) 内批量计数。</li>
+<li><strong>数学符号</strong>：设左半 <code>L</code> 右半 <code>R</code> 已有序。对任意 <code>x∈R</code>，若 <code>x &lt; L[i]</code>，则 <code>∀k∈[i, mid], x &lt; L[k]</code>。跨区逆序数 <code>= Σ_{x∈R} |{y∈L | y&gt;x}|</code>。合并指针扫描恰好遍历所有 <code>(y,x)</code> 对，计数等价。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">算法：魔改归并排序。递归划分至单元素。合并时维护双指针 i,j。</span><br><span class="line">若 A[i]≤A[j] 放 A[i]；若 A[i]&gt;A[j] 放 A[j] 并累加 (mid-i+1) 至计数器。</span><br><span class="line">正确性：因左右子数组已有序，A[i]&gt;A[j] 时 A[j] 必小于左半剩余所有元素。</span><br><span class="line">这些元素在原序列中索引均小于 j 但值更大，恰构成逆序对。</span><br><span class="line">合并过程线性扫描覆盖所有跨区配对，不重不漏。递归基 n=1 计数为0。</span><br><span class="line">由强归纳法，算法正确统计全局逆序对。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：<code>T(n)=2T(n/2)+O(n)</code> → 主定理 Case 2 → <code>O(n log n)</code>。空间 <code>O(n)</code>（临时数组）。</li>
+<li><strong>逆向</strong>：题干要求“严格快于 O(n²) 统计配对&#x2F;排名差异&#x2F;满足某大小关系的对数” → 90% 是魔改归并。必须写出 <code>mid-i+1</code> 批量累加逻辑，逐个比对直接扣一半分。</li>
+<li><strong>考场细节</strong>：若题目是“两个排列 q 和 u 的不一致对”，先按 <code>q</code> 升序重排，提取 <code>u</code> 序列，再跑逆序对计数。预处理 <code>O(n log n)</code> 不改变总阶。</li>
+</ul>
+<hr>
+<h2 id="🔹-3-最近点对-Closest-Pair-in-2D"><a href="#🔹-3-最近点对-Closest-Pair-in-2D" class="headerlink" title="🔹 3. 最近点对 (Closest Pair in 2D)"></a>🔹 3. 最近点对 (Closest Pair in 2D)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“二维平面上 n 个点”、“最小欧氏距离”、“要求 O(n log n)”、“几何分治”。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“切蛋糕找最近的两颗芝麻”。先竖切一刀，左右各自找最近距离 <code>d</code>。真正的答案要么在左&#x2F;右，要么“跨中线”。跨中线的点对必须挤在宽度为 <code>2d</code> 的条带里。把条带里的点按 y 排序后，对于任意点，只需要向下看常数个点（鸽巢原理保证），再远的 y 距离必然超过 <code>d</code>，无需计算。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>预处理</strong>：按 x 坐标排序点集 <code>P_x</code>（仅一次，<code>O(n log n)</code>）。</li>
+<li><strong>分治</strong>：<code>mid</code> 划分左右，递归得 <code>d_L, d_R</code>，令 <code>d = min(d_L, d_R)</code>。</li>
+<li><strong>合并（条带扫描）</strong>：<ol>
+<li>提取条带 <code>S = {p ∈ P | |p.x - mid.x| &lt; d}</code>。</li>
+<li>将 <code>S</code> 按 y 坐标排序得 <code>S_y</code>。</li>
+<li>遍历 <code>S_y</code>，对每个 <code>p_i</code>，仅检查后续 <code>p_j</code> 满足 <code>p_j.y - p_i.y &lt; d</code> 的点（最多 7~11 个）。</li>
+<li>若 <code>dist(p_i, p_j) &lt; d</code>，更新 <code>d = dist(p_i, p_j)</code>。</li>
+</ol>
+</li>
+<li><em>(释义：条带内点按 y 排序后，若 y 差 ≥ d，欧氏距离必 ≥ d，直接跳过。几何鸽巢证明保证常数个候选，合并阶段降为 O(n)。注意：S_y 的排序必须随递归线性合并维护，绝不能在每层调用 sort()，否则退化 O(n log² n))</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：正确性核心在条带扫描的常数界。将 <code>2d×d</code> 矩形划分为 <code>d/2×d/2</code> 小格，每格最多1点（否则递归已找到更小距离）。故 <code>p_i</code> 周围 <code>d×2d</code> 区域内点数有常数上界（通常证得 ≤7 或 ≤11）。检查超过该数量的点数学上冗余。</li>
+<li><strong>数学符号</strong>：设 <code>δ = min(d_L, d_R)</code>。跨中线点对 <code>(p,q)</code> 必满足 <code>|p.x - mid.x|&lt;δ</code> 且 <code>|q.x - mid.x|&lt;δ</code>。将条带划分为 <code>δ/2 × δ/2</code> 网格。由递归定义，同侧点距 ≥δ，故每格至多1点。对任意 <code>p_i∈S_y</code>，满足 <code>0 &lt; p_j.y - p_i.y &lt; δ</code> 的 <code>p_j</code> 必落在以 <code>p_i</code> 为底的 <code>δ×2δ</code> 矩形内，该矩形最多覆盖常数个网格，故候选数 <code>O(1)</code>。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">算法：按 x 排序后分治。递归得 d=min(dL,dR)。提取 |x-mid.x|&lt;d 的条带点集 S。</span><br><span class="line">将 S 按 y 排序。遍历 S，对每个点仅检查后续 y 差 &lt; d 的常数个点，更新 d。</span><br><span class="line">正确性：跨中线最近点对必落在宽 2d 条带内。将条带划分为 d/2×d/2 网格，</span><br><span class="line">由递归性质每格至多1点。故任意点周围 d 半径内候选点数为常数。</span><br><span class="line">合并阶段线性扫描即可覆盖所有可能更优的跨区点对。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：若 y 排序线性合并：<code>T(n)=2T(n/2)+O(n)</code> → <code>O(n log n)</code>。空间 <code>O(n)</code>。</li>
+<li><strong>致命陷阱</strong>：条带按 y 排序<strong>绝不能每次调用 sort()</strong>，否则 <code>T(n)=2T(n/2)+O(n log n) → O(n log² n)</code> 直接扣分。必须写“随递归返回线性合并维护 y 有序数组”或“预处理双份数组（Px, Py）同步划分”。</li>
+<li><strong>逆向</strong>：题干给“二维点集+最小距离+O(n log n)”必考此题。若只要求 <code>O(n²)</code> 暴力即可。若考“最近点对输出具体坐标”，记得在更新 <code>d</code> 时同步记录点对索引。</li>
+</ul>
+<hr>
+<h2 id="🔹-4-线性时间选择-Median-of-Medians-Deterministic-Selection"><a href="#🔹-4-线性时间选择-Median-of-Medians-Deterministic-Selection" class="headerlink" title="🔹 4. 线性时间选择 (Median-of-Medians &#x2F; Deterministic Selection)"></a>🔹 4. 线性时间选择 (Median-of-Medians &#x2F; Deterministic Selection)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“未排序数组找第 k 大&#x2F;小元素”、“找中位数”、“要求严格 O(n) 最坏情况时间”、“不能用排序”。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“找标杆分堆”。随便找个pivot可能极偏（导致 O(n²)）。为了保证每次切分至少扔掉固定比例的元素，我们“分组找中位数，再找中位数的中位数”作为pivot。这个pivot数学上保证至少比 30% 的元素大，也比 30% 的元素小。每次递归规模最多剩 70%，等比衰减保证总时间线性。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>步骤</strong>：<ol>
+<li>将数组 <code>A</code> 分为 <code>⌈n/5⌉</code> 组，每组 5 个元素。</li>
+<li>找出每组的中位数（插入排序 O(1)），构成集合 <code>M</code>。</li>
+<li>递归调用 <code>Select(M, ⌈|M|/2⌉)</code> 找到中位数的中位数 <code>x</code>（作为pivot）。</li>
+<li>用 <code>x</code> 划分 <code>A</code> 为 <code>L(&lt;x)</code>, <code>M(=x)</code>, <code>R(&gt;x)</code>。</li>
+<li>若 <code>k ≤ |R|</code> 递归 <code>Select(R, k)</code>；若 <code>k ≤ |R|+|M|</code> 返回 <code>x</code>；否则递归 <code>Select(L, k-|R|-|M|)</code>。</li>
+</ol>
+</li>
+<li><em>(释义：5个一组是数学临界点。一半的组中位数 ≥x，每组至少3个元素 ≥ 该组中位数，故至少 3·(n&#x2F;10) &#x3D; 3n&#x2F;10 个元素 ≥x。同理 ≤x 的元素也 ≥3n&#x2F;10。故 L 和 R 的规模均 ≤ 7n&#x2F;10。递归式 T(n) ≤ T(n&#x2F;5) + T(7n&#x2F;10) + O(n) 保证线性)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：pivot <code>x</code> 是“中位数的中位数”。至少一半的组，其中位数 ≥ <code>x</code>。在这些组里，至少有3个元素 ≥ 该组中位数 ≥ <code>x</code>。所以全局至少 <code>3n/10</code> 个元素 ≥ <code>x</code>。同理至少 <code>3n/10</code> 个元素 ≤ <code>x</code>。每次划分后，最坏情况只需递归进入规模 <code>≤ 7n/10</code> 的子数组。递归树每层工作量几何衰减，总和收敛于 <code>O(n)</code>。</li>
+<li><strong>数学符号</strong>：设 <code>T(n)</code> 为最坏时间。找组中位数 <code>O(n)</code>，递归找 <code>x</code> 耗时 <code>T(n/5)</code>，划分 <code>O(n)</code>，递归子问题最大规模 <code>7n/10</code> 耗时 <code>T(7n/10)</code>。得 <code>T(n) ≤ T(n/5) + T(7n/10) + cn</code>。代入归纳假设 <code>T(n) ≤ 20cn</code> 验证成立。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">算法：5个一组求中位数得集合M。递归求M的中位数x作pivot。</span><br><span class="line">按x划分A为L,M,R。根据k所在区间递归或返回x。</span><br><span class="line">正确性/复杂度：x为中位数的中位数，至少一半组的中位数≥x。</span><br><span class="line">每组至少3元素≥该组中位数，故全局≥3n/10元素≥x。同理≤x元素≥3n/10。</span><br><span class="line">划分后子问题规模≤7n/10。递归式 T(n)≤T(n/5)+T(7n/10)+O(n)。</span><br><span class="line">由代入法/递归树几何衰减，得 T(n)=O(n)。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：<code>T(n) ≤ T(n/5) + T(7n/10) + O(n) → O(n)</code>。空间 <code>O(log n)</code>（递归栈）。</li>
+<li><strong>变式反推</strong>：若题目问“为什么不用3个一组？” → 答：<code>T(n) ≤ T(n/3) + T(2n/3) + O(n)</code>，系数和 <code>1/3+2/3=1</code>，每层工作量不衰减，总时间 <code>O(n log n)</code>。必须 <code>≥5</code> 才能保证系数和 <code>&lt;1</code>。</li>
+<li><strong>考场细节</strong>：若只要求“平均 O(n)”，直接用随机化 Quickselect 即可，无需 Median-of-Medians。题干强调“最坏情况 O(n)”或“deterministic”才用此算法。</li>
+</ul>
+<hr>
+<h2 id="🔹-5-快速傅里叶变换-FFT"><a href="#🔹-5-快速傅里叶变换-FFT" class="headerlink" title="🔹 5. 快速傅里叶变换 (FFT)"></a>🔹 5. 快速傅里叶变换 (FFT)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“多项式乘法”、“信号卷积”、“系数表示转点值表示”、“要求 O(n log n)”、“复数单位根”。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“换赛道超车”。系数表示下多项式乘法是卷积，暴力 <code>O(n²)</code>。但如果把多项式变成“点值表示”（代入 n 个不同的 x 算出 y），乘法就变成对应 y 值直接相乘，<code>O(n)</code> 搞定。FFT 的魔法在于：精心挑选 <code>n 次单位根</code> 作为代入点，利用对称性和折半性质，把“求值”和“插值”都加速到 <code>O(n log n)</code>。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>核心定义</strong>：<code>n</code> 次单位根 <code>ω_n^k = e^{i·2πk/n}</code>，<code>k=0..n-1</code>。满足 <code>ω_n^{k+n/2} = -ω_n^k</code>（折半引理）。</li>
+<li><strong>分治求值（Cooley-Tukey）</strong>：<br>多项式 <code>A(x) = A_even(x²) + x·A_odd(x²)</code>。<br>代入 <code>ω_n^k</code>：<ul>
+<li><code>k &lt; n/2</code>: <code>A(ω_n^k) = A_even(ω_{n/2}^k) + ω_n^k · A_odd(ω_{n/2}^k)</code></li>
+<li><code>k ≥ n/2</code>: <code>A(ω_n^k) = A_even(ω_{n/2}^{k-n/2}) - ω_n^{k-n/2} · A_odd(ω_{n/2}^{k-n/2})</code></li>
+</ul>
+</li>
+<li><em>(释义：将 n 个点值计算拆成两个 n&#x2F;2 规模的子问题。平方单位根恰好降阶为 n&#x2F;2 次单位根。正负号对称性让后半段直接复用前半段结果，无需重复计算。递归式 T(n)&#x3D;2T(n&#x2F;2)+O(n) → O(n log n))</em></li>
+<li><strong>逆 FFT (IFFT)</strong>：将 <code>ω_n</code> 替换为 <code>ω_n^{-1}</code>，跑完全相同算法，最后结果除以 <code>n</code>。<br><em>(释义：点值转系数本质是乘 Vandermonde 矩阵的逆。逆矩阵元素恰为 <code>1/n · ω_n^{-jk}</code>，结构与前向 FFT 完全同构)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：单位根的平方恰好是低一阶的单位根（折半引理），且前后半段互为相反数（消去引理）。这使得计算 n 个点值时，只需算 n&#x2F;2 个，另一半直接取负号复用。递归树每层 O(n)，共 log n 层。逆过程矩阵求逆恰好是共轭单位根加缩放，算法结构不变。</li>
+<li><strong>数学符号</strong>：<code>V_{j,k} = ω_n^{jk}</code>。<code>V^{-1}_{j,k} = (1/n)ω_n^{-jk}</code>。验证 <code>V·V^{-1}=I</code>：对角线 <code>Σ 1/n = 1</code>；非对角线等比数列求和分子 <code>1-ω_n^{n(j-k)}=0</code>。故 IFFT 正确。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">算法：补零至长度 2^m。按奇偶系数拆分 A_even, A_odd。</span><br><span class="line">递归计算在 n/2 次单位根处的值。利用 ω_n^&#123;k+n/2&#125;=-ω_n^k 合并：</span><br><span class="line">前半段相加，后半段相减。递归基 n=1 直接返回。</span><br><span class="line">逆FFT：将 ω_n 换为 ω_n^&#123;-1&#125;，运行相同算法，最终结果除以 n。</span><br><span class="line">正确性：由单位根折半引理与消去引理，n 点求值降为两个 n/2 子问题。</span><br><span class="line">合并线性耗时，T(n)=2T(n/2)+O(n)→O(n log n)。</span><br><span class="line">逆过程对应 Vandermonde 矩阵求逆，结构同构，仅替换共轭根并缩放 1/n。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：<code>T(n)=2T(n/2)+O(n) → O(n log n)</code>。空间 <code>O(n)</code>。</li>
+<li><strong>考场陷阱</strong>：多项式度数 <code>n-1</code>，乘积度数 <code>2n-2</code>，必须补零至 <code>≥2n-1</code> 的 2 的幂次长度，否则点值数量不够唯一确定乘积多项式，直接扣逻辑分。</li>
+<li><strong>逆向</strong>：题干出现“卷积&#x2F;多项式乘&#x2F;大整数乘(转多项式)&#x2F;模式匹配”且要求 <code>O(n log n)</code> → 必考 FFT。若只要求写思路，重点写“奇偶拆分+单位根对称性+折半递归”。不要求背蝴蝶图代码。</li>
+</ul>
+<hr>
+<h1 id="Part-2-动态规划-DP"><a href="#Part-2-动态规划-DP" class="headerlink" title="Part 2: 动态规划 DP"></a>Part 2: 动态规划 DP</h1><hr>
+<h2 id="🔹-1-线性-DP-LIS-加权区间调度-作业调度"><a href="#🔹-1-线性-DP-LIS-加权区间调度-作业调度" class="headerlink" title="🔹 1. 线性 DP (LIS &#x2F; 加权区间调度 &#x2F; 作业调度)"></a>🔹 1. 线性 DP (LIS &#x2F; 加权区间调度 &#x2F; 作业调度)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“最长递增子序列”、“选不重叠区间最大化权重&#x2F;数量”、“序列决策&#x2F;前缀最优&#x2F;以某元素结尾”、“截止时间&#x2F;处理时间调度”。</li>
+<li>真题映射：Assignment 2 LIS、Final Q3 (Job Scheduling max count)、加权区间调度。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“搭积木&#x2F;排班表”。当前决策只依赖“前面某个兼容状态的最优解”。必须强制“以当前元素结尾”或“考虑前 i 个”，否则无法判断后续能否接上。就像排队，你只关心“上一个 compatible 的人是谁”，不关心更早的历史。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>LIS</strong>：<code>dp[i] = 以 A[i] 结尾的最长递增子序列长度</code>。<br><code>dp[i] = 1 + max({0} ∪ {dp[j] | j&lt;i, A[j]&lt;A[i]})</code><br><em>(释义：强制包含 A[i]，枚举所有合法前驱 j，取最长接续。1 代表 A[i] 自身)</em></li>
+<li><strong>加权区间调度</strong>：按结束时间排序。<code>p(i)</code> &#x3D; i 开始前最晚结束的兼容区间索引。<br><code>dp[i] = max(dp[i-1], w_i + dp[p(i)])</code><br><em>(释义：<code>dp[i-1]</code> 不选 i 继承前序；<code>w_i + dp[p(i)]</code> 选 i，跳到兼容的最近前驱 p(i) 接续，保证不重叠且总权重最大)</em></li>
+<li><strong>Final Q3 变式 (带截止时间的最大任务数)</strong>：<br><code>dp[i][t] = 前 i 个任务，总处理时间恰好为 t 时，能完成的最大任务数</code><br><code>dp[i][t] = max(dp[i-1][t], dp[i-1][t-p_i] + 1)</code> （需满足 <code>t ≥ p_i</code> 且 <code>t ≤ d_i</code>）<br><em>(释义：t 是累计耗时。因任务已按 deadline 排序，若选 i，它必是当前选中集合最后一个完成的，完成时间即 t，故只需检查 t≤d_i)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：最优子结构：若全局最优解包含 i，则 i 之前的部分必是子问题最优（否则可替换得更优）。无后效性：当前决策只依赖前驱状态，不影响未来合法性。枚举&#x2F;二分查找覆盖所有合法转移，归纳保证 <code>dp[i]</code> 维护全局最优。</li>
+<li><strong>数学符号</strong>：设 <code>OPT(i)</code> 为前 i 项最优值。对第 i 项仅“选&#x2F;不选”两决策。若选 i，则前驱必为 <code>OPT(p(i))</code> 或 <code>OPT(i-1, t-p_i)</code>。由归纳假设子问题最优，故 <code>dp[i] = max(...)</code> 收敛至 <code>OPT(i)</code>。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">状态定义：dp[i] 表示以 i 结尾/考虑前 i 项的最优解。</span><br><span class="line">转移逻辑：对第 i 项仅“选/不选”。若选 i，需满足兼容/容量约束，</span><br><span class="line">并继承合法前驱状态的最优值；若不选，直接继承 dp[i-1]。</span><br><span class="line">正确性：由最优子结构，全局最优解的任意前缀必为子问题最优。</span><br><span class="line">算法枚举所有合法前驱/兼容点，覆盖真实最优转移路径。</span><br><span class="line">按 i 递增计算保证无后效性，归纳得 dp[n] 为全局最优。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：LIS 朴素 <code>O(n²)</code>；加权区间 <code>O(n log n)</code>（排序+二分求 p(i)）；Final Q3 <code>O(n·D)</code>（D&#x3D;max deadline）。</li>
+<li><strong>逆向反推</strong>：题干暗示 <code>O(n log n)</code> 且是序列最优 → 必用二分&#x2F;单调栈优化转移。若约束含“相邻不能同时选” → 转移跳 <code>i-2</code>。若 n≤5000 → 接受 <code>O(n²)</code>；若 n≤10⁵ → 必须 <code>O(n log n)</code> 或 <code>O(n)</code>。</li>
+<li><strong>考场陷阱</strong>：Final Q3 必须写“按 deadline 排序 + 紧密调度从 0 开始”，否则 <code>t≤d_i</code> 的逻辑不闭环，直接扣 5-8 分。</li>
+</ul>
+<hr>
+<h2 id="🔹-2-区间-DP-矩阵链乘-多边形剖分-石子合并"><a href="#🔹-2-区间-DP-矩阵链乘-多边形剖分-石子合并" class="headerlink" title="🔹 2. 区间 DP (矩阵链乘 &#x2F; 多边形剖分 &#x2F; 石子合并)"></a>🔹 2. 区间 DP (矩阵链乘 &#x2F; 多边形剖分 &#x2F; 石子合并)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“连续区间最优分割&#x2F;合并”、“矩阵链乘”、“多边形三角剖分”、“第一刀切在哪”、“相邻元素合并代价”。</li>
+<li>真题映射：Assignment 2 多边形剖分、矩阵链乘法、石子合并。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“切链条&#x2F;剥洋葱”。一根长链，第一刀必须选一个断点 k。切开后左右两段完全独立，递归处理。总代价 &#x3D; 左段最优 + 右段最优 + 当前切割&#x2F;合并的固有代价。就像切香肠，每一刀只影响当前段，左右互不干扰。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>状态</strong>：<code>dp[i][j] = 闭区间 [i, j] 内元素的最优解</code><br><em>(释义：强制锁定当前只关心从第 i 个到第 j 个连续元素的子问题，屏蔽外部干扰)</em></li>
+<li><strong>转移</strong>：<code>dp[i][j] = min/max_{i≤k&lt;j} { dp[i][k] + dp[k+1][j] + cost(i, j, k) }</code><br><em>(释义：k 是第一刀位置；<code>dp[i][k]</code> 左子链最优；<code>dp[k+1][j]</code> 右子链最优；<code>cost</code> 是切开后合并两段的固定开销)</em></li>
+<li><strong>循环顺序</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for len = 2 to n:          // 必须按区间长度从小到大！否则子问题未计算</span><br><span class="line">    for i = 1 to n-len+1:</span><br><span class="line">        j = i + len - 1</span><br><span class="line">        dp[i][j] = ∞</span><br><span class="line">        for k = i to j-1:</span><br><span class="line">            dp[i][j] = min(dp[i][j], dp[i][k] + dp[k+1][j] + cost)</span><br></pre></td></tr></table></figure></li>
+<li><strong>变式 cost 映射</strong>：<ul>
+<li>矩阵链乘：<code>cost = p_{i-1}·p_k·p_j</code>（维度乘积）</li>
+<li>多边形剖分：<code>cost = dist(i,k) + dist(k,j)</code>（k 范围改为 <code>i&lt;k&lt;j</code>）</li>
+<li>石子合并：<code>cost = Σ_{t=i}^j w_t</code>（区间和，需前缀和 O(1) 查询）</li>
+</ul>
+</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：最优子结构：全局最优分割点 k* 必使左右子区间各自最优。否则换掉差的那段，总结果会更优，矛盾。枚举完备性：任何合法剖分&#x2F;合并必在某处断开。算法穷举所有 k，故必覆盖真实最优断点 k*。</li>
+<li><strong>数学符号</strong>：设 <code>OPT(i,j)</code> 为区间最优值。若存在 <code>k*</code> 使 <code>OPT(i,j) = OPT(i,k*) + OPT(k*+1,j) + cost</code>，且左&#x2F;右子区间解非最优，则可替换为更优子解，导致 <code>OPT&#39;(i,j) &lt; OPT(i,j)</code>，与定义矛盾。故子问题必最优。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">状态定义：dp[i][j] 表示区间 [i,j] 的最优解。</span><br><span class="line">转移逻辑：枚举分割点 k，将区间拆为 [i,k] 与 [k+1,j]。</span><br><span class="line">总代价 = 左子区间最优 + 右子区间最优 + 当前合并/切割代价 cost。</span><br><span class="line">正确性：任何合法划分必在某 k 处断开。算法穷举 k∈[i,j-1]，</span><br><span class="line">必覆盖真实最优断点。由最优子结构，左右子区间解必最优，</span><br><span class="line">否则可替换得全局更优。按长度递增计算保证无后效性。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：状态 <code>O(n²)</code> × 转移枚举 <code>O(n)</code> &#x3D; <code>O(n³)</code>。空间 <code>O(n²)</code>。</li>
+<li><strong>逆向反推</strong>：题干暗示 <code>O(n³)</code> 或 n≤500 → 直接锁定区间DP。若要求 <code>O(n²)</code> → 考虑四边形不等式优化（k 的决策单调性：<code>opt[i][j-1] ≤ opt[i][j] ≤ opt[i+1][j]</code>），或改为线性DP。看到“连续段&#x2F;区间&#x2F;合并”必试此模板。</li>
+<li><strong>考场陷阱</strong>：多边形剖分 k 范围是 <code>i&lt;k&lt;j</code>（不能取端点，否则退化为边）；矩阵链乘 k 范围是 <code>i≤k&lt;j</code>。写错范围扣 3-5 分。循环顺序必须写“按 len 递增”，否则逻辑不成立。</li>
+</ul>
+<hr>
+<h2 id="🔹-3-0-1背包与伪多项式-DP-含-FPTAS"><a href="#🔹-3-0-1背包与伪多项式-DP-含-FPTAS" class="headerlink" title="🔹 3. 0&#x2F;1背包与伪多项式 DP (含 FPTAS)"></a>🔹 3. 0&#x2F;1背包与伪多项式 DP (含 FPTAS)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“n个物品选或不选”、“总重量≤W”、“最大化价值&#x2F;最小化重量”、“物品不可分割”、“容量限制”。</li>
+<li>真题映射：Assignment 2 背包变种、FPTAS 近似算法、相邻约束背包。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“装箱记账本”。面对第 i 个物品，只有两条路：跳过它（继承上一行同容量），或装下它（价值+剩余容量的最优解）。容量是硬约束，必须写进状态。就像背包客，每见一件装备，只问自己：“带上它，剩下的空间还能装多少最优？”</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>状态</strong>：<code>dp[i][w] = 前 i 个物品，总重不超过 w 的最大价值</code></li>
+<li><strong>转移</strong>：<code>dp[i][w] = max(dp[i-1][w], v_i + dp[i-1][w-w_i])</code> （若 <code>w≥w_i</code>）<br><em>(释义：<code>dp[i-1][w]</code> 不选 i；<code>v_i + dp[i-1][w-w_i]</code> 选 i，扣除重量 w_i 后查前 i-1 个物品的最优剩余价值)</em></li>
+<li><strong>空间优化</strong>：一维数组倒序遍历<br><code>for w=W down to w_i: dp[w] = max(dp[w], v_i + dp[w-w_i])</code><br><em>(释义：倒序防止同一物品被重复选取。正序会变成完全背包)</em></li>
+<li><strong>变式映射</strong>：<ul>
+<li>相邻不能选：<code>dp[i][w] = max(dp[i-1][w], v_i + dp[i-2][w-w_i])</code></li>
+<li>翻转DP（W极大但v小）：<code>dp[i][v] = 达到价值 v 的最小重量</code>，转移 <code>min(dp[i-1][v], dp[i-1][v-v_i] + w_i)</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：最优子结构：对物品 i 的决策独立于后续。若最优解含 i，则剩余容量 <code>W-w_i</code> 必由前 i-1 物品最优填充。归纳保证 <code>dp[i][w]</code> 覆盖所有子集组合。伪多项式：W 是数值非输入长度，二进制编码长度为 log W，故复杂度相对输入规模是指数级，但相对 W 是多项式。</li>
+<li><strong>数学符号</strong>：设 <code>S*</code> 为最优子集。若 <code>i∈S*</code>，则 <code>S*\{i}</code> 必为容量 <code>W-w_i</code> 下前 <code>i-1</code> 物品的最优解。否则存在更优 <code>S&#39;</code>，使 <code>val(S&#39;)+v_i &gt; val(S*)</code>，矛盾。故转移正确。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">状态定义：dp[i][w] 表示前 i 个物品，总重不超过 w 的最大价值。</span><br><span class="line">转移逻辑：对物品 i 仅“选/不选”。不选继承 dp[i-1][w]；</span><br><span class="line">选则需 w≥w_i，价值为 v_i + dp[i-1][w-w_i]。两者取 max。</span><br><span class="line">正确性：由最优子结构，若最优解含 i，则剩余容量必取子问题最优。</span><br><span class="line">一维倒序遍历保证每个物品仅用一次（防重复选取）。</span><br><span class="line">复杂度 O(nW) 为伪多项式（W 是数值，非输入编码长度）。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：时间 <code>O(nW)</code>，空间 <code>O(W)</code>（优化后）。FPTAS 缩放后 <code>O(n³/ε)</code>。</li>
+<li><strong>逆向反推</strong>：题干给“容量限制+不可分”必是背包。若 W 极大但价值 v_i 较小 → 翻转 DP。若要求近似解 → FPTAS（缩放价值 <code>v_i&#39; = ⌊v_i/k⌋</code>，<code>k=ε·v_max/2n</code>，误差可控）。若题干暗示多项式时间但 W 指数级 → 必考 FPTAS 或贪心近似。</li>
+<li><strong>考场陷阱</strong>：FPTAS 必须写清缩放参数 <code>k</code> 和误差界 <code>≥ OPT/(1+ε)</code>。一维优化必须强调“倒序”，写正序直接判为完全背包扣一半分。</li>
+</ul>
+<hr>
+<h2 id="🔹-4-树形-DP-Tree-DP"><a href="#🔹-4-树形-DP-Tree-DP" class="headerlink" title="🔹 4. 树形 DP (Tree DP)"></a>🔹 4. 树形 DP (Tree DP)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“树结构&#x2F;无环图”、“父子约束&#x2F;相邻不选”、“子树最优”、“后序遍历&#x2F;自底向上”、“最大权独立集&#x2F;最小顶点覆盖”。</li>
+<li>真题映射：Assignment 变式、Lecture 树形约束题。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“自底向上汇报”。每个节点向父节点提交两套方案：“选我”和“不选我”。父节点根据子节点的汇报，组合出自己的两套方案。就像公司预算，每个部门经理汇总下属的最优方案，再决定自己部门的预算分配。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>状态</strong>：<code>dp[u][0] = u 不选时子树最大权</code>；<code>dp[u][1] = u 选时子树最大权</code></li>
+<li><strong>转移</strong>（DFS 后序遍历）：<br><code>dp[u][1] = w(u) + Σ_{v∈children(u)} dp[v][0]</code><br><code>dp[u][0] = Σ_{v∈children(u)} max(dp[v][0], dp[v][1])</code><br><em>(释义：选 u 则所有子节点 v 必不能选（相邻约束）；不选 u 则子节点 v 可自由选择最优状态。Σ 累加所有子树贡献)</em></li>
+<li><strong>初始化</strong>：叶子节点 <code>dp[leaf][1]=w(leaf)</code>, <code>dp[leaf][0]=0</code></li>
+<li><strong>最终答案</strong>：<code>max(dp[root][0], dp[root][1])</code></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：树的最优子结构：子树之间无交叉边，决策完全独立。无环保证无后效性（子节点决策不影响父节点以上的合法性）。DFS 后序确保计算 u 时所有子节点 v 的 <code>dp[v][0/1]</code> 已收敛。</li>
+<li><strong>数学符号</strong>：设 <code>T_u</code> 为 u 的子树。若 <code>u∈S*</code>，则 <code>∀v∈children(u), v∉S*</code>，故 <code>OPT(T_u|u选) = w(u) + ΣOPT(T_v|v不选)</code>。若 <code>u∉S*</code>，则 v 无约束，<code>OPT(T_u|u不选) = Σmax(OPT(T_v|v选), OPT(T_v|v不选))</code>。归纳得证。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">状态定义：dp[u][0/1] 表示 u 不选/选时，其子树的最大权重和。</span><br><span class="line">转移逻辑：选 u 则子节点必不选，累加 dp[v][0]；</span><br><span class="line">不选 u 则子节点自由选优，累加 max(dp[v][0], dp[v][1])。</span><br><span class="line">正确性：树结构无环，子树决策相互独立，满足最优子结构。</span><br><span class="line">DFS 后序遍历保证计算父节点时子节点状态已完全收敛。</span><br><span class="line">相邻约束由状态转移天然编码，归纳得全局最优。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：每个节点访问一次，转移耗时正比于度数。总时间 <code>O(n)</code>。空间 <code>O(n)</code>（递归栈+DP表）。</li>
+<li><strong>逆向反推</strong>：题干给“树+局部约束”必考树形DP。若带额外维度（如树上背包&#x2F;限选k个）→ <code>O(nk)</code> 或 <code>O(n²)</code>（子树合并复杂度）。若图非树但有环 → 先缩点&#x2F;破环成树，或转一般图DP&#x2F;NP。</li>
+<li><strong>考场陷阱</strong>：必须写“DFS后序&#x2F;自底向上”。若写BFS或前序，状态未收敛直接0分。相邻约束题务必区分 <code>dp[u][0]</code> 和 <code>dp[u][1]</code> 的转移差异。</li>
+</ul>
+<hr>
+<h2 id="🔹-5-状态压缩-DP-Bitmask-DP"><a href="#🔹-5-状态压缩-DP-Bitmask-DP" class="headerlink" title="🔹 5. 状态压缩 DP (Bitmask DP)"></a>🔹 5. 状态压缩 DP (Bitmask DP)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“n≤20 &#x2F; m≤12”、“棋盘&#x2F;网格放置”、“相邻&#x2F;轮廓线约束”、“状态可用二进制表示”、“骨牌覆盖&#x2F;互不攻击”。</li>
+<li>真题映射：Assignment 2 棋盘放石子、Lecture 轮廓线DP。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“逐行铺砖&#x2F;填格子”。当前行状态只依赖上一行状态，用二进制位记录占用情况（1&#x3D;占，0&#x3D;空）。就像扫地机器人，只记“当前这一排哪里脏了”，根据上一排的清洁记录决定这一排怎么扫。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>状态</strong>：<code>dp[i][mask] = 前 i 行，第 i 行放置状态为 mask 时的最优解/方案数</code><br><em>(释义：mask 是 m 位二进制数，第 j 位为 1 表示 (i,j) 被占用&#x2F;放置)</em></li>
+<li><strong>转移</strong>：<code>dp[i][mask] = Σ/max(dp[i-1][prev_mask] + val)</code><br>约束：<code>compatible(mask, prev_mask) == True</code><br><em>(释义：兼容性检查通常用位运算：<code>(mask &amp; prev_mask) == 0</code> 表示上下不冲突；<code>(mask &amp; (mask&lt;&lt;1)) == 0</code> 表示左右不冲突)</em></li>
+<li><strong>初始化</strong>：<code>dp[0][0] = 1</code>（或 0），其余 <code>-∞</code></li>
+<li><strong>最终答案</strong>：<code>Σ dp[n][mask]</code> 或 <code>max dp[n][mask]</code></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：状态空间穷举+兼容性剪枝。轮廓线（当前行与上一行交界）包含所有影响未来决策的历史信息，满足无后效性。位运算 O(1) 检查合法性，避免无效状态扩展。</li>
+<li><strong>数学符号</strong>：设 <code>S_i</code> 为第 i 行合法状态集。<code>dp[i][m] = opt_{m&#39;∈S_{i-1}, compat(m,m&#39;)} {dp[i-1][m&#39;] + cost(m)}</code>。由马尔可夫性，第 i 行决策仅依赖 <code>i-1</code> 行状态 <code>m&#39;</code>，更早行状态已被 <code>m&#39;</code> 压缩吸收。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">状态定义：dp[i][mask] 表示前 i 行，第 i 行状态为 mask 的最优值。</span><br><span class="line">转移逻辑：枚举上一行状态 prev_mask，若 compatible(mask, prev_mask)</span><br><span class="line">则 dp[i][mask] = opt(dp[i-1][prev_mask] + val)。</span><br><span class="line">兼容性用位运算检查：(mask &amp; prev_mask)==0 等。</span><br><span class="line">正确性：轮廓线包含所有影响后续决策的历史信息，满足无后效性。</span><br><span class="line">状态压缩将指数级配置映射为整数，位运算 O(1) 剪枝非法转移。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：状态数 <code>n·2^m</code>，转移枚举 <code>2^m</code>，总 <code>O(n·4^m)</code>。实际合法状态远少于 <code>2^m</code>，常数极小。空间 <code>O(2^m)</code>（可滚动数组）。</li>
+<li><strong>逆向反推</strong>：题干 n&#x2F;m≤12~20 → 必状压。若要求路径&#x2F;排列 → TSP 变式 <code>dp[mask][u]</code>。若网格宽 m 固定 → 复杂度对 m 指数，对 n 线性。</li>
+<li><strong>考场陷阱</strong>：必须写“位运算兼容性检查”。漏写 <code>(mask &amp; prev_mask)==0</code> 扣逻辑分。滚动数组优化需注明“只保留上一行”。TSP 状态是 <code>dp[mask][u]</code>（已访问集合mask，当前在u），别和棋盘混淆。</li>
+</ul>
+<hr>
+<h2 id="🔹-6-二维-网格-DP-布料切割-矩形分割"><a href="#🔹-6-二维-网格-DP-布料切割-矩形分割" class="headerlink" title="🔹 6. 二维&#x2F;网格 DP (布料切割 &#x2F; 矩形分割)"></a>🔹 6. 二维&#x2F;网格 DP (布料切割 &#x2F; 矩形分割)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“矩形切割&#x2F;二维资源分配”、“Guillotine切割(一刀切到底)”、“子矩阵最优&#x2F;路径计数”、“最大化收益&#x2F;最小化浪费”。</li>
+<li>真题映射：Assignment 2 布料切割 (Cloth Cutting)、Lecture 二维DP。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“切巧克力&#x2F;铺地毯”。横切或竖切一刀，分成两个独立子矩形递归。总收益 &#x3D; 左块最优 + 右块最优。就像裁缝剪布，每一刀必须贯穿整块，剪开后两块布独立处理，互不影响。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>状态</strong>：<code>dp[i][j] = i×j 矩形的最优收益/最小代价</code></li>
+<li><strong>转移</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dp[i][j] = max(</span><br><span class="line">    price[i][j],                          // 不切，直接做成产品</span><br><span class="line">    max_&#123;1≤k&lt;i&#125; (dp[k][j] + dp[i-k][j]),  // 横切，分成 k×j 和 (i-k)×j</span><br><span class="line">    max_&#123;1≤k&lt;j&#125; (dp[i][k] + dp[i][j-k])   // 竖切，分成 i×k 和 i×(j-k)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<em>(释义：price[i][j] 是预处理的产品售价（含旋转）；横&#x2F;竖切枚举切割线 k，取左右子矩形最优和。Guillotine 约束保证每次一刀切到底)</em></li>
+<li><strong>初始化</strong>：<code>dp[i][j] = price[i][j]</code>（基础值）</li>
+<li><strong>循环顺序</strong>：<code>i</code> 从 1 到 X，<code>j</code> 从 1 到 Y（从小到大，保证子矩形已计算）</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：最优子结构：第一刀必在某个横&#x2F;竖位置 k。切开后两子矩形独立，各自必取最优。枚举所有 k 必含全局最优切割线。Guillotine 约束排除 L 型等复杂切割，保证 DP 可行性。</li>
+<li><strong>数学符号</strong>：设 <code>OPT(i,j)</code> 为 i×j 最优值。若最优方案第一刀为横切 k，则 <code>OPT(i,j) = OPT(k,j) + OPT(i-k,j)</code>。若为竖切同理。若不切则 <code>OPT(i,j)=price[i,j]</code>。取 max 覆盖所有合法首刀，归纳得证。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">状态定义：dp[i][j] 表示 i×j 矩形的最大收益。</span><br><span class="line">转移逻辑：三种决策取 max：1.不切直接卖(price[i][j])；</span><br><span class="line">2.横切枚举 k，收益 dp[k][j]+dp[i-k][j]；</span><br><span class="line">3.竖切枚举 k，收益 dp[i][k]+dp[i][j-k]。</span><br><span class="line">正确性：Guillotine 切割保证每刀将矩形分为两个独立子矩形。</span><br><span class="line">由最优子结构，子矩形必取各自最优解。枚举所有切割线 k</span><br><span class="line">覆盖真实最优首刀。按尺寸递增计算保证无后效性。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：状态 <code>O(XY)</code>，横切枚举 <code>O(X)</code>，竖切枚举 <code>O(Y)</code>。总 <code>O(X²Y + XY²)</code>。若 X,Y≈n → <code>O(n³)</code>。空间 <code>O(XY)</code>。</li>
+<li><strong>逆向反推</strong>：题干给“矩形切割+一刀切到底”必考此模板。若允许任意形状切割（非 Guillotine）→ NP-Hard，需转最大流&#x2F;近似。若尺寸≤200 → <code>O(n³)</code> 可接受。</li>
+<li><strong>考场陷阱</strong>：必须预处理 <code>price[i][j]</code> 并处理旋转（<code>price[a][b]=price[b][a]=max(...)</code>）。漏写“不切直接卖”选项扣 5 分。循环顺序必须“从小到大”，否则子问题未计算。</li>
+</ul>
+<hr>
+<h1 id="Part-3-图论基础与最短路径"><a href="#Part-3-图论基础与最短路径" class="headerlink" title="Part 3: 图论基础与最短路径"></a>Part 3: 图论基础与最短路径</h1><hr>
+<h2 id="🔹-1-BFS-与-DFS-图遍历与环检测"><a href="#🔹-1-BFS-与-DFS-图遍历与环检测" class="headerlink" title="🔹 1. BFS 与 DFS (图遍历与环检测)"></a>🔹 1. BFS 与 DFS (图遍历与环检测)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“连通性&#x2F;遍历所有可达点&#x2F;找路径&#x2F;检测环&#x2F;无权图最短跳数&#x2F;层序遍历”</li>
+<li>真题映射：基础遍历、DFS回边判环、BFS求无权最短路。</li>
+</ul>
+<p><strong>【直觉类比】</strong></p>
+<ul>
+<li><strong>BFS</strong>：水波纹扩散。从起点一圈圈往外推，先到的点一定跳数最少。用<strong>队列</strong>维护“待探索边界”。</li>
+<li><strong>DFS</strong>：走迷宫摸墙。一条路走到黑，撞墙就回溯。用<strong>递归栈</strong>维护“当前路径”。天然适合找连通分量、拓扑序、检测回边。</li>
+</ul>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>BFS</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Q.enqueue(s), visited[s]=True, dist[s]=0</span><br><span class="line">while Q not empty:</span><br><span class="line">    u = Q.dequeue()</span><br><span class="line">    for v in adj[u]:</span><br><span class="line">        if not visited[v]:</span><br><span class="line">            visited[v]=True, dist[v]=dist[u]+1, parent[v]=u</span><br><span class="line">            Q.enqueue(v)</span><br></pre></td></tr></table></figure></li>
+<li><strong>DFS</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">visited[u]=True, pre[u]=++timer</span><br><span class="line">for v in adj[u]:</span><br><span class="line">    if not visited[v]: parent[v]=u, DFS(v)</span><br><span class="line">    else if v != parent[u]: 发现回边 → 有环</span><br><span class="line">post[u]=++timer</span><br></pre></td></tr></table></figure>
+<em>(释义：<code>pre/post</code> 记录进出时间戳，用于拓扑&#x2F;SCC；<code>parent</code> 防无向图误判回边；有向图环检测只需 <code>visited[v] &amp;&amp; v在递归栈中</code>)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：BFS按层扩展，第k层节点距离起点恰为k。若存在更短路径，必在更早层被访问，矛盾。DFS连通性：若u,v连通但v未访问，路径上必存在已访问点x指向未访问点y，DFS必会探索y，矛盾。环检测：DFS遇到指向当前递归栈内节点的回边，说明形成闭环。</li>
+<li><strong>数学符号</strong>：BFS归纳：设第i层节点集为L_i。初始化L_0&#x3D;{s}。若L_i中所有点dist&#x3D;i，则其未访问邻居必在L_{i+1}且dist&#x3D;i+1。由队列FIFO性质，层序严格递增。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BFS正确性：按距离起点跳数分层扩展。队列FIFO保证先入队节点距离≤后入队节点。</span><br><span class="line">若v在第k层被访问，则dist[v]=k。假设存在更短路径&lt;k，则v必在更早层被访问，矛盾。</span><br><span class="line">DFS环检测：维护递归栈onStack[]。遍历边(u,v)时，若v已访问且onStack[v]=True，</span><br><span class="line">说明v是u的祖先，形成回边(u,v)，图含环。无向图需排除父节点回边。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：<code>O(V+E)</code>。每个顶点入队&#x2F;入栈1次 <code>O(V)</code>，每条边被检查2次（无向）或1次（有向）<code>O(E)</code>。</li>
+<li><strong>逆向反推</strong>：题干要求 <code>O(V+E)</code> 且涉及连通&#x2F;遍历&#x2F;依赖 → 必是BFS&#x2F;DFS线性扫描。若求无权最短路 → BFS。若求依赖顺序&#x2F;判环 → DFS。</li>
+<li><strong>考场陷阱</strong>：有向图判环必须用 <code>onStack</code>（或 <code>post</code> 时间戳），仅用 <code>visited</code> 会误判交叉边为环。BFS求最短路仅适用于<strong>无权图或边权相等</strong>，带权图必须用 Dijkstra&#x2F;BF。</li>
+</ul>
+<hr>
+<h2 id="🔹-2-拓扑排序-Topological-Sort"><a href="#🔹-2-拓扑排序-Topological-Sort" class="headerlink" title="🔹 2. 拓扑排序 (Topological Sort)"></a>🔹 2. 拓扑排序 (Topological Sort)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“DAG&#x2F;依赖关系&#x2F;先修课程&#x2F;执行顺序&#x2F;无环有向图线性排序&#x2F;所有边从左指向右”</li>
+<li>真题映射：任务调度前置约束、DAG上DP预处理。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“拆积木&#x2F;排课表”。每次只能拆<strong>没有前置依赖</strong>的积木块（入度为0）。拆掉后，它指向的积木依赖数减1。重复直到拆完。如果最后还有积木剩着，说明有死锁（环）。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>Kahn算法（入度队列法）</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">计算所有点入度 indeg[v]</span><br><span class="line">Q = &#123;v | indeg[v] == 0&#125;</span><br><span class="line">order = []</span><br><span class="line">while Q not empty:</span><br><span class="line">    u = Q.dequeue()</span><br><span class="line">    order.append(u)</span><br><span class="line">    for v in adj[u]:</span><br><span class="line">        indeg[v]--</span><br><span class="line">        if indeg[v] == 0: Q.enqueue(v)</span><br><span class="line">if len(order) &lt; V: 存在环，无拓扑序</span><br><span class="line">else: 返回 order</span><br></pre></td></tr></table></figure>
+<em>(释义：<code>indeg[v]</code> 记录前置任务数。入度0表示无依赖可立即执行。删点减度模拟“完成前置释放后续”。最终点数&lt;V说明有环卡死)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：DAG必存在入度为0的点（否则沿入边逆推无限长，必成环）。贪心选择入度0点不破坏任何依赖（它无前置）。删除后子图仍为DAG，归纳可排完。若排不完，剩余子图每个点入度≥1，逆推必含环。</li>
+<li><strong>数学符号</strong>：设G为DAG。∃v, indeg(v)&#x3D;0。取v为序列首元素，G&#39;&#x3D;G{v}仍为DAG。由强归纳，G&#39;可拓扑排序，故G可排序。若算法终止时|order|&lt;V，则剩余子图H中∀u∈H, indeg_H(u)≥1。任取u_0，沿入边逆推u_1,u_2,...，因V有限必重复，构成环，与DAG矛盾。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">算法：计算入度，入度0点入队。循环弹出u加入序列，邻居入度-1，若为0入队。</span><br><span class="line">正确性：DAG必存在入度0顶点。每次选择入度0点不违反任何依赖约束。</span><br><span class="line">删除后子图仍为DAG，归纳可得完整拓扑序。若最终序列长度&lt;V，</span><br><span class="line">说明剩余子图所有点入度≥1，沿入边逆推必形成环，故原图非DAG。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：<code>O(V+E)</code>。计算入度扫全图 <code>O(V+E)</code>，每个点入队出队1次 <code>O(V)</code>，每条边触发1次减度 <code>O(E)</code>。</li>
+<li><strong>逆向反推</strong>：题干给“依赖&#x2F;先修&#x2F;执行顺序”必考拓扑。若问“拓扑序是否唯一” → 检查队列中是否<strong>同时存在&gt;1个元素</strong>（多选择则序不唯一）。若需在DAG上求最长&#x2F;最短路 → 先拓扑排序，再按序DP松弛 <code>O(V+E)</code>。</li>
+<li><strong>考场陷阱</strong>：必须写“若最终序列长度&lt;V则存在环”。漏写环检测扣逻辑分。DFS逆后序（post时间戳降序）也是拓扑序，但Kahn法更易写且天然判环。</li>
+</ul>
+<hr>
+<h2 id="🔹-3-强连通分量-SCC-Kosaraju算法"><a href="#🔹-3-强连通分量-SCC-Kosaraju算法" class="headerlink" title="🔹 3. 强连通分量 (SCC &#x2F; Kosaraju算法)"></a>🔹 3. 强连通分量 (SCC &#x2F; Kosaraju算法)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“有向图&#x2F;互相可达&#x2F;缩点&#x2F;元图DAG&#x2F;加边最少强连通&#x2F;Assignment 3 Q2”</li>
+<li>真题映射：Assignment 3 Q2 (连通性&#x2F;加边)、元图Source&#x2F;Sink计数。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“找小团体”。团体内的人互相认识（互达），团体之间只有单向关系。把每个团体缩成一个点，整个图变成<strong>有向无环图（DAG）</strong>。Kosaraju的魔法：<strong>反转所有箭头不改变团体内部，但反转了团体间的方向</strong>。先按“谁最后死”排序，再在反图里抓人，一抓就是一个完整团体。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>Kosaraju三步</strong>：<ol>
+<li>DFS原图 <code>G</code>，记录每个点 <code>finish[u]</code>（出栈时间）。</li>
+<li>构造反图 <code>G^R</code>（所有边反向）。</li>
+<li>按 <code>finish</code> <strong>降序</strong>依次对 <code>G^R</code> 中未访问点做DFS。每次DFS遍历到的点集构成一个SCC。<br><em>(释义：finish最大的点必在G的“源SCC”中。反图G^R中源SCC变成“汇SCC”。在G^R中从汇SCC开始DFS，恰好只能遍历该SCC内部，不会漏出到其他SCC。剥洋葱式逐个剥离)</em></li>
+</ol>
+</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：核心引理：finish时间最大的顶点必属于G的某个源SCC（无入边SCC）。在反图G^R中，源SCC变为汇SCC（无出边）。从汇SCC任一点DFS，只能到达该SCC内部点（无法跨出）。记录该SCC后删除，剩余图仍满足性质。归纳可剥离所有SCC。</li>
+<li><strong>数学符号</strong>：设C为G中源SCC。∀u∈C, v∉C，若u可达v，则finish(u)&gt;finish(v)（DFS先深入v回溯后才回溯u）。故max finish必在源SCC。在G^R中，C变为汇SCC（无出边指向其他SCC）。DFS_G^R(x) (x∈C) 仅访问C内点。算法正确分割。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">算法：1.DFS原图G记录finish时间；2.建反图G^R；3.按finish降序DFS G^R，</span><br><span class="line">每次DFS树即为一个SCC。</span><br><span class="line">正确性：finish最大的点必属于G的源SCC。在反图G^R中源SCC变为汇SCC，</span><br><span class="line">从其中任一点DFS仅能遍历该SCC内部，不会跨越到其他分量。</span><br><span class="line">剥离后剩余图性质不变，归纳可正确划分所有SCC。</span><br><span class="line">缩点后元图必为DAG（若元图有环，则环上SCC应合并为一个，矛盾）。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：<code>O(V+E)</code>。两次DFS各 <code>O(V+E)</code>，建反图 <code>O(V+E)</code>。总线性。</li>
+<li><strong>逆向反推</strong>：题干给“互相可达&#x2F;缩点&#x2F;加边强连通”必考SCC。Assignment 3 Q2直接考：缩点后统计元图入度0点(Source)和出度0点(Sink)。使全图强连通最少加边数 &#x3D; <code>max(Source数, Sink数)</code>。使s可达全图最少加边数 &#x3D; <code>s所在SCC外的Source数</code>。</li>
+<li><strong>考场陷阱</strong>：必须强调“元图是DAG”。若题目问“谁能到达所有点”，答“仅当元图唯一Source时，该Source内所有点可达全图”。漏写DAG性质或Source&#x2F;Sink定义扣步骤分。</li>
+</ul>
+<hr>
+<h2 id="🔹-4-Dijkstra-单源最短路-非负权"><a href="#🔹-4-Dijkstra-单源最短路-非负权" class="headerlink" title="🔹 4. Dijkstra (单源最短路 &#x2F; 非负权)"></a>🔹 4. Dijkstra (单源最短路 &#x2F; 非负权)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“单源最短路&#x2F;边权≥0&#x2F;最快到达&#x2F;最小代价路径&#x2F;Final Q2航班调度底层逻辑”</li>
+<li>真题映射：Final Q2 (按时间松弛本质是DAG上的Dijkstra变种)、正权图最短路。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“贪心扩张领地”。维护一个“已确定最短距离的集合S”。每次从<strong>未确定点中挑离起点最近的</strong>，把它拉进S（锁定，永不反悔）。然后用它更新邻居的距离。因为边权非负，绕远路不可能更短，所以锁定是安全的。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>优先队列实现</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dist[v]=∞ ∀v, dist[s]=0</span><br><span class="line">PQ.push((0, s))</span><br><span class="line">while PQ not empty:</span><br><span class="line">    (d, u) = PQ.pop()</span><br><span class="line">    if d &gt; dist[u]: continue  // 过期条目跳过</span><br><span class="line">    for (v, w) in adj[u]:</span><br><span class="line">        if dist[u] + w &lt; dist[v]:</span><br><span class="line">            dist[v] = dist[u] + w</span><br><span class="line">            parent[v] = u</span><br><span class="line">            PQ.push((dist[v], v))</span><br></pre></td></tr></table></figure>
+<em>(释义：<code>dist[u]</code> 维护当前已知最短距离。PQ按dist小顶堆排序。<code>d&gt;dist[u]</code> 过滤旧松弛记录。松弛操作尝试用u缩短v。非负权保证首次弹出u时dist[u]已收敛)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：归纳法证明“每次弹出u时，dist[u]必为真实最短路”。基始s成立。假设S中点已锁定。设u是PQ中dist最小点。若存在更短路径P，P必离开S进入未访问区，设离开点为y。由非负权，P到y的距离≥dist[y]≥dist[u]（u是PQ最小）。故P不可能比dist[u]短，矛盾。</li>
+<li><strong>数学符号</strong>：设S为已锁定集合。归纳假设∀x∈S, dist[x]&#x3D;δ(s,x)。取u&#x3D;argmin_{v∉S} dist[v]。假设δ(s,u)&lt;dist[u]。设最短路径P首次离开S的边为(x,y)，x∈S,y∉S。则δ(s,u)&#x3D;δ(s,y)+δ(y,u)≥dist[y]+0≥dist[u]（因y∉S且u最小）。矛盾。故dist[u]&#x3D;δ(s,u)。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">算法：维护dist数组与最小堆PQ。初始dist[s]=0入堆。循环弹出最小dist点u，</span><br><span class="line">若dist[u]已锁定则跳过；否则松弛邻居v：若dist[u]+w&lt;dist[v]则更新并入堆。</span><br><span class="line">正确性：由数学归纳法，每次从PQ弹出u时dist[u]必为全局最短。</span><br><span class="line">假设存在更短路径，必经过某未锁定边界点y。由边权非负，</span><br><span class="line">dist[y]≤路径长≤dist[u]，与u是PQ最小值矛盾。故贪心锁定安全。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：二叉堆 <code>O((V+E)log V)</code>。Fibonacci堆 <code>O(VlogV + E)</code>。空间 <code>O(V+E)</code>。</li>
+<li><strong>逆向反推</strong>：题干给“正权最短路&#x2F;单源”必考Dijkstra。若图是DAG → 可拓扑排序后线性松弛 <code>O(V+E)</code>（Final Q2本质）。若含负权 → <strong>Dijkstra直接失效</strong>（贪心锁定被负权退款打破），必须换Bellman-Ford。</li>
+<li><strong>考场陷阱</strong>：必须写“边权非负是正确性前提”。若题目隐含负权（如“优惠&#x2F;退款&#x2F;时间倒流”），用Dijkstra直接0分。PQ实现必须写 <code>if d &gt; dist[u]: continue</code> 过滤过期条目，否则复杂度退化。</li>
+</ul>
+<hr>
+<h2 id="🔹-5-Bellman-Ford-单源最短路-含负权与负环"><a href="#🔹-5-Bellman-Ford-单源最短路-含负权与负环" class="headerlink" title="🔹 5. Bellman-Ford (单源最短路 &#x2F; 含负权与负环)"></a>🔹 5. Bellman-Ford (单源最短路 &#x2F; 含负权与负环)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“含负权边&#x2F;检测负环&#x2F;最多k条边最短路径&#x2F;Assignment 3 Q1”</li>
+<li>真题映射：Assignment 3 Q1 (限制k边最短路)、负权图、负环检测。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“动态规划按边数松弛”。第1轮保证找到最多1条边的最短路，第2轮保证最多2条边… 第V-1轮保证找到所有最短路（无负环时最短路最多V-1条边）。像水波慢慢渗透，允许“负权退款”。如果第V轮还能缩短，说明有“无限提款机”（负环）。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>标准BF</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dist[v]=∞ ∀v, dist[s]=0</span><br><span class="line">for i = 1 to V-1:</span><br><span class="line">    for each edge (u, v, w) in E:</span><br><span class="line">        if dist[u] + w &lt; dist[v]:</span><br><span class="line">            dist[v] = dist[u] + w</span><br><span class="line">// 负环检测</span><br><span class="line">for each edge (u, v, w) in E:</span><br><span class="line">    if dist[u] + w &lt; dist[v]: return &quot;存在负环&quot;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Assignment 3 Q1 变式（最多k边）</strong>：外层循环改为 <code>for i = 1 to k</code>。其余不变。复杂度 <code>O(kE)</code>。<br><em>(释义：第i轮松弛后，dist[v]存储的是从s到v最多经过i条边的最短路径。无负环时最短路≤V-1边，故V-1轮收敛。k边限制直接截断循环)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：归纳法：第i轮结束后，∀v, dist[v] ≤ 最多i条边的s→v最短路径。基始i&#x3D;0成立。第i轮遍历所有边，若最短路径含i条边，其前i-1条边已在上一轮收敛，本轮最后一条边被松弛，故dist更新。无负环时最短路无重复点，边数≤V-1，故V-1轮后全局收敛。第V轮仍松弛说明路径可无限缩短，必含负环。</li>
+<li><strong>数学符号</strong>：设δ_i(v)为最多i条边的最短路径长。归纳假设第i-1轮后dist[v]≤δ_{i-1}(v)。对最短路径P&#x3D;(v_0,...,v_i)，边(v_{i-1},v_i)在本轮被检查。dist[v_i] ≤ dist[v_{i-1}]+w ≤ δ_{i-1}(v_{i-1})+w &#x3D; δ_i(v_i)。故第i轮后dist[v]≤δ_i(v)。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">算法：初始化dist[s]=0。循环V-1次，每次遍历所有边执行松弛：</span><br><span class="line">若dist[u]+w&lt;dist[v]则更新dist[v]。第V次遍历若仍能松弛，则存在负环。</span><br><span class="line">正确性：由归纳法，第i轮松弛后dist[v]存储最多i条边的最短路径。</span><br><span class="line">无负环时最短路不含重复顶点，边数≤V-1，故V-1轮后dist收敛至全局最优。</span><br><span class="line">若第V轮仍可松弛，说明存在路径可无限降低代价，必含负权环。</span><br><span class="line">变式：若限制最多k条边，外层循环改为k次，复杂度O(kE)。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：<code>O(VE)</code>。外层V-1轮，内层扫E条边。空间 <code>O(V)</code>。</li>
+<li><strong>逆向反推</strong>：题干给“含负权&#x2F;负环检测&#x2F;最多k边”必考BF。Assignment 3 Q1直接考k边变种（只跑k轮）。若图稠密 <code>E≈V^2</code> → <code>O(V^3)</code>。若要求多项式但含负权 → BF是唯一选择。</li>
+<li><strong>考场陷阱</strong>：必须写“第V轮检测负环”。若题目问“如何检测全图负环（不仅s可达）” → 答“加超级源点s&#39;连所有点权0，跑BF”。k边变种<strong>不能</strong>用Dijkstra+状态（除非k极小），BF天然支持。</li>
+</ul>
+<hr>
+<h2 id="🔹-6-Floyd-Warshall-全源最短路-传递闭包"><a href="#🔹-6-Floyd-Warshall-全源最短路-传递闭包" class="headerlink" title="🔹 6. Floyd-Warshall (全源最短路 &#x2F; 传递闭包)"></a>🔹 6. Floyd-Warshall (全源最短路 &#x2F; 传递闭包)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“所有点对最短路&#x2F;稠密图&#x2F;传递闭包&#x2F;中间节点限制&#x2F;动态规划图论”</li>
+<li>真题映射：全源查询、可达性矩阵、小规模图(V≤500)多源最短路。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“动态规划按跳板扩张”。<code>k</code> 是允许使用的<strong>最大中间节点编号</strong>。考虑点k后，i到j的最短路要么不走k（继承旧值），要么走k（i→k + k→j）。三重循环慢慢放开“允许经过的点集”，最终所有点都可作跳板。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>标准FW</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">初始化 D[i][j] = w(i,j) (若无边=∞, i=j=0)</span><br><span class="line">for k = 1 to V:</span><br><span class="line">    for i = 1 to V:</span><br><span class="line">        for j = 1 to V:</span><br><span class="line">            D[i][j] = min(D[i][j], D[i][k] + D[k][j])</span><br></pre></td></tr></table></figure>
+<em>(释义：<code>D[i][j]</code> 维护当前允许经{1..k}中间点的最短路。k必须是最外层循环！保证计算k时，i→k和k→j已基于{1..k-1}收敛。顺序错直接逻辑崩溃)</em></li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：归纳k：<code>D_k[i][j]</code> 表示仅经中间点{1..k}的i→j最短路。基始k&#x3D;0为直连边。考虑k时，最优路径要么不经过k（值&#x3D;<code>D_{k-1}[i][j]</code>），要么经过k（拆为i→k和k→j，两者中间点仅含{1..k-1}，值&#x3D;<code>D_{k-1}[i][k]+D_{k-1}[k][j]</code>）。取min覆盖所有情况。</li>
+<li><strong>数学符号</strong>：设 <code>d_{ij}^{(k)}</code> 为中间点∈{1..k}的最短路长。<code>d_{ij}^{(0)} = w_{ij}</code>。转移：<code>d_{ij}^{(k)} = min(d_{ij}^{(k-1)}, d_{ik}^{(k-1)} + d_{kj}^{(k-1)})</code>。由最优子结构，i→j经k的最短路必由i→k和k→j最优拼接。归纳得 <code>d_{ij}^{(V)} = δ(i,j)</code>。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">算法：初始化距离矩阵D。三重循环k,i,j：</span><br><span class="line">D[i][j] = min(D[i][j], D[i][k] + D[k][j])。</span><br><span class="line">正确性：令D_k[i][j]为仅经&#123;1..k&#125;中间点的最短路。归纳k：</span><br><span class="line">考虑点k时，i→j最优路径要么不经k（继承D_&#123;k-1&#125;[i][j]），</span><br><span class="line">要么经k（拆为i→k与k→j，中间点仅含&#123;1..k-1&#125;）。</span><br><span class="line">转移方程覆盖两种情况，k为最外层保证子问题已收敛。</span><br><span class="line">最终D_V[i][j]为全局全源最短路。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：<code>O(V^3)</code>，空间 <code>O(V^2)</code>。三重循环严格 <code>V^3</code> 次操作。</li>
+<li><strong>逆向反推</strong>：题干给“全源&#x2F;稠密图&#x2F;传递闭包&#x2F;V≤500”必考FW。若求传递闭包（可达性） → 改min为OR，改+为AND：<code>R[i][j] = R[i][j] | (R[i][k] &amp; R[k][j])</code>。若V&gt;1000 → FW超时，需换n次Dijkstra <code>O(V(V+E)logV)</code>。</li>
+<li><strong>考场陷阱</strong>：<strong>k必须是最外层循环</strong>！写错顺序直接0分。若图含负环，FW仍可跑，但 <code>D[i][i] &lt; 0</code> 表示i在负环上。必须写“k为中间点枚举顺序，不可交换”。</li>
+</ul>
+<hr>
+<h1 id="Part-4-最大流-最小割-贪心证明"><a href="#Part-4-最大流-最小割-贪心证明" class="headerlink" title="Part 4: 最大流&#x2F;最小割&#x2F;贪心证明"></a>Part 4: 最大流&#x2F;最小割&#x2F;贪心证明</h1><hr>
+<h2 id="🔹-1-Ford-Fulkerson-Edmonds-Karp-残量网络"><a href="#🔹-1-Ford-Fulkerson-Edmonds-Karp-残量网络" class="headerlink" title="🔹 1. Ford-Fulkerson &#x2F; Edmonds-Karp &amp; 残量网络"></a>🔹 1. Ford-Fulkerson &#x2F; Edmonds-Karp &amp; 残量网络</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“最大吞吐量&#x2F;网络容量&#x2F;瓶颈限制&#x2F;增广路径&#x2F;残量图&#x2F;反向退流”</li>
+<li>真题映射：最大流基础、Assign 4 Q2 残量网络理论、Final 流网络题型。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“水管网找路灌水”。正向管道剩多少容量，就能往前灌多少；反向管道已经流了多少，就能“退水”多少（允许反悔）。只要从水源 $s$ 到水池 $t$ 还能找到一条有剩余容量的路，就拼命往里灌水，直到所有路都被“满流”或“零流”焊死，再也过不去为止。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>残量网络 $G_f$</strong>：对原图每条边 $(u,v)$ 容量 $c$，当前流 $f$。<ul>
+<li>正向残量边：$c_f(u,v) &#x3D; c(u,v) - f(u,v)$（还能流多少）</li>
+<li>反向残量边：$c_f(v,u) &#x3D; f(u,v)$（能退回多少）<br><em>(释义：反向边是算法灵魂，允许“撤销错误分配”，保证最终收敛到全局最大流)</em></li>
+</ul>
+</li>
+<li><strong>增广路径 $p$</strong>：$G_f$ 中 $s \leadsto t$ 的任意路径。</li>
+<li><strong>瓶颈容量</strong>：$c_f(p) &#x3D; \min_{(u,v)\in p} c_f(u,v)$</li>
+<li><strong>流更新</strong>：沿 $p$ 推送 $c_f(p)$ 单位流。正向边 $f \leftarrow f + c_f(p)$，反向边 $f \leftarrow f - c_f(p)$。</li>
+<li><strong>Edmonds-Karp (EK)</strong>：强制用 <strong>BFS</strong> 找边数最少的增广路，保证多项式时间。</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：最大流最小割定理。流值永远 $\le$ 任意割容量。当 $G_f$ 中 $s$ 到 $t$ 无路时，定义 $A&#x3D;{v \mid s\leadsto v \text{ in } G_f}$，$B&#x3D;V\setminus A$。此时所有 $A\to B$ 边必满流（否则残量&gt;0，$v$ 应属 $A$），所有 $B\to A$ 边必零流（否则反向残量&gt;0，$u$ 应属 $A$）。故当前流值 $&#x3D; c(A,B)$，达到理论上界，必为最大流。</li>
+<li><strong>数学符号</strong>：设 $f$ 为算法终止流。$A&#x3D;{v \mid s \xrightarrow{G_f} v}$。$\forall (u,v)\in E, u\in A, v\in B \Rightarrow c_f(u,v)&#x3D;0 \Rightarrow f(u,v)&#x3D;c(u,v)$。$\forall (v,u)\in E, v\in B, u\in A \Rightarrow c_f(v,u)&#x3D;0 \Rightarrow f(v,u)&#x3D;0$。故 $|f| &#x3D; \sum_{u\in A, v\in B} f(u,v) - \sum_{v\in B, u\in A} f(v,u) &#x3D; c(A,B)$。由弱对偶 $|f| \le \min\text{-cut} \le c(A,B) &#x3D; |f|$，得 $|f| &#x3D; \max\text{-flow} &#x3D; \min\text{-cut}$。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">算法：在残量网络 G_f 中反复寻找 s→t 增广路径 p，沿 p 推送瓶颈容量 c_f(p)，</span><br><span class="line">更新正向/反向边流量，直至 G_f 中 s 无法到达 t。EK 算法用 BFS 找最短增广路。</span><br><span class="line">正确性：算法终止时，令 A 为 G_f 中 s 可达点集，B=V\A。由定义，A→B 边残量为0</span><br><span class="line">（满流），B→A 边反向残量为0（零流）。故当前流值 |f| = c(A,B)。</span><br><span class="line">由最大流最小割定理，任意流值 ≤ 任意割容量，故 |f| 达到理论上界，必为最大流。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：FF 伪多项式 $O(m \cdot C_{max})$（整数流每次至少+1）。EK 严格 $O(n m^2)$（BFS限制增广次数 $\le O(nm)$）。Dinic $O(n^2 m)$（一般图极快）。</li>
+<li><strong>逆向反推</strong>：题干给“整数容量&#x2F;小数值”可用 FF；一般图&#x2F;考试要求多项式必写 EK 或 Dinic。若考理论性质，重点写“残量网络断连 $\iff$ 达到最小割”。</li>
+<li><strong>考场陷阱</strong>：必须写“反向边允许退流&#x2F;反悔”。漏写反向边定义扣核心逻辑分。EK 必须强调“BFS找最短路径”，写DFS退化回FF。</li>
+</ul>
+<hr>
+<h2 id="🔹-2-最大流建模万能模板-资源分配-匹配-覆盖"><a href="#🔹-2-最大流建模万能模板-资源分配-匹配-覆盖" class="headerlink" title="🔹 2. 最大流建模万能模板 (资源分配&#x2F;匹配&#x2F;覆盖)"></a>🔹 2. 最大流建模万能模板 (资源分配&#x2F;匹配&#x2F;覆盖)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“分配&#x2F;匹配&#x2F;覆盖&#x2F;容量限制&#x2F;是否可行&#x2F;最多完成数&#x2F;胜场分配&#x2F;图定向”</li>
+<li>真题映射：Assign 4 Q3(足球出线)、Q4(d-orientable)、Final 匹配&#x2F;分配题。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“水流分配系统”。源点供水（物品&#x2F;任务&#x2F;胜场）→ 管道分流（分配规则）→ 汇点收水（容器&#x2F;队伍&#x2F;顶点）。阀门容量 &#x3D; 业务上限。满流 &#x3D; 所有物品合法分配完毕；卡住 &#x3D; 必有人超限或无法分配。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>三层图结构</strong>：<ol>
+<li><code>s → 物品节点 i</code>，容量 <code>= 供给量/产生量</code></li>
+<li><code>物品 i → 容器 j</code>，容量 <code>= ∞</code>（或规则限制，如仅当兼容时连边）</li>
+<li><code>容器 j → t</code>，容量 <code>= 接收上限/硬约束</code></li>
+</ol>
+</li>
+<li><strong>判定条件</strong>：计算最大流 $F$。若 $F &#x3D;&#x3D; \text{总供给量}$ $\Rightarrow$ Yes（全部分配合法）；否则 $\Rightarrow$ No。</li>
+<li><strong>变式映射</strong>：<ul>
+<li><strong>足球出线 (Assign 4 Q3)</strong>：物品&#x3D;剩余比赛胜场，容器&#x3D;队伍。<code>s→比赛(场数)</code>，<code>比赛→两队(∞)</code>，<code>队伍→t(W_z-w_x)</code>。满流 $\iff$ z能并列第一。</li>
+<li><strong>图定向 (Assign 4 Q4)</strong>：物品&#x3D;无向边，容器&#x3D;顶点。<code>s→边节点(1)</code>，<code>边→两端点(1)</code>，<code>顶点→t(d)</code>。满流 $\iff$ 存在入度≤d的定向。<br><em>(释义：中间层容量∞表示“单件物品分配比例无限制”，硬约束全压在汇点阀门上。流量守恒天然保证“每件物品必分且仅分一次”)</em></li>
+</ul>
+</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：构造双向映射。若原问题有合法分配方案，按方案将水流从s经物品推至对应容器，必不超汇点容量，故存在值为总供给的流。若最大流满流，由流量守恒，每件物品流量必全部分配给合法容器；由汇点容量限制，每个容器接收量不超上限。故流方案直接翻译为合法分配方案。</li>
+<li><strong>数学符号</strong>：设供给总量 $R$。若存在分配 $x_{ij}$ 满足 $\sum_j x_{ij}&#x3D;S_i$, $\sum_i x_{ij} \le C_j$，令 $f(s,i)&#x3D;S_i, f(i,j)&#x3D;x_{ij}, f(j,t)&#x3D;\sum_i x_{ij}$，满足容量与守恒，故 $|f|&#x3D;R$。反之若 $|f|&#x3D;R$，由守恒 $f(i,j)$ 构成合法分配，且 $f(j,t)\le C_j$ 满足上限。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">建图：源点s连物品节点(容量=供给)，物品连兼容容器(容量=∞)，容器连汇点t(容量=上限)。</span><br><span class="line">判定：若 max_flow == 总供给量，输出 Yes，否则 No。</span><br><span class="line">正确性：流量守恒保证每件物品被完整分配且不凭空产生；汇点容量限制保证</span><br><span class="line">每个容器接收量不超业务上限。满流等价于所有物品均找到合法归属，</span><br><span class="line">构造双向映射可知流方案与原问题可行解一一对应。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：节点 $O(V+E)$，边 $O(E)$。跑 EK&#x2F;Dinic 均为多项式时间。</li>
+<li><strong>逆向反推</strong>：看到“分配+上限+是否可行”直接画三层图，别犹豫。若题目问“如何输出具体方案”，答“检查中间边流量，$f(i,j)&gt;0$ 表示物品i分配给容器j”。</li>
+<li><strong>考场陷阱</strong>：必须写清每条边的<strong>物理意义</strong>和<strong>容量公式</strong>。漏写“满流判定条件”扣50%分。足球题必须预处理 $W_z$ 并剪枝 $w_x &gt; W_z$。</li>
+</ul>
+<hr>
+<h2 id="🔹-3-最小割性质与残量网络可达性-Final-Q4-Assign-4-Q2"><a href="#🔹-3-最小割性质与残量网络可达性-Final-Q4-Assign-4-Q2" class="headerlink" title="🔹 3. 最小割性质与残量网络可达性 (Final Q4 &#x2F; Assign 4 Q2)"></a>🔹 3. 最小割性质与残量网络可达性 (Final Q4 &#x2F; Assign 4 Q2)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“残量网络&#x2F;最小割分类&#x2F;扩容是否增流&#x2F;Source-Sink集合&#x2F;割边性质&#x2F;理论证明”</li>
+<li>真题映射：Final Q4 (Type-1&#x2F;Type-2边扩容)、Assign 4 Q2 (v∈A必在任意最小割A&#39;中)。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“大坝定律”。最小割就是一道焊死的墙。墙外($A$)水能到，墙内($B$)水过不去。扩容墙上的管子：如果墙后是死胡同($B\setminus T$，到不了终点)，水过去也卡住，流量不增；如果墙后能通终点($T$)，水就能一路流到 $t$，打通新増广路，流量必增。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>集合定义</strong>（最大流终止时的 $G_f$）：<ul>
+<li>$A &#x3D; {v \mid s \leadsto v \text{ in } G_f}$（源侧可达集）</li>
+<li>$B &#x3D; V \setminus A$（汇侧不可达集）</li>
+<li>$T &#x3D; {v \in B \mid v \leadsto t \text{ in } G_f}$（B中能到t的点）</li>
+</ul>
+</li>
+<li><strong>边分类</strong>（跨越割 $(A,B)$ 的边 $e&#x3D;(u,v), u\in A, v\in B$）：<ul>
+<li>Type-1：$v \in T$（墙后通终点）</li>
+<li>Type-2：$v \in B \setminus T$（墙后是死胡同）</li>
+</ul>
+</li>
+<li><strong>核心性质</strong>：$(A,B)$ 是最小割。$A\to B$ 满流(残量0)，$B\to A$ 零流(反向残量0)。$G_f$ 中<strong>无任何 $A\to B$ 的边</strong>。</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：反证法+残量网络断连性。最小割 $\Rightarrow$ $A\to B$ 满流，$B\to A$ 零流 $\Rightarrow$ $G_f$ 中 $A$ 到 $B$ 的路全焊死。扩容Type-1边 $(u,v)$：$s\leadsto u$ (因$u\in A$)，$v\leadsto t$ (因$v\in T$)，扩容后残量&gt;0，打通 $s\to u\to v\to t$ 增广路 $\Rightarrow$ 必增流(True)。扩容Type-2边：$v$ 到不了 $t$，水卡在 $v$，无法形成 $s\to t$ 路径 $\Rightarrow$ 不增流(False)。任意最小割 $(A&#39;,B&#39;)$ 必满足 $A \subseteq A&#39; \subseteq V\setminus T$，故Type-2边必跨割。</li>
+<li><strong>数学符号</strong>：由 max-flow&#x3D;min-cut，$\forall (x,y)\in E, x\in A&#39;, y\in B&#39; \Rightarrow f(x,y)&#x3D;c(x,y)$；$\forall (y,x), y\in B&#39;, x\in A&#39; \Rightarrow f(y,x)&#x3D;0$。故 $G_f$ 中 $c_f(x,y)&#x3D;0, c_f(y,x)&#x3D;0$，无 $A&#39;\to B&#39;$ 路径。若 $v\in A$ 但 $v\in B&#39;$，则 $s\in A&#39;$ 无法在 $G_f$ 中到达 $v$，与 $v\in A$ 矛盾。故 $A\subseteq A&#39;$。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(a) Type-2扩容必增流？False。v∈B\T 说明 G_f 中 v 无法到达 t。</span><br><span class="line">    扩容 (u,v) 仅增加 A→B 残量，但水流至 v 后无路通向 t，无法形成 s→t 增广路径，</span><br><span class="line">    最大流不变。</span><br><span class="line">(b) 找新最小割：在 G_f 中从 t 反向 BFS/DFS 得集合 T。令 A&#x27;=A∪T, B&#x27;=V\A&#x27;。</span><br><span class="line">    因 A 与 T 在 G_f 中无正容量边相连，(A&#x27;,B&#x27;) 仍为饱和割，容量等于原最小割，</span><br><span class="line">    且 A&#x27;≠A，耗时 O(V+E)。</span><br><span class="line">(c) Type-1扩容必增流？True。u∈A 故 s↝u，v∈T 故 v↝t。扩容后 c_f(u,v)&gt;0，</span><br><span class="line">    打通 s↝u→v↝t 完整增广路，由 FF 性质最大流必增加。</span><br><span class="line">(d) 任意最小割必含Type-2边：由最小割性质，所有最小割源侧 A&#x27; 必满足 A⊆A&#x27;⊆V\T。</span><br><span class="line">    因 u∈A⊆A&#x27;，v∈B\T⊆B&#x27;，故 u∈A&#x27; 且 v∈B&#x27; 恒成立，边 e 必跨越割线。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：BFS&#x2F;DFS 找 $A, T$ 耗时 $O(V+E)$。理论证明题不考运行代码，考逻辑链。</li>
+<li><strong>逆向反推</strong>：看到“残量网络&#x2F;最小割&#x2F;扩容”必考断连性。牢记口诀：<code>A到B路焊死，s在A出不了墙；Type1通t必增流，Type2死胡同不增</code>。</li>
+<li><strong>考场陷阱</strong>：证明必须写“满流$\Rightarrow$正向残量0，零流$\Rightarrow$反向残量0$\Rightarrow$G_f无路”。漏写残量映射直接扣逻辑分。</li>
+</ul>
+<hr>
+<h2 id="🔹-4-贪心算法与交换论证-Exchange-Argument"><a href="#🔹-4-贪心算法与交换论证-Exchange-Argument" class="headerlink" title="🔹 4. 贪心算法与交换论证 (Exchange Argument)"></a>🔹 4. 贪心算法与交换论证 (Exchange Argument)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“调度&#x2F;排序&#x2F;优先级&#x2F;最小化总延迟&#x2F;最大利润&#x2F;单核&#x2F;可抢占&#x2F;EDF&#x2F;SRPT”</li>
+<li>真题映射：Assign 4 Q1 (SRPT最小化流时间)、Lecture EDF&#x2F;MST证明。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“插队理论”。假设神仙解(OPT)和贪心解(G)第一次选择不同，把神仙解里的顺序强行换成贪心的顺序。算账发现：短任务&#x2F;早截止任务提前做，总代价只会减少或不变。反复换，神仙解就变成了贪心解，说明贪心本身就是最优。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>策略描述</strong>：明确排序规则或优先队列选择标准（如 SRPT选剩余最短，EDF选截止最早）。</li>
+<li><strong>交换论证框架</strong>：<ol>
+<li>假设 OPT $\neq$ G，设 $t$ 为首次分歧时刻。</li>
+<li>G 选 $J_1$（更优指标），OPT 选 $J_2$（较差指标）。</li>
+<li>在 OPT 中交换 $J_1, J_2$ 的执行时段&#x2F;顺序。</li>
+<li>证明 $\Delta \text{Cost} \le 0$（总代价不增）。</li>
+<li>有限次交换后 OPT $\to$ G，故 G 最优。<br><em>(释义：核心是证明“局部交换不会破坏全局可行性，且目标函数单调不增”。其他任务不受影响，只需分析被交换的两个任务)</em></li>
+</ol>
+</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：设OPT在$t$选$J_2$，G选$J_1$（$J_1$剩余更短&#x2F;截止更早）。将OPT中$J_1$和$J_2$的执行块互换。$J_1$提前完成，代价减少；$J_2$推迟完成，代价增加。但因$J_1$指标更优，减少量 $\ge$ 增加量，总代价不增。其他任务时间窗不变。重复交换消除所有分歧，OPT转化为G且代价未升，故G最优。</li>
+<li><strong>数学符号</strong>：设分歧点 $t$，$r_1 \le r_2$（SRPT）或 $d_1 \le d_2$（EDF）。交换后完成时间 $C_1&#39; &lt; C_1, C_2&#39; &gt; C_2$。目标函数变化 $\Delta &#x3D; (C_1&#39;-C_1) + (C_2&#39;-C_2)$。由指标关系可证 $\Delta \le 0$。可行性：交换不改变总占用时长，截止期约束由 $d_1 \le d_2$ 保证互换后仍满足。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">策略：[写明贪心规则，如SRPT/EDF/按利润降序]。</span><br><span class="line">证明(交换论证)：假设最优解OPT与贪心解G首次在时刻t做出不同选择。</span><br><span class="line">G选择任务J1(指标更优)，OPT选择J2。在OPT中将J1与J2的执行顺序/时段互换。</span><br><span class="line">分析影响：其他任务完成时间不变。J1提前完成使代价减少，J2推迟使代价增加。</span><br><span class="line">由贪心指标性质(J1更优)，减少量≥增加量，总目标函数值不增。</span><br><span class="line">重复此交换操作可消除所有分歧，将OPT转化为G且代价未升高。</span><br><span class="line">故贪心解G也是最优解。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：排序 $O(n \log n)$ 或优先队列维护 $O(n \log n)$。模拟执行 $O(n)$ 或 $O(n \log n)$。</li>
+<li><strong>逆向反推</strong>：看到“最小化总流时间&#x2F;完成时间” $\to$ SRPT；“满足所有截止期&#x2F;最小化最大延迟” $\to$ EDF；“区间选最多不重叠” $\to$ 按结束时间早排序。证明<strong>必用交换论证</strong>，写归纳法通常扣分。</li>
+<li><strong>考场陷阱</strong>：必须明确写出“交换哪两个任务”和“为什么总代价不增”。漏写 $\Delta \le 0$ 的定量&#x2F;定性分析扣核心分。可抢占&#x2F;不可抢占必须看清，策略不同。</li>
+</ul>
+<hr>
+<h2 id="🔹-5-哈夫曼编码与-k-叉推广-Huffman-k-ary"><a href="#🔹-5-哈夫曼编码与-k-叉推广-Huffman-k-ary" class="headerlink" title="🔹 5. 哈夫曼编码与 k 叉推广 (Huffman &amp; k-ary)"></a>🔹 5. 哈夫曼编码与 k 叉推广 (Huffman &amp; k-ary)</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>“前缀码&#x2F;数据压缩&#x2F;频率&#x2F;合并最小&#x2F;三进制&#x2F;k进制&#x2F;最优编码树”</li>
+<li>真题映射：Assign 4 Q5 (Ternary Huffman)、Lecture 二叉哈夫曼。</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“逆向建树&#x2F;捆柴火”。频率越小的字符放越深（码长越长）。每次挑最轻的 $k$ 个节点绑在一起，合成一个新父节点往上长。如果叶子数凑不够满 $k$ 叉树，补频率为 0 的虚节点垫底，不增加真实代价但保证结构完整。</p>
+<p><strong>【数学骨架】</strong></p>
+<ul>
+<li><strong>算法步骤</strong>：<ol>
+<li>检查叶子数 $n$。若 $(n-1) \mod (k-1) \neq 0$，补 $d &#x3D; (k-1) - ((n-1)\mod(k-1))$ 个频率为 0 的虚字符。</li>
+<li>建最小堆，插入所有频率。</li>
+<li><code>while 堆大小 &gt; 1:</code> 弹出 $k$ 个最小 $f_1,\dots,f_k$，合并为 $F&#x3D;\sum f_i$，创建父节点，推回堆。</li>
+<li>返回堆中唯一根节点。<br><em>(释义：每次合并减少 $k-1$ 个节点。要最终剩1个根，必须满足 $(n-1)$ 是 $k-1$ 的倍数。补0频节点不改变 $\sum f_i \cdot depth_i$，但让树能闭合)</em></li>
+</ol>
+</li>
+<li><strong>代价函数</strong>：$L &#x3D; \sum_{i&#x3D;1}^n f_i \cdot \text{depth}(i)$。算法最小化 $L$。</li>
+</ul>
+<p><strong>【证明模板】</strong></p>
+<ul>
+<li><strong>白话逻辑</strong>：贪心选择性质+最优子结构。引理：频率最小的 $k$ 个字符在最优树中必为最深兄弟。证明(交换)：若最小频不在最深，与深处节点交换，因频率小换到深处，总代价 $\sum f\cdot d$ 不增。合并后，父节点频率为子和，原问题归约为 $n-k+1$ 个字符的子问题。由归纳法，每步贪心合并保持全局最优。</li>
+<li><strong>数学符号</strong>：设 $x_1,\dots,x_k$ 为最小频。若最优树 $T$ 中它们非最深兄弟，取最深兄弟 $y_1,\dots,y_k$。交换 $x_i \leftrightarrow y_i$。新代价 $L&#39; &#x3D; L + \sum (f_{x_i}-f_{y_i})(d_{y}-d_{x}) \le L$（因 $f_x \le f_y, d_y \ge d_x$）。故存在最优树使最小 $k$ 个为最深兄弟。合并后归约，归纳得证。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">算法：若 (n-1)%(k-1)≠0，补频率0的虚字符凑齐。用最小堆维护频率。</span><br><span class="line">循环弹出k个最小频率节点，合并为父节点(频率为和)，推回堆，直至剩根节点。</span><br><span class="line">正确性：1.贪心选择性质：频率最小的k个字符在最优树中必为最深兄弟。</span><br><span class="line">若不然，与深处节点交换，因频率更小，总编码代价 ∑f·d 不会增加。</span><br><span class="line">2.最优子结构：将k个最小字符合并为父节点后，问题归约为 n-k+1 个字符的</span><br><span class="line">同类子问题。父节点深度比子节点浅1，代价计算等价。</span><br><span class="line">由数学归纳法，算法每步贪心合并均保持全局最优性。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li><strong>正向</strong>：堆操作 $O(\log n)$，合并 $(n-1)&#x2F;(k-1)$ 次 $\Rightarrow O(n \log n)$。空间 $O(n)$。</li>
+<li><strong>逆向反推</strong>：考 $k$ 进制必考“补0条件”和“每次合并k个”。证明直接抄二叉模板，把“2”改成“k”，把“最小2个”改成“最小k个”。阅卷只看逻辑框架。</li>
+<li><strong>考场陷阱</strong>：必须写清补虚节点的公式和原因（保证满k叉树结构）。漏写补0步骤扣5-8分。证明必须分“贪心选择性质”和“最优子结构”两点写。</li>
+</ul>
+<hr>
+<h1 id="Part-5-NP完备归约与证明"><a href="#Part-5-NP完备归约与证明" class="headerlink" title="Part 5: NP完备归约与证明"></a>Part 5: NP完备归约与证明</h1><hr>
+<h2 id="🔹-1-NP完备证明通用框架（5步标准结构）"><a href="#🔹-1-NP完备证明通用框架（5步标准结构）" class="headerlink" title="🔹 1. NP完备证明通用框架（5步标准结构）"></a>🔹 1. NP完备证明通用框架（5步标准结构）</h2><p><strong>【识别信号】</strong></p>
+<ul>
+<li>题干要求：<code>Prove NP-complete</code> &#x2F; <code>Show NP-hard</code> &#x2F; <code>Decision version</code></li>
+<li>给出 Hint：<code>Hint: Vertex Cover / 3SAT / Subset Sum / Hamiltonian Path</code></li>
+<li>问法特征：<code>是否存在...</code> &#x2F; <code>能否找到...</code> &#x2F; <code>判断是否可行...</code>（决策问题）</li>
+</ul>
+<p><strong>【直觉类比】</strong><br>“难度传递链”。已知问题 A 是“世界级难题”（NPC）。如果你能把 A 的任意实例，<strong>快速翻译</strong>成问题 B 的实例，且保证 <code>A有解 ⇔ B有解</code>，那就说明 B 至少和 A 一样难。既然 A 已经难到没有多项式算法，B 也必然没有。这就是归约（Reduction）。</p>
+<p><strong>【数学骨架】</strong><br>标准5步结构（阅卷按点给分，漏一步扣 20%）：</p>
+<ol>
+<li><strong>∈ NP</strong>：给定候选解，可在多项式时间内验证合法性与目标。</li>
+<li><strong>归约来源</strong>：选择已知 NPC 问题 $A$（优先用 Hint）。</li>
+<li><strong>构造映射</strong>：给定 $A$ 的实例 $I$，在多项式时间内构造 $B$ 的实例 $I&#39;$。写明点&#x2F;边&#x2F;变量&#x2F;约束的对应规则。</li>
+<li><strong>正确性 (iff)</strong>：<ul>
+<li>$(\Rightarrow)$ 若 $I$ 是 YES，则按构造规则可直接推出 $I&#39;$ 是 YES。</li>
+<li>$(\Leftarrow)$ 若 $I&#39;$ 是 YES，则按构造逆推可还原出 $I$ 的合法解，故 $I$ 是 YES。</li>
+</ul>
+</li>
+<li><strong>结论</strong>：$A \le_p B$，且 $B \in \text{NP}$，故 $B$ 是 NP-Complete。</li>
+</ol>
+<p><strong>【证明模板】</strong>（白话逻辑 → 数学符号 → 考场骨架）</p>
+<ul>
+<li><strong>白话逻辑</strong>：归约不是“解出问题”，而是“搭建桥梁”。构造过程只是画点画边&#x2F;列不等式，显然很快（多项式时间）。双向证明的核心是“结构保真”：原问题的每个约束都被新问题的结构锁死，新问题的每个合法解都能无损翻译回原问题。</li>
+<li><strong>数学符号</strong>：设映射函数 $f: I_A \to I_B$。证明 $T(f) &#x3D; O(n^c)$，且 $I_A \in \text{YES} \iff f(I_A) \in \text{YES}$。由 NPC 定义，若 $A$ 是 NPC 且 $A \le_p B$，则 $B$ 是 NP-Hard。结合 $B \in \text{NP}$，得 $B$ 是 NPC。</li>
+<li><strong>考场直接抄写骨架</strong>：<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. ∈NP：给定候选解S，可在O(n^c)时间内验证S是否满足所有约束且达到目标值。故∈NP。</span><br><span class="line">2. 归约来源：从[Hint给的NPC问题]归约。</span><br><span class="line">3. 构造映射：给定[已知问题]实例I，构造本题实例I&#x27;：</span><br><span class="line">   - 元素映射：...</span><br><span class="line">   - 约束映射：...</span><br><span class="line">   - 参数设置：...</span><br><span class="line">   构造仅涉及建点/建边/列不等式，耗时O(n^c)，为多项式时间。</span><br><span class="line">4. 正确性(iff)：</span><br><span class="line">   (⇒) 若I有解，按映射规则直接构造I&#x27;的解，验证满足所有约束，故I&#x27;为YES。</span><br><span class="line">   (⇐) 若I&#x27;有解，由构造的结构限制，该解必对应I的一个合法赋值/选择，逆推得I为YES。</span><br><span class="line">5. 结论：已知NPC ≤p 本题，且本题∈NP，故本题为NP-Complete。✅</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>【复杂度直觉】</strong></p>
+<ul>
+<li>归约本身<strong>不要求解出问题</strong>，只要求<strong>构造过程是多项式时间</strong> $O(n^c)$。</li>
+<li><strong>致命陷阱</strong>：归约方向永远是 <code>已知NPC ≤p 本题</code>。写反（本题≤p已知）直接 0 分。</li>
+<li>考场若构造细节卡住：写清映射意图 + iff 框架 + “构造显然多项式时间”，可拿 60% 步骤分。绝不空题。</li>
+</ul>
+<hr>
+<h2 id="🔹-2-核心-NPC-问题字典（考场现读指南）"><a href="#🔹-2-核心-NPC-问题字典（考场现读指南）" class="headerlink" title="🔹 2. 核心 NPC 问题字典（考场现读指南）"></a>🔹 2. 核心 NPC 问题字典（考场现读指南）</h2><blockquote>
+<p>💡 <strong>使用说明</strong>：考试遇到 NP 证明题，先扫题干特征词，对照下表锁定“归约源问题”。每个问题提供 <strong>直觉&#x2F;它在问什么</strong>、<strong>形式化定义</strong>、<strong>映射技巧</strong>、<strong>考场速记</strong>。现读完全足够。</p>
+</blockquote>
+<h3 id="🔸-3SAT-布尔可满足性"><a href="#🔸-3SAT-布尔可满足性" class="headerlink" title="🔸 3SAT (布尔可满足性)"></a>🔸 3SAT (布尔可满足性)</h3><ul>
+<li><strong>它在问什么&#x2F;直觉</strong>：给你一堆逻辑子句，每句是 3 个变量的 OR（如 $x_1 \lor \neg x_2 \lor x_3$）。问能否给每个变量赋 True&#x2F;False，让<strong>所有子句同时为真</strong>？本质是“多条件同时满足的开关配置”。</li>
+<li><strong>形式化定义</strong>：给定 3CNF 公式 $\phi$（$m$ 个子句，$n$ 个变量），问是否存在真值赋值使 $\phi$ 为真。</li>
+<li><strong>核心特征词</strong>：<code>布尔变量 / 真假赋值 / 子句 / 逻辑与或 / 满足 / 冲突</code></li>
+<li><strong>归约映射技巧</strong>：<ul>
+<li>变量 $x_i$ → 二选一结构（路径方向&#x2F;颜色&#x2F;0-1整数&#x2F;选边）</li>
+<li>子句 $(l_1 \lor l_2 \lor l_3)$ → “至少一个成立”约束（容量≤2&#x2F;团节点&#x2F;独立集补）</li>
+<li>$\neg x_i$ → 反向选择&#x2F;互补变量</li>
+</ul>
+</li>
+<li><strong>考场速记</strong>：看到“逻辑&#x2F;真假&#x2F;子句&#x2F;至少一个满足” → 必从 3SAT 归约。映射核心：<code>变量→二选一，子句→至少一真</code>。</li>
+</ul>
+<h3 id="🔸-Vertex-Cover-VC-顶点覆盖"><a href="#🔸-Vertex-Cover-VC-顶点覆盖" class="headerlink" title="🔸 Vertex Cover (VC, 顶点覆盖)"></a>🔸 Vertex Cover (VC, 顶点覆盖)</h3><ul>
+<li><strong>它在问什么&#x2F;直觉</strong>：给一张图，问能否选 <strong>≤k 个顶点</strong>，使得<strong>每条边至少有一个端点被选中</strong>？本质是“用最少的监控摄像头覆盖所有走廊”。</li>
+<li><strong>形式化定义</strong>：给定图 $G&#x3D;(V,E)$ 和整数 $k$，问是否存在 $C \subseteq V, |C| \le k$，使 $\forall (u,v)\in E, u\in C \lor v\in C$。</li>
+<li><strong>核心特征词</strong>：<code>选点覆盖边 / 预算k / 每条边至少一端 / 资源分配覆盖</code></li>
+<li><strong>归约映射技巧</strong>：<ul>
+<li>边 → 约束&#x2F;任务&#x2F;子集</li>
+<li>顶点 → 资源&#x2F;决策&#x2F;元素</li>
+<li>预算 k → 容量&#x2F;数量上限</li>
+</ul>
+</li>
+<li><strong>考场速记</strong>：看到“选最少点覆盖所有约束&#x2F;边&#x2F;任务” → 从 VC 归约。与 IS&#x2F;Clique 互补。Assign 5 Q1(Hitting Set)、Q3(Steiner Tree) 均从 VC 归约。</li>
+</ul>
+<h3 id="🔸-Independent-Set-IS-独立集"><a href="#🔸-Independent-Set-IS-独立集" class="headerlink" title="🔸 Independent Set (IS, 独立集)"></a>🔸 Independent Set (IS, 独立集)</h3><ul>
+<li><strong>它在问什么&#x2F;直觉</strong>：给一张图，问能否选 <strong>≥k 个顶点</strong>，使得<strong>任意两点之间都没有边</strong>？本质是“挑一堆互不冲突的人&#x2F;任务”。</li>
+<li><strong>形式化定义</strong>：给定图 $G&#x3D;(V,E)$ 和整数 $k$，问是否存在 $S \subseteq V, |S| \ge k$，使 $\forall u,v \in S, (u,v) \notin E$。</li>
+<li><strong>核心特征词</strong>：<code>互不相连 / 无冲突 / 独立 / 不相邻 / 最多选k个互斥项</code></li>
+<li><strong>归约映射技巧</strong>：<ul>
+<li>顶点 → 物品&#x2F;任务&#x2F;选项</li>
+<li>边 → 冲突&#x2F;互斥&#x2F;不能同时选</li>
+<li><strong>互补定理</strong>：$S$ 是 IS $\iff V \setminus S$ 是 VC。故 $G$ 有大小 $k$ 的 IS $\iff G$ 有大小 $n-k$ 的 VC。</li>
+</ul>
+</li>
+<li><strong>考场速记</strong>：看到“选一堆互不干扰的元素” → 从 IS 归约（或 VC 补集）。Final Q5(圆桌座位) 本质是 IS&#x2F;HC 变种。</li>
+</ul>
+<h3 id="🔸-Clique-团"><a href="#🔸-Clique-团" class="headerlink" title="🔸 Clique (团)"></a>🔸 Clique (团)</h3><ul>
+<li><strong>它在问什么&#x2F;直觉</strong>：给一张图，问能否选 <strong>≥k 个顶点</strong>，使得<strong>任意两点之间都有边</strong>（构成完全子图）？本质是“找一个内部全认识的小圈子”。</li>
+<li><strong>形式化定义</strong>：给定图 $G&#x3D;(V,E)$ 和整数 $k$，问是否存在 $K \subseteq V, |K| \ge k$，使 $\forall u,v \in K, (u,v) \in E$。</li>
+<li><strong>核心特征词</strong>：<code>两两相连 / 完全子图 / 内部全兼容 / 团</code></li>
+<li><strong>归约映射技巧</strong>：<ul>
+<li><strong>补图转换</strong>：$G$ 有大小 $k$ 的 Clique $\iff \bar{G}$（补图）有大小 $k$ 的 IS。</li>
+<li>3SAT归约：每个子句建3个点，同子句不连边，矛盾变量不连边，找 $m$-团等价于每句选一真literal。</li>
+</ul>
+</li>
+<li><strong>考场速记</strong>：看到“两两兼容&#x2F;全连接&#x2F;内部无冲突” → 从 Clique 归约。常与 IS 通过补图互换。</li>
+</ul>
+<h3 id="🔸-Hamiltonian-Path-Cycle-HP-HC-哈密顿路径-环"><a href="#🔸-Hamiltonian-Path-Cycle-HP-HC-哈密顿路径-环" class="headerlink" title="🔸 Hamiltonian Path &#x2F; Cycle (HP&#x2F;HC, 哈密顿路径&#x2F;环)"></a>🔸 Hamiltonian Path &#x2F; Cycle (HP&#x2F;HC, 哈密顿路径&#x2F;环)</h3><ul>
+<li><strong>它在问什么&#x2F;直觉</strong>：给一张图，问是否存在一条<strong>简单路径&#x2F;环</strong>，<strong>恰好经过每个顶点一次</strong>？本质是“不重复不遗漏地遍历所有城市”。</li>
+<li><strong>形式化定义</strong>：给定图 $G&#x3D;(V,E)$，问是否存在简单路径&#x2F;环覆盖 $V$ 中所有顶点。</li>
+<li><strong>核心特征词</strong>：<code>遍历所有点 / 恰好一次 / 不重复 / 简单路径/环 / 一笔画</code></li>
+<li><strong>归约映射技巧</strong>：<ul>
+<li>顶点 → 城市&#x2F;步骤&#x2F;必须访问的节点</li>
+<li>边 → 允许的移动&#x2F;顺序</li>
+<li>长度限制 → 恰好 $n-1$ 条边（路径）或 $n$ 条边（环）</li>
+</ul>
+</li>
+<li><strong>考场速记</strong>：看到“经过所有点恰好一次&#x2F;固定长度简单环” → 从 HP&#x2F;HC 归约。Assign 5 Q4(Zero-Weight Cycle) 令 $K&#x3D;n-1$ 即一步归约。</li>
+</ul>
+<h3 id="🔸-Subset-Sum-子集和"><a href="#🔸-Subset-Sum-子集和" class="headerlink" title="🔸 Subset Sum (子集和)"></a>🔸 Subset Sum (子集和)</h3><ul>
+<li><strong>它在问什么&#x2F;直觉</strong>：给你一堆正整数和一个目标值 $B$，问能否<strong>挑出几个数</strong>，让它们加起来<strong>恰好等于 B</strong>？本质是“凑金额&#x2F;拼长度”。</li>
+<li><strong>形式化定义</strong>：给定正整数集 ${a_1,\dots,a_n}$ 和目标 $B$，问是否存在 $I \subseteq {1,\dots,n}$ 使 $\sum_{i\in I} a_i &#x3D; B$。</li>
+<li><strong>核心特征词</strong>：<code>凑和 / 恰好等于 / 选或不选 / 数字权重 / 目标值</code></li>
+<li><strong>归约映射技巧</strong>：<ul>
+<li>数字 $a_i$ → 边权&#x2F;路径长&#x2F;物品重量&#x2F;时间片</li>
+<li>目标和 $B$ → 容量&#x2F;环权&#x2F;截止时间&#x2F;回边负权</li>
+<li>选&#x2F;不选 → 路径分叉&#x2F;0-1变量</li>
+</ul>
+</li>
+<li><strong>考场速记</strong>：看到“选若干元素凑精确值&#x2F;路径和恰好K” → 从 Subset Sum 归约。映射核心：<code>数字→权重，和→目标，选→分叉</code>。</li>
+</ul>
+<h3 id="🔸-Partition-划分"><a href="#🔸-Partition-划分" class="headerlink" title="🔸 Partition (划分)"></a>🔸 Partition (划分)</h3><ul>
+<li><strong>它在问什么&#x2F;直觉</strong>：给你一堆数，问能否<strong>分成两组</strong>，使两组的和<strong>完全相等</strong>？本质是“平分负载&#x2F;天平平衡”。</li>
+<li><strong>形式化定义</strong>：给定正整数集 $S$，问是否存在 $S_1 \subseteq S$ 使 $\sum_{x\in S_1} x &#x3D; \sum_{x\in S\setminus S_1} x &#x3D; \frac{1}{2}\sum S$。</li>
+<li><strong>核心特征词</strong>：<code>平分 / 两组和相等 / 负载均衡 / 对半切</code></li>
+<li><strong>归约映射技巧</strong>：<ul>
+<li>是 Subset Sum 的特例（$B &#x3D; \frac{1}{2}\sum S$）。</li>
+<li>映射到调度：2台机器，Makespan ≤ T $\iff$ Partition 可行。</li>
+</ul>
+</li>
+<li><strong>考场速记</strong>：看到“平分&#x2F;两组&#x2F;负载均衡&#x2F;2台机器最小化最大完成时间” → 从 Partition 归约。</li>
+</ul>
+<h3 id="🔸-Set-Cover-Hitting-Set-集合覆盖-击中集"><a href="#🔸-Set-Cover-Hitting-Set-集合覆盖-击中集" class="headerlink" title="🔸 Set Cover &#x2F; Hitting Set (集合覆盖&#x2F;击中集)"></a>🔸 Set Cover &#x2F; Hitting Set (集合覆盖&#x2F;击中集)</h3><ul>
+<li><strong>它在问什么&#x2F;直觉</strong>：<ul>
+<li>Set Cover：给一堆子集，选最少子集覆盖全集。</li>
+<li>Hitting Set：给一堆子集，选最少元素，让每个子集至少包含一个选中元素。</li>
+<li>本质是“用最少的钥匙打开所有的锁”。</li>
+</ul>
+</li>
+<li><strong>形式化定义</strong>：Hitting Set：给定全集 $A$，子集族 ${S_1,\dots,S_m}$，预算 $b$。问是否存在 $H \subseteq A, |H| \le b$，使 $\forall i, H \cap S_i \neq \emptyset$。</li>
+<li><strong>核心特征词</strong>：<code>击中/覆盖所有子集 / 预算b / 每个约束至少满足一个</code></li>
+<li><strong>归约映射技巧</strong>：<ul>
+<li><strong>VC 是 Hitting Set 的特例</strong>：边 $e&#x3D;{u,v}$ 就是二元子集 $S_e&#x3D;{u,v}$。覆盖边 &#x3D; 击中子集。</li>
+<li>元素 → 顶点&#x2F;决策，子集 → 边&#x2F;约束。</li>
+</ul>
+</li>
+<li><strong>考场速记</strong>：看到“选元素击中&#x2F;覆盖所有子集&#x2F;约束” → 从 VC 或 Set Cover 归约。Assign 5 Q1 直接考此映射。</li>
+</ul>
+<hr>
+<h2 id="🔹-3-归约映射技巧库（考场翻译表）"><a href="#🔹-3-归约映射技巧库（考场翻译表）" class="headerlink" title="🔹 3. 归约映射技巧库（考场翻译表）"></a>🔹 3. 归约映射技巧库（考场翻译表）</h2><blockquote>
+<p>💡 遇到新题，对照此表把“业务语言”翻译成“图论&#x2F;逻辑&#x2F;数学语言”。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">原题业务约束</th>
+<th align="left">翻译为目标问题的结构</th>
+<th align="left">典型应用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>变量 True&#x2F;False</strong></td>
+<td align="left">0&#x2F;1整数、节点红蓝染色、路径左&#x2F;右走向、选边&#x2F;不选边</td>
+<td align="left">3SAT→整数规划&#x2F;2-Color&#x2F;HP</td>
+</tr>
+<tr>
+<td align="left"><strong>逻辑 OR (至少一个真)</strong></td>
+<td align="left">容量限制≤2、团中必选1点、独立集补、子句约束和≤2</td>
+<td align="left">3SAT→Clique&#x2F;IntegerProg</td>
+</tr>
+<tr>
+<td align="left"><strong>冲突&#x2F;互斥&#x2F;不能同时</strong></td>
+<td align="left">图边连接、颜色不同、独立集约束、补图边</td>
+<td align="left">IS&#x2F;2-Color&#x2F;调度冲突</td>
+</tr>
+<tr>
+<td align="left"><strong>求和&#x2F;凑精确值</strong></td>
+<td align="left">边权累加、路径总长、背包重量、回边负权抵消</td>
+<td align="left">SubsetSum→ZeroWeightCycle</td>
+</tr>
+<tr>
+<td align="left"><strong>遍历所有&#x2F;恰好一次</strong></td>
+<td align="left">哈密顿路径、简单环长度&#x3D;n-1、DAG拓扑覆盖</td>
+<td align="left">HP&#x2F;HC→TSP&#x2F;路径规划</td>
+</tr>
+<tr>
+<td align="left"><strong>覆盖所有边&#x2F;约束</strong></td>
+<td align="left">顶点覆盖、击中集、集合覆盖、流满流判定</td>
+<td align="left">VC→HittingSet&#x2F;SteinerTree</td>
+</tr>
+<tr>
+<td align="left"><strong>预算&#x2F;数量上限 k</strong></td>
+<td align="left">割容量、背包容量、流限制、独立集&#x2F;团大小</td>
+<td align="left">通用参数映射</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🔹-4-考场现读与构造策略（不会写也能抢分）"><a href="#🔹-4-考场现读与构造策略（不会写也能抢分）" class="headerlink" title="🔹 4. 考场现读与构造策略（不会写也能抢分）"></a>🔹 4. 考场现读与构造策略（不会写也能抢分）</h2><p><strong>【如何考场现读 NPC 题目】</strong></p>
+<ol>
+<li><strong>圈特征词</strong>：扫描题干，找 <code>覆盖/独立/真假/凑和/遍历/平分/击中</code>。</li>
+<li><strong>查字典</strong>：对照 Part 5.2 锁定 1 个源问题（Hint 给谁就用谁，90% 情况）。</li>
+<li><strong>找映射</strong>：问自己“原题的‘物品’对应源问题的什么？原题的‘限制’对应源问题的什么？”</li>
+<li><strong>搭骨架</strong>：直接套 5 步模板。构造细节写不出，就写“将源问题的X映射为本题的Y，约束Z映射为容量&#x2F;边&#x2F;不等式W”。</li>
+<li><strong>写 iff</strong>：$(\Rightarrow)$ 按映射拼装；$(\Leftarrow)$ 按结构逆推。强调“构造仅建点建边，多项式时间”。</li>
+</ol>
+<p><strong>【构造卡壳时的保底写法】</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">3. 构造映射：给定[源问题]实例I，构造本题实例I&#x27;。</span><br><span class="line">   将源问题的[变量/元素]映射为本题的[节点/整数/路径]；</span><br><span class="line">   将源问题的[约束/子句/边]映射为本题的[容量限制/不等式/图边]；</span><br><span class="line">   参数k/B映射为本题的[预算/目标值/回边权]。</span><br><span class="line">   构造仅涉及O(n^c)次建点/建边/列式，为多项式时间。</span><br><span class="line">4. 正确性：</span><br><span class="line">   (⇒) 若I有解，按上述映射直接构造I&#x27;的合法解，满足所有约束。</span><br><span class="line">   (⇐) 若I&#x27;有解，由构造的硬约束限制，该解必唯一对应I的一个合法赋值，逆推得I有解。</span><br></pre></td></tr></table></figure>
+<p><em>阅卷视角</em>：只要映射意图清晰、iff 结构完整、方向正确、声明多项式时间，即使具体边权&#x2F;不等式写错，也能拿 15&#x2F;25 分。</p>
+<hr>
+<h2 id="🔹-5-复杂度直觉-考场避坑清单"><a href="#🔹-5-复杂度直觉-考场避坑清单" class="headerlink" title="🔹 5. 复杂度直觉 &amp; 考场避坑清单"></a>🔹 5. 复杂度直觉 &amp; 考场避坑清单</h2><table>
+<thead>
+<tr>
+<th align="left">致命陷阱</th>
+<th align="left">正确做法</th>
+<th align="left">扣分后果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>归约方向写反</strong></td>
+<td align="left">永远 <code>已知NPC ≤p 本题</code>（Hint给谁就从谁出发）</td>
+<td align="left">直接 0 分</td>
+</tr>
+<tr>
+<td align="left"><strong>漏写 ∈NP</strong></td>
+<td align="left">第一句必写“给定解可多项式时间验证”</td>
+<td align="left">扣 3-5 分</td>
+</tr>
+<tr>
+<td align="left"><strong>iff 只写单向</strong></td>
+<td align="left">必须分 $(\Rightarrow)$ 和 $(\Leftarrow)$ 两段</td>
+<td align="left">扣 8-10 分</td>
+</tr>
+<tr>
+<td align="left"><strong>没提多项式时间</strong></td>
+<td align="left">构造后补一句“显然可在 O(n^c) 完成”</td>
+<td align="left">扣 3 分</td>
+</tr>
+<tr>
+<td align="left"><strong>把优化问题当决策</strong></td>
+<td align="left">NP只证决策版（“是否存在≤k&#x2F;≥B”）</td>
+<td align="left">逻辑不严谨扣 2-3 分</td>
+</tr>
+<tr>
+<td align="left"><strong>死磕完美构造</strong></td>
+<td align="left">写清映射意图+iff框架+多项式声明 → 拿保底分</td>
+<td align="left">空题 0 分，写框架 60%</td>
+</tr>
+</tbody></table>
+<p><strong>【考场时间分配建议】</strong></p>
+<ul>
+<li>前 3 分钟：圈特征词 → 查字典 → 定源问题。</li>
+<li>第 4-8 分钟：默写 5 步骨架 → 填 ∈NP 和归约来源。</li>
+<li>第 9-15 分钟：写构造映射（点&#x2F;边&#x2F;参数对应）→ 写 iff 双向逻辑。</li>
+<li>第 16-20 分钟：补多项式时间声明 → 检查方向 → 写结论。</li>
+<li><strong>绝不空卷</strong>。框架写满 &gt; 细节完美。</li>
+</ul>
+<hr>
+</article>
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Part-1-%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-text">Part 1: 分治法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-1-%E4%B8%BB%E5%AE%9A%E7%90%86-Master-Theorem"><span class="toc-text">🔹 1. 主定理 (Master Theorem)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-2-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%80%86%E5%BA%8F%E5%AF%B9%E8%AE%A1%E6%95%B0-Merge-Sort-Inversions"><span class="toc-text">🔹 2. 归并排序与逆序对计数 (Merge Sort &amp; Inversions)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-3-%E6%9C%80%E8%BF%91%E7%82%B9%E5%AF%B9-Closest-Pair-in-2D"><span class="toc-text">🔹 3. 最近点对 (Closest Pair in 2D)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-4-%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4%E9%80%89%E6%8B%A9-Median-of-Medians-Deterministic-Selection"><span class="toc-text">🔹 4. 线性时间选择 (Median-of-Medians &#x2F; Deterministic Selection)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-5-%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2-FFT"><span class="toc-text">🔹 5. 快速傅里叶变换 (FFT)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Part-2-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-DP"><span class="toc-text">Part 2: 动态规划 DP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-1-%E7%BA%BF%E6%80%A7-DP-LIS-%E5%8A%A0%E6%9D%83%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6-%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6"><span class="toc-text">🔹 1. 线性 DP (LIS &#x2F; 加权区间调度 &#x2F; 作业调度)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-2-%E5%8C%BA%E9%97%B4-DP-%E7%9F%A9%E9%98%B5%E9%93%BE%E4%B9%98-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%89%96%E5%88%86-%E7%9F%B3%E5%AD%90%E5%90%88%E5%B9%B6"><span class="toc-text">🔹 2. 区间 DP (矩阵链乘 &#x2F; 多边形剖分 &#x2F; 石子合并)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-3-0-1%E8%83%8C%E5%8C%85%E4%B8%8E%E4%BC%AA%E5%A4%9A%E9%A1%B9%E5%BC%8F-DP-%E5%90%AB-FPTAS"><span class="toc-text">🔹 3. 0&#x2F;1背包与伪多项式 DP (含 FPTAS)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-4-%E6%A0%91%E5%BD%A2-DP-Tree-DP"><span class="toc-text">🔹 4. 树形 DP (Tree DP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-5-%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9-DP-Bitmask-DP"><span class="toc-text">🔹 5. 状态压缩 DP (Bitmask DP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-6-%E4%BA%8C%E7%BB%B4-%E7%BD%91%E6%A0%BC-DP-%E5%B8%83%E6%96%99%E5%88%87%E5%89%B2-%E7%9F%A9%E5%BD%A2%E5%88%86%E5%89%B2"><span class="toc-text">🔹 6. 二维&#x2F;网格 DP (布料切割 &#x2F; 矩形分割)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Part-3-%E5%9B%BE%E8%AE%BA%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84"><span class="toc-text">Part 3: 图论基础与最短路径</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-1-BFS-%E4%B8%8E-DFS-%E5%9B%BE%E9%81%8D%E5%8E%86%E4%B8%8E%E7%8E%AF%E6%A3%80%E6%B5%8B"><span class="toc-text">🔹 1. BFS 与 DFS (图遍历与环检测)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-2-%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F-Topological-Sort"><span class="toc-text">🔹 2. 拓扑排序 (Topological Sort)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-3-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F-SCC-Kosaraju%E7%AE%97%E6%B3%95"><span class="toc-text">🔹 3. 强连通分量 (SCC &#x2F; Kosaraju算法)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-4-Dijkstra-%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF-%E9%9D%9E%E8%B4%9F%E6%9D%83"><span class="toc-text">🔹 4. Dijkstra (单源最短路 &#x2F; 非负权)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-5-Bellman-Ford-%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF-%E5%90%AB%E8%B4%9F%E6%9D%83%E4%B8%8E%E8%B4%9F%E7%8E%AF"><span class="toc-text">🔹 5. Bellman-Ford (单源最短路 &#x2F; 含负权与负环)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-6-Floyd-Warshall-%E5%85%A8%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF-%E4%BC%A0%E9%80%92%E9%97%AD%E5%8C%85"><span class="toc-text">🔹 6. Floyd-Warshall (全源最短路 &#x2F; 传递闭包)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Part-4-%E6%9C%80%E5%A4%A7%E6%B5%81-%E6%9C%80%E5%B0%8F%E5%89%B2-%E8%B4%AA%E5%BF%83%E8%AF%81%E6%98%8E"><span class="toc-text">Part 4: 最大流&#x2F;最小割&#x2F;贪心证明</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-1-Ford-Fulkerson-Edmonds-Karp-%E6%AE%8B%E9%87%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">🔹 1. Ford-Fulkerson &#x2F; Edmonds-Karp &amp; 残量网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-2-%E6%9C%80%E5%A4%A7%E6%B5%81%E5%BB%BA%E6%A8%A1%E4%B8%87%E8%83%BD%E6%A8%A1%E6%9D%BF-%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D-%E5%8C%B9%E9%85%8D-%E8%A6%86%E7%9B%96"><span class="toc-text">🔹 2. 最大流建模万能模板 (资源分配&#x2F;匹配&#x2F;覆盖)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-3-%E6%9C%80%E5%B0%8F%E5%89%B2%E6%80%A7%E8%B4%A8%E4%B8%8E%E6%AE%8B%E9%87%8F%E7%BD%91%E7%BB%9C%E5%8F%AF%E8%BE%BE%E6%80%A7-Final-Q4-Assign-4-Q2"><span class="toc-text">🔹 3. 最小割性质与残量网络可达性 (Final Q4 &#x2F; Assign 4 Q2)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-4-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E4%B8%8E%E4%BA%A4%E6%8D%A2%E8%AE%BA%E8%AF%81-Exchange-Argument"><span class="toc-text">🔹 4. 贪心算法与交换论证 (Exchange Argument)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-5-%E5%93%88%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81%E4%B8%8E-k-%E5%8F%89%E6%8E%A8%E5%B9%BF-Huffman-k-ary"><span class="toc-text">🔹 5. 哈夫曼编码与 k 叉推广 (Huffman &amp; k-ary)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Part-5-NP%E5%AE%8C%E5%A4%87%E5%BD%92%E7%BA%A6%E4%B8%8E%E8%AF%81%E6%98%8E"><span class="toc-text">Part 5: NP完备归约与证明</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-1-NP%E5%AE%8C%E5%A4%87%E8%AF%81%E6%98%8E%E9%80%9A%E7%94%A8%E6%A1%86%E6%9E%B6%EF%BC%885%E6%AD%A5%E6%A0%87%E5%87%86%E7%BB%93%E6%9E%84%EF%BC%89"><span class="toc-text">🔹 1. NP完备证明通用框架（5步标准结构）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-2-%E6%A0%B8%E5%BF%83-NPC-%E9%97%AE%E9%A2%98%E5%AD%97%E5%85%B8%EF%BC%88%E8%80%83%E5%9C%BA%E7%8E%B0%E8%AF%BB%E6%8C%87%E5%8D%97%EF%BC%89"><span class="toc-text">🔹 2. 核心 NPC 问题字典（考场现读指南）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%B8-3SAT-%E5%B8%83%E5%B0%94%E5%8F%AF%E6%BB%A1%E8%B6%B3%E6%80%A7"><span class="toc-text">🔸 3SAT (布尔可满足性)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%B8-Vertex-Cover-VC-%E9%A1%B6%E7%82%B9%E8%A6%86%E7%9B%96"><span class="toc-text">🔸 Vertex Cover (VC, 顶点覆盖)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%B8-Independent-Set-IS-%E7%8B%AC%E7%AB%8B%E9%9B%86"><span class="toc-text">🔸 Independent Set (IS, 独立集)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%B8-Clique-%E5%9B%A2"><span class="toc-text">🔸 Clique (团)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%B8-Hamiltonian-Path-Cycle-HP-HC-%E5%93%88%E5%AF%86%E9%A1%BF%E8%B7%AF%E5%BE%84-%E7%8E%AF"><span class="toc-text">🔸 Hamiltonian Path &#x2F; Cycle (HP&#x2F;HC, 哈密顿路径&#x2F;环)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%B8-Subset-Sum-%E5%AD%90%E9%9B%86%E5%92%8C"><span class="toc-text">🔸 Subset Sum (子集和)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%B8-Partition-%E5%88%92%E5%88%86"><span class="toc-text">🔸 Partition (划分)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%B8-Set-Cover-Hitting-Set-%E9%9B%86%E5%90%88%E8%A6%86%E7%9B%96-%E5%87%BB%E4%B8%AD%E9%9B%86"><span class="toc-text">🔸 Set Cover &#x2F; Hitting Set (集合覆盖&#x2F;击中集)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-3-%E5%BD%92%E7%BA%A6%E6%98%A0%E5%B0%84%E6%8A%80%E5%B7%A7%E5%BA%93%EF%BC%88%E8%80%83%E5%9C%BA%E7%BF%BB%E8%AF%91%E8%A1%A8%EF%BC%89"><span class="toc-text">🔹 3. 归约映射技巧库（考场翻译表）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-4-%E8%80%83%E5%9C%BA%E7%8E%B0%E8%AF%BB%E4%B8%8E%E6%9E%84%E9%80%A0%E7%AD%96%E7%95%A5%EF%BC%88%E4%B8%8D%E4%BC%9A%E5%86%99%E4%B9%9F%E8%83%BD%E6%8A%A2%E5%88%86%EF%BC%89"><span class="toc-text">🔹 4. 考场现读与构造策略（不会写也能抢分）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%B9-5-%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%9B%B4%E8%A7%89-%E8%80%83%E5%9C%BA%E9%81%BF%E5%9D%91%E6%B8%85%E5%8D%95"><span class="toc-text">🔹 5. 复杂度直觉 &amp; 考场避坑清单</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1778855337288" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

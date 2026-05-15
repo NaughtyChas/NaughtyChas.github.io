@@ -1,0 +1,1178 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Cpt9: 聚类分析与蔟问题 - Naucha</title>
+
+  
+    <meta name="description" content="蔟类问题与之前我们学过的回归和分类问题不同，起点是对数据内在秩序的理解与发现，而不是所谓的预测。因此，我们不再依赖先验标签，而是试图在数据空间中寻找自然的规律和结构来对数据进行划分。 首先是理解。蔟类分析会通过数据的特征来寻找数据点之间的相似性和差异性，然后再用这些相似性和差异性来划分数据。然而，蔟的边界并不总是清晰绝对的，同一份数据可以被划分成不同的蔟，这取决于我们选择的特征和算法。因此，蔟类分">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cpt9: 聚类分析与蔟问题">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt9/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="蔟类问题与之前我们学过的回归和分类问题不同，起点是对数据内在秩序的理解与发现，而不是所谓的预测。因此，我们不再依赖先验标签，而是试图在数据空间中寻找自然的规律和结构来对数据进行划分。 首先是理解。蔟类分析会通过数据的特征来寻找数据点之间的相似性和差异性，然后再用这些相似性和差异性来划分数据。然而，蔟的边界并不总是清晰绝对的，同一份数据可以被划分成不同的蔟，这取决于我们选择的特征和算法。因此，蔟类分">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-05-13T11:28:00.000Z">
+<meta property="article:modified_time" content="2026-05-15T14:28:32.534Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1778855337278">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt9/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt9: 聚类分析与蔟问题","description":"蔟类问题与之前我们学过的回归和分类问题不同，起点是对数据内在秩序的理解与发现，而不是所谓的预测。因此，我们不再依赖先验标签，而是试图在数据空间中寻找自然的规律和结构来对数据进行划分。\n首先是理解。蔟类分析会通过数据的特征来寻找数据点之间的相似性和差异性，然后再用这些相似性和差异性来划分数据。然而，蔟的边界并不总是清晰绝对的，同一份数据可以被划分成不同的蔟，这取决于我们选择的特征和算法。因此，...","url":"https://naughtychas.github.io/notes/COMP3314/cpt9/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3314" placeholder="在 COMP3314 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="分治法">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        分治法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cpt9/"><span class="title">Cpt9: 聚类分析与蔟问题</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/cpt8/"><span class="title">Cpt8: 回归分析</span></a><a class="item title" href="/notes/COMP3314/cpt7/"><span class="title">Cpt7: 集成学习</span></a><a class="item title" href="/notes/COMP3314/cpt6/"><span class="title">Cpt6: 模型评估与调参</span></a><a class="item title" href="/notes/COMP3314/cpt5/"><span class="title">Cpt5: 数据降维</span></a><a class="item title" href="/notes/COMP3314/cpt4/"><span class="title">Cpt4: 数据预处理</span></a><a class="item title" href="/notes/COMP3314/cpt3/"><span class="title">Cpt3: 逻辑回归，SVM和KNN</span></a><a class="item title" href="/notes/COMP3314/cpt2/"><span class="title">Cpt2: 感知机与自适应线性神经元</span></a><a class="item title" href="/notes/COMP3314/begin/"><span class="title">COMP3314 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-05-15T14:28:32.534Z">2026-05-15</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-05-13T11:28:00.000Z">2026-05-13</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Cpt9: 聚类分析与蔟问题</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>蔟类问题与之前我们学过的回归和分类问题不同，起点是对数据内在秩序的理解与发现，而不是所谓的预测。因此，我们不再依赖先验标签，而是试图在数据空间中寻找自然的规律和结构来对数据进行划分。</p>
+<p>首先是理解。蔟类分析会通过数据的特征来寻找数据点之间的相似性和差异性，然后再用这些相似性和差异性来划分数据。然而，蔟的边界并不总是清晰绝对的，同一份数据可以被划分成不同的蔟，这取决于我们选择的特征和算法。因此，蔟类分析更像是一种探索性的工具，而不是一个确定性的模型。</p>
+<hr>
+<h2 id="蔟的种类"><a href="#蔟的种类" class="headerlink" title="蔟的种类"></a>蔟的种类</h2><p>首先我们要知道什么是蔟。<strong>蔟</strong>（Cluster）是指在数据空间中具有相似特征的数据点的集合。也就是数据团。</p>
+<p>而之所以来探讨蔟的种类，是因为不同的蔟类型适用于不同的数据结构和分析目的。常见的蔟类型包括</p>
+<hr>
+<h3 id="完全分离蔟"><a href="#完全分离蔟" class="headerlink" title="完全分离蔟"></a>完全分离蔟</h3><p><strong>Well-Separated Clusters</strong> 就像是海洋上分布着的几座孤岛。你可以很容易的发现他们之间能够很明显的分割开来。因此，这种定义的蔟在几何上最为直观，看起来就像是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">X</span><br><span class="line">            X</span><br><span class="line">    X</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>而判断一个点是否属于某座岛的方法也很直观。如果岛上的任意一个点，到岛上其他所有点的距离，都严格小于它到其他岛上任意一个点的距离，那么这个点就属于这座岛。这意味着，这种蔟的定义依赖一种全局性的亲密关系，蔟与蔟之间必须有明显的真空地带将它们隔开。</p>
+<hr>
+<h3 id="中心蔟"><a href="#中心蔟" class="headerlink" title="中心蔟"></a>中心蔟</h3><p><strong>Center-Based Clusters</strong> 不再要求点与点之间彼此亲密，反而我们要求每个点与一个特定的中心点亲密。每一个蔟就像是一个拥有市中心的城市，判断一个人属于哪个城市，直接看它与哪个城市的市中心更近就行了。这样的蔟定义更为宽松，因为它允许蔟之间有重叠区域，甚至是完全重叠的蔟。</p>
+<p>这个中心，在数学上通常表现为 <strong>质心</strong>（Centroid），质心是蔟内所有点的均值坐标；或者是 <strong>Medoid</strong>：卒中最具代表性的实际数据点。因此中心粗将复杂的群体归属问题简化成了点到中心的距离比较。</p>
+<p>但是它的思路也导致了一些问题，例如它假设蔟一定是围绕一个中心点均匀辐射的。因此，如果数据的分布是非球形的，或者蔟之间存在复杂的边界，那么中心蔟可能无法准确地捕捉到数据的结构。</p>
+<p>我们之前在第一节课有聊到过K-means。如果你还记得，那么K-means就是一个典型的中心蔟算法。</p>
+<hr>
+<h3 id="连续型蔟"><a href="#连续型蔟" class="headerlink" title="连续型蔟"></a>连续型蔟</h3><p><strong>连续型蔟</strong> (Contiguity-Based Clusters)引入了所谓“连通性”的思想，比较接近我们日常生活中每个人的社交网络的形成。它认为一个蔟是由一系列相互连接的数据点组成的，如果你认识A，并且A又认识下一个人B，那么你和B就属于同一个蔟。换句话说：一个点只要与蔟内的至少一个点的距离足够近，那么它就能够被吸纳进来。</p>
+<p>由于传递性一传十，十传百，它天然具备捕捉非凸形状能力：例如想象一个U形的蔟，中心蔟可能会把它分成两个部分，但连续型蔟可以把它当成一个整体来处理。但是正因为它依赖局部以来传递，它也非常容易被噪声点搭桥，导致两个本应分开的蔟被错误的连在一起。</p>
+<hr>
+<h3 id="密度型蔟"><a href="#密度型蔟" class="headerlink" title="密度型蔟"></a>密度型蔟</h3><p>密度型蔟 <strong>Density-Based Clusters</strong> 这个类型的蔟在几何上也非常直观：算法会将人群密度高的地方划分为一个蔟，而将人群密度低的地方划分为另一个蔟。就像是演唱会现场，舞台前面人群密集的地方就是一个蔟，而周围稀疏的地方则是另一个蔟。</p>
+<p>因此，这种算法不仅允许蔟呈现出复杂的几何形态，而且抗噪声能力也是非常的强，因为它会将那些孤立的点视为噪声，而不是错误地将它们划分到某个蔟中去。</p>
+<hr>
+<h2 id="目标函数与蔟"><a href="#目标函数与蔟" class="headerlink" title="目标函数与蔟"></a>目标函数与蔟</h2><p>但由于现实世界的数据充满噪声，同时由于各种因素，我们很难找到一个完美的蔟划分。因此，与其说是依靠肉眼来观察点之间的关系来划分蔟，我们不如可以设定一个 <strong>目标函数</strong> (Objective Function)来量化任何一种划分方案的好坏。</p>
+<p>算法的任务，就是遍历或搜索所有可能的划分方式，找到能让这个目标函数达到最大值或最小值的哪一种组合。但是你想象一下，如果要枚举所有将 $n$ 个数据点划分为 $k$ 个蔟的可能性，那么它的计算复杂度一定是爆炸级别的，甚至数据NP Hard。因此在实际应用中，我们通常不会进行全局穷举，而是依赖优化算法寻找局部或全部最优解。</p>
+<p>这里衍生出来两个重要的分支：<strong>Partitional Algorithms</strong> 划分式聚类 和 <strong>Hierarchical Algorithms</strong> 层次化聚类。</p>
+<p>Partitional 通常致力于优化一个全局目标，来试图让整个数据集上找到整体误差最小的划分，而 Hierarchical 则往往只关注每一步合并或分裂时的局部目标，贪心地追求当前最优，且一旦做出决策，就不再回头。</p>
+<p>（实际上还有一种更高级的视角，叫做 <em>Parameterized Models</em>。它不直接优化一个目标函数，而是假设我们的数据是由几个潜在的统计分布混合采样生成的。这样一来，聚类的过程就像FFT一样，试图反向推断出这些潜在分布的参数。不过在这里我们不会深入。）</p>
+<hr>
+<p>那么，我们在这里具体如何使用目标函数来帮助我们划分蔟呢？我们如何指定一个数学标准来判断一个聚类结果是好是坏？</p>
+<p>假如说我们要将全班同学分到几个学习小组中，我们的目标可能是让每个小组内的同学成绩尽可能相似，同时又要让不同小组之间的成绩差异尽可能大，这样才能够最大程度地促进小组内的合作和小组间的竞争。如果翻译成数学，那么就是：最小化每个小组内成员的成绩方差。这个就是所谓的一个目标函数。</p>
+<p>找到目标函数之后，算法就会去寻找一种分组方案，让这个函数的值达到最优，最小或者最大。</p>
+<hr>
+<h2 id="K-Means"><a href="#K-Means" class="headerlink" title="K-Means"></a>K-Means</h2><p>那么K-means根据上面的信息，你觉得它属于什么类型的分蔟算法呢？</p>
+<p>K-means使用了中心蔟的定义是不假，并且它是一个典型的Partitional Algorithm。这意味着它会将数据集一次性切分成若干个互不重叠的子集，并且强制规定每个数据点必须且只能归属于一个蔟。为了让这种划分具备可操作性，K-means为每一个蔟定义了一个中心点，并通过迭代的方式来优化这个中心点的位置。</p>
+<p>假如说我们想使用K-means算法来讲 $n$ 个数据点划分成 $k$ 个蔟，流程如下：</p>
+<ol>
+<li>在图中随机选择 $k$ 个数据点作为初始的中心点</li>
+<li>遍历每个数据点，找到与他距离最近的中心点，并将这个数据点划分到这个中心点所在的蔟中去</li>
+<li>根据蔟内所有数据点的位置，计算出所有点距离中心的距离，并将这些距离平方后求和，得到这个蔟的SSE。随后我们根据SSE的值来调整中心点的位置。</li>
+<li>重复步骤2和3，直到中心点的位置不再发生变化，或者达到预设的迭代次数为止。</li>
+</ol>
+<p>K-means到最后必然会发生收敛，因为我们每一次迭代都在试图降低SSE，而SSE的值是有下界的（至少是0），因此它不可能无限制地下降下去，最终必然会在某个点上停下来。</p>
+<p>K-means简单的流程看起来非常直观，但它也存在一些明显的缺点。最主要的缺点是，由于我们往往无法预知数据中真实的蔟中心在哪里，因此我们那 $k$ 个中心点的位置只能随机选取。因此每次运行算法，种子导致这些中心点落点位置不同，导致不同种子最终生长出来的蔟形态也会千差万别。</p>
+<p><img src="https://files.seeusercontent.com/2026/05/15/lS4k/pasted-image-1778833577388.webp" alt="pasted-image-1778833577388.webp"></p>
+<p>就比如上面这个图，在同样的数据集上，我们仅仅是因为初始中心落点不同，最终演变出了完全不同的蔟划分结果。在次优划分中，你看见本应独立存在的两个蔟被划分在一起，同时一个大蔟被划分成了两个小蔟。由于K-means本质上是一种贪心算法，它只盯着眼前的局部SSE下降，所以一旦初始点落在了糟糕的位置，算法就会划入一个局部最优陷阱，并且永远无法靠自身的迭代机制跳脱出来。</p>
+<p>所以，如何选定合理的初始点，是决定K-means最后分类结果好坏的关键因素之一。</p>
+<hr>
+<h3 id="初始点优化"><a href="#初始点优化" class="headerlink" title="初始点优化"></a>初始点优化</h3><p>为了克服K-means对初始点敏感的问题，我们也有相应的对策。</p>
+<p>最朴素的方法是 <strong>Multiple Runs</strong>，我们使用不同的随机种子重复运行算法多次，最终挑选出全局SSE最小的那次结果。这种算法本质上还是一种暴力枚举，如果你试的多了，确实能够显著提升结果的稳定性和质量，但是它的计算成本也会成倍增加。如果数据规模足够庞大，使用这个策略很明显是不现实的。</p>
+<hr>
+<h4 id="Select-more-than-k-initial-centroids"><a href="#Select-more-than-k-initial-centroids" class="headerlink" title="Select more than k initial centroids"></a>Select more than k initial centroids</h4><p>讲义上写的是 &quot;Select more than k initial centroids and then select among these initial centroids&quot;，与其说我们盲目随机挑选k个点，不如说我们先随机撒下一张大网，然后刻意挑选那些彼此距离最远的点。</p>
+<p>具体流程大概是:</p>
+<ol>
+<li><p>从数据集中随机抽取远大于 $k$ 个数据点作为初始中心点的候选集合。一般是 $2k$ 或者 $3k$ 个。</p>
+</li>
+<li><p>在这些候选点中随机选定第一个初始中心点</p>
+</li>
+<li><p>遍历剩余的候选点，计算每一个后选定到这个“已选中心点”的最短距离，然后挑选出那个与已选中心点距离最远的点作为下一个初始中心点。</p>
+</li>
+<li><p>重复步骤3，直到选定了 $k$ 个初始中心点为止。</p>
+</li>
+</ol>
+<p>这样我们通过强制最大化初始中心之间的空间间隔，从根本上杜绝了多个中心扎堆挤进同一个蔟的情况。</p>
+<hr>
+<h4 id="Sample-Hierarchical-Clustering"><a href="#Sample-Hierarchical-Clustering" class="headerlink" title="Sample &#x2F; Hierarchical Clustering"></a>Sample &#x2F; Hierarchical Clustering</h4><p>但是我们可以使用一个策略，课件上写的是 &quot;Sample and use Hierarchical Clustering to determine initial centroids&quot;。</p>
+<p>既然说Hierarchical Clustering虽然对初始化不敏感，且能够自动发现数据骨架，但是它的复杂度是 $O(n^3)$，还是不适合直接在全量数据上使用。</p>
+<p>在这里我们遵循这样的步骤：</p>
+<ol>
+<li><p>在全量数据中进行随机抽样，提取出一个规模相当可控的子集，比如说原数据的10%或者20%。</p>
+</li>
+<li><p>在自己上运行 Agglomerative Hierarchical Clustering 来对这个子集进行聚类分析，得到一个层次化的聚类树（Dendrogram）。</p>
+</li>
+<li><p>直接在树状图的合适高度进行切割，切出 $k$ 个蔟。</p>
+</li>
+<li><p>找到这 $k$ 哥样本蔟的中心点，并将它们作为初始中心点来喂给 K-means。</p>
+</li>
+</ol>
+<hr>
+<p>但实际上我们刚才对于Hierarchical Clustering只讲了一句，你看到这里应该不会很明白具体来说，<em>Agglomerative Hierarchical Clustering</em> 是如何工作的。简单来说，Agglomerative Hierarchical Clustering 是一种自底向上的聚类方法。它的基本思想是：首先将每个数据点看作一个独立的蔟，然后逐步合并最相似的蔟，直到所有数据点都被合并成一个单一的蔟为止。</p>
+<p>至于为什么要在合适的树高度切割来得到 $k$ 个蔟，是因为在层次化的聚类树中，在每一个树节点，由于节点都是依靠关系系来合并的，因此这个树节点下方的内容能够保证在某种程度上是相似的。我们只需要找到一个合适的树高度来切割，就能够得到 $k$ 个相对合理的蔟。</p>
+<p>更多有关Hierarchical Clustering的内容，会在一会进行深入讲解。在这里先知道是什么就行。</p>
+<hr>
+<h3 id="处理空蔟"><a href="#处理空蔟" class="headerlink" title="处理空蔟"></a>处理空蔟</h3><p>假设我们选定的某个中心点在一开始不幸落在了一篇数据稀疏的无人区，随着迭代的进行，所有数据点都会被其他更有吸引力的中心点吸引走，最终导致这个中心点所在的蔟变成一个空蔟。此时，算法将无法计算均值，中心点在数学上也就陷入了一个无定义状态。</p>
+<p>为了修复这个问题，我们可以选择这样的策略：</p>
+<ol>
+<li><p>扫描现有的所有蔟，并找到那个SSE最高的蔟。这个蔟通常是最不紧凑的蔟，或者说是最糟糕的蔟。</p>
+</li>
+<li><p>算法从这个高误差蔟中，挑选出当前距离中心点最远的那个数据点，并将其提拔为一个新的中心点。</p>
+<p> 这意味着我们并没有凭空捏造出一个点，而是强行将算法拟合最差的区域剥离出一个边缘点，并用它来探索之前未被充分利用的空间。</p>
+</li>
+</ol>
+<p>但是这个策略为什么会有效呢？因为在K-means的迭代过程中，SSE最高的蔟通常是那个被过度拉伸或者过度分散的蔟，这个蔟内的数据点之间的距离较大，导致了高误差。通过从这个蔟中挑选出一个距离中心点最远的数据点，我们实际上是在尝试将这个过于分散的蔟进行重新划分，从而有可能发现一个新的、更紧凑的蔟结构。</p>
+<hr>
+<h2 id="预处理与后处理"><a href="#预处理与后处理" class="headerlink" title="预处理与后处理"></a>预处理与后处理</h2><p>假设我们想要用K-means来对一组包含身高和年薪的数据进行聚类分析。身高的单位是米，但年薪的单位是万元。如果直接运行算法，会发生什么？</p>
+<p>由于年薪的取值范围远大于身高的取值范围，在计算欧氏距离的时候，年薪的差异会完全主导距离的大小，导致身高的数值贡献几乎可以忽略不计。这样，算法会盲目的认为年薪相近的人就是相似的，而完全忽略了身高这个重要的特征。</p>
+<p>因此，我们要把所有的特征缩放到同一个量纲尺度上，这就叫做预处理中的 <strong>Feature Scaling</strong>，数据标准化，来让不同维度在距离计算上拥有平等的话语权。常用的方法包括Min-Max缩放：将值映射到0和1之间；或者Z-score标准化：将值转换为均值为0，标准差为1的分布。</p>
+<hr>
+<p>但是仅仅标准化还不够，现实生活中收集的数据往往混杂着一些极端的离群点，我们叫 <strong>Outliers</strong>。这些离群点可能是由于数据录入错误、测量误差或者是一些特殊情况导致的异常值。如果我们直接将这些离群点纳入K-means的计算中，它们可能会对中心点的位置产生极大的影响，导致整个聚类结果被扭曲。</p>
+<p>因此预处理的第二部就是消除离群值。例如我们可以使用 $3\sigma$ 原则或者可视化手段来剔除这些离群点。</p>
+<hr>
+<p>在K-means完成聚类之后，我们还可以进行一些后处理来进一步优化结果。</p>
+<p>例如，<strong>Eliminate Small Clusters</strong> 可以用来剔除那些包含非常少量数据点的蔟。如果一个簇只包含极少数点，那么它很大概率不是一个真正的蔟，而更可能是一些噪声点或者是数据中的异常值。因此我们可以将这些微小的蔟标记成噪声，并将它们从最终的聚类结果中剔除掉，以提升结果的可解释性。</p>
+<p>另一个后处理项目是 <strong>Split loose clusters</strong>，这代指那些SSE特别高的蔟，蔟内的哪些点相距甚元，抱团不够紧凑，很有可能一个簇内部隐藏着多个子簇。通过设定SSE的阈值，我们可以选择在这些松散的蔟上再次运行K-means，尝试将它们进一步细分成更紧凑的子簇。</p>
+<p>最后我们也可以选择 <strong>Merge Clusters</strong>。如果两个蔟的中心彼此非常接近，且各自内部都很紧凑，那么它们很有可能本应属于同一个更大的自然蔟，只是被算法偶然切开。因此我们可以设定一个距离阈值，当两个蔟的中心点之间的距离小于这个阈值时，我们就将它们合并成一个更大的蔟，以更好地反映数据的内在结构。</p>
+<hr>
+<p>而这些步骤也并非一定在K-means之后进行，实际上我们也可以在其他类型的聚类算法之后进行类似的预处理和后处理，以提升整体的聚类质量和结果的可解释性。</p>
+<p>比如说，ISODATA算法是一种基于密度的聚类算法，它通过定义一个密度阈值来识别数据空间中的高密度区域，从而形成蔟。ISODATA算法的核心思想是：如果一个数据点周围的邻域内包含足够多的其他数据点，那么这个数据点就被认为是一个核心点，属于一个蔟；如果一个数据点周围的邻域内没有足够多的其他数据点，那么这个数据点就被认为是噪声或者边界点，不属于任何蔟。</p>
+<hr>
+<h2 id="二分K-means"><a href="#二分K-means" class="headerlink" title="二分K-means"></a>二分K-means</h2><p>既然我们知道K-means对于起始点极度敏感，以及在全量运行时带来的计算成本问题，那么我们有没有一种方法，能够在不牺牲太多性能的前提下，提升K-means的稳定性和效率呢？</p>
+<p><strong>二分K-means</strong> (Bisecting K-means) 就是这样一种方法，我们采用分治的策略，巧妙地在划分式聚类算法和层次化聚类算法之间找到了一个平衡点。整个过程一开始保留一整个数据集，随后在当前的所有蔟中挑选出内部最分散的那个蔟，并对它进行二分，使用K-means将它划分成两个子蔟。然后我们继续在所有的蔟中挑选出最分散的那个蔟，再次进行二分，直到我们最终得到了 $k$ 个蔟为止。</p>
+<p>具体过程如下：</p>
+<ol>
+<li>将整个数据集作为一个单一的蔟。并运行一次 $k&#x3D;2$ 的K-means，将这个大蔟划分成两个子蔟。</li>
+<li>挑选出当前所有蔟中，内部最松散，误差最大的那个蔟。执行 $k&#x3D;2$ 的K-means，将这个蔟再次划分成两个子蔟。</li>
+<li>重复步骤2，直到我们最终得到了 $k$ 个蔟为止。</li>
+</ol>
+<p>由于我们每一次二分操作都记录了一个簇是如何被拆分成两个子蔟的，如果我们把这些拆分历史连接起来，就会自然生长出一棵二叉树。这意味着你既可以在中途停止，得到指定数量的划分结果，也可以保留完整的分裂树，用于后续任意粒度的切割。</p>
+<hr>
+<h2 id="K-means的限制与对策"><a href="#K-means的限制与对策" class="headerlink" title="K-means的限制与对策"></a>K-means的限制与对策</h2><p>我们之前说到K-means的一个主要缺点是它对初始中心点的位置非常敏感，容易陷入局部最优解。为了克服这个问题，我们采用了一些策略来优化初始中心点的选择。</p>
+<p>但是除此之外，K-means由于建立在中心蔟的定义之上，它本质上在假设“蔟是围绕中心均匀辐射的球体”这一级和直觉之上。但问题就在于现实数据往往不服从这种完美的对称性，如果数据集中包含规模差异巨大的蔟时，K-means会出现明显的偏袒。</p>
+<p>如果一个大蔟和小蔟相邻，由于大蔟包含更多的数据点，计算的中心点会被牢牢锚定在大蔟的之心附近。这样小蔟中的数据点就会被错误地划分到大蔟中去，导致小蔟被吞噬掉了。</p>
+<p>更棘手的是K-means很难处理非球形结构的蔟。例如一个U形的蔟，K-means会试图将它划分成两个半圆形的蔟，而不是一个完整的U形。这是因为K-means在计算距离时，默认使用欧氏距离，这种距离度量方式更适合于球形的蔟结构。</p>
+<p>但是方法总比困难多，既然K-means适合处理球形的蔟，那么我们就可以通过一些预处理手段来将非球形的数据转换成更适合K-means处理的形式。</p>
+<p><img src="https://files.seeusercontent.com/2026/05/15/j4Lo/pasted-image-1778848647845.webp" alt="pasted-image-1778848647845.webp"></p>
+<p>例如上图，我们索性使用很多球形小蔟来拟合这个S形的结构。通过人为增加k值，将其设定的远大于真实的蔟数量，我们迫使算法将那些巨大的，非球形的复杂结构，来强行打散成这些小碎片。然而，切割只是第一步，真正的挑战在于如何合并它们。在得到大量碎片后，我们需要引入后处理逻辑，根据空间邻近性或连通性，将这些碎片重新缝合。</p>
+<p>虽然这种方法在计算上略显冗余，且合并规则需要精心设计，但它巧妙地绕过了 K-means 对单一全局中心的依赖，为后续更高级的算法埋下了伏笔。</p>
+<hr>
+<h2 id="层次化聚类"><a href="#层次化聚类" class="headerlink" title="层次化聚类"></a>层次化聚类</h2><p>这就是之前没详细展开讲的 Hierarchical Clustering。</p>
+<p>如果K-means等这种划分式聚类算法是一次性地将数据切成若干个互不重叠的子集，那么层次聚类构建的是一个不断生长的决策树。数据点之间的相似性本身就是一个多层次的概念，就像生物分类学一样包含界门纲目科属种层层递进，层次聚类通过嵌套蔟的方式来组织数据，最后组成一个树状图（Dendrogram）。这个树状图不仅展示了数据点之间的相似性关系，还揭示了数据的内在层次结构。</p>
+<p>在这个树状图中，每一个叶子节点都代表一个原始数据点，而每一次分支的汇合（或分叉）都记录了一次簇的合并（或分裂）事件。纵轴的高度通常代表了合并时的距离或相似度阈值。</p>
+<p>层次聚类最迷人的特性在于它解耦了“聚类过程”与“簇的数量选择”。你不需要在算法开始前猜测 K 是多少，只需要在树状图生成后，用一把虚拟的剪刀在任意高度水平切断，就能瞬间得到对应粒度的划分结果。这意味着，同一个模型可以服务于从宏观概览到微观细分的多尺度分析需求，这在需要探索性数据理解或对应真实世界分类体系的场景中，具有不可替代的价值。</p>
+<hr>
+<p>层次化聚类拥有两种基本的构造方式，由下到上和由上到下，讲的专业一些的话，这叫 <strong>Agglomerative</strong> 和 <strong>Divisive</strong>，分别是凝聚式和分列式。</p>
+<p>凝聚式的操作自下而上，给定一系列数据点，它会将每一个数据点都视为一个独立的微蔟，然后在每一部迭代中，寻找空间距离最近的两个蔟，来将它们缝合成一个更大的蔟。如此往复，直到所有点最终汇聚成一个包含全集的超级蔟。</p>
+<p>而分列式完全相反，采用自顶向下的策略。一开始我们将所有数据点强行纳入一个巨大的蔟中，然后在每一部寻找最该被分离开的蔟，一分为二，直到所有点都独立成蔟位置。这跟我们刚才说的二分K-means的思路非常类似，只不过二分K-means是基于K-means算法来进行二分，而这里的分列式层次聚类则是基于层次化的思想来进行二分。</p>
+<p>这两种算法都高度依赖一个核心的数据结构，叫做 <strong>距离矩阵</strong> (Distance Matrix)。这个矩阵记录了数据点之间的两两距离关系，是算法决策的基础。每一次合并或分裂操作，都会更新这个距离矩阵，以反映新的蔟结构和数据点之间的相似性关系。因此，距离矩阵的计算和更新效率直接影响了算法的性能。对于大规模数据集，距离矩阵的存储和计算可能成为瓶颈。</p>
+<hr>
+<h3 id="凝聚式算法"><a href="#凝聚式算法" class="headerlink" title="凝聚式算法"></a>凝聚式算法</h3><p>凝聚式算法在计算效率和工程实践中更为流行，整个过程可以被拆散为5个连贯的步骤：</p>
+<ol>
+<li><p>计算所有点对之间的初始距离，构建出完整的距离矩阵。将每个数据点视为一个独立的蔟，初始时共有 $n$ 个蔟。</p>
+</li>
+<li><p>算法扫描矩阵，按照一个预设的距离度量标准，找到距离最近的两个蔟，并将它们合并成一个新的蔟。</p>
+</li>
+<li><p>合并之后，更新距离矩阵，重新计算新蔟与其他所有蔟之间的距离。</p>
+</li>
+<li><p>不断重复这个过程，直到矩阵中只剩下一个包含所有点的蔟，或者达到预设的停止条件。</p>
+</li>
+</ol>
+<p>这就是大致的流程了，但是其中有一个关键：我们该如何定义两个蔟之间的距离呢？这就是所谓的 <strong>Linkage Criteria</strong>，也就是我们在每一步合并时，如何衡量两个蔟之间的相似性或距离。</p>
+<hr>
+<h4 id="链接准则"><a href="#链接准则" class="headerlink" title="链接准则"></a>链接准则</h4><p>我们目前会使用到四种主流的链接准则，分别是 <strong>MIN</strong>, <strong>MAX</strong>，<strong>Group Average</strong> 和基于目标函数的 <strong>Ward&#39;s Method</strong>。</p>
+<h5 id="MIN-Linkage"><a href="#MIN-Linkage" class="headerlink" title="MIN Linkage"></a>MIN Linkage</h5><p>MIN Linkage认为两个蔟之间的距离，完全由他们内部 <strong>最接近的那一对点</strong> 决定。无论岛屿A和B之间相距多远，只要它们之间存在一对点距离足够近，那么这两个蔟就会被认为是相似的，最终被合并在一起。</p>
+<p>因此在更新距离矩阵的时候，我们不需要计算所有点对的平均或最远距离，只需要追踪并比较跨粗的最近邻距离即可。这意味着MIN本质上还是在执行一种局部贪婪策略，他只关心当前时刻哪两个点爱的最近，而不是关心蔟内其他点的分布态势。</p>
+<p><img src="https://files.seeusercontent.com/2026/05/15/nj0R/pasted-image-1778851432031.webp" alt="pasted-image-1778851432031.webp"></p>
+<p>虽然MIN能够顺着数据的局部股价捕捉任意复杂的非凸形状，但是对这种“最近邻”的极端依赖，也赋予了它一个及其脆弱的软肋：噪声点。</p>
+<p>只要有一个离群点恰好落在了两个蔟之间的空地上，那么这个离群点就会成为这两个蔟的最近邻，导致它们被错误地合并在一起。算法会像串珠子一样，通过一系列局部最近的邻接关系，把本不属于同一结构的数据点连成一条长长的链，最终导致整个数据集被合并成一个巨大的、失去语义的簇。这意味着，在噪声密集或簇间边界模糊的场景下，MIN 的局部贪婪策略会引发全局性的结构误判，树状图也会因此失去层次分明的切割价值。</p>
+<hr>
+<h5 id="MAX-Linkage"><a href="#MAX-Linkage" class="headerlink" title="MAX Linkage"></a>MAX Linkage</h5><p>MAX Linkage则完全相反，它认为两个蔟之间的距离，完全由他们内部 <strong>最远的那一对点</strong> 决定。理论是，如果两个蔟之间最疏远的那一对点也足够亲密，那么剩下的点就更不成问题了。因此，在更新距离矩阵时，我们需要追踪并比较所有跨簇点对的距离，取其中的最大值作为簇间相似度。这意味着 MAX 本质上是在执行一种全局保守策略，它要求簇内的所有点都必须彼此靠近，任何一对点的疏远都会阻碍合并的发生。</p>
+<p><img src="https://files.seeusercontent.com/2026/05/15/Rfq6/pasted-image-1778851697865.webp" alt="pasted-image-1778851697865.webp"></p>
+<p>由于 MAX 要求簇内所有点对都必须满足距离约束，它天然倾向于生成直径较小、形状接近球形的簇。由于噪声点通常位于蔟的边缘，且与蔟内核心点的距离往往很大，因此在MAX的评判体系下，这些边缘点会极大的拉高簇间距离，从而阻止噪声被轻易吸纳进簇内。</p>
+<p>但是MAX相对于MIN来说，过于保守的合并条件也会导致它在处理具有复杂形状或密度变化的数据时，过早地将一些本应属于同一簇的点分割开来，从而产生过多的碎片化簇结构。如下图：</p>
+<p><img src="https://files.seeusercontent.com/2026/05/15/dc1T/pasted-image-1778852704148.webp" alt="pasted-image-1778852704148.webp"></p>
+<p>本身两个一大一小的圈圈，在MAX的评判体系下，你可以看见大圈的一部分被错误的拆到了小圈里去，导致了大簇都被过度切割。这是因为MAX在评判簇间距离时，过于关注那些最远的点对，而忽略了簇内其他点之间的紧密关系，从而导致了过度分割的问题。</p>
+<hr>
+<h5 id="Group-Average-Linkage"><a href="#Group-Average-Linkage" class="headerlink" title="Group Average Linkage"></a>Group Average Linkage</h5><p>这个链接方式与我们对社交网络的判断很像。当你评估两个圈子是否相似的时，你不会只看它们之间关系最好的那两个人（MIN），也不会只看它们之间关系最差的那两个人（MAX），而是会综合考虑这两个圈子里所有人的关系，来判断这两个圈子整体上是否亲密。</p>
+<p>算法会将两个蔟内所有点对之间的跨蔟距离全部计算出来，然后取算术平均值，来作为它们的亲疏标尺。Group Average 本质上是在执行一种“全局稀释”策略：单个噪声点或极端边缘点的距离，会被簇内大量正常点的距离所平均，从而无法轻易扭曲整体的合并决策。</p>
+<p>它在抗噪声和抗异常值方面明显优于MIN，但与此同时也继承了MAX的某些集合偏好，也就是稍微偏向于生成更为紧凑、形状接近球形的簇结构。</p>
+<hr>
+<h5 id="Ward-s-Method"><a href="#Ward-s-Method" class="headerlink" title="Ward&#39;s Method"></a>Ward&#39;s Method</h5><p>Ward&#39;s Method 则是基于目标函数的链接准则。</p>
+<p>当我们准备将两个蔟合并时，我们会考虑这次合并会让整个系统的“内部混乱程度”增加多少？具体来说，它计算的是合并前后平方误差(SSE)的增量。算法会遍历所有可能的簇对组合，优先合并那个导致 SSE 增幅最小的蔟对。</p>
+<p>Ward&#39;s Method 本质上是在贪婪地维护簇内的同质性，它只允许那些合并后依然能保持紧密抱团状态的簇走到一起。正因为这种基于误差增量的设计，Ward&#39;s Method 展现出了与 K-means 惊人的家族相似性，同样具备对噪声和异常值的强大抵抗力，同时也倾向于生成形状接近球形的簇结构。</p>
+<p>而由于它天然地在优化SSE，因此其生成的层次结构末端往往能够直接作为K-means的优质初始点，来提升K-means的稳定性和最终结果的质量。</p>
+<hr>
+<p>使用不同的链接准则，我们会得到完全不同的树状图结构，甚至是完全不同的聚类结果。但是有一点是共同的，那就是计算代价。层次聚类之所以无法直接应用于百万级的大规模数据集，根源在于它邻接矩阵的计算和更新机制。每一次合并或分裂操作都需要重新计算距离矩阵，尤其是在使用MAX或Group Average等链接准则时，需要对所有跨簇点对进行距离计算，这导致了算法的时间复杂度通常在 $O(n^3)$ 级别，空间复杂度也在 $O(n^2)$ 级别。</p>
+<p>而计算开销还是表层限制，更深层的困境来源于算法的决策机制。凝聚是聚类本质上是一种贪心不可逆过程。一旦有两个蔟在早期某一步被错误合并，那么这个决策就会永久固化在树状图的底层，后续的所有合并操作都只能在这个被污染的拓扑结构上继续生长，永远无法回溯修正。这意味着算法缺乏全局视野，它只关注当前步的局部最优，而不评估这次合并对未来整体结构的长期影响。</p>
+<hr>
+<h3 id="分列式算法"><a href="#分列式算法" class="headerlink" title="分列式算法"></a>分列式算法</h3><p>我们刚才看过了自底而上，现在来看看自上而下有什么算法吧。</p>
+<p>想象你不再是把散落的珍珠一颗颗串起来，而是手持一把剪刀，准备从一根完整的链条上剪出几段独立的珍珠串。由于直接在全局空间中暴力寻找最佳切割平面计算量太大，因此算法借用了最小生成树MST的结构作为底层骨架。</p>
+<p>MST的构建过程遵循一种贪心的生长逻辑，首先算法会随机选择一个起始点作为树的根节点，然后在每一步中，它都会在所有“已在树中的点”与“尚在树外的点”的组合里，寻找距离最近的那一对 $(p, q)$。找到后，算法将 $q$ 正式拉入树中，并用一条边将 $p$ 和 $q$ 紧密连接。因此，MST 的生长过程就像藤蔓在空间中不断寻找最短路径向外蔓延，直到所有数据点都被这张无环连通图完整覆盖。</p>
+<p>构建完成MST之后，分列式聚类不再需要复杂的距离矩阵迭代，而是只需要做一个简单的剪枝操作就可以了。由于MST恰好使用了 $N - 1$ 条边连接了所有 $N$ 个点，且每条边的权重严格对应了两点之间的原始距离，那么如果我们希望将数据划分为 $K$ 个蔟，算法只需要定位 MST 中权重最大的 $K-1$ 条边，切断它们即可。这样原本联通的图就会自然碎裂成 $K$ 个独立的子图，每个子图对应一个簇。</p>
+<p>通过不断记录这些操作以及相对应的边权，我们就能够自顶而下地构建出一颗完整的层次树状图了。</p>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%94%9F%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-text">蔟的种类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E5%85%A8%E5%88%86%E7%A6%BB%E8%94%9F"><span class="toc-text">完全分离蔟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E5%BF%83%E8%94%9F"><span class="toc-text">中心蔟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E5%9E%8B%E8%94%9F"><span class="toc-text">连续型蔟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%86%E5%BA%A6%E5%9E%8B%E8%94%9F"><span class="toc-text">密度型蔟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0%E4%B8%8E%E8%94%9F"><span class="toc-text">目标函数与蔟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K-Means"><span class="toc-text">K-Means</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E7%82%B9%E4%BC%98%E5%8C%96"><span class="toc-text">初始点优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Select-more-than-k-initial-centroids"><span class="toc-text">Select more than k initial centroids</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sample-Hierarchical-Clustering"><span class="toc-text">Sample &#x2F; Hierarchical Clustering</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E7%A9%BA%E8%94%9F"><span class="toc-text">处理空蔟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%E4%B8%8E%E5%90%8E%E5%A4%84%E7%90%86"><span class="toc-text">预处理与后处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%88%86K-means"><span class="toc-text">二分K-means</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K-means%E7%9A%84%E9%99%90%E5%88%B6%E4%B8%8E%E5%AF%B9%E7%AD%96"><span class="toc-text">K-means的限制与对策</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%82%E6%AC%A1%E5%8C%96%E8%81%9A%E7%B1%BB"><span class="toc-text">层次化聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%9D%E8%81%9A%E5%BC%8F%E7%AE%97%E6%B3%95"><span class="toc-text">凝聚式算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E5%87%86%E5%88%99"><span class="toc-text">链接准则</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#MIN-Linkage"><span class="toc-text">MIN Linkage</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#MAX-Linkage"><span class="toc-text">MAX Linkage</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Group-Average-Linkage"><span class="toc-text">Group Average Linkage</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Ward-s-Method"><span class="toc-text">Ward&#39;s Method</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%88%97%E5%BC%8F%E7%AE%97%E6%B3%95"><span class="toc-text">分列式算法</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1778855337279" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

@@ -1,0 +1,1485 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>COMP3252 Cheatsheet - Naucha</title>
+
+  
+    <meta name="description" content="COMP3252 Final Exam Ultimate Cheat SheetThis document serves as the ultimate summary and cheat sheet for the COMP3252 Algorithm Design and Analysis (advanced) course, mapping directly to the lecture s">
+<meta property="og:type" content="website">
+<meta property="og:title" content="COMP3252 Cheatsheet">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3252/cheatsheet/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="COMP3252 Final Exam Ultimate Cheat SheetThis document serves as the ultimate summary and cheat sheet for the COMP3252 Algorithm Design and Analysis (advanced) course, mapping directly to the lecture s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-05-10T07:47:00.000Z">
+<meta property="article:modified_time" content="2026-05-10T08:11:50.334Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1778855337268">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3252/cheatsheet/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"COMP3252 Cheatsheet","description":"COMP3252 Final Exam Ultimate Cheat SheetThis document serves as the ultimate summary and cheat sheet for the COMP3252 Algorithm Design and Analysis (advanced) course, mapping directly to the lectur...","url":"https://naughtychas.github.io/notes/COMP3252/cheatsheet/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3252/cheatsheetv2/"><span class="title">COMP3252 Cheatsheet v2</span></a><a class="item title" href="/notes/COMP3252/cheatsheet/"><span class="title">COMP3252 Cheatsheet</span></a><a class="item title" href="/notes/COMP3252/pt4/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3252/pt3/"><span class="title">动态规划</span></a><a class="item title" href="/notes/COMP3252/pt1/"><span class="title">分治法的核心与归并排序</span></a><a class="item title" href="/notes/COMP3252/pt2/"><span class="title">快速傅里叶变换</span></a><a class="item title" href="/notes/COMP3252/begin/"><span class="title">COMP3252 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-05-10T08:11:50.334Z">2026-05-10</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-05-10T07:47:00.000Z">2026-05-10</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>COMP3252 Cheatsheet</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="COMP3252-Final-Exam-Ultimate-Cheat-Sheet"><a href="#COMP3252-Final-Exam-Ultimate-Cheat-Sheet" class="headerlink" title="COMP3252 Final Exam Ultimate Cheat Sheet"></a>COMP3252 Final Exam Ultimate Cheat Sheet</h1><p>This document serves as the ultimate summary and cheat sheet for the COMP3252 Algorithm Design and Analysis (advanced) course, mapping directly to the lecture sequence from the slides. It contains step-by-step guides, mathematical correctness proofs, complexity analysis, and exam problem reflections for every algorithm covered.</p>
+<h2 id="Quick-Ref"><a href="#Quick-Ref" class="headerlink" title="Quick Ref"></a>Quick Ref</h2><h3 id="1-Algorithm-Selection-Guide"><a href="#1-Algorithm-Selection-Guide" class="headerlink" title="1. Algorithm Selection Guide"></a>1. Algorithm Selection Guide</h3><p>If you see these keywords in an exam problem, immediately apply this algorithm</p>
+<ul>
+<li><strong>&quot;Shortest path&quot; + &quot;No negative edges&quot;</strong>: Dijkstra&#39;s Algorithm</li>
+<li><strong>&quot;Shortest path&quot; + &quot;Negative edges allowed&quot;</strong>: Bellman-Ford</li>
+<li>**&quot;All-pairs shortest path&quot; (Every node to every node)****: Floyd-Warshall</li>
+<li><strong>&quot;Tree connecting all nodes&quot; + &quot;Minimum cost&#x2F;wire&#x2F;distance&quot;</strong>: Prim&#39;s or Kruskal&#39;s (MST)</li>
+<li><strong>&quot;Order tasks&quot; + &quot;Prerequisites&#x2F;Dependencies&quot;</strong>: Topological Sort</li>
+<li><strong>&quot;Maximize value&quot; + &quot;Capacity limit&quot; (Items can&#39;t be physically split)</strong>: 0&#x2F;1 Knapsack (DP)</li>
+<li><strong>&quot;Max throughput&quot; | &quot;Bottlenecks&quot; | &quot;Network capacity&quot;</strong>: Ford-Fulkerson &#x2F; Edmonds-Karp</li>
+<li><strong>&quot;Bipartite matching&quot; &#x2F; &quot;Assigning workers to jobs&quot;</strong>: Max Flow (Add dummy Source&#x2F;Sink)</li>
+<li><strong>&quot;Optimal ordering for evaluating expressions&quot;</strong>: Matrix-Chain Multiplication (DP)</li>
+<li><strong>&quot;Polynomial multiplication&quot; &#x2F; &quot;Signal convolution&quot;</strong>: FFT (Fast Fourier Transform)</li>
+</ul>
+<h3 id="2-The-Master-Complexity-Table"><a href="#2-The-Master-Complexity-Table" class="headerlink" title="2. The Master Complexity Table"></a>2. The Master Complexity Table</h3><table>
+<thead>
+<tr>
+<th align="left">Problem &#x2F; Algorithm</th>
+<th align="left">Time Complexity</th>
+<th align="left">Space &#x2F; Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Merge Sort</strong></td>
+<td align="left">$O(n \log n)$</td>
+<td align="left">$O(n)$ auxiliary space</td>
+</tr>
+<tr>
+<td align="left"><strong>Quickselect (k-th element)</strong></td>
+<td align="left">$O(n)$</td>
+<td align="left">Uses Median-of-Medians (groups of 5)</td>
+</tr>
+<tr>
+<td align="left"><strong>Karatsuba (Multiplication)</strong></td>
+<td align="left">$O(n^{1.585})$</td>
+<td align="left">$3$ recursive branches instead of $4$</td>
+</tr>
+<tr>
+<td align="left"><strong>FFT (Polynomials)</strong></td>
+<td align="left">$O(n \log n)$</td>
+<td align="left">Degree bound $n$ must be a power of 2</td>
+</tr>
+<tr>
+<td align="left"><strong>0&#x2F;1 Knapsack (DP)</strong></td>
+<td align="left">$O(nW)$</td>
+<td align="left">Pseudo-polynomial</td>
+</tr>
+<tr>
+<td align="left"><strong>Matrix-Chain (DP)</strong></td>
+<td align="left">$O(n^3)$</td>
+<td align="left">$O(n^2)$ space</td>
+</tr>
+<tr>
+<td align="left"><strong>DFS &#x2F; BFS</strong></td>
+<td align="left">$O(n+m)$</td>
+<td align="left">Visits every node and edge exactly once</td>
+</tr>
+<tr>
+<td align="left"><strong>Topological Sort</strong></td>
+<td align="left">$O(n+m)$</td>
+<td align="left">Graph MUST be a DAG (Directed Acyclic)</td>
+</tr>
+<tr>
+<td align="left"><strong>Kosaraju (SCCs)</strong></td>
+<td align="left">$O(n+m)$</td>
+<td align="left">Requires 2 absolute DFS passes ($G$ and $G^R$)</td>
+</tr>
+<tr>
+<td align="left"><strong>Dijkstra</strong></td>
+<td align="left">$O((n+m) \log n)$</td>
+<td align="left">With Fibonacci Heap: $O(n \log n + m)$</td>
+</tr>
+<tr>
+<td align="left"><strong>Bellman-Ford</strong></td>
+<td align="left">$O(nm)$</td>
+<td align="left">Loops $n-1$ times; detects negative cycles</td>
+</tr>
+<tr>
+<td align="left"><strong>Floyd-Warshall</strong></td>
+<td align="left">$O(n^3)$</td>
+<td align="left">DP-based; $O(n^2)$ space tracking limit</td>
+</tr>
+<tr>
+<td align="left"><strong>Prim&#39;s (MST)</strong></td>
+<td align="left">$O((n+m) \log n)$</td>
+<td align="left">Grows from 1 node outwards like Dijkstra</td>
+</tr>
+<tr>
+<td align="left"><strong>Kruskal&#39;s (MST)</strong></td>
+<td align="left">$O(m \log n)$</td>
+<td align="left">Sorts all edges, uses Union-Find</td>
+</tr>
+<tr>
+<td align="left"><strong>Ford-Fulkerson</strong></td>
+<td align="left">$O(m \cdot C_{max})$</td>
+<td align="left">Pseudo-polynomial; bounding integer flows</td>
+</tr>
+<tr>
+<td align="left"><strong>Edmonds-Karp</strong></td>
+<td align="left">$O(m^2 n)$</td>
+<td align="left">Ford-Fulkerson but strictly uses BFS</td>
+</tr>
+<tr>
+<td align="left"><strong>Max Bipartite Matching</strong></td>
+<td align="left">$O(nm)$</td>
+<td align="left">Max Flow mapping limit bounding</td>
+</tr>
+</tbody></table>
+<h3 id="3-Red-Flags-Trick-Questions-When-do-they-fail"><a href="#3-Red-Flags-Trick-Questions-When-do-they-fail" class="headerlink" title="3. &quot;Red Flags&quot; &amp; Trick Questions (When do they fail?)"></a>3. &quot;Red Flags&quot; &amp; Trick Questions (When do they fail?)</h3><p>Professors love to test edge cases. Watch out for these trap scenarios:</p>
+<ul>
+<li><strong>Greedy fails on 0&#x2F;1 Knapsack</strong>: Picking the absolute max &quot;value-to-weight ratio&quot; fails mathematically if items cannot be fractionally split. You MUST use DP.</li>
+<li><strong>Dijkstra fails on Negative Edges</strong>: It permanently locks nodes assuming paths only cleanly increase in geometric sum; negative edges break this invariant mathematics.</li>
+<li><strong>Bellman-Ford fails on Negative Cycles</strong>: If a cycle sum is $&lt;0$, you can mathematically loop infinitely to $-\infty$. <em>(However, Bellman-Ford can explicitly DETECT this by running an optional $n$-th iteration!)</em></li>
+<li><strong>Topological Sort fails on Graph Cycles</strong>: It strictly only functions on DAGs.</li>
+<li><strong>Master Theorem fails</strong>: If the mapping division fraction doesn&#39;t perfectly fit the 3 explicit mathematical bounding boundaries (e.g. non-polynomial gap sizes limit boundaries).</li>
+</ul>
+<hr>
+<h2 id="Lecture-1-Divide-and-Conquer"><a href="#Lecture-1-Divide-and-Conquer" class="headerlink" title="Lecture 1: Divide and Conquer"></a>Lecture 1: Divide and Conquer</h2><p>The <strong>Divide and Conquer</strong> paradigm generally involves three steps:</p>
+<ol>
+<li><strong>Divide</strong> the problem into a number of subproblems that are smaller instances of the same problem.</li>
+<li><strong>Conquer</strong> the subproblems by solving them recursively. If the subproblem sizes are small enough, simply solve the subproblems in a straightforward manner as the &quot;base case&quot;.</li>
+<li><strong>Merge&#x2F;Combine</strong> the solutions to the subproblems into the solution for the original problem.</li>
+</ol>
+<h3 id="1-The-Master-Theorem"><a href="#1-The-Master-Theorem" class="headerlink" title="1. The Master Theorem"></a>1. The Master Theorem</h3><p>Before analyzing specific algorithms, we need a mathematical tool to systematically evaluate the runtime complexity of divide-and-conquer algorithms based on their recurrence relations. </p>
+<p><strong>Theorem Statement</strong>:<br>Let $a \ge 1$ and $b &gt; 1$ be constants. Let $f(n)$ be an asymptotically positive function. Let $T(n)$ be defined on non-negative integers by the recurrence:<br>$$T(n) &#x3D; aT(n&#x2F;b) + f(n)$$<br>where $n&#x2F;b$ is interpreted as either $\lceil n&#x2F;b \rceil$ or $\lfloor n&#x2F;b \rfloor$. Let $c &#x3D; \log_b a$.</p>
+<p>The asymptotic bound of $T(n)$ is determined by comparing $f(n)$ with $n^c$:</p>
+<ul>
+<li><p><strong>Case 1</strong> (Leaves dominate): If $f(n) &#x3D; O(n^{c-\epsilon})$ for some constant $\epsilon &gt; 0$, then $T(n) &#x3D; \Theta(n^c)$. <em>(Meaning: the cost of merging $f(n)$ is asymptotically smaller than the cost of the split tree leaves $n^c$)</em>.</p>
+</li>
+<li><p><strong>Case 2</strong> (Perfect balance): If $f(n) &#x3D; \Theta(n^c)$, then $T(n) &#x3D; \Theta(n^c \log n)$. <em>(Meaning: the cost is equally distributed across all $\log n$ levels of the recursion tree)</em>.</p>
+<p> If $f(n) &#x3D; \Theta(n^c \log^k n)$ for some $k \ge 0$, then $T(n) &#x3D; \Theta(n^c \log^{k+1} n)$.</p>
+</li>
+<li><p><strong>Case 3</strong> (Root dominates): If $f(n) &#x3D; \Omega(n^{c+\epsilon})$ for some constant $\epsilon &gt; 0$, and if $a f(n&#x2F;b) \le d f(n)$ for some constant $d &lt; 1$ and all sufficiently large $n$ (the regularity condition), then $T(n) &#x3D; \Theta(f(n))$.</p>
+</li>
+</ul>
+<hr>
+<h3 id="2-Merge-Sort"><a href="#2-Merge-Sort" class="headerlink" title="2. Merge Sort"></a>2. Merge Sort</h3><p>Merge Sort is a fundamental sorting algorithm utilizing Divide and Conquer to sort a sequence of $n$ numbers, $a_1, a_2, \dots, a_n$, in ascending order.</p>
+<h4 id="2-1-How-to-use-the-algorithm-Step-by-step"><a href="#2-1-How-to-use-the-algorithm-Step-by-step" class="headerlink" title="2.1 How to use the algorithm (Step-by-step)"></a>2.1 How to use the algorithm (Step-by-step)</h4><p><strong>Variables:</strong> $A$ is the input array; left index $l$; right index $r$.</p>
+<ol>
+<li><strong>Divide Step</strong>: Cut the input array $A[1:n]$ completely in half. That is, split it into $A[1 : \lceil n&#x2F;2 \rceil]$ and $A[\lceil n&#x2F;2 \rceil + 1 : n]$.</li>
+<li><strong>Conquer Step</strong>: Recursively call Merge Sort on the two halves until the base case is reached. The base case is when an array has only 1 element, which is trivially sorted.</li>
+<li><strong>Merge Step</strong>: Take the two sorted sequences $A_{left}$ and $A_{right}$, and merge them into a new sorted array.<ul>
+<li>Maintain two pointers, $i&#x3D;1$ pointing to the current element in $A_{left}$ and $j&#x3D;1$ pointing to the current element in $A_{right}$.</li>
+<li>While both sequences are not exhausted, compare $A_{left}[i]$ and $A_{right}[j]$.</li>
+<li>If $A_{left}[i] \le A_{right}[j]$, append $A_{left}[i]$ to the output sequence and increment $i$.</li>
+<li>Else, append $A_{right}[j]$ to the output sequence and increment $j$.</li>
+<li>Once one pointer hits the end of its sequence, append all remaining elements of the unexhausted sequence to the output.</li>
+</ul>
+</li>
+</ol>
+<h4 id="2-2-Correctness-Proof"><a href="#2-2-Correctness-Proof" class="headerlink" title="2.2 Correctness Proof"></a>2.2 Correctness Proof</h4><p><strong>Goal</strong>: Prove that Merge Sort correctly sorts any array $A$ of size $n$ into ascending order.<br><strong>Proof by Strong Mathematical Induction on $n$ (the size of the array):</strong></p>
+<ul>
+<li><strong>Base Case</strong>: When $n&#x3D;1$, the array contains only one element. A single element is automatically sorted. The algorithm correctly returns the single element.</li>
+<li><strong>Inductive Hypothesis</strong>: Assume that for any integer $k &lt; n$, Merge Sort correctly sorts an array of size $k$ in ascending order.</li>
+<li><strong>Inductive Step</strong>: We must show that Merge Sort correctly sorts an array of size $n$.<ol>
+<li>The algorithm divides the array of size $n$ into two halves of size $\lceil n&#x2F;2 \rceil$ and $\lfloor n&#x2F;2 \rfloor$. Since $n \ge 2$, both halves have sizes strictly smaller than $n$. </li>
+<li>By the Inductive Hypothesis, the recursive calls perfectly sort both the left half (let&#39;s call it $L$) and the right half ($R$). Thus, we have two properly sorted sequences $L$ and $R$.</li>
+<li>Now we prove the correctness of the <strong>Merge step</strong>. We maintain the loop invariant: <em>At any iteration, the output array contains the sorted elements composed of the currently processed elements from $L$ and $R$, and any remaining element in $L$ and $R$ is greater than or equal to the largest element currently in the output array.</em></li>
+<li>In every step, the merge algorithm compares the smallest unmerged element of $L$ ($L[i]$) with the smallest unmerged element of $R$ ($R[j]$). Since $L$ and $R$ are internally sorted, the global smallest unmerged element must be exactly $\min(L[i], R[j])$. The algorithm selects this exact minimum and appends it to the output, preserving the invariant. </li>
+<li>Once one array is exhausted, the other array&#39;s remaining elements (which are sorted and strictly $\ge$ everything in the output) are appended. It guarantees a holistically sorted output. By the Principle of Mathematical Induction, Merge Sort is correct for all $n$. $\blacksquare$</li>
+</ol>
+</li>
+</ul>
+<h4 id="2-3-Complexity-Analysis"><a href="#2-3-Complexity-Analysis" class="headerlink" title="2.3 Complexity Analysis"></a>2.3 Complexity Analysis</h4><ul>
+<li><strong>Time Complexity:</strong><br>The recurrence relation is $T(n) &#x3D; 2T(n&#x2F;2) + O(n)$.<br><strong>Why is it $O(n \log n)$?</strong> Using the Master Theorem: $a&#x3D;2$ (halving), $b&#x3D;2$, and $f(n)&#x3D;\Theta(n^1)$ (linear merge step). Here limit bounds $c &#x3D; \log_2 2 &#x3D; 1$. Since $f(n) &#x3D; \Theta(n^c)$, this is exactly Case 2. Thus, bounds $T(n) &#x3D; \mathbf{O(n \log n)}$.<br><em>(Alternatively, solving by recursion tree shows $\log_2 n$ levels. At each level, the total merge cost across all nodes is exactly $cn$. Summing over $\log_2 n$ levels gives $O(n \log n)$).</em></li>
+<li><strong>Space Complexity:</strong> $\mathbf{O(n)}$ auxiliary space is required for the temporary output arrays during the Merge step.</li>
+</ul>
+<h4 id="2-4-Common-Exam-Problem-Types"><a href="#2-4-Common-Exam-Problem-Types" class="headerlink" title="2.4 Common Exam Problem Types"></a>2.4 Common Exam Problem Types</h4><ul>
+<li><strong>Inversion Counting</strong>: Modify Merge Sort to count pairs where $i &lt; j$ but $A[i] &gt; A[j]$. In the merge step, when $R[j]$ is strictly less than $L[i]$, it means $R[j]$ is smaller than <em>all remaining elements</em> in $L$ (since $L$ is sorted). So you simply add the number of remaining elements in $L$ to your inversion tally.</li>
+<li><strong>Trace the Recursion Tree</strong>: You will be given a small array and asked to draw the sequence of subdivides and then the sequence of sorted merges.</li>
+</ul>
+<hr>
+<h3 id="3-Finding-the-k-th-Largest-Element-Linear-Time-Selection"><a href="#3-Finding-the-k-th-Largest-Element-Linear-Time-Selection" class="headerlink" title="3. Finding the k-th Largest Element (Linear Time Selection)"></a>3. Finding the k-th Largest Element (Linear Time Selection)</h3><p><strong>Problem</strong>: Given an unsorted sequence of $n$ elements, find the $k$-th largest (or smallest) element. The median is incredibly important ($k &#x3D; \lceil n&#x2F;2 \rceil$).</p>
+<h4 id="3-1-How-to-use-the-algorithm-Step-by-step"><a href="#3-1-How-to-use-the-algorithm-Step-by-step" class="headerlink" title="3.1 How to use the algorithm (Step-by-step)"></a>3.1 How to use the algorithm (Step-by-step)</h4><p><strong>Variables</strong>: Sequence $A$, integer $k$. Our recursive function is <code>Select(A, k)</code>. We need $O(n)$ time, so we must avoid sorting (which is $O(n \log n)$).</p>
+<ol>
+<li><strong>Find an Approximate Median $x$</strong>:<ul>
+<li>Divide the sequence $A$ into groups of $5$. (There are $\lceil n&#x2F;5 \rceil$ groups).</li>
+<li>Find the exact median of each 5-element group by quick-sorting it ($O(1)$ time per group). This gives a set of medians $X &#x3D; {x_1, x_2, \dots, x_{\lceil n&#x2F;5 \rceil}}$.</li>
+<li>Recursively call the linear selection algorithm on $X$ to find the exact median of these medians! Let this be our &quot;pivot&quot; $x$: $x &#x3D; \text{Select}(X, \lceil |X|&#x2F;2 \rceil)$.</li>
+</ul>
+</li>
+<li><strong>Partition the Array against $x$</strong>:<ul>
+<li>Iterate through $A$ to construct three sequences:<ul>
+<li>$L$: elements $&lt; x$</li>
+<li>$M$: elements $&#x3D; x$</li>
+<li>$R$: elements $&gt; x$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Recurse into the correct partition</strong>:<ul>
+<li>If $k \le |R|$, the $k$-th largest element lies strictly in $R$. Return <code>Select(R, k)</code>.</li>
+<li>Else if $k \le |R| + |M|$, the $k$-th largest element is $x$ itself. Return $x$.</li>
+<li>Else, the element lies in $L$. We are looking for the element that is the $(k - |R| - |M|)$-th largest inside $L$. Return <code>Select(L, k - |R| - |M|)</code>.</li>
+</ul>
+</li>
+</ol>
+<h4 id="3-2-Correctness-Proof"><a href="#3-2-Correctness-Proof" class="headerlink" title="3.2 Correctness Proof"></a>3.2 Correctness Proof</h4><p><strong>Goal</strong>: Prove the median-of-medians partition correctly finds the exact $k$-th largest element in $O(n)$ time.</p>
+<ul>
+<li><strong>Why it finds the target</strong>: Notice that the recurrence logic mirrors binary search trees&#x2F;Quickselect. The actual elements of the array are preserved across mutually exclusive sets $L, M, R$. Thus if we just want the $k$-th element from the combined descending sequence, and we know exactly how many elements are strictly bigger than $x$ ($|R|$), if $k \le |R|$ the answer must be in $R$. If $k$ sits inside the window representing $x$, it&#39;s $x$. Otherwise, it&#39;s in $L$, with its index &quot;shifted&quot; by the elements we bypassed.</li>
+<li><strong>Why is it strictly $O(n)$ bounds? (The Pivot Quality)</strong><br>Why use groups of 5? It guarantees that the partition sizes shrink by a constant fraction, ensuring we avoid the worst-case $O(n^2)$ associated with randomly picking a bad pivot (like in naive Quickselect).<ul>
+<li>Half of the $n&#x2F;5$ groups have their group median $\ge x$ (since $x$ is the median of medians). So there are about $n&#x2F;10$ groups.</li>
+<li>In each of these $n&#x2F;10$ groups, there are at least 3 elements $\ge$ the group median (because the group size is 5). </li>
+<li>Hence, there are at least $3 \times (n&#x2F;10) &#x3D; 3n&#x2F;10$ elements that are definitely $\ge x$. </li>
+<li>This identically means that at most $n - 3n&#x2F;10 &#x3D; \mathbf{7n&#x2F;10}$ elements can be smaller than $x$. (To be precise, it&#39;s roughly $3n&#x2F;4$ in worst case bounds due to floors&#x2F;ceilings, see syllabus).<br>So, neither $L$ nor $R$ will ever be larger than $\frac{3}{4}n$.<br>The recurrence relation becomes: $T(n) \le T(\frac{n}{5}) + T(\frac{3n}{4}) + cn$.</li>
+</ul>
+</li>
+<li><strong>Proof of Complexity via Induction</strong>:<br>We want to prove $T(n) \le 20cn$.<ul>
+<li><strong>Base Case</strong>: For small $n$ ($n \le 5$), $T(n) \le O(1) \le 20cn$.</li>
+<li><strong>Inductive Step</strong>: Assume $T(k) \le 20ck$ for $k &lt; n$. Evaluated at $n$:<br>$T(n) \le 20c(\frac{n}{5}) + 20c(\frac{3n}{4}) + cn$<br>$T(n) \le 4cn + 15cn + cn &#x3D; 20cn$.<br>Since $T(n) \le 20cn$, the selection algorithm runs strictly in $\mathbf{O(n)}$ time. $\blacksquare$</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-3-Common-Exam-Problem-Types"><a href="#3-3-Common-Exam-Problem-Types" class="headerlink" title="3.3 Common Exam Problem Types"></a>3.3 Common Exam Problem Types</h4><ul>
+<li><strong>Altering group sizes</strong>: E.g., &quot;What if we use groups of 3 instead of 5?&quot;. You need to re-prove the tree sum. Groups of 3 give $T(n) \le T(n&#x2F;3) + T(2n&#x2F;3) + O(n)$. Since $n&#x2F;3 + 2n&#x2F;3 &#x3D; n$, the work done at each level does not geometrically decay, the sum diverges, yielding $O(n \log n)$! Hence $\ge 5$ is required for $O(n)$.</li>
+<li><strong>Deterministic Quickselect Tracing</strong>: Be prepared to partition a list of numbers deterministically using to the algorithm.</li>
+</ul>
+<hr>
+<h3 id="4-Closest-Pair-of-Points-in-2D"><a href="#4-Closest-Pair-of-Points-in-2D" class="headerlink" title="4. Closest Pair of Points in 2D"></a>4. Closest Pair of Points in 2D</h3><p><strong>Problem</strong>: Given $n$ points on a 2D plane, find the pair with the minimum Euclidean distance. Brute force tests all pairs resulting in $O(n^2)$. We need an $O(n \log n)$ approach using D&amp;C.</p>
+<h4 id="4-1-How-to-use-the-algorithm-Step-by-step"><a href="#4-1-How-to-use-the-algorithm-Step-by-step" class="headerlink" title="4.1 How to use the algorithm (Step-by-step)"></a>4.1 How to use the algorithm (Step-by-step)</h4><p><strong>Variables</strong>: Array of points $P &#x3D; {p_1, \dots, p_n}$.</p>
+<ol>
+<li><strong>Pre-sort</strong>: Sort the set of points $P$ by their $x$-coordinates, enabling quick division. (This is done once).</li>
+<li><strong>Divide</strong>: Find a vertical line (the median $x$-coordinate $x_{mid}$) that splits $P$ exactly into a Left half $P_L$ and Right half $P_R$.</li>
+<li><strong>Conquer</strong>: Recursively call the algorithm on $P_L$ to find its closest pair distance $d_L$, and on $P_R$ for $d_R$.</li>
+<li><strong>Merge</strong>: Let $d &#x3D; \min(d_L, d_R)$.<br>So far, the global minimum is bounded by $d$. The only way a smaller distance exists is if one point of the pair is in $P_L$ and the other is in $P_R$, bridging the median line. <ul>
+<li>Define a &quot;strip&quot; area containing only points whose $x$-coordinates are within a distance $d$ of the dividing median line: $x_{mid} - d \le x \le x_{mid} + d$.</li>
+<li>Create an array $S$ comprising points strictly inside this strip.</li>
+<li>Sort $S$ by their $y$-coordinates. (To achieve $O(n \log n)$ overall, this sorting must be done as a linear merge step similar to MergeSort, otherwise sorting at every step makes it $O(n \log^2 n)$).</li>
+<li>Scan $S$. For each point $p_i$, calculate its distance to the next <strong>11 points</strong> down the list (or 7, bounds proved in class). If the distance is $&lt; d$, update $d$ with this new minimum.</li>
+</ul>
+</li>
+<li><strong>Return $d$</strong>.</li>
+</ol>
+<h4 id="4-2-Correctness-Proof"><a href="#4-2-Correctness-Proof" class="headerlink" title="4.2 Correctness Proof"></a>4.2 Correctness Proof</h4><p><strong>Goal</strong>: Prove it&#39;s sufficient to only check the next 11 points in the $y$-sorted strip.<br><strong>Geometric Pigeonhole Proof</strong>:</p>
+<ul>
+<li>We partitioned the $2d$-wide strip around $x_{mid}$ into small square boxes of size $\frac{d}{2} \times \frac{d}{2}$.</li>
+<li>Both the left side and the right side of the median line enforce that <em>any two points on the exact same side are at least distance $d$ apart</em> (since $d &#x3D; \min(d_L, d_R)$).</li>
+<li>Because the diagonal of a $\frac{d}{2} \times \frac{d}{2}$ box is $\sqrt{\frac{d^2}{4} + \frac{d^2}{4}} &#x3D; \frac{d}{\sqrt{2}} &lt; d$, <strong>no box can contain more than 1 point</strong>.</li>
+<li>If we look at a point $p_i$ and wish to find out how many points could possibly be within a distance $d$ of it, we only need to look at boxes within a strictly horizontal&#x2F;vertical geometric window of roughly $2d \times 2d$. </li>
+<li>By evaluating the grid rows, we realize there are at most a constant number of points bounded within the $d$-radius of $p_i$. Analysis from the lecture shows the maximum number of neighbors whose $y$-coordinates differ by $\le d$ from $p_i$ is at most 11 (sometimes bounded tighter to 7 by refined geometry).</li>
+<li>Thus, verifying more than 11 elements ahead in the $y$-sorted array is mathematically redundant as their $y$-distance strictly guarantees the Euclidean distance is $&gt; d$. Checking constant bounds secures $O(n)$ in the merge phase. $\blacksquare$</li>
+</ul>
+<h4 id="4-3-Complexity-Analysis"><a href="#4-3-Complexity-Analysis" class="headerlink" title="4.3 Complexity Analysis"></a>4.3 Complexity Analysis</h4><p>If $y$-coordinate sorting is done via linear merge simultaneously with returning from recursion limits the split step to:<br>$T(n) &#x3D; 2T(n&#x2F;2) + O(n)$.<br>By Master Theorem (Case 2, identical to MergeSort), $T(n) &#x3D; \mathbf{O(n \log n)}$.<br><em>Note: If one blindly calls <code>sort()</code> on the strip array inside every recursive call, the recurrence $T(n) &#x3D; 2T(n&#x2F;2) + O(n \log n)$ yields $O(n \log^2 n)$, which loses marks in exams!</em></p>
+<hr>
+<h3 id="5-Fast-Integer-Multiplication-Karatsuba-Algorithm"><a href="#5-Fast-Integer-Multiplication-Karatsuba-Algorithm" class="headerlink" title="5. Fast Integer Multiplication (Karatsuba Algorithm)"></a>5. Fast Integer Multiplication (Karatsuba Algorithm)</h3><p><strong>Problem</strong>: Multiply two $n$-bit integers $x$ and $y$. Brute-force vertical multiplication takes $O(n^2)$ time. </p>
+<h4 id="5-1-How-to-use-the-algorithm-Step-by-step"><a href="#5-1-How-to-use-the-algorithm-Step-by-step" class="headerlink" title="5.1 How to use the algorithm (Step-by-step)"></a>5.1 How to use the algorithm (Step-by-step)</h4><p>Divide each $n$-bit integer into two $n&#x2F;2$-bit halves:<br>$x &#x3D; a \cdot 2^{n&#x2F;2} + b$<br>$y &#x3D; c \cdot 2^{n&#x2F;2} + d$</p>
+<p>Standard distribution yields:<br>$x \cdot y &#x3D; ac \cdot 2^n + (ad + bc) \cdot 2^{n&#x2F;2} + bd$<br>This involves 4 recursive multiplications of $n&#x2F;2$-bit numbers (yielding $T(n)&#x3D;4T(n&#x2F;2)+O(n) &#x3D; O(n^2)$, no improvement).</p>
+<p><strong>Karatsuba Trick ($O(n^{1.558})$)</strong>:</p>
+<ol>
+<li>Compute $P_1 &#x3D; a \cdot c$</li>
+<li>Compute $P_2 &#x3D; b \cdot d$</li>
+<li>Compute $P_3 &#x3D; (a + b) \cdot (c + d)$</li>
+<li>Express the middle cross-terms using the calculated chunks: $ad + bc &#x3D; P_3 - P_1 - P_2$.</li>
+<li>Substitute to format the answer shift: $x \cdot y &#x3D; P_1 \cdot 2^n + (P_3 - P_1 - P_2) \cdot 2^{n&#x2F;2} + P_2$.</li>
+</ol>
+<h4 id="5-2-Complexity-Analysis"><a href="#5-2-Complexity-Analysis" class="headerlink" title="5.2 Complexity Analysis"></a>5.2 Complexity Analysis</h4><p>This strategy replaces 4 recursive multiplications with exactly <strong>3 recursive multiplications</strong>, plus some additions which natively execute in $O(n)$ time.<br>$T(n) &#x3D; 3T(n&#x2F;2) + O(n)$.<br>Using Master Theorem: $a&#x3D;3$, $b&#x3D;2$, and $f(n)&#x3D;O(n)$. Comparing $n^1$ vs $n^{\log_2 3}$, we fall into Case 1 since $\log_2 3 \approx 1.558 &gt; 1$.<br>Thus $T(n) &#x3D; \mathbf{O(n^{\log_2 3})} \approx \mathbf{O(n^{1.558})}$.</p>
+<hr>
+<h3 id="6-Fast-Matrix-Multiplication-Strassen-s-Algorithm"><a href="#6-Fast-Matrix-Multiplication-Strassen-s-Algorithm" class="headerlink" title="6. Fast Matrix Multiplication (Strassen&#39;s Algorithm)"></a>6. Fast Matrix Multiplication (Strassen&#39;s Algorithm)</h3><p><strong>Problem</strong>: Multiply two $n \times n$ matrices $A$ and $B$ to yield matrix $C$. Standard row-by-column calculation is $O(n^3)$. </p>
+<h4 id="6-1-The-Algorithm-Analysis"><a href="#6-1-The-Algorithm-Analysis" class="headerlink" title="6.1 The Algorithm &amp; Analysis"></a>6.1 The Algorithm &amp; Analysis</h4><p>Using naive D&amp;C, a matrix is blocked into four $n&#x2F;2 \times n&#x2F;2$ quadrants.<br>$C_{11} &#x3D; A_{11}B_{11} + A_{12}B_{21}$.<br>Calculating all 4 quadrants entails 8 multiplications of $n&#x2F;2$ submatrices.<br>$T(n) &#x3D; 8T(n&#x2F;2) + O(n^2)$. The Master Theorem ($c &#x3D; \log_2 8 &#x3D; 3$) states $T(n) &#x3D; O(n^3)$, giving zero improvement.</p>
+<p><strong>Strassen&#39;s Trick</strong>: Very similarly to Karatsuba, Strassen designed an arbitrary algebra setup calculating intermediate sums $M_1 \dots M_7$ that mathematically eliminates one full matrix multiplication.</p>
+<ul>
+<li>Sub-multiplications reduced from 8 to <strong>7</strong>. (Matrix additions take only $O(n^2)$ and increase but remain asymptotically irrelevant).</li>
+<li>Recurrence relation: $T(n) &#x3D; 7T(n&#x2F;2) + O(n^2)$.</li>
+<li>By the Master Theorem, $c &#x3D; \log_2 7 \approx 2.808 &gt; 2$. Thus $T(n) &#x3D; \mathbf{O(n^{\log_2 7})} \approx \mathbf{O(n^{2.808})}$.</li>
+</ul>
+<p><em>(Note: On the final exam, no professor expects memorization of Strassen&#39;s 7 crazy matrix formulas, just the application of its recurrence bounds and understanding of reducing multiplication calls).</em></p>
+<hr>
+<h2 id="Lecture-2-Fast-Fourier-Transform-FFT"><a href="#Lecture-2-Fast-Fourier-Transform-FFT" class="headerlink" title="Lecture 2: Fast Fourier Transform (FFT)"></a>Lecture 2: Fast Fourier Transform (FFT)</h2><p><strong>Problem</strong>: The Fast Fourier Transform elegantly multiplies two polynomials in $O(n \log n)$ time, overcoming the brute-force polynomial multiplication (convolution), which takes $O(n^2)$.</p>
+<h3 id="1-Representation-of-Polynomials"><a href="#1-Representation-of-Polynomials" class="headerlink" title="1. Representation of Polynomials"></a>1. Representation of Polynomials</h3><p>A polynomial of degree $n-1$, $p(x) &#x3D; a_0 + a_1x + a_2x^2 + \dots + a_{n-1}x^{n-1}$, can be represented in two ways:</p>
+<ol>
+<li><strong>Coefficient Representation</strong>: An array of length $n$ containing the coefficients $[a_0, a_1, \dots, a_{n-1}]$.</li>
+<li><strong>Point-Value Representation</strong>: A set of $n$ distinct point-value pairs ${(x_0, y_0), (x_1, y_1), \dots, (x_{n-1}, y_{n-1})}$, where $y_k &#x3D; p(x_k)$.</li>
+</ol>
+<p><strong>Why use Point-Value Representation?</strong><br>Multiplying two polynomials structured as point-value pairs takes strictly $O(n)$ time! $p(x) \times q(x) &#x3D; {(x_0, y_0 \times y_0&#39;), \dots, (x_{2n-1}, y_{2n-1} \times y_{2n-1}&#39;)}$. We just need enough pairs ($2n-1$) to encapsulate the degree of the new multiplied polynomial. All that remains is efficiently converting coefficients to point-pairs, multiplying in $O(n)$, and converting it back.</p>
+<h3 id="2-Forward-FFT-Coefficient-to-Point-Value"><a href="#2-Forward-FFT-Coefficient-to-Point-Value" class="headerlink" title="2. Forward FFT (Coefficient to Point-Value)"></a>2. Forward FFT (Coefficient to Point-Value)</h3><p>If you blindly evaluate $n$ random $x$ points via Horner&#39;s method, that takes $O(n^2)$. FFT picks extremely specific points to make it take $O(n \log n)$.<br><strong>The selected points</strong> are the <strong>Complex $n$-th Roots of Unity</strong>: $\omega_n^k &#x3D; e^{i \cdot 2\pi k&#x2F;n}$, for $k&#x3D;0, 1, \dots, n-1$.</p>
+<h4 id="2-1-How-it-works-Step-by-step"><a href="#2-1-How-it-works-Step-by-step" class="headerlink" title="2.1 How it works (Step-by-step)"></a>2.1 How it works (Step-by-step)</h4><p><strong>Variables:</strong> $n$ must be a power of 2. Polynomial array $[a_0, \dots, a_{n-1}]$.</p>
+<ol>
+<li>Split the coefficients into an <strong>even-index polynomial</strong> and an <strong>odd-index polynomial</strong>:<ul>
+<li>$p_{even}(x) &#x3D; a_0 + a_2x + a_4x^2 + \dots$</li>
+<li>$p_{odd}(x) &#x3D; a_1 + a_3x + a_5x^2 + \dots$</li>
+<li>Notice that $p(x) &#x3D; p_{even}(x^2) + x \cdot p_{odd}(x^2)$.</li>
+</ul>
+</li>
+<li>Calculate the evaluations recursively. The critical mathematical property is that squaring the $n$-th roots of unity yields exactly the $(n&#x2F;2)$-th roots of unity (Halving Lemma). Thus, evaluating a polynomial of size $n$ at the roots of unity requires evaluating TWO polynomials of size $n&#x2F;2$ at the roots of unity, perfectly splitting the problem: $T(n) &#x3D; 2T(n&#x2F;2) + O(n)$.</li>
+<li>Recombine solutions via:<ul>
+<li>For $0 \le k &lt; n&#x2F;2$: $p(\omega_n^k) &#x3D; p_{even}(\omega_{n&#x2F;2}^k) + \omega_n^k \cdot p_{odd}(\omega_{n&#x2F;2}^k)$</li>
+<li>For $n&#x2F;2 \le k &lt; n$: $p(\omega_n^k) &#x3D; p_{even}(\omega_{n&#x2F;2}^{k - n&#x2F;2}) - \omega_n^{k-n&#x2F;2} \cdot p_{odd}(\omega_{n&#x2F;2}^{k - n&#x2F;2})$  <em>(Leveraging $\omega_n^{k+n&#x2F;2} &#x3D; -\omega_n^k$)</em></li>
+</ul>
+</li>
+</ol>
+<h3 id="3-Inverse-FFT-Point-Value-to-Coefficient"><a href="#3-Inverse-FFT-Point-Value-to-Coefficient" class="headerlink" title="3. Inverse FFT (Point-Value to Coefficient)"></a>3. Inverse FFT (Point-Value to Coefficient)</h3><p><strong>Problem</strong>: Recovering coefficients means multiplying the $n$-length point-value evaluation vector by the inverse of the Vandermonde matrix.</p>
+<h4 id="3-1-Mathematical-Proof-of-Inverse-Matrix-Correctness"><a href="#3-1-Mathematical-Proof-of-Inverse-Matrix-Correctness" class="headerlink" title="3.1 Mathematical Proof of Inverse Matrix Correctness"></a>3.1 Mathematical Proof of Inverse Matrix Correctness</h4><p>The matrix $V$ has entries $V_{j,k} &#x3D; \omega_n^{j \cdot k}$. Its inverse $V^{-1}$ has entries $V^{-1}<em>{j,k} &#x3D; \frac{1}{n} \omega_n^{-j \cdot k}$.<br><strong>Proof:</strong> Let&#39;s calculate the product $V \times V^{-1}$ at index $(j,k)$:<br>$\sum</em>{\ell&#x3D;0}^{n-1} V_{j,\ell} V^{-1}<em>{\ell, k} &#x3D; \frac{1}{n} \sum</em>{\ell&#x3D;0}^{n-1} \omega_n^{j\ell} \omega_n^{-\ell k} &#x3D; \frac{1}{n} \sum_{\ell&#x3D;0}^{n-1} \omega_n^{\ell(j-k)}$</p>
+<ul>
+<li><strong>If $j &#x3D; k$</strong>: $\frac{1}{n} \sum_{\ell&#x3D;0}^{n-1} \omega_n^0 &#x3D; \frac{1}{n} \sum 1 &#x3D; 1$.</li>
+<li><strong>If $j \neq k$</strong>: This forms a geometric series: $\frac{1}{n} \frac{1 - \omega_n^{n(j-k)}}{1 - \omega_n^{j-k}}$. Because $\omega_n^{n} &#x3D; 1$, the numerator $1 - 1 &#x3D; 0$.<br>Hence, the product yields the Identity Matrix $I$. $\blacksquare$</li>
+</ul>
+<p>Because the inverse matrix entries are simply $\frac{1}{n} \omega_n^{-jk}$, which is identical to the forward FFT structural loop just replacing $\omega_n$ with $\omega_n^{-1}$ and dividing by $n$, <strong>Inverse FFT also runs in $O(n \log n)$ using the exact same recursive algorithm</strong>.</p>
+<hr>
+<h2 id="Lecture-3-Dynamic-Programming-Part-1-Design-Scheduling"><a href="#Lecture-3-Dynamic-Programming-Part-1-Design-Scheduling" class="headerlink" title="Lecture 3: Dynamic Programming (Part 1 - Design &amp; Scheduling)"></a>Lecture 3: Dynamic Programming (Part 1 - Design &amp; Scheduling)</h2><p><strong>Dynamic Programming (DP)</strong> differs from Divide and Conquer: it breaks down problems into <em>overlapping</em> subproblems, solving each subproblem exactly once and storing it (memoization&#x2F;tabulation) so future queries are $O(1)$. </p>
+<h3 id="1-Job-Scheduling-Weighted"><a href="#1-Job-Scheduling-Weighted" class="headerlink" title="1. Job Scheduling (Weighted)"></a>1. Job Scheduling (Weighted)</h3><p><strong>Problem</strong>: Given $n$ jobs where job $i$ occurs from start $s_i$ to finish $t_i$ and grants value $v_i$, find a subset of non-overlapping jobs that maximizes total value.<br>(Note: unweighted Job Scheduling just maximizes count, which works flawlessly via a simple Greedy Algorithm: <em>always pick the job that finishes earliest</em>).</p>
+<h4 id="1-1-How-to-use-the-algorithm-Step-by-step"><a href="#1-1-How-to-use-the-algorithm-Step-by-step" class="headerlink" title="1.1 How to use the algorithm (Step-by-step)"></a>1.1 How to use the algorithm (Step-by-step)</h4><p><strong>Practical Execution</strong>:</p>
+<ol>
+<li><strong>Sort all jobs</strong> by their finish time from earliest to latest. Let&#39;s call them Job 1, Job 2... Job $n$.</li>
+<li><strong>Find the last compatible job $p(i)$</strong>: For every Job $i$, find the index of the latest job that finishes <em>before</em> Job $i$ starts. If no prior job fits, set it to 0. (Do this quickly with Binary Search).</li>
+<li><strong>Initialize</strong>: Create an array <code>dp</code> of size $n+1$. Set <code>dp[0] = 0</code>.</li>
+<li><strong>Loop through each job $i$ from 1 to $n$</strong>:<ul>
+<li><strong>Option A (Skip it)</strong>: Copy the best value from the previous jobs, <code>dp[i-1]</code>.</li>
+<li><strong>Option B (Take it)</strong>: Take this job&#39;s value $v_i$, plus the best value of its compatible jobs <code>dp[p(i)]</code>.</li>
+<li>Set <code>dp[i]</code> to the maximum of Option A and Option B.</li>
+</ul>
+</li>
+<li><strong>Result</strong>: Your max possible value is saved in the final slot <code>dp[n]</code>.</li>
+</ol>
+<p><strong>Complexity</strong>: <strong>Overall time limit is $O(n \log n)$</strong>.<br><strong>Why?</strong> The bottleneck is strictly computing the preprocessing bounds (sorting by finish times takes $O(n \log n)$ and isolating compatibilities via binary search takes $O(n \log n)$). The dynamic programming loop strictly streams through exactly once ($O(n)$ bounds limit).</p>
+<h3 id="2-Matrix-Chain-Multiplication"><a href="#2-Matrix-Chain-Multiplication" class="headerlink" title="2. Matrix-Chain Multiplication"></a>2. Matrix-Chain Multiplication</h3><p><strong>Problem</strong>: Multiply a chain of $n$ matrices $A_1 \times A_2 \dots \times A_n$ (where $A_i$ has dimension $d_{i-1} \times d_i$) to minimize the total scalar multiplications. Order matters due to associativity! (e.g. $(AB)C$ vs $A(BC)$).</p>
+<h4 id="2-1-How-to-use-the-algorithm-Step-by-step-1"><a href="#2-1-How-to-use-the-algorithm-Step-by-step-1" class="headerlink" title="2.1 How to use the algorithm (Step-by-step)"></a>2.1 How to use the algorithm (Step-by-step)</h4><p><strong>Practical Execution</strong>:</p>
+<ol>
+<li><strong>Initialize the Table</strong>: Create an $n \times n$ table $M$ to store the minimum costs. Set all elements on the main diagonal to 0 ($M[i][i] &#x3D; 0$).</li>
+<li><strong>Loop by chain length $s$</strong>: Start from $s&#x3D;1$ up to $n-1$.</li>
+<li><strong>Loop the starting matrix $i$</strong>: Inside the $s$ loop, loop $i$ from $1$ to $n-s$.</li>
+<li><strong>Define the ending matrix $j$</strong>: Set $j &#x3D; i + s$.</li>
+<li><strong>Find the best split point $k$</strong>: For the current chain block from $A_i$ to $A_j$, try splitting it at <strong>every possible</strong> matrix $k$ in between ($i \le k &lt; j$).<ul>
+<li>The scalar cost to split at $k$ is: $M[i][k] + M[k+1][j] + (d_{i-1} \times d_k \times d_j)$.</li>
+<li>Find the single smallest cost across all tested $k$&#39;s, and save it in $M[i][j]$.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Complexity Analysis</strong>: <strong>Time is $\mathbf{O(n^3)}$, Space is $\mathbf{O(n^2)}$.</strong><br><strong>Why is it $O(n^3)$?</strong> There are naturally $O(n^2)$ table states in the matrix. Resolving the minimum cost strictly enforces checking the split point $k$, requiring up to $O(n)$ steps precisely per cell limit. Multiplying $O(n^2)$ states limit $\times$ $O(n)$ checks bounds precisely strict $\mathbf{O(n^3)}$.</p>
+<hr>
+<h2 id="Lecture-3-approx-The-Knapsack-Problem-FPTAS"><a href="#Lecture-3-approx-The-Knapsack-Problem-FPTAS" class="headerlink" title="Lecture 3 (approx): The Knapsack Problem &amp; FPTAS"></a>Lecture 3 (approx): The Knapsack Problem &amp; FPTAS</h2><h3 id="1-0-1-Knapsack-DP-Solution"><a href="#1-0-1-Knapsack-DP-Solution" class="headerlink" title="1. 0&#x2F;1 Knapsack (DP Solution)"></a>1. 0&#x2F;1 Knapsack (DP Solution)</h3><p><strong>Problem</strong>: Given $n$ items with weights $w_i &gt; 0$ and values $v_i$, maximize total value inside a capacity $W$. Items cannot be split.</p>
+<h4 id="1-1-How-to-use-the-algorithm-Step-by-step-1"><a href="#1-1-How-to-use-the-algorithm-Step-by-step-1" class="headerlink" title="1.1 How to use the algorithm (Step-by-step)"></a>1.1 How to use the algorithm (Step-by-step)</h4><p><strong>Practical Execution</strong>:</p>
+<ol>
+<li><strong>Initialize a Grid</strong>: Create a table <code>dp</code> with $n+1$ rows (for each item 0 to $n$) and $W+1$ columns (for every capacity 0 to $W$). Fill the entire 0-th row with 0s.</li>
+<li><strong>Iterate row by row</strong>: For each item $i$ from 1 to $n$:<ul>
+<li><strong>Iterate capacity</strong>: For each limit $j$ from 0 to $W$:</li>
+</ul>
+</li>
+<li><strong>Check affordability</strong>:<ul>
+<li>If item $i$&#39;s weight is too heavy ($w_i &gt; j$): Just copy the value from the cell directly above it: <code>dp[i, j] = dp[i-1, j]</code>.</li>
+<li>If you can afford it: Compare two options:<ul>
+<li><strong>Option A (Skip)</strong>: Value from directly above <code>dp[i-1, j]</code>.</li>
+<li><strong>Option B (Take)</strong>: This item&#39;s value $v_i$ PLUS the best value from the remaining capacity <code>dp[i-1, j - w_i]</code>.</li>
+<li>Write the MAX of these two into <code>dp[i, j]</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Result</strong>: Your max value is located at the bottom-right corner <code>dp[n, W]</code>. Backtrack upward to find which items were taken!</li>
+</ol>
+<p><strong>Complexity</strong>: Space $O(nW)$, Time $\mathbf{O(nW)}$.<br><strong>Why is it $O(nW)$?</strong> The DP grid size is strictly exactly $n \times W$. Calculating each cell&#39;s maximum takes purely $O(1)$ constant time (a pure scalar comparison check). Thus, $n \times W \times O(1) &#x3D; O(nW)$. This is a Pseudo-polynomial runtime since $W$&#39;s size is logarithmically encoded while the runtime natively scales with its pure integer value.</p>
+<h3 id="2-Fully-Polynomial-Time-Approximation-Scheme-FPTAS"><a href="#2-Fully-Polynomial-Time-Approximation-Scheme-FPTAS" class="headerlink" title="2. Fully Polynomial-Time Approximation Scheme (FPTAS)"></a>2. Fully Polynomial-Time Approximation Scheme (FPTAS)</h3><p>Since Knapsack is NP-Complete, we use FPTAS to get a solution $\ge \frac{OPT}{1+\epsilon}$ inside polynomial bounds of $n$ and $1&#x2F;\epsilon$.<br><strong>Method</strong>: If weights are arbitrarily massive, DP via weights is terrible. We instead DP over <em>values</em>, finding the <em>minimum weight required to reach exactly a value score</em>.</p>
+<ol>
+<li>To make evaluating large values fast, scale down and chop off the small precision bits of all strictly huge values! Let $v_{max} &#x3D; \max v_i$.</li>
+<li>Select parameter $k &#x3D; \frac{\epsilon v_{max}}{2n}$.</li>
+<li>Shift all values to $\hat{v}<em>i &#x3D; \lfloor \frac{v_i}{k} \rfloor$. Now values are extremely crushed bounding the maximum sum parameter array $V &#x3D; \frac{n \times v</em>{max}}{k} &#x3D; \frac{2n^2}{\epsilon}$.</li>
+<li>Run the flipped Knapsack DP to minimize weight aiming for exactly target value $\hat{j}$: Let $dp(i, \hat{j}) &#x3D; \min(dp(i-1, \hat{j}), dp(i-1, \hat{j} - \hat{v}_i) + w_i)$.</li>
+<li>Output the subset yielding the max truncated value within capacity $W$.</li>
+</ol>
+<h4 id="2-1-Correctness-Proof-Approximation-Ratio"><a href="#2-1-Correctness-Proof-Approximation-Ratio" class="headerlink" title="2.1 Correctness Proof (Approximation Ratio)"></a>2.1 Correctness Proof (Approximation Ratio)</h4><p><strong>Goal</strong>: Prove the FPTAS provides value $\ge \frac{OPT}{1+\epsilon}$.</p>
+<ul>
+<li>Let $\hat{S}$ be the output subset using modified values. Let $S_{opt}$ be the theoretic optimal subset for unmodified values.</li>
+<li>Since we round down, $v_i \ge k \hat{v}_i \ge v_i - k$.</li>
+<li>The output of the exact DP on chopped values gives $\hat{S}$. Thus the summation of $\hat{v}$ over $\hat{S}$ MUST mathematically be $\ge$ the summation of $\hat{v}$ over any valid set, including $S_{opt}$.</li>
+<li>Unpacking:<br>$\sum_{x \in \hat{S}} v_x \ge k \sum_{x \in \hat{S}} \hat{v}<em>x \ge k \sum</em>{x \in S_{opt}} \hat{v}<em>x \ge k \sum</em>{x \in S_{opt}} (\frac{v_x}{k} - 1)$</li>
+<li>$\sum_{x \in S_{opt}} v_x - k \cdot n$. (Because there are at most $n$ items, losing precision $k$ happens no more than $n$ times). </li>
+<li>Remember $k &#x3D; \frac{\epsilon \cdot v_{max}}{2n}$. Thus bounded subtraction error is precisely: $OPT - \frac{\epsilon \cdot v_{max}}{2}$.</li>
+<li>Remember $\epsilon &lt; 1$, and $v_{max} \le OPT$. Therefore $\frac{\epsilon}{2} OPT \le \epsilon \cdot OPT$.</li>
+<li>Giving original returned value $\ge OPT (1 - \frac{\epsilon}{2}) \ge \frac{OPT}{1+\epsilon}$. $\blacksquare$</li>
+</ul>
+<hr>
+<h2 id="Lecture-4-Shortest-Path-Dynamic-Programming-Bellman-Ford-Floyd-Warshall"><a href="#Lecture-4-Shortest-Path-Dynamic-Programming-Bellman-Ford-Floyd-Warshall" class="headerlink" title="Lecture 4: Shortest Path Dynamic Programming (Bellman-Ford &amp; Floyd-Warshall)"></a>Lecture 4: Shortest Path Dynamic Programming (Bellman-Ford &amp; Floyd-Warshall)</h2><h3 id="1-Bellman-Ford-Algorithm-Single-Source-Shortest-Path-with-Negative-Edges"><a href="#1-Bellman-Ford-Algorithm-Single-Source-Shortest-Path-with-Negative-Edges" class="headerlink" title="1. Bellman-Ford Algorithm (Single-Source Shortest Path with Negative Edges)"></a>1. Bellman-Ford Algorithm (Single-Source Shortest Path with Negative Edges)</h3><p><strong>Problem</strong>: Find shortest paths from a source node $s$ to all other vertices $v$ in a graph $G&#x3D;(V, E)$ permitting negative edge weights (provided there remain no negative-weight cycles).<br><em>Dijkstra fails here</em> because greedy extraction breaks if future paths offer negative refunds. Bellman-Ford applies DP on the number of edges.</p>
+<h4 id="1-1-How-to-use-the-algorithm-Step-by-step-2"><a href="#1-1-How-to-use-the-algorithm-Step-by-step-2" class="headerlink" title="1.1 How to use the algorithm (Step-by-step)"></a>1.1 How to use the algorithm (Step-by-step)</h4><p><strong>Practical Execution</strong>:</p>
+<ol>
+<li><strong>Initialize</strong>: Set the distance to your starting node $s$ as $0$ ($d[s] &#x3D; 0$). Set the distance to all other nodes to $\infty$ ($d[v] &#x3D; \infty$).</li>
+<li><strong>Loop $n-1$ times</strong>: (where $n$ is the total number of vertices).</li>
+<li><strong>Relax Edges</strong>: In <em>each</em> loop, go through EVERY edge $(u,v)$ in the graph exactly once.<ul>
+<li>For each edge, check: is $d[u] + \text{weight}(u, v) &lt; d[v]$?</li>
+<li>If yes, update it: $d[v] &#x3D; d[u] + \text{weight}(u, v)$.</li>
+</ul>
+</li>
+<li><strong>Check for Negative Cycles (Optional 1 extra loop)</strong>: Run the relaxation on all edges one more time (the $n$-th time). If any distance $d[v]$ STILL gets smaller, your graph has a negative weight cycle and no shortest path exists!</li>
+</ol>
+<p><strong>Complexity Analysis</strong>:<br><strong>Why is it $O(n \cdot m)$?</strong> It runs $n-1$ outermost loops. Each loop processes all $m$ edges exactly once. Multiplying them gives $O(n \cdot m)$. (When the graph is fully connected completely dense, $m&#x3D;n^2$, causing $O(n^3)$ limits).</p>
+<h4 id="1-2-Detecting-Negative-Cycles"><a href="#1-2-Detecting-Negative-Cycles" class="headerlink" title="1.2 Detecting Negative Cycles"></a>1.2 Detecting Negative Cycles</h4><p>If the graph contains a negative loop, looping infinitely reduces costs down to $-\infty$.<br>To computationally capture existence of a negative cycle:</p>
+<ol>
+<li>Don&#39;t trace from just a given $s$ arbitrarily as that sub-graph partition might not access the isolated loop! Introduce a &quot;dummy node&quot; $s_{global}$ holding an initialized distance 0 array binding pointing uniformly to absolutely all vertices!</li>
+<li>Execute Bellman Ford over this exact $G&#39;$ environment calculating exactly $n$ loops!</li>
+<li>If after calculating pass $k&#x3D;n$ versus bounds limit $k&#x3D;n-1$, you detect strictly a reduction drop $d[v][n] &lt; d[v][n-1]$ somewhere, flag TRUE. A strictly simpler node path bounds out at $n-1$. The loop iteration forces value shedding. Memory resolves $O(n \cdot m)$.</li>
+</ol>
+<h3 id="2-Floyd-Warshall-Algorithm-All-Pairs-Shortest-Path"><a href="#2-Floyd-Warshall-Algorithm-All-Pairs-Shortest-Path" class="headerlink" title="2. Floyd-Warshall Algorithm (All-Pairs Shortest Path)"></a>2. Floyd-Warshall Algorithm (All-Pairs Shortest Path)</h3><p><strong>Problem</strong>: Find shortest paths between ALL pairs $(u, v)$ across dense graphs. Simply broadcasting Bellman Ford per nodes costs heavily: $O(n^2 m)$. Floyd-Warshall acts faster on densely populated paths exploiting a localized inner node enumeration bounded DP logic natively targeting $O(n^3)$.</p>
+<h4 id="2-1-How-to-use-the-algorithm-Step-by-step-2"><a href="#2-1-How-to-use-the-algorithm-Step-by-step-2" class="headerlink" title="2.1 How to use the algorithm (Step-by-step)"></a>2.1 How to use the algorithm (Step-by-step)</h4><p><strong>Practical Execution</strong>:</p>
+<ol>
+<li><strong>Initialize the Matrix</strong>: Create an $n \times n$ distance matrix $D$. <ul>
+<li>For every diagonal entry, set $D[i][i] &#x3D; 0$.</li>
+<li>For every direct edge from $i$ to $j$, set $D[i][j] &#x3D; \text{weight}(i,j)$.</li>
+<li>For all other missing edges, set $D[i][j] &#x3D; \infty$.</li>
+</ul>
+</li>
+<li><strong>Three Nested Loops</strong>:<ul>
+<li>Outer loop $k$ from $1$ to $n$ (The &quot;stepping stone&quot; node).</li>
+<li>Middle loop $i$ from $1$ to $n$ (The starting node).</li>
+<li>Inner loop $j$ from $1$ to $n$ (The ending node).</li>
+</ul>
+</li>
+<li><strong>The Core Update</strong>: Inside the inner loop, update $D[i][j]$ by checking if going through node $k$ is shorter than the direct path:<br><code>D[i][j] = min(D[i][j], D[i][k] + D[k][j])</code></li>
+</ol>
+<p><strong>Complexity Analysis</strong>:<br><strong>Time limit is $\mathbf{O(n^3)}$.</strong> <strong>Why?</strong> There are exactly 3 nested iterative loops tracing nodes tracing exactly fully $n$ times bounds limit mapping boundaries parameters exactly scaling $n \times n \times n &#x3D; O(n^3)$ bounds. Dropping matrix scalar $k$ precisely explicitly cleanly simplifies space bounds exactly mapped $O(n^2)$.</p>
+<hr>
+<h2 id="Lecture-5-5-1-Graph-Basics-DFS-BFS-Digraphs"><a href="#Lecture-5-5-1-Graph-Basics-DFS-BFS-Digraphs" class="headerlink" title="Lecture 5 &amp; 5.1: Graph Basics, DFS, BFS &amp; Digraphs"></a>Lecture 5 &amp; 5.1: Graph Basics, DFS, BFS &amp; Digraphs</h2><h3 id="1-Depth-First-Search-DFS-Breadth-First-Search-BFS"><a href="#1-Depth-First-Search-DFS-Breadth-First-Search-BFS" class="headerlink" title="1. Depth-First Search (DFS) &amp; Breadth-First Search (BFS)"></a>1. Depth-First Search (DFS) &amp; Breadth-First Search (BFS)</h3><p><strong>Problem</strong>: Traverse an undirected (or directed) graph to find connected vertices, identify connected components, output a spanning tree, or detect cycles.</p>
+<h4 id="1-1-How-to-use-the-algorithms-Step-by-step"><a href="#1-1-How-to-use-the-algorithms-Step-by-step" class="headerlink" title="1.1 How to use the algorithms (Step-by-step)"></a>1.1 How to use the algorithms (Step-by-step)</h4><p><strong>DFS (Depth-First Search)</strong>: Follow paths as deeply as possible before backtracking.</p>
+<ul>
+<li>Implement using recursion.</li>
+<li>Initialize <code>visited[v] = False</code> for all $v$.</li>
+<li><code>DFS(u)</code>: <ol>
+<li><code>visited[u] = True</code></li>
+<li>For each neighbor $w$ of $u$, if <code>visited[w] == False</code>, record $u$ as the parent of $w$ (to trace the Spanning Tree) and recursively call <code>DFS(w)</code>.</li>
+</ol>
+</li>
+</ul>
+<p><strong>BFS (Breadth-First Search)</strong>: Explore layer by layer uniformly.</p>
+<ul>
+<li>Implement using a FIFO Queue.</li>
+<li>Initialize <code>visited</code> array, set <code>visited[root] = True</code> and enqueue the root.</li>
+<li>Loop <code>while Queue is not empty</code>:<ol>
+<li>Dequeue $v$.</li>
+<li>For each neighbor $w$ of $v$, if <code>visited[w] == False</code>, mark it <code>True</code>, enqueue $w$, and record its parent.</li>
+</ol>
+</li>
+</ul>
+<p><strong>Cycle Detection</strong>: In DFS, if you are exploring $v$ and encounter a neighbor $w$ that is already <code>visited</code> AND $w \neq \text{parent}[v]$, this is a <strong>Backward Edge</strong>. A backward edge actively guarantees a cycle exists in the graph.</p>
+<h4 id="1-2-Correctness-Proof-DFS-Connectivity"><a href="#1-2-Correctness-Proof-DFS-Connectivity" class="headerlink" title="1.2 Correctness Proof (DFS Connectivity)"></a>1.2 Correctness Proof (DFS Connectivity)</h4><p><strong>Goal</strong>: Prove that if $u$ and $v$ are connected in graph $G$, then <code>DFS(u)</code> correctly sets <code>visited[v] = True</code>.<br><strong>Proof by Contradiction</strong>:</p>
+<ol>
+<li>Suppose $u$ and $v$ are connected by some physical path $P &#x3D; (v_0, v_1, \dots, v_\ell)$ where $v_0 &#x3D; u$ and $v_\ell &#x3D; v$.</li>
+<li>Assume for the sake of contradiction that <code>visited[v] = False</code> at the end of the algorithm.</li>
+<li>Since $u$ is the start node, <code>visited[u] = True</code>. Tracing along the path $P$, there must exist some adjacent link $(v_{i-1}, v_i)$ where $v_{i-1}$ was marked <code>True</code> but $v_i$ remained <code>False</code>.</li>
+<li>However, the definition of DFS ensures that absolutely all neighbors of a visited node are enumerated. Thus, when <code>DFS</code> explored $v_{i-1}$, it necessarily looked at $v_i$. Since $v_i$ was <code>False</code>, DFS would have been forced to explore $v_i$, ensuring <code>visited[v_i] = True</code>.</li>
+<li>This is a direct contradiction. Thus, all reachable vertices $v$ fundamentally resolve to <code>True</code>. $\blacksquare$</li>
+</ol>
+<h4 id="1-3-Complexity-Analysis"><a href="#1-3-Complexity-Analysis" class="headerlink" title="1.3 Complexity Analysis"></a>1.3 Complexity Analysis</h4><p><strong>Time is strictly $\mathbf{O(n+m)}$.</strong> <strong>Why?</strong> Both algorithms process every vertex from the stack&#x2F;queue exactly once ($O(n)$). Inside the loop, it checks only its direct neighbor edges. Across all nodes, every edge in the graph is checked at most twice ($2m$), yielding $O(m)$ work. Thus: $O(n) + O(m) &#x3D; O(n+m)$.</p>
+<hr>
+<h3 id="2-Topological-Sorting-Directed-Acyclic-Graphs"><a href="#2-Topological-Sorting-Directed-Acyclic-Graphs" class="headerlink" title="2. Topological Sorting (Directed Acyclic Graphs)"></a>2. Topological Sorting (Directed Acyclic Graphs)</h3><p><strong>Problem</strong>: Given a Directed Acyclic Graph (DAG), order the vertices so that all directed edges perfectly point from left to right (from earlier vertices to later vertices).</p>
+<h4 id="2-1-How-to-use-the-algorithm-Step-by-step-3"><a href="#2-1-How-to-use-the-algorithm-Step-by-step-3" class="headerlink" title="2.1 How to use the algorithm (Step-by-step)"></a>2.1 How to use the algorithm (Step-by-step)</h4><p><strong>In-Degree Method ($O(n+m)$)</strong>:</p>
+<ol>
+<li>Compute the <code>in-degree</code> (number of incoming edges) for all vertices.</li>
+<li>Load all vertices with <code>in-degree == 0</code> (Source vertices) into a queue $Z$.</li>
+<li>Keep a counter starting at $1$.</li>
+<li>Loop while $Z$ is not empty:<ul>
+<li>Pop vertex $u$ and assign it the current counter label. Increment the counter.</li>
+<li>For all outgoing edges $(u, w)$, decrement the local <code>in-degree[w]</code> by $1$.</li>
+<li>If <code>in-degree[w]</code> drops identically to $0$, enqueue $w$ into $Z$.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Complexity</strong>: $\mathbf{O(n+m)}$. <strong>Why?</strong> Finding the initial in-degrees sweeps $n$ vertices and $m$ edges ($O(n+m)$). Every vertex enters the zero-degree queue exactly once ($O(n)$ ops), and we exactly decrement the in-degree of its outgoing edges exactly once cumulatively spanning the graph run limits ($O(m)$ limits). Total sequence execution is linearly strict $O(n+m)$.</p>
+<p><em>(Note: Running a standard DFS and pushing vertices into a stack exactly when they finish exploration naturally builds a perfectly reversed Topological Sort).</em></p>
+<hr>
+<h3 id="3-Strongly-Connected-Components-Kosaraju-s-Algorithm"><a href="#3-Strongly-Connected-Components-Kosaraju-s-Algorithm" class="headerlink" title="3. Strongly Connected Components (Kosaraju&#39;s Algorithm)"></a>3. Strongly Connected Components (Kosaraju&#39;s Algorithm)</h3><p><strong>Problem</strong>: In an arbitrary directed graph, a Strongly Connected Component (SCC) is a maximal subgroup where every node has a directed path to every other node in the subgroup. Identify all SCCs strictly in $O(n+m)$ time.</p>
+<h4 id="3-1-Structural-Theorems"><a href="#3-1-Structural-Theorems" class="headerlink" title="3.1 Structural Theorems"></a>3.1 Structural Theorems</h4><ul>
+<li>The SCCs coalesce identically to represent a &quot;Meta Graph&quot;, which is rigorously proven to be a DAG.</li>
+<li>Constructing a reversed graph $G^R$ (flipping all edge arrows) perfectly retains all native SCC groupings.</li>
+<li><strong>Critical Target</strong>: A topological Source SCC within $G^R$ inherently maps directly to a topological Sink SCC within the original graph $G$.</li>
+</ul>
+<h4 id="3-2-How-to-use-the-algorithm-Step-by-step"><a href="#3-2-How-to-use-the-algorithm-Step-by-step" class="headerlink" title="3.2 How to use the algorithm (Step-by-step)"></a>3.2 How to use the algorithm (Step-by-step)</h4><ol>
+<li>Construct the reversed graph $G^R$ by flipping all directed edges.</li>
+<li>Run DFS universally on the entire graph $G^R$, recording the exact <code>finish[v]</code> departure times for all vertices.</li>
+<li>Order the vertices locally in descending order strictly based on their computed <code>finish[v]</code>.<br><em>(Crucial trick: The node with the largest finish time in $G^R$ is mathematically guaranteed to belong to a Source SCC of $G^R$, which seamlessly corresponds exactly to a Sink SCC of $G$.)</em></li>
+<li>Run standard DFS exclusively on the original graph $G$, exploring unvisited nodes strictly following the sorted reverse sequence. Every individual DFS tree that spans successfully fully maps out an independent valid SCC cluster.</li>
+</ol>
+<p><strong>Complexity Analysis</strong>: <strong>Time is $\mathbf{O(n+m)}$.</strong> <strong>Why?</strong> The algorithm executes exactly 3 steps: 1) Reversing all edges takes $O(n+m)$. 2) The first total DFS pass takes $O(n+m)$. 3) The second total reverse DFS pass takes $O(n+m)$. Simply adding them together ($3 \times O(n+m)$) mathematically resolves to strictly linear bounds $O(n+m)$.</p>
+<hr>
+<h2 id="Lecture-5-2-Shortest-Paths-with-Positive-Weights-Dijkstra"><a href="#Lecture-5-2-Shortest-Paths-with-Positive-Weights-Dijkstra" class="headerlink" title="Lecture 5.2: Shortest Paths with Positive Weights (Dijkstra)"></a>Lecture 5.2: Shortest Paths with Positive Weights (Dijkstra)</h2><p><strong>Problem</strong>: Find shortest paths from a single source node $s$ to all other vertices. Unlike Bellman-Ford, it does NOT handle negative edge weights.</p>
+<h3 id="1-Dijkstra-s-Algorithm"><a href="#1-Dijkstra-s-Algorithm" class="headerlink" title="1. Dijkstra&#39;s Algorithm"></a>1. Dijkstra&#39;s Algorithm</h3><h4 id="1-1-How-to-use-the-algorithm-Step-by-step-3"><a href="#1-1-How-to-use-the-algorithm-Step-by-step-3" class="headerlink" title="1.1 How to use the algorithm (Step-by-step)"></a>1.1 How to use the algorithm (Step-by-step)</h4><p><strong>Practical Execution</strong>:</p>
+<ol>
+<li><strong>Initialize</strong>: Set starting node distance $d[s] &#x3D; 0$, and all others to $d[v] &#x3D; \infty$. Mark all nodes as &quot;Unvisited&quot;. </li>
+<li><strong>Pick the Closest Node</strong>: From the unvisited nodes, pick the node $u$ with the smallest distance $d[u]$. (Initially, this is $s$).</li>
+<li><strong>Lock It</strong>: Mark node $u$ as &quot;Visited&quot; (its shortest distance is now finalized forever).</li>
+<li><strong>Relax Neighbors</strong>: Look at all unvisited neighbors $v$ of node $u$.<ul>
+<li>Check: is $d[u] + \text{weight}(u, v) &lt; d[v]$?</li>
+<li>If yes, update it: $d[v] &#x3D; d[u] + \text{weight}(u, v)$.</li>
+</ul>
+</li>
+<li><strong>Repeat</strong>: Go back to Step 2 and repeat until all nodes are visited (or the remaining unvisited nodes are at $\infty$).</li>
+</ol>
+<h4 id="1-2-Correctness-Proof"><a href="#1-2-Correctness-Proof" class="headerlink" title="1.2 Correctness Proof"></a>1.2 Correctness Proof</h4><p><strong>Goal</strong>: Prove extracting the smallest estimate $u$ optimally locks the definitive true shortest distance exactly as $d[u] &#x3D; SD(u)$.<br><strong>Proof via Induction on Set $|A|$</strong>:</p>
+<ul>
+<li><strong>Base Case</strong>: $|A|&#x3D;1$. The set purely contains $s$. The bound is strictly true since $d[s] &#x3D; 0 &#x3D; SD(s)$.</li>
+<li><strong>Inductive Hypothesis</strong>: Assume for any $|A| &#x3D; i$, every vertex $x \in A$ inherently holds the true $d[x] &#x3D; SD(x)$.</li>
+<li><strong>Inductive Step</strong>: When the algorithm extracts the smallest queue target $u$, assume contrarily that a shorter logical physical path $P$ routes to $u$. <ul>
+<li>Since $P$ targets $u$ escaping $A$&#39;s border, let $x$ be the last node inside $A$, pointing to $y$ purely outside $A$. </li>
+<li>By hypothesis, $d[x] &#x3D; SD(x)$. The relaxing step ensured $d[y] &#x3D; SD(y)$.</li>
+<li>Because all graph weights are strictly $\ge 0$, extending the path from $y$ to $u$ guarantees $SD(y) \le SD(u)$.</li>
+<li>Thus, $d[y] &#x3D; SD(y) \le SD(u)$. </li>
+<li>However, the algorithm extracted $u$ <em>before</em> $y$, meaning $d[u] \le d[y]$.</li>
+<li>These inequalities collide: $d[u] \le d[y] \le SD(u) \le d[u]$. This bounds strictly forces $d[u] &#x3D; SD(u)$. $\blacksquare$</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-3-Complexity-Analysis-1"><a href="#1-3-Complexity-Analysis-1" class="headerlink" title="1.3 Complexity Analysis"></a>1.3 Complexity Analysis</h4><p><strong>Why is it $O((n+m) \log n)$?</strong> We push exactly $n$ vertices into the heap and pop them ($O(n \log n)$ time). We check a maximum of $m$ edges for relaxations, causing up to $m$ decrease-key reorganizations ($m \times O(\log n)$). Summing equals $O((n+m) \log n)$.<br><em>(Note: Fibonacci Heap cleanly drops decrease-key cost to $O(1)$, yielding precisely $\mathbf{O(n \log n + m)}$).</em></p>
+<hr>
+<h2 id="Lecture-6-Greedy-Algorithms-MST-Scheduling-Huffman-Codes"><a href="#Lecture-6-Greedy-Algorithms-MST-Scheduling-Huffman-Codes" class="headerlink" title="Lecture 6: Greedy Algorithms (MST, Scheduling, Huffman Codes)"></a>Lecture 6: Greedy Algorithms (MST, Scheduling, Huffman Codes)</h2><h3 id="1-Minimum-Spanning-Tree-The-Cut-Property"><a href="#1-Minimum-Spanning-Tree-The-Cut-Property" class="headerlink" title="1. Minimum Spanning Tree &amp; The Cut Property"></a>1. Minimum Spanning Tree &amp; The Cut Property</h3><p><strong>Problem</strong>: Find a spanning tree $T \subseteq E$ minimizing the sum of edge weights.<br><strong>The Cut Property Theorem</strong>: For any subset $S \subset V$, if edge $e&#x3D;(x,y)$ is the lightest edge strictly crossing the cut between $S$ and $V-S$, then every valid MST MUST contain $e$.<br><strong>Correctness Proof (Exchange Argument)</strong>:</p>
+<ol>
+<li>Suppose an optimal MST $T^*$ does not contain $e$.</li>
+<li>Adding $e$ to $T^*$ creates a cycle. This cycle must contain another edge $e&#39;$ crossing the exact same cut.</li>
+<li>Since $e$ is the absolute lightest edge crossing the cut, $w(e) \le w(e&#39;)$.</li>
+<li>Swap $e&#39;$ with $e$. The new tree $T$ has weight $W - w(e&#39;) + w(e) \le W$. Thus $T$ is an MST containing $e$. $\blacksquare$</li>
+</ol>
+<h3 id="2-Prim-s-Algorithm"><a href="#2-Prim-s-Algorithm" class="headerlink" title="2. Prim&#39;s Algorithm"></a>2. Prim&#39;s Algorithm</h3><p>Maintains a Min-Heap <code>min_weight[v]</code> of distances from cut $S$ to $V-S$. Extracts the lightest node and relaxes its neighbors into the boundary.<br><strong>Complexity</strong>: $\mathbf{O((n+m) \log n)}$. <strong>Why?</strong> Finding the lightest nodes requires $n$ extractions from a Min-Heap. Updating neighborhood crossing bounds checks $m$ edges conditionally triggering $m$ decrease-key bound logarithmic boundaries. Summing equates identically exactly mathematical executing strictly mapping boundaries $O((n+m)\log n)$.</p>
+<h3 id="2-5-Kruskal-s-Algorithm-Union-Find"><a href="#2-5-Kruskal-s-Algorithm-Union-Find" class="headerlink" title="2.5 Kruskal&#39;s Algorithm &amp; Union-Find"></a>2.5 Kruskal&#39;s Algorithm &amp; Union-Find</h3><p><strong>Problem</strong>: Find the MST of a graph by selecting edges globally from smallest to largest.</p>
+<h4 id="1-1-How-to-use-the-algorithm-Step-by-step-4"><a href="#1-1-How-to-use-the-algorithm-Step-by-step-4" class="headerlink" title="1.1 How to use the algorithm (Step-by-step)"></a>1.1 How to use the algorithm (Step-by-step)</h4><p><strong>Practical Execution</strong>:</p>
+<ol>
+<li><strong>Pre-sort</strong>: Sort all edges $E$ in the graph in ascending order of their weights.</li>
+<li><strong>Initialize</strong>: Create a Disjoint-Set (Union-Find) data structure where every single vertex $v \in V$ is initially in its own isolated component.</li>
+<li><strong>Iterate</strong>: Go through the sorted edges one by one (starting from the lightest). Let the current edge be $e &#x3D; (u,v)$.<ul>
+<li>Check if $u$ and $v$ are in the same component. (Does <code>Find(u) == Find(v)</code>?)</li>
+<li>If <strong>NO</strong>, adding this edge won&#39;t create a cycle! Take it: add $e$ to your MST, and merge the components (<code>Union(u, v)</code>).</li>
+<li>If <strong>YES</strong>, adding this edge creates a cycle. Skip it and move to the next edge.</li>
+</ul>
+</li>
+<li>Stop when your MST has exactly $n-1$ edges.</li>
+</ol>
+<p><strong>Complexity</strong>: $\mathbf{O(m \log n)}$.<br><strong>Why?</strong> Sorting all exactly $m$ edges dominates the time taking strictly $O(m \log m) &#x3D; O(m \log n)$. Inside the loop, computing exactly $m$ <code>Find</code> operations and $n$ <code>Union</code> operations executes effectively instantaneously $O(1)$ per request (technically Inverse-Ackermann $\alpha(n)$, which is $\le 4$ operations limit bound map). Therefore the sorting phase precisely dictates identical constraints $O(m \log n)$.</p>
+<h3 id="3-Hard-Deadline-Scheduling-Earliest-Deadline-First-EDF"><a href="#3-Hard-Deadline-Scheduling-Earliest-Deadline-First-EDF" class="headerlink" title="3. Hard Deadline Scheduling (Earliest Deadline First - EDF)"></a>3. Hard Deadline Scheduling (Earliest Deadline First - EDF)</h3><p><strong>Algorithm (EDF)</strong>: Pre-emptively schedule the available task with the earliest deadline.<br><strong>Correctness Proof (Exchange Argument)</strong>:</p>
+<ol>
+<li>Let $OPT$ be an optimal schedule meeting all deadlines but occasionally disagreeing with EDF at time $t$.</li>
+<li>At time $t$, $OPT$ schedules job $J_1$ despite job $J_2$ being available with an earlier deadline ($d_2 &lt; d_1$).</li>
+<li>$OPT$ eventually processes $J_2$ at some later time $t&#39;$.</li>
+<li>Swap the execution lengths of $J_1$ and $J_2$ at time $t$ and $t&#39;$.</li>
+<li>Since $d_2 &lt; d_1$, pushing $J_2$ earlier perfectly guarantees it meets its deadline. Pushing $J_1$ later to the slot previously held by $J_2$ is perfectly safe, because that slot is strictly $\le d_2 &lt; d_1$. Thus the deadline bounds hold safely. $\blacksquare$</li>
+</ol>
+<h3 id="4-Huffman-Codes-Optimal-Prefix-Compression"><a href="#4-Huffman-Codes-Optimal-Prefix-Compression" class="headerlink" title="4. Huffman Codes (Optimal Prefix Compression)"></a>4. Huffman Codes (Optimal Prefix Compression)</h3><p><strong>Algorithm</strong>: Iteratively merge the two characters with the lowest frequencies $f(x), f(y)$ into a single subtree node with frequency $x+y$. Result is an optimal prefix-free binary tree mapping.</p>
+<hr>
+<h2 id="Lecture-7-Max-Flow-Min-Cut"><a href="#Lecture-7-Max-Flow-Min-Cut" class="headerlink" title="Lecture 7: Max Flow &amp; Min Cut"></a>Lecture 7: Max Flow &amp; Min Cut</h2><p><strong>Problem</strong>: Push max flow from $s$ to $t$ strictly subject to edge capacities $c(u,v) &gt; 0$.</p>
+<h3 id="1-Residual-Networks-Ford-Fulkerson"><a href="#1-Residual-Networks-Ford-Fulkerson" class="headerlink" title="1. Residual Networks &amp; Ford-Fulkerson"></a>1. Residual Networks &amp; Ford-Fulkerson</h3><p><strong>Residual Network $G_f$</strong>:</p>
+<ol>
+<li><strong>Forward Edges</strong>: Capacity $&#x3D; c(u,v) - f(u,v)$.</li>
+<li><strong>Backward Edges</strong>: Capacity $&#x3D; f(u,v)$ (allows &quot;undoing&quot; flow).<br><strong>Algorithm</strong>: Repeatedly find any path from $s$ to $t$ in $G_f$, then bottleneck augment $rc_P$ flow, until no $s-t$ path exists.<br><strong>Complexity</strong>: $\mathbf{O(m \cdot C_{max})}$, pseudo-polynomial. <strong>Why?</strong> The max possible flow is $C_{max}$. Because Ford-Fulkerson works universally with whole integers, each augmented path guarantees the total flow strictly increases by at least 1. Running a basic path search (DFS&#x2F;BFS) costs exactly $O(m)$ time. At maximum $C_{max}$ loops checking $O(m)$ edges, it yields limits explicitly $O(m \cdot C_{max})$.</li>
+</ol>
+<h3 id="2-Edmonds-Karp-Scaling-Algorithms"><a href="#2-Edmonds-Karp-Scaling-Algorithms" class="headerlink" title="2. Edmonds-Karp &amp; Scaling Algorithms"></a>2. Edmonds-Karp &amp; Scaling Algorithms</h3><ul>
+<li><strong>Scaling FF</strong>: Sets threshold $\Delta$, routes bounds $\ge \Delta$, and halves $\Delta$. Limit bounds strictly yield $\mathbf{O(m^2 \log C)}$.</li>
+<li><strong>Edmonds-Karp</strong>: Use strictly <strong>BFS</strong> on $G_f$ (fewest edges). Guarantees $\mathbf{O(m^2 n)}$. <strong>Why?</strong> Using shortest-path bounds mathematically limits the absolute number of total augmenting paths the algorithm can take to exactly $O(n \cdot m)$. A pure BFS step requires $O(m)$. Thus mapping mathematical execution boundary bounds exactly yields precisely $\mathbf{O(n m^2)}$.</li>
+</ul>
+<h3 id="3-Max-Flow-Min-Cut-Theorem"><a href="#3-Max-Flow-Min-Cut-Theorem" class="headerlink" title="3. Max-Flow Min-Cut Theorem"></a>3. Max-Flow Min-Cut Theorem</h3><p><strong>Theorem</strong>: The value of the maximum flow mathematically identically equals the capacity of the Minimum Cut (a partition separating $s$ and $t$ with minimum crossing capacity).</p>
+<hr>
+<h2 id="Lecture-8-NP-Completeness-Reductions"><a href="#Lecture-8-NP-Completeness-Reductions" class="headerlink" title="Lecture 8: NP-Completeness &amp; Reductions"></a>Lecture 8: NP-Completeness &amp; Reductions</h2><h3 id="4-Maximum-Bipartite-Matching-Max-Flow-Application"><a href="#4-Maximum-Bipartite-Matching-Max-Flow-Application" class="headerlink" title="4. Maximum Bipartite Matching (Max Flow Application)"></a>4. Maximum Bipartite Matching (Max Flow Application)</h3><p><strong>Problem</strong>: Given a bipartite graph $G&#x3D;(L \cup R, E)$, find the maximum number of edge pairings such that no vertex shares more than one edge (e.g., assigning applicants $L$ to distinct jobs $R$).</p>
+<h4 id="4-1-How-to-use-the-algorithm-Step-by-step-1"><a href="#4-1-How-to-use-the-algorithm-Step-by-step-1" class="headerlink" title="4.1 How to use the algorithm (Step-by-step)"></a>4.1 How to use the algorithm (Step-by-step)</h4><p><strong>Practical Execution</strong>:</p>
+<ol>
+<li><strong>Create Super-Nodes</strong>: Add a dummy Source node $s$ and a dummy Sink node $t$.</li>
+<li><strong>Build the Flow Network</strong>: <ul>
+<li>Connect $s$ to every single node in the left set $L$ with a strictly directed edge of capacity $&#x3D; 1$.</li>
+<li>Connect every node symmetrically in the right set $R$ to the Sink $t$ with a directed edge of capacity $&#x3D; 1$.</li>
+<li>Direct all original bipartite edges from $L \to R$. Set their capacities strictly to $1$ (or $\infty$, it computationally doesn&#39;t matter because the bottleneck is at the endpoints).</li>
+</ul>
+</li>
+<li><strong>Run Max Flow</strong>: Run Ford-Fulkerson on this directed network.</li>
+<li><strong>Extract Answer</strong>: The Max Flow directly maps identical to the Max Bipartite Match limit. Any intermediate edge $L \to R$ actively carrying flow $f&#x3D;1$ represents a definitively matched pair.</li>
+</ol>
+<p><strong>Complexity</strong>: $\mathbf{O(n \cdot m)}$.<br><strong>Why?</strong> Every augmenting path pushes an exact integer limit $+1$ flow. The absolute maximum flow physically cannot exceed the number of vertices $|L|$ (so $C_{max} \le n$). By the scaling rule mapping Ford-Fulkerson identically $O(m \cdot C_{max})$, plugging exactly strictly into tracking limit limits maps bounds exactly bounding $\mathbf{O(n \cdot m)}$.</p>
+<h3 id="1-P-vs-NP-Classifications"><a href="#1-P-vs-NP-Classifications" class="headerlink" title="1. P vs NP Classifications"></a>1. P vs NP Classifications</h3><ul>
+<li><strong>P</strong>: Problems solvable strictly in polynomial time ($O(n^c)$).</li>
+<li><strong>NP</strong>: Decision problems whose candidate solutions can be <strong>checked&#x2F;verified</strong> strictly in polynomial time. (Subset-sum, Path lengths, SAT).</li>
+<li><strong>NP-Complete (NPC)</strong>: The mathematically hardest problems in NP. If ANY NPC problem is solved in $P$, then mathematically $P&#x3D;NP$.</li>
+</ul>
+<h3 id="2-Polynomial-Time-Reduction-B-le-p-A"><a href="#2-Polynomial-Time-Reduction-B-le-p-A" class="headerlink" title="2. Polynomial-Time Reduction ($B \le_p A$)"></a>2. Polynomial-Time Reduction ($B \le_p A$)</h3><p><strong>Definition</strong>: Problem $B$ is polynomially reducible to problem $A$ if an input to $B$ can be transformed in polynomial time into an input to $A$ yielding identically matching Yes&#x2F;No results.<br><strong>Core Lemma</strong>: If $B \le_p A$ and $B$ is NP-complete, then $A$ MUST be NP-Complete (assuming $A \in NP$).</p>
+<h3 id="3-Key-Reduction-Chains-Exam-Tracing"><a href="#3-Key-Reduction-Chains-Exam-Tracing" class="headerlink" title="3. Key Reduction Chains (Exam Tracing)"></a>3. Key Reduction Chains (Exam Tracing)</h3><p>A massive chain of reductions mathematically maps to specific classic problems:</p>
+<p><strong>Formal Proof Structure ($B \le_p A$)</strong>:<br>To prove $A$ is NP-Complete, you must:</p>
+<ol>
+<li>Prove $A \in \text{NP}$ (Given a certificate&#x2F;solution, verify it in polynomial time).</li>
+<li>Choose a known NP-Complete problem $B$.</li>
+<li>Show how to <em>transform</em> any instance of $B$ into an instance of $A$ in polynomial time.</li>
+<li>Prove that $B$ is a YES-instance $\iff A$ is a YES-instance.</li>
+</ol>
+<p><strong>Key Reduction Templates (Exam Tracing)</strong>:</p>
+<h4 id="1-3SAT-le-p-Clique"><a href="#1-3SAT-le-p-Clique" class="headerlink" title="1. 3SAT $\le_p$ Clique"></a>1. 3SAT $\le_p$ Clique</h4><ul>
+<li><strong>Construction</strong>: For every single literal in every clause, drop a vertex. If there are $k$ clauses, you&#39;ll demand finding a Clique of size exactly $k$.</li>
+<li><strong>Edges (The Rule)</strong>: Connect every vertex to every other vertex EXCEPT:<ol>
+<li>Do not connect nodes within the <em>same</em> clause (forces picking exactly 1 literal per clause).</li>
+<li>Do not connect direct contradictory opposite variables (e.g., $x_1$ and $\bar{x_1}$).</li>
+</ol>
+</li>
+<li><strong>Why it works</strong>: A $k$-clique physically demands picking $k$ valid unconflicting nodes. Since no edges exist inside clauses, it forcefully spreads the choices across all clauses identically satisfying the 3SAT boolean logic.</li>
+</ul>
+<h4 id="2-Clique-le-p-Vertex-Cover"><a href="#2-Clique-le-p-Vertex-Cover" class="headerlink" title="2. Clique $\le_p$ Vertex Cover"></a>2. Clique $\le_p$ Vertex Cover</h4><ul>
+<li><strong>Construction</strong>: Given graph $G$ and target clique size $k$, generate the Complement Graph $\bar{G}$ (where edges exist only where edges were MISSING in $G$).</li>
+<li><strong>The Rule</strong>: Graph $G$ has a Clique of size $k$ $\iff$ Graph $\bar{G}$ has a Vertex Cover of size $n - k$.</li>
+<li><strong>Why it works</strong>: A Clique means all chosen nodes securely touch everything internally. The exact remaining external nodes identically form a shield guarding every non-clique edge bounding precisely the Vertex Cover in the complement layout.</li>
+</ul>
+<h4 id="3-3SAT-le-p-Directed-Hamiltonian-Path"><a href="#3-3SAT-le-p-Directed-Hamiltonian-Path" class="headerlink" title="3. 3SAT $\le_p$ Directed Hamiltonian Path"></a>3. 3SAT $\le_p$ Directed Hamiltonian Path</h4><ul>
+<li><strong>Construction</strong>: Build a massive ladder system. Each boolean variable $x_i$ maps to a &quot;diamond-chain&quot; pathway that can be traversed &quot;Left-to-Right&quot; (True) or &quot;Right-to-Left&quot; (False).</li>
+<li><strong>The Rule</strong>: Clauses form external jump nodes. If $x_i$ appears in $C_j$, provide an access ramp off the variable chain mapping down to touch the clause node uniquely from the correct boolean traversing direction.</li>
+<li><strong>Why it works</strong>: The single pathway physically forces you to commit to exclusively either True or False for each variable chain sequentially to reach the end sink. Touching all extra clause nodes guarantees every clause was satisfied by at least one valid literal ramp.</li>
+</ul>
+<h4 id="4-3SAT-le-p-Subset-Sum"><a href="#4-3SAT-le-p-Subset-Sum" class="headerlink" title="4. 3SAT $\le_p$ Subset Sum"></a>4. 3SAT $\le_p$ Subset Sum</h4><ul>
+<li><strong>Construction</strong>: Build a table of huge decimal numbers. Digits map column boundaries: 1 column per variable, 1 column per clause.</li>
+<li><strong>The Rule</strong>: Create two numbers per variable (representing mapping True or False). Both hold a &#39;$1$&#39; in that variable&#39;s column matrix. If they satisfy a specific target clause, they also put a mapped &#39;$1$&#39; in that specific clause column. Target sum matrix limits variables exactly to &#39;$1$&#39; and clause bounds identically exactly to &#39;$3$&#39;.</li>
+<li><strong>Why it works</strong>: Selecting integer sum subsets forces cleanly picking exclusively either the True or False number directly to satisfy the variable column boundary limits &#39;$1$&#39;. The final sum clauses mathematically resolving $1+1+1 &#x3D; 3$ ensures physical constraint satisfaction.</li>
+</ul>
+<p><em>(End of Cheat Sheet)</em></p>
+</article>
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#COMP3252-Final-Exam-Ultimate-Cheat-Sheet"><span class="toc-text">COMP3252 Final Exam Ultimate Cheat Sheet</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Ref"><span class="toc-text">Quick Ref</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Algorithm-Selection-Guide"><span class="toc-text">1. Algorithm Selection Guide</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-The-Master-Complexity-Table"><span class="toc-text">2. The Master Complexity Table</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Red-Flags-Trick-Questions-When-do-they-fail"><span class="toc-text">3. &quot;Red Flags&quot; &amp; Trick Questions (When do they fail?)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-1-Divide-and-Conquer"><span class="toc-text">Lecture 1: Divide and Conquer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-The-Master-Theorem"><span class="toc-text">1. The Master Theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Merge-Sort"><span class="toc-text">2. Merge Sort</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-How-to-use-the-algorithm-Step-by-step"><span class="toc-text">2.1 How to use the algorithm (Step-by-step)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Correctness-Proof"><span class="toc-text">2.2 Correctness Proof</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-Complexity-Analysis"><span class="toc-text">2.3 Complexity Analysis</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-Common-Exam-Problem-Types"><span class="toc-text">2.4 Common Exam Problem Types</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Finding-the-k-th-Largest-Element-Linear-Time-Selection"><span class="toc-text">3. Finding the k-th Largest Element (Linear Time Selection)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-How-to-use-the-algorithm-Step-by-step"><span class="toc-text">3.1 How to use the algorithm (Step-by-step)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-Correctness-Proof"><span class="toc-text">3.2 Correctness Proof</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-Common-Exam-Problem-Types"><span class="toc-text">3.3 Common Exam Problem Types</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Closest-Pair-of-Points-in-2D"><span class="toc-text">4. Closest Pair of Points in 2D</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-How-to-use-the-algorithm-Step-by-step"><span class="toc-text">4.1 How to use the algorithm (Step-by-step)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Correctness-Proof"><span class="toc-text">4.2 Correctness Proof</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Complexity-Analysis"><span class="toc-text">4.3 Complexity Analysis</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Fast-Integer-Multiplication-Karatsuba-Algorithm"><span class="toc-text">5. Fast Integer Multiplication (Karatsuba Algorithm)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-How-to-use-the-algorithm-Step-by-step"><span class="toc-text">5.1 How to use the algorithm (Step-by-step)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-Complexity-Analysis"><span class="toc-text">5.2 Complexity Analysis</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Fast-Matrix-Multiplication-Strassen-s-Algorithm"><span class="toc-text">6. Fast Matrix Multiplication (Strassen&#39;s Algorithm)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-The-Algorithm-Analysis"><span class="toc-text">6.1 The Algorithm &amp; Analysis</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-2-Fast-Fourier-Transform-FFT"><span class="toc-text">Lecture 2: Fast Fourier Transform (FFT)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Representation-of-Polynomials"><span class="toc-text">1. Representation of Polynomials</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Forward-FFT-Coefficient-to-Point-Value"><span class="toc-text">2. Forward FFT (Coefficient to Point-Value)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-How-it-works-Step-by-step"><span class="toc-text">2.1 How it works (Step-by-step)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Inverse-FFT-Point-Value-to-Coefficient"><span class="toc-text">3. Inverse FFT (Point-Value to Coefficient)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-Mathematical-Proof-of-Inverse-Matrix-Correctness"><span class="toc-text">3.1 Mathematical Proof of Inverse Matrix Correctness</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-3-Dynamic-Programming-Part-1-Design-Scheduling"><span class="toc-text">Lecture 3: Dynamic Programming (Part 1 - Design &amp; Scheduling)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Job-Scheduling-Weighted"><span class="toc-text">1. Job Scheduling (Weighted)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-How-to-use-the-algorithm-Step-by-step"><span class="toc-text">1.1 How to use the algorithm (Step-by-step)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Matrix-Chain-Multiplication"><span class="toc-text">2. Matrix-Chain Multiplication</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-How-to-use-the-algorithm-Step-by-step-1"><span class="toc-text">2.1 How to use the algorithm (Step-by-step)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-3-approx-The-Knapsack-Problem-FPTAS"><span class="toc-text">Lecture 3 (approx): The Knapsack Problem &amp; FPTAS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-0-1-Knapsack-DP-Solution"><span class="toc-text">1. 0&#x2F;1 Knapsack (DP Solution)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-How-to-use-the-algorithm-Step-by-step-1"><span class="toc-text">1.1 How to use the algorithm (Step-by-step)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Fully-Polynomial-Time-Approximation-Scheme-FPTAS"><span class="toc-text">2. Fully Polynomial-Time Approximation Scheme (FPTAS)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Correctness-Proof-Approximation-Ratio"><span class="toc-text">2.1 Correctness Proof (Approximation Ratio)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-4-Shortest-Path-Dynamic-Programming-Bellman-Ford-Floyd-Warshall"><span class="toc-text">Lecture 4: Shortest Path Dynamic Programming (Bellman-Ford &amp; Floyd-Warshall)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Bellman-Ford-Algorithm-Single-Source-Shortest-Path-with-Negative-Edges"><span class="toc-text">1. Bellman-Ford Algorithm (Single-Source Shortest Path with Negative Edges)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-How-to-use-the-algorithm-Step-by-step-2"><span class="toc-text">1.1 How to use the algorithm (Step-by-step)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-Detecting-Negative-Cycles"><span class="toc-text">1.2 Detecting Negative Cycles</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Floyd-Warshall-Algorithm-All-Pairs-Shortest-Path"><span class="toc-text">2. Floyd-Warshall Algorithm (All-Pairs Shortest Path)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-How-to-use-the-algorithm-Step-by-step-2"><span class="toc-text">2.1 How to use the algorithm (Step-by-step)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-5-5-1-Graph-Basics-DFS-BFS-Digraphs"><span class="toc-text">Lecture 5 &amp; 5.1: Graph Basics, DFS, BFS &amp; Digraphs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Depth-First-Search-DFS-Breadth-First-Search-BFS"><span class="toc-text">1. Depth-First Search (DFS) &amp; Breadth-First Search (BFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-How-to-use-the-algorithms-Step-by-step"><span class="toc-text">1.1 How to use the algorithms (Step-by-step)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-Correctness-Proof-DFS-Connectivity"><span class="toc-text">1.2 Correctness Proof (DFS Connectivity)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-Complexity-Analysis"><span class="toc-text">1.3 Complexity Analysis</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Topological-Sorting-Directed-Acyclic-Graphs"><span class="toc-text">2. Topological Sorting (Directed Acyclic Graphs)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-How-to-use-the-algorithm-Step-by-step-3"><span class="toc-text">2.1 How to use the algorithm (Step-by-step)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Strongly-Connected-Components-Kosaraju-s-Algorithm"><span class="toc-text">3. Strongly Connected Components (Kosaraju&#39;s Algorithm)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-Structural-Theorems"><span class="toc-text">3.1 Structural Theorems</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-How-to-use-the-algorithm-Step-by-step"><span class="toc-text">3.2 How to use the algorithm (Step-by-step)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-5-2-Shortest-Paths-with-Positive-Weights-Dijkstra"><span class="toc-text">Lecture 5.2: Shortest Paths with Positive Weights (Dijkstra)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Dijkstra-s-Algorithm"><span class="toc-text">1. Dijkstra&#39;s Algorithm</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-How-to-use-the-algorithm-Step-by-step-3"><span class="toc-text">1.1 How to use the algorithm (Step-by-step)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-Correctness-Proof"><span class="toc-text">1.2 Correctness Proof</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-Complexity-Analysis-1"><span class="toc-text">1.3 Complexity Analysis</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-6-Greedy-Algorithms-MST-Scheduling-Huffman-Codes"><span class="toc-text">Lecture 6: Greedy Algorithms (MST, Scheduling, Huffman Codes)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Minimum-Spanning-Tree-The-Cut-Property"><span class="toc-text">1. Minimum Spanning Tree &amp; The Cut Property</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Prim-s-Algorithm"><span class="toc-text">2. Prim&#39;s Algorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-Kruskal-s-Algorithm-Union-Find"><span class="toc-text">2.5 Kruskal&#39;s Algorithm &amp; Union-Find</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-How-to-use-the-algorithm-Step-by-step-4"><span class="toc-text">1.1 How to use the algorithm (Step-by-step)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Hard-Deadline-Scheduling-Earliest-Deadline-First-EDF"><span class="toc-text">3. Hard Deadline Scheduling (Earliest Deadline First - EDF)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Huffman-Codes-Optimal-Prefix-Compression"><span class="toc-text">4. Huffman Codes (Optimal Prefix Compression)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-7-Max-Flow-Min-Cut"><span class="toc-text">Lecture 7: Max Flow &amp; Min Cut</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Residual-Networks-Ford-Fulkerson"><span class="toc-text">1. Residual Networks &amp; Ford-Fulkerson</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Edmonds-Karp-Scaling-Algorithms"><span class="toc-text">2. Edmonds-Karp &amp; Scaling Algorithms</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Max-Flow-Min-Cut-Theorem"><span class="toc-text">3. Max-Flow Min-Cut Theorem</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-8-NP-Completeness-Reductions"><span class="toc-text">Lecture 8: NP-Completeness &amp; Reductions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Maximum-Bipartite-Matching-Max-Flow-Application"><span class="toc-text">4. Maximum Bipartite Matching (Max Flow Application)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-How-to-use-the-algorithm-Step-by-step-1"><span class="toc-text">4.1 How to use the algorithm (Step-by-step)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-P-vs-NP-Classifications"><span class="toc-text">1. P vs NP Classifications</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Polynomial-Time-Reduction-B-le-p-A"><span class="toc-text">2. Polynomial-Time Reduction ($B \le_p A$)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Key-Reduction-Chains-Exam-Tracing"><span class="toc-text">3. Key Reduction Chains (Exam Tracing)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3SAT-le-p-Clique"><span class="toc-text">1. 3SAT $\le_p$ Clique</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Clique-le-p-Vertex-Cover"><span class="toc-text">2. Clique $\le_p$ Vertex Cover</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3SAT-le-p-Directed-Hamiltonian-Path"><span class="toc-text">3. 3SAT $\le_p$ Directed Hamiltonian Path</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3SAT-le-p-Subset-Sum"><span class="toc-text">4. 3SAT $\le_p$ Subset Sum</span></a></li></ol></li></ol></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1778855337272" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
