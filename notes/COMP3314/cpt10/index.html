@@ -17,33 +17,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>Cpt1: 机器学习介绍 - Naucha</title>
+  <title>Cpt10: 多层网络 - Naucha</title>
 
   
-    <meta name="description" content="实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分： https:&#x2F;&#x2F;naughtychas.github.io&#x2F;notes&#x2F;COMP3354&#x2F;chapter1&#x2F;Chapter&nbsp;1&nbsp;&amp;&nbsp;10:&nbsp;数据学习介绍   AI, ML 和 DL这三个词是我们在本节课中会不停使用到的词。 Artificial Intelligence">
+    <meta name="description" content="在学习多层网络之前，我们先把目光放回单层神经网络： 单层神经网络下图是一个单层神经网络的示意图：  在每一个训练epoch中，我们不是凭感觉调整权重，而是通过计算代价函数对每个权重的偏导数，沿着梯度的方向迈出一小步，让模型的预测误差逐渐变小。这个更新规则看起来简单，但它背后有一个重要前提：所有权重必须同时更新，如果用&quot;算一个改一个&quot;的在线方式，梯度方向就会被污染，导致收敛不稳定">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Cpt1: 机器学习介绍">
-<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt1/">
+<meta property="og:title" content="Cpt10: 多层网络">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cpt10/">
 <meta property="og:site_name" content="Naucha">
-<meta property="og:description" content="实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分： https:&#x2F;&#x2F;naughtychas.github.io&#x2F;notes&#x2F;COMP3354&#x2F;chapter1&#x2F;Chapter&nbsp;1&nbsp;&amp;&nbsp;10:&nbsp;数据学习介绍   AI, ML 和 DL这三个词是我们在本节课中会不停使用到的词。 Artificial Intelligence">
+<meta property="og:description" content="在学习多层网络之前，我们先把目光放回单层神经网络： 单层神经网络下图是一个单层神经网络的示意图：  在每一个训练epoch中，我们不是凭感觉调整权重，而是通过计算代价函数对每个权重的偏导数，沿着梯度的方向迈出一小步，让模型的预测误差逐渐变小。这个更新规则看起来简单，但它背后有一个重要前提：所有权重必须同时更新，如果用&quot;算一个改一个&quot;的在线方式，梯度方向就会被污染，导致收敛不稳定">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
-<meta property="article:published_time" content="2026-01-27T08:16:00.000Z">
-<meta property="article:modified_time" content="2026-05-09T07:46:17.536Z">
+<meta property="article:published_time" content="2026-05-17T07:50:00.000Z">
+<meta property="article:modified_time" content="2026-05-17T13:58:11.872Z">
 <meta property="article:author" content="Naucha">
-<meta property="article:tag" content="分治法">
-<meta property="article:tag" content="归并排序">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
   
   
   
-  <meta name="keywords" content=",">
+  
 
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1779026300972">
+  <link rel="stylesheet" href="/css/main.css?v=1779026301024">
 
 
   
@@ -52,7 +50,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt1: 机器学习介绍","description":"实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分：\nhttps://naughtychas.github.io/notes/COMP3354/chapter1/Chapter&nbsp;1&nbsp;&&nbsp;10:&nbsp;数据学习介绍\n\n\nAI, ML 和 DL这三个词是我们在本节课中会不停使用到的词。\nArtificial Intelligen...","url":"https://naughtychas.github.io/notes/COMP3314/cpt1/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cpt10/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cpt10: 多层网络","description":"在学习多层网络之前，我们先把目光放回单层神经网络：\n单层神经网络下图是一个单层神经网络的示意图：\n\n在每一个训练epoch中，我们不是凭感觉调整权重，而是通过计算代价函数对每个权重的偏导数，沿着梯度的方向迈出一小步，让模型的预测误差逐渐变小。这个更新规则看起来简单，但它背后有一个重要前提：所有权重必须同时更新，如果用&quot;算一个改一个&quot;的在线方式，梯度方向就会被污染，导致收敛...","url":"https://naughtychas.github.io/notes/COMP3314/cpt10/"}</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -183,153 +181,343 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-05-09T07:46:17.536Z">2026-05-09</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-01-27T08:16:00.000Z">2026-01-27</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-05-17T13:58:11.872Z">2026-05-17</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-05-17T07:50:00.000Z">2026-05-17</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>Cpt1: 机器学习介绍</span></h1>
+        <h1 class="text title"><span>Cpt10: 多层网络</span></h1>
         
       </div>
     </div>
     
   </div>
-  </div><article class="md-text content"><p>实际上这一部分的很多概念都已经在COMP3354第一章里讲过了。建议你去看看这一部分：</p>
-<div class="tag-plugin link dis-select"><a class="link-card rich" title="Chapter&nbsp;1&nbsp;&&nbsp;10:&nbsp;数据学习介绍" href="/notes/COMP3354/chapter1/" cardlink autofill="icon,desc"><div class="top"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div><span class="cap link footnote">https://naughtychas.github.io/notes/COMP3354/chapter1/</span></div><div class="bottom"><span class="title">Chapter&nbsp;1&nbsp;&&nbsp;10:&nbsp;数据学习介绍</span><span class="cap desc footnote"></span></div></a></div>
-
+  </div><article class="md-text content"><p>在学习多层网络之前，我们先把目光放回单层神经网络：</p>
+<h2 id="单层神经网络"><a href="#单层神经网络" class="headerlink" title="单层神经网络"></a>单层神经网络</h2><p>下图是一个单层神经网络的示意图：</p>
+<p><img src="https://files.seeusercontent.com/2026/05/17/D7ug/pasted-image-1779004668771.webp" alt="pasted-image-1779004668771.webp"></p>
+<p>在每一个训练epoch中，我们不是凭感觉调整权重，而是通过计算代价函数对每个权重的偏导数，沿着梯度的方向迈出一小步，让模型的预测误差逐渐变小。这个更新规则看起来简单，但它背后有一个重要前提：所有权重必须同时更新，如果用&quot;算一个改一个&quot;的在线方式，梯度方向就会被污染，导致收敛不稳定。</p>
+<p>而且看看上面的图，在单层神经网络中，我们首先拥有 $x_m$ 个输入参数，每个参数都通过 $w_m$ 连接到 Net Input 函数，随后通过激活函数得到输出 $y$。这个结构虽然简单，但它的表达能力有限，象形组合本身只能够捕捉并表达线性关系，而无法捕捉更复杂的非线性关系。</p>
+<p>因此，我们想到了一个改进方式：使用一个非线性激活函数 $\phi(z)$ 来引入表达能力。</p>
 <hr>
-<h2 id="AI-ML-和-DL"><a href="#AI-ML-和-DL" class="headerlink" title="AI, ML 和 DL"></a>AI, ML 和 DL</h2><p>这三个词是我们在本节课中会不停使用到的词。</p>
-<p><strong>Artificial Intelligence (AI)</strong> 为人工智能。人工智能指任何能让机器模仿人类行为的技术。</p>
-<p>AI的一个子集叫做 <strong>Machine Learning (ML)</strong> ，也就是机器学习。机器学习的核心在于 <u>不需要刻意为行为做编程</u>，也就是说我们不需要告诉机器遇到什么规则做什么，而是给机器数据，机器使用统计学方法让它从经验中自我改进。</p>
-<p>ML的一个子集，同样包含在AI下 —— 叫做 <strong>Deep Learning (DL)</strong> ，深度学习。深度学习相比普通机器学习，使用多层神经网络来处理更高维度（更复杂的）数据，实现了图像，语言，音频的处理。可以说最近AI的爆火主要是这方面的突破与创新。</p>
+<p>还记得具体每个epoch是怎么计算的吗？我们计算权重：</p>
+<p>$$\mathbf{w :&#x3D; w + \delta w}$$</p>
+<p>这个向量 $w$ 是所有权重的集合，而 $\delta w$ 是每个权重的更新量。这个更新量是通过计算代价函数 $J(w)$ 对每个权重的偏导数得到的：</p>
+<p>$$\delta w &#x3D; -\eta \nabla J(w)$$</p>
+<p>在梯度下降优化中，我们会计算代价函数 $J(w)$ 对每个权重 $w$ 的偏导数 $\nabla J(w)$，然后沿着负梯度的方向更新权重。这里的 $\eta$ 是学习率，控制了每次更新的步长。</p>
+<p>我们定义激活函数为：</p>
+<p>$$\phi(z) &#x3D; z &#x3D; a$$</p>
+<p>净输入 $z$ 是输入 $x$ 和权重 $w$ 的线性组合：</p>
+<p>$$z &#x3D; \sum_{j} w_j x_j &#x3D; w^T x$$</p>
+<p>所以，虽然我们在计算梯度更新的时候引入了非线性激活函数 $\phi(z)$，在输出层我们使用阈值函数，来将连续的数值输出转换为离散的类别标签：</p>
+<p>$$\hat{y} &#x3D; \begin{cases} 1 &amp; \text{if } g(z) \geq 0 \ -1 &amp; \text{otherwise} \end{cases}$$</p>
+<p>最后在训练阶段，我们也会使用随机梯度下降 SGD 来更新权重。批量梯度下降每次计算的时候都会使用全量数据，而随机梯度下降则在每次计算梯度的时候只使用一个样本或者一小批样本。这样可以加速训练过程，并且由于引入了噪声，可能有助于跳出局部最优解。</p>
+<p>这些内容之前应该都是提过的了，所以如果你觉得这方面的知识还是很抽象，可以回去看看之前的章节。</p>
 <hr>
-<h2 id="机器学习的动机与定义"><a href="#机器学习的动机与定义" class="headerlink" title="机器学习的动机与定义"></a>机器学习的动机与定义</h2><h3 id="机器学习用在哪了？"><a href="#机器学习用在哪了？" class="headerlink" title="机器学习用在哪了？"></a>机器学习用在哪了？</h3><p>假如你被微软录用了，你被分配到了MS Office部门负责Outlook的开发，你的上级要求你在Outlook里添加一个模块来主动拦截垃圾邮件。<br>如果你在上世纪70年代入职，当时无法使用ML计数，那么程序员必须要手动编写成千上万条规则，建立一个巨大的if...then逻辑链条来拦截邮件。例如，包含“抽奖”二字的邮件是垃圾邮件。但是但凡邮件发送人改变了策略，用了编写逻辑之外的方式来传达信息，例如“酬奖”，你的逻辑就不好用了。</p>
-<p>但是现在是2026年，你可以选择使用ML算法来实现这样的功能。ML算法是自学习的，因此我们不需要手动编写规则，而是将庞大的数据集交给计算机，喂给算法，算法会自动从中挖掘出数据中隐藏的规律，来自动整理规则。</p>
-<p>实际上我们的生活已经离不开ML的应用了。你打开B站刷的视频，搜索引擎的搜索建议，淘宝商品推荐等，几乎全是ML的功劳。</p>
+<h2 id="多层网络的结构"><a href="#多层网络的结构" class="headerlink" title="多层网络的结构"></a>多层网络的结构</h2><p>一个典型的 <strong>多层全连接网络</strong> 使用多重感知机（Multilayer Perceptron, MLP）作为基本构建块。MLP 由多个层次组成，每一层都包含若干个神经元，这些神经元通过权重连接到下一层的神经元。</p>
+<p>整体来说，多层网络的结构可以看成由 <strong>输入层</strong>，<strong>隐藏层</strong> 和 <strong>输出层</strong> 堆叠而成。每一层都由多个神经元组成，层与层之间通过权重矩阵 $W$ 和偏置向量 $b$ 实现全连接，并通过非线性激活函数 $\sigma$ 引入非线性变换。</p>
+<p>整个流程就差不多是：</p>
+<p><em>输入 $x$ → [线性变换] → $z$ → [非线性激活函数] → $a$ → ... → 输出 $\hat{y}$</em></p>
+<p>你可以对照下图：</p>
+<p><img src="https://files.seeusercontent.com/2026/05/17/R5ie/pasted-image-1779006277389.webp" alt="pasted-image-1779006277389.webp"></p>
 <hr>
-<h3 id="机器学习的定义"><a href="#机器学习的定义" class="headerlink" title="机器学习的定义"></a>机器学习的定义</h3><p>Arthur Samuel在1959年显式定义了什么是机器学习。他的定义是：</p>
-<div class="tag-plugin blockquote" indent="undefined"><p><em>Field of study that gives computers the ability to learn without being explicitly programmed.</em></p><p>让计算机在没有被显式编程的情况下具备学习能力的研究领域。</p></div>
-
-<p>这里的关键是不需要显式编程行为。如果你的所谓逻辑是手动写出的<code>if x &gt; 5 then...</code>，那么就不是机器学习。机器学习是机器自己算出来5这个阈值的过程。</p>
-<p>但在1998年工程派为代表的Tom Mitchell提出了一个更现代，更严谨的定义：</p>
-<div class="tag-plugin blockquote" indent="undefined"><p><em>A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E.</em></p></div>
-
-<p>我们在COMP3252中说过：</p>
+<p>在理解结构之前，我们需要了解描述网络内部结构的语言。我们记当前的层为 $l$，则：</p>
 <ul>
-<li><strong>Task (T)</strong>: 任务。比如“区分垃圾邮件”。</li>
-<li><strong>Experience (E)</strong>: 经验。即历史数据，比如“以前收到的 1000 封邮件及其标签”。</li>
-<li><strong>Performance (P)</strong>: 性能指标。比如“分类的准确率”。</li>
-</ul>
-<p>如果一个程序在任务T上的性能P，随着经验E的增加而提高，那么我们就说这个程序正在“学习”。</p>
-<hr>
-<h2 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h2><p>监督学习是目前机器学习应用最广泛的形式。监督学习就像你刷五三。前面有题目，后面有答案。你做一道题就对一下答案。如果做错了，就根据标准答案来修正自己的思路。你的目标当然是在遇到没有答案的考试时，能算出正确的答案。  </p>
-<p>监督学习也是一样，机器在训练数据集上训练，这些数据都包含 <strong>标签(Label)</strong> ，用来告诉算法正确方向。</p>
-<p>监督学习有两个主要目标类型：</p>
-<h3 id="分类问题-Classification"><a href="#分类问题-Classification" class="headerlink" title="分类问题 (Classification)"></a>分类问题 (Classification)</h3><p>分类问题预测的结果是离散的类别。就像选择题ABCD一样，没有中间值。二分类只有两个输出选项，非黑即白，可以想象成将数据点平摊在2D平面上，算法划出一条决策边界，把正类和负类切开。</p>
-<p>多分类就是选项大于两个的分类问题。  </p>
-<p>如果你不知道我在说什么，你去看看这个吧：</p>
-<div class="tag-plugin link dis-select"><a class="link-card rich" title="Chapter&nbsp;1&nbsp;&&nbsp;10:&nbsp;数据学习介绍" href="/notes/COMP3354/chapter1/" cardlink autofill="icon,desc"><div class="top"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div><span class="cap link footnote">https://naughtychas.github.io/notes/COMP3354/chapter1/</span></div><div class="bottom"><span class="title">Chapter&nbsp;1&nbsp;&&nbsp;10:&nbsp;数据学习介绍</span><span class="cap desc footnote"></span></div></a></div>
-
-<h3 id="回归问题-Regression"><a href="#回归问题-Regression" class="headerlink" title="回归问题 (Regression)"></a>回归问题 (Regression)</h3><p>回归问题不同于分类问题。它输出的是连续的数值。就像填空题一样，答案可以是任何数字。</p>
-<p>既然是预测数值，我们无法画一条线来讲数据分开。反之，我们需要根据训练数据画一条线去尽可能穿过数据点。<br>算法的目标是找到一条线，让它们所有数据点到这条线的距离（偏差）之和最小。这就是最拟合线。</p>
-<p>例如，算法根据学习时间来预测考试分数。时间越长，分数通常越高。这是一条连续的趋势线。  </p>
-<hr>
-<h2 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h2><p>如果老师把你的五三答案全部撕掉了，你该如何自我学习？</p>
-<p>如果你是学生，你大概率会根据你的答案自己观察，看看能不能发现什么规律。</p>
-<h3 id="聚类问题-Clustering"><a href="#聚类问题-Clustering" class="headerlink" title="聚类问题 (Clustering)"></a>聚类问题 (Clustering)</h3><p>你尝试来观察数据的相似性。你把看起来相似的数据点堆在一起，形成团簇 (Cluster)。</p>
-<p>而事实是，相似的数据点往往在背后蕴含相同的属性。例如你发现这批人全是西装革履，那么你有理由怀疑他们都是商务人士。如果你发现这批人全穿球衣，那么事实上它们大概率都是运动员。</p>
-<h3 id="降维-Dimensionality-Reduction"><a href="#降维-Dimensionality-Reduction" class="headerlink" title="降维 (Dimensionality Reduction)"></a>降维 (Dimensionality Reduction)</h3><p>但现实世界中数据太复杂，导致收集到的数据维度太高。这些数据不仅计算起来很慢，同时可能很难以理解。因此我们需要把数据压缩到低维空间，同时尽可能保留最重要的信息。</p>
-<p>更多有关降维的内容参见这里：</p>
-<div class="tag-plugin link dis-select"><a class="link-card rich" title="Chapter&nbsp;8&nbsp;&&nbsp;10:&nbsp;主成分分析（PCA）" href="/notes/COMP3354/chapter8/" cardlink autofill="icon,desc"><div class="top"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div><span class="cap link footnote">https://naughtychas.github.io/notes/COMP3354/chapter8/</span></div><div class="bottom"><span class="title">Chapter&nbsp;8&nbsp;&&nbsp;10:&nbsp;主成分分析（PCA）</span><span class="cap desc footnote"></span></div></a></div>
-
-<hr>
-<h2 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h2><p>强化学习是最接近生物本能的学习方式。在这里，算法不会通过带标签，或不带标签的数据来学习，相反，只有 <strong>智能体 (Agent)</strong> 和 <strong>环境 (Environment)</strong> 。智能体通过与环境互动来学习。</p>
-<p>强化学习基于下面的循环来进行训练：</p>
-<ul>
-<li>智能体观察当前状态</li>
-<li>智能体做出一个动作</li>
-<li>环境会根据智能体的动作更新，发生变化，并反馈给智能体一个奖励或惩罚。</li>
-</ul>
-<p>智能体的目标是通过不断地试错，来找到一套合适的策略，让长期累积的奖励最大化。</p>
-<hr>
-<p>强化学习最大的难点在于 <strong>延迟反馈 (Delayed Feedback)</strong> 。监督学习的反馈是及时的：模型可以直接通过标签来获得反馈。但是在强化学习中，反馈往往不是及时的。</p>
-<p>假如机器正在学习如何下国际象棋。它走了一步棋，当时可能觉得平平无奇，甚至在子力有点亏。但这一步棋导致了你在50步之后赢了比赛。模型如何将这些制胜分数分配给它做的不同决策中？</p>
-<hr>
-<h2 id="术语与数学符号"><a href="#术语与数学符号" class="headerlink" title="术语与数学符号"></a>术语与数学符号</h2><p>下图是一个数据集：</p>
-<p><img src="https://s2.loli.net/2026/01/28/M42GHew1uFt9YAd.png" alt="image.png"></p>
-<p>其中，我们定义这些属于来帮助我们在数据集中更准确的描述内容：</p>
-<ul>
-<li><p>每一行代表一朵花。在ML术语中，这叫一个 <strong>样本 (Sample), 实例 (Instance)</strong> 或者 <strong>观测 (Observation)</strong></p>
+<li><p>$a^{(l-1)}$ 是第 $l-1$ 层的激活输出，也就是第 $l$ 层的输入。</p>
 </li>
-<li><p>每一列代表花的一个特征。在ML中，这叫 <strong>特征 (Feature)，属性 (Attribute)</strong> 或 <strong>维度 (Dimension)</strong></p>
+<li><p>$W^{(l)}$, $b^{(l)}$ 是第 $l$ 层的权重和偏置。</p>
+</li>
+<li><p>$z(l) &#x3D; W^{(l)} a^{(l-1)} + b^{(l)}$ 是第 $l$ 层的线性变换结果。也就是喂给激活函数之前的输入。</p>
+</li>
+<li><p>$a^{(l)} &#x3D; \sigma(z^{(l)})$ 是第 $l$ 层的激活输出，也就是第 $l+1$ 层的输入。</p>
 </li>
 </ul>
-<p>而最后一列是我们要预测的目标，也就是花的品种。这叫 <strong>类别标签 (Class Label)</strong>。</p>
-<hr>
-<p>为了能够将数据通过数学公式计算，我们需要用严谨的数学方式来表示数据。</p>
-<p>我们使用 <strong>大写加粗字母</strong> 来表示矩阵。通常是$\mathbf{X}$。<br>对于刚才的数据集，那么 $\mathbf{X}$ 就是一个 $150 \times 4$大小的矩阵，一共150行，4列：</p>
+<p>对于输入层，$a^{(0)} &#x3D; x$；而对于输出层，$a^{(L)}$ 就等于预测值 $\hat{y}$。</p>
+<p>另外：</p>
 <ul>
-<li>$n_{samples} &#x3D; 150$</li>
-<li>$n_{features} &#x3D; 4$</li>
+<li>$m$ 是输入层的节点数，也就是输入特征的维度。</li>
+<li>$d$ 是隐藏层的节点数，也就是每一层的神经元数量。</li>
+<li>$t$ 是输出层的节点数，也就是输出类别的数量。</li>
+<li>$L$ 是除去输入层的层数，也就是隐藏层+输出层的数量。</li>
 </ul>
-<p>我们用 <strong>小写加粗字母</strong> 来表示向量，通常是 $\mathbf{x}$。其中：</p>
-<p>行向量 (Row Vector) 代表一朵花的所有数据。这样表示：</p>
-<p>$$\mathbf{x}^{(i)}$$</p>
-<p>其中右上角的 $(i)$ 不是i次方的意思，而是只“第i个样本”。比如$\mathbf{x}^{(1)}$是第 1 朵花的数据向量 $[5.1, 3.5, 1.4, 0.2]$。</p>
-<p>列向量 (Column Vector) 代表某种特征在所有花中的数据：</p>
-<p>$$\mathbf{x}_j$$</p>
-<p>右下角的 $j$ 代表第 j 个特征。比如 $\mathbf{x}_2$ 代表这 150 朵花所有的“花萼宽度”这一列数据。</p>
-<p>而标量 (Scalar) 就是其中的一个格子。我们用 <em>小写斜体</em> 字母来表示具体的数值：</p>
-<p>$$x_j^{(i)}$$</p>
-<p>代表第 $i$ 个样本的第 $j$ 个特征。比如 $x_1^{(150)}$ 代指“第 150 朵花的第 1 个特征的数值”。</p>
 <hr>
-<p>总之， <strong>上标找人，下标找事</strong>。上标代表第几个样本，下标代表第几个特征。</p>
+<p>你可以看到最左边是 1st layer，我们叫输入层。最右边是输出层。它们之间的层叫做隐藏层。每一层之间，我们使得所有神经元都与下一层的神经元全连接，也就是当前层每一个节点都会与下一层所有节点相连，除了偏置节点。</p>
+<p>那么什么是偏置？你发现似乎每一层的第一个节点都是 1，这个节点叫做偏置节点（bias node），它的作用是引入一个常数项，帮助模型更好地拟合数据。这个偏置节点的权重就是我们之前提到的 $b$。之所以偏置能够帮助模型拟合数据，是因为它允许模型在没有输入的情况下也能产生输出，从而增加了模型的灵活性。</p>
+<p>而深度人工神经网络的定义也是很有意思，这里深度不代表绝对层数，而是相对于传统浅层模型而言的。</p>
+<p>一般来说，当网络 <strong>超过一个隐藏层</strong> 的时候，我们就可以称之为深度神经网络了。</p>
 <hr>
-<h2 id="机器学习流程"><a href="#机器学习流程" class="headerlink" title="机器学习流程"></a>机器学习流程</h2><p>一个完整的ML项目就好比一个流水线，分为三个核心阶段：<strong>预处理 (Preprocessing)</strong> ，<strong>训练&#x2F;学习 (Learning)</strong> 以及 <strong>评估 (Evaluation)</strong> 。</p>
-<p>由于现实世界中的数据往往脏乱差，直接丢进算法通常效果很差。因此我们需要先进行 <strong>预处理</strong> 。在预处理阶段，我们需要先进行：</p>
+<h2 id="多层网络的训练"><a href="#多层网络的训练" class="headerlink" title="多层网络的训练"></a>多层网络的训练</h2><p>多层网络的训练过程被分为三个阶段，分别是 <strong>前向传播 (Foward Propagate)</strong>，<strong>计算误差 (Calculate Error)</strong> <strong>反向传播 (Backpropagate)</strong>。</p>
+<p>接下来我们一个一个来看，跟着MLP的训练流程走一遍：</p>
+<hr>
+<h3 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h3><p>前向传播是网络逐层计算的过程，从输入层开始，通过每一层的线性变换和激活函数，最终得到输出层的预测结果。</p>
+<p>为了你方便对照，我把上图贴下来：</p>
+<p><img src="https://files.seeusercontent.com/2026/05/17/R5ie/pasted-image-1779006277389.webp" alt="pasted-image-1779006277389.webp"></p>
+<p>假设我们有一个 $L$ 层的全连接网络，结构为：</p>
+<ul>
+<li>输入层：$a^{(0)} &#x3D; x$，维度为 $m$。</li>
+<li>隐藏层：从第一层到第 $L-1$ 层，每层 $l$ 的激活输出为 $a^{(l)}$，维度为 $d$。</li>
+<li>输出层：第 $L$ 层的激活输出为 $a^{(L)}$，维度为 $t$。</li>
+</ul>
+<p>每一层会先做线性变换，然后通过激活函数做非线性映射。我们首先统一一下符号：</p>
+<ul>
+<li>$a^{(0)} &#x3D; x$ 是原始输入向量，维度为 $(n_x, 1)$，或者是 $m$。</li>
+<li>$W^{(l)}$ 是第 $l$ 层的权重矩阵，维度为 $(n_l, n_{l-1})$，其中 $n_l$ 是第 $l$ 层的神经元数量。</li>
+<li>$b^{(l)}$ 是第 $l$ 层的偏置向量，维度为 $(n_l, 1)$。</li>
+<li>$z^{(l)}$ 是第 $l$ 层的净输入，也即是线性变换的结果，维度为 $(n_l, 1)$。</li>
+<li>$a^{(l)}$ 是第 $l$ 层的激活输出，维度为 $(n_l, 1)$。</li>
+<li>$\sigma^{(l)}(\cdot)$ 是第 $l$ 层的激活函数。</li>
+</ul>
+<hr>
+<p>那么假设我们传入一个训练样本，前向传播的计算从输入层开始，逐层递推。</p>
+<p>对于每一层 $l &#x3D; 1, 2, ..., L$，我们首先计算线性变换</p>
 <ol>
-<li>特征选择 &#x2F; 特征值缩放</li>
+<li>线性组合</li>
 </ol>
-<p>  <em>Feature Selection &amp; Scaling</em></p>
-<p>  有些特征竖直可能会很大，有些会很小，例如房价与房间数。如果直接计算两个数据的距离，房价会主导一切。这时候我们需要将其缩放到同一个量级。</p>
+<p>$$z^{(l)} &#x3D; W^{(l)}a^{(l-1)} + b^{(l)}$$</p>
+<p>这里 $W^{(l)}a^{(l-1)}$ 表示矩阵乘法，将上一层的输出 $a^{(l-1)}$ 通过权重矩阵 $W^{(l)}$ 进行线性变换，得到一个新的向量。然后加上偏置向量 $b^{(l)}$，得到当前层的净输入 $z^{(l)}$。</p>
 <ol start="2">
-<li>数据降维</li>
+<li>非线性激活</li>
 </ol>
-<p>  <em>Dimensionality Reduction</em></p>
-<p>  正如之前提到过的，如果资料和数据太多，我们需要将其压缩成精华。</p>
+<p>算出来 $z^{(l)}$ 之后，按照流程，我们应该计算它的激活输出 $a^{(l)}$，也就是通过激活函数 $\sigma^{(l)}$ 进行非线性变换：</p>
+<p>$$a^{(l)} &#x3D; \sigma^{(l)}(z^{(l)})$$</p>
+<p>激活函数 $\sigma^{(l)}$ 对 $z^{(l)}$ 的每一个元素单独作用，得到 $a^{(l)}$ 的每一个元素。</p>
+<p>当 $l &#x3D; L$ 的时候，我们之前也说到，最终的 $a^{(L)}$ 就是当前网络对于输入 $x$ 的预测输出，我们记作 $\hat{y} &#x3D; a^{(L)}$。</p>
+<p>在整个前向传播过程中，参数 $W$, $b$ 是固定的，而它们的值要么来自初始化的随机值，要么来自之前的训练更新。输入 $x$ 会沿着网络逐层传播，正向流动，最后产生预测值。</p>
 <ol start="3">
-<li>采样 &#x2F; 数据标注</li>
+<li>选择激活函数</li>
 </ol>
-<p>  <em>Sampling</em></p>
-<p>  由于是机器学习项目，所以我们需要将手头的数据随即切分成两份，分成 <strong>训练集 (Training Set)</strong> 和 <strong>测试集 (Test Set)</strong> 。训练集用来平时做题练习，测试集来做模拟考。</p>
-<p>  我们不能让模型在训练时看到测试集的数据。一旦偷看就相当于作弊。由于我们通过测试集衡量模型性能，因此模型需要现在训练集上进行训练，然后在测试集上验证。</p>
+<p>不同层数的激活函数可以不同，这就是为什么我们在上面加了一个 $l$ 的下标。</p>
+<p>对于隐藏层来说，常用的激活函数有：</p>
+<ul>
+<li><p>ReLU（Rectified Linear Unit）：$\sigma(z) &#x3D; \max(0, z)$，在正数部分保持线性，在负数部分输出0，计算简单且能够缓解梯度消失问题，因此在深度网络中非常流行。</p>
+</li>
+<li><p>Leaky ReLU：$\sigma(z) &#x3D; \max(0.01z, z)$，我们在负数部分引入一个小的斜率，避免了ReLU在负数部分完全没有梯度的问题。</p>
+</li>
+<li><p>tanh（双曲正切函数）：$\sigma(z) &#x3D; \frac{e^z - e^{-z}}{e^z + e^{-z}}$，输出范围在 -1 到 1 之间，适用于需要输出负数的情况。</p>
+</li>
+<li><p>Sigmoid：$\sigma(z) &#x3D; \frac{1}{1 + e^{-z}}$，输出范围在 0 到 1 之间，适用于二分类问题的输出层。但是现在较少用于隐藏层，因为它容易导致梯度消失问题。</p>
+</li>
+</ul>
+<p>至于梯度消失，我们一会会深度讨论。</p>
 <hr>
-<p>随后，我们进行学习与训练。</p>
-<p>这个时候我们挑选一个模型，让它在训练集上学习。这里有两个概念需要理解：</p>
+<p>而对于输出层来说，激活函数的选择通常取决于具体的任务：</p>
+<p>例如如果我们选择二分类任务，那么输出层的激活函数通常是 Sigmoid，因为它能够将输出压缩到 0 和 1 之间，表示概率。</p>
+<p>如果是多分类问题，那么输出层的激活函数通常是 Softmax：</p>
+<p>$$a_i^{(L)} &#x3D; \frac{e^{z_i^{(L)}}}{\sum_{j&#x3D;1}^t e^{z_j^{(L)}}}$$</p>
+<p>因为我们要输出一个概率分布向量，要求所有的输出值都在 0 和 1 之间，并且它们的和为 1。</p>
+<p>如果是回归问题，我们需要输出的是连续的实数值。那么直接选择恒定函数 $\sigma(z) &#x3D; z$ 作为输出层的激活函数就可以了。</p>
+<hr>
+<h4 id="矩阵维度"><a href="#矩阵维度" class="headerlink" title="矩阵维度"></a>矩阵维度</h4><p>我们不妨追溯一下计算过程中的维度变化:</p>
+<p>输入层：$a^{(0)} &#x3D; x$，维度 $n_x \times 1$<br>    权重 $W^{(1)}$维度： $n_1 \times n_x \rightarrow z^{(1)}$，维度 $n_1 \times 1$<br>    权重 $W^{(2)}$维度： $n_2 \times n_1 \rightarrow z^{(2)}$，维度 $n_2 \times 1$<br>    ...</p>
+<p>以此类推，最后一层的 $W^{(L)}$ 维度是 $n_L \times n_{L-1}$，输出层的 $z^{(L)}$ 维度是 $n_L \times 1$，也就是输出层的神经元数量。而 $a^{(l)}$ 的维度始终与 $z^{(l)}$ 相同。</p>
+<p>而在过程中，我们运用得矩阵乘法规则能够始终保证维度匹配：</p>
+<p>$$(n_l \times n_{l-1}) \cdot (n_{l-1} \times 1) &#x3D; n_l \times 1$$</p>
+<p>这也是为什么我们需要仔细设计每一层的神经元数量的原因。</p>
+<hr>
+<h4 id="批处理与向量化"><a href="#批处理与向量化" class="headerlink" title="批处理与向量化"></a>批处理与向量化</h4><p>但是在实际训练的时候，我们不会像刚才那样，一次处理一个样本，而是一次处理一个小批次 (batch) 的样本，将 $m$ 个样本堆叠成矩阵，这样就可以充分利用矩阵运算的并行性。</p>
+<p>首先从输入开始。由于之前的输入 $x$ 是一个 $n_x \times 1$ 的向量，现在我们将 $m$ 个样本堆叠成一个矩阵 $X$，维度为 $n_x \times m$。每一列都代表一个样本。</p>
+<p>而权重矩阵 $W^{(l)}$ 的维度仍然是 $n_l \times n_{l-1}$，偏置向量 $b^{(l)}$ 的维度是 $n_l \times 1$。</p>
+<p>这样，线性输出的前向传播公式就变为：</p>
+<p>$$Z^{(l)} &#x3D; W^{(l)} A^{(l - 1)} + b^{(l)}$$</p>
+<p>而激活输出就是套个壳：</p>
+<p>$$A^{(l)} &#x3D; \sigma^{(l)}(Z^{(l)})$$</p>
+<p>这种向量化的写法与单样本形式完全一致，实际上就是小写换大写，维度也从 $n_l \times 1$ 变成了 $n_l \times m$。每一列仍然代表一个样本的输出.</p>
+<hr>
+<p>咱们来做个例子？</p>
+<p>一个二分类网络，输入两个特征，网络结构为：</p>
+<p>输入层 (2) → 隐藏层 (2个神经元，Sigmoid激活) → 输出层 (1个神经元，Sigmoid激活)</p>
+<p>给定参数：</p>
+<p>$$W^{(1)} &#x3D; \begin{bmatrix} 0.2 &amp; 0.4 \\ 0.3 &amp; -0.5 \end{bmatrix}$$<br>$$b^{(1)} &#x3D; \begin{bmatrix} 0.1 \\ -0.2 \end{bmatrix}$$<br>$$W^{(2)} &#x3D; \begin{bmatrix} 0.6 \\ -0.1 \end{bmatrix}$$<br>$$b^{(2)} &#x3D; \begin{bmatrix} 0.3 \end{bmatrix}$$</p>
+<p>输入样本：</p>
+<p>$$x &#x3D; a^{(0)} &#x3D; \begin{bmatrix} 0.5 \\ 0.1 \end{bmatrix}$$</p>
+<p>第一层计算：</p>
+<ul>
+<li><p>线性组合：<br>  $$z^{(1)} &#x3D; W^{(1)}x + b^{(1)} &#x3D; \begin{bmatrix} 0.2 &amp; 0.4 \\ 0.3 &amp; -0.5 \end{bmatrix} \begin{bmatrix} 0.5 \\ 0.1 \end{bmatrix} + \begin{bmatrix} 0.1 \\ -0.2 \end{bmatrix} &#x3D; \begin{bmatrix} 0.24 \\ -0.10 \end{bmatrix}$$</p>
+</li>
+<li><p>Sigmoid激活：<br>  $$a_1^{(1)} &#x3D; \frac{1}{1 + e^{-0.24}} \approx \frac{1}{1 + 0.7866} \approx 0.560$$</p>
+<p>  $$a_2^{(1)} &#x3D; \frac{1}{1 + e^{0.10}} \approx \frac{1}{1 + 1.1052} \approx 0.475$$</p>
+<p>  所以：</p>
+<p>  $$a^{(1)} &#x3D; \begin{bmatrix} 0.560 \\ 0.475 \end{bmatrix}$$</p>
+</li>
+</ul>
+<p>第二层计算：</p>
+<pre><code>$$z^{(2)} = W^{(2)}a^{(1)} + b^{(2)} = \begin{bmatrix} 0.6 \\\\ -0.1 \end{bmatrix} \begin{bmatrix} 0.560 \\\\ 0.475 \end{bmatrix} + \begin{bmatrix} 0.3 \end{bmatrix} = \begin{bmatrix} 0.5885 \end{bmatrix}$$
+</code></pre>
+<ul>
+<li>Sigmoid激活：<br>  $$\hat{y} &#x3D; a^{(2)} &#x3D; \sigma(z^{(2)}) &#x3D; \frac{1}{1 + e^{-0.5885}} \approx \frac{1}{1 + 0.555} \approx 0.643$$</li>
+</ul>
+<p>因此，对于输入 $x$，网络给出的预测输出 $\hat{y}$ 约为 0.643，表示属于正类的概率。</p>
+<hr>
+<p>在前向传播计算过程中，我们不仅要得到预测值，还必须缓存一些中间值，因为后面的反向传播会用到这些数据。我们通常需要缓存每一层的：</p>
+<ul>
+<li><p>$z^{(l)}$，这是未被激活函数处理的线性输出，当我们求激活函数的导数时需要用到它。</p>
+</li>
+<li><p>$a^{(l)}$，这是每一层的激活输出，在反向传播中计算下一层误差以及权重梯度时需要用到它。</p>
+</li>
+</ul>
+<p>在上面的例子中，缓存的就是 $z^{(1)}$, $a^{(1)}$, $z^{(2)}$, $a^{(2)}$ 这些向量。</p>
+<hr>
+<h3 id="损失函数与误差计算"><a href="#损失函数与误差计算" class="headerlink" title="损失函数与误差计算"></a>损失函数与误差计算</h3><p>当我们前向传播得到预测值 $\hat{y}$ 之后，下一步需要进行误差计算。我们要找到，模型输出的预测与真实答案差了多少？一旦找到了这个差距，我们就可以通过反向传播来调整权重，减少这个差距。</p>
+<p>误差计算通过定义一个 <strong>损失函数 (Loss Function)</strong> $J$ 来实现，它的值是一个标量，衡量了预测值 $$\hat{y}$$ 与真实标签 $y$ 之间的差距。损失函数的选择取决于具体的任务类型：</p>
+<p>如果得出的损失越小，那么代表你模型预测的结果就越接近真实标签，模型的性能就越好。<br>损失对输出层输入的导数 $\frac{\partial J}{\partial z^{(L)}}$ 将会是反向传播的起始误差信号。通常，我们会根据之前整个训练集或者每一个batch的损失取平均，来得到一个更稳定的误差信号。但在数学推导中，我们往往会先分析单个样本，然后拓展到批量处理。</p>
+<hr>
+<h4 id="回归任务"><a href="#回归任务" class="headerlink" title="回归任务"></a>回归任务</h4><p>对于回归任务，也就是像房价，温度等连续数值的预测，我们通常使用 <strong>均方误差 (Mean Squared Error, MSE)</strong> 作为损失函数：</p>
+<p>对于一个样本，假设输出层没有激活函数，即是 $\hat{y} &#x3D; z^{(L)}$，那么损失函数可以定义为：</p>
+<p>$$J &#x3D; \frac{1}{2}(y - \hat{y})^2$$</p>
+<p>其中，$y$ 是真实标签，$\hat{y}$ 是预测值。系数 $\frac{1}{2}$ 是为了求导之后消去平方的2，让形式更简洁，不影响优化结果。</p>
+<p>此时，输出层的误差信号可以通过对损失函数求导得到：</p>
+<p>$$\partial^{(L)} &#x3D; \frac{\partial J}{\partial z^{(L)}} &#x3D; \hat{y} - y$$</p>
+<p>直接就是预测值 - 真实值，非常的直观啊！</p>
+<hr>
+<h4 id="二分类任务"><a href="#二分类任务" class="headerlink" title="二分类任务"></a>二分类任务</h4><p>这种任务就是面向输出是否预测，非黑即白，标签是 $y \in {0, 1}$。</p>
+<p>我们的输出层使用Sigmoid：$\hat{y} &#x3D; \sigma(z^{(L)})$</p>
+<p>对于二分类任务，我们通常使用 <strong>交叉熵损失 (Cross-Entropy Loss)</strong> 作为损失函数：</p>
+<p>$$J &#x3D; -[y \log(\hat{y}) + (1 - y) \log(1 - \hat{y})]$$</p>
+<p>其中，$y$ 是真实标签，$\hat{y}$ 是预测值。</p>
+<p>为什么我们不是用MSE，而是使用交叉熵呢？如果我们使用MSE，结合Sigmoid求导之后，误差信号会包含 $\sigma&#39;(z)$，当 $\hat{y}$ 接近 0 或 1 时，$\sigma&#39;(z)$ 会变得非常小，导致学习及其缓慢。这就是所谓的梯度消失问题。而交叉熵损失与Sigmoid激活函数配合时，求出来的 $\partial^{(L)}$ 十分简单，没有 $\sigma&#39;$ 项，完美抵消，请看：</p>
+<p>$$\partial^{(L)} &#x3D; \frac{\partial J}{\partial z^{(L)}} &#x3D; \frac{\partial J}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial z^{(L)}}$$</p>
+<p>首先计算 $\frac{\partial J}{\partial \hat{y}}$：</p>
+<p>$$\frac{\partial J}{\partial \hat{y}} &#x3D; -\left(\frac{y}{\hat{y}} - \frac{1 - y}{1 - \hat{y}}\right)$$</p>
+<p>然后计算 $\frac{\partial \hat{y}}{\partial z^{(L)}}$：</p>
+<p>$$\frac{\partial \hat{y}}{\partial z^{(L)}} &#x3D; \hat{y}(1 - \hat{y})$$</p>
+<p>我们已经找到链式法则的两个部分，现在将它们结合起来：</p>
+<p>$$<br>\begin{aligned}<br>\partial^{(L)} &amp;&#x3D; (-\frac{y}{\hat{y}} + \frac{1 - y}{1 - \hat{y}}) \cdot \hat{y}(1 - \hat{y}) \\<br>&amp;&#x3D; -y(1 - \hat{y}) + (1 - y)\hat{y} \\<br>&amp;&#x3D; \hat{y} - y<br>\end{aligned}<br>$$</p>
+<p>然后你发现所谓的梯度消失问题就没有了，误差信号 $\partial^{(L)}$ 就是预测值 $\hat{y}$ 减去真实标签 $y$，跟之前一样的简单和直接。</p>
+<hr>
+<h4 id="多分类任务"><a href="#多分类任务" class="headerlink" title="多分类任务"></a>多分类任务</h4><p>那么多分类呢？首先我们需要知道多分类任务中，标签是如何编码的。</p>
+<p>对于多分类任务，标签通常使用 <strong>独热编码 (One-Hot Encoding)</strong>，也就是将每个类别表示为一个向量，其中只有对应类别的位置是1，其余位置都是0。</p>
+<p>例如说我们一共有类别集合 &#x3D; {猫，狗，鸟}，那么：</p>
+<ul>
+<li>猫：$y &#x3D; [1, 0, 0]$</li>
+<li>狗：$y &#x3D; [0, 1, 0]$</li>
+<li>鸟：$y &#x3D; [0, 0, 1]$</li>
+</ul>
+<p>如果直接使用数字来表示类别，例如猫&#x3D;0，狗&#x3D;1，鸟&#x3D;2，那么在计算损失函数时就会引入不必要的顺序关系，导致模型误以为类别之间存在大小关系，这显然是不合理的。</p>
+<p>之前也讲过独热编码，所以你可以回去看看之前的章节。</p>
+<hr>
+<p>至于使用独热编码的多分类任务，我们在输出层通常使用 Softmax 激活函数: $\hat{y} &#x3D; \text{Softmax}(z^{(L)})$</p>
+<p>Softmax对每个节点 $i$ 的输出计算如下：</p>
+<p>$$\hat{y}<em>i &#x3D; \frac{e^{z_i^{(L)}}}{\sum</em>{j&#x3D;1}^K e^{z_j^{(L)}}}$$</p>
+<p>这一步的作用是将输出层的线性输出 $z^{(L)}$ 转换为一个概率分布，使得每个 $\hat{y}_i$ 都在 0 和 1 之间，并且所有 $\hat{y}_i$ 的和为 1。</p>
+<p>至于损失函数，我们依旧使用交叉熵损失函数，不过这次是针对多分类的版本：</p>
+<p>$$J &#x3D; -\sum_{i&#x3D;1}^K y_i \log(\hat{y}_i)$$</p>
+<p>由于 $y$ 是独热编码，因此实际上只有一个类别的对应的项非零，而损失就是那个类别的预测概率的负对数。</p>
+<hr>
+<p>同样的如果我们推导损失对 $z^{(L))$ 的梯度，结果依旧是：</p>
+<p>$$\partial^{(L)} &#x3D; \hat{y} - y$$</p>
+<p>而每个分量的误差就是该类的预测概率减去真实标签。</p>
+<hr>
+<p>总的来说，无论哪种任务，前向传播的重点是 $\hat{y}$，而误差计算除了给出标量损失值 $J$之外，最重要的产物是输出层的误差信号：</p>
+<p>$$\partial^{(L)} &#x3D; \frac{\partial J}{\partial z^{(L)}}$$</p>
+<p>并且在合理的激活函数和损失函数的搭配下，它的形式都非常简洁，一般都是：</p>
+<p>$$\partial^{(L)} &#x3D; \hat{y} - y$$</p>
+<p>这个误差向量会告诉输出层的每个神经元该如何调整。如果预测比真实值大，那么误差为正，后续会下调权重；如果预测比真实值小，那么误差为负，后续会上调权重。</p>
+<hr>
+<h4 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h4><p>深层网络的参数量大，非常容易过拟合。模型在训练集上的表现会很好，但是对新的数据泛化可能会很差。那么我们尝试请出我们的老朋友正则化，来迫使网络学习更简单，更平滑的映射，来提升泛化能力。</p>
+<p>正则化可以加入到不同任务种类的损失函数上。例如，假如说我们之前交叉熵或MSE这种损失函数为 $J_{data}$，加入L2正则化：</p>
+<p>$$J &#x3D; J_{data} + \frac{\lambda}{2m} \sum_{l&#x3D;1}^{L} ||W^{(l)}||_F^2$$</p>
+<ul>
+<li>$\lambda$ 是正则化超参数</li>
+<li>$||W^{(l)}||<em>F^2 &#x3D; \sum</em>{i}\sum_j (W^{(l)}_{ij})^2$, 是第 $l$ 层权重矩阵所有元素的平方和</li>
+<li>$m$ 是一次batch训练样本的数量，我们之所以要除以 $m$ 是为了让正则化项的规模与数据损失项保持一致，避免正则化项过大或过小对训练过程产生不平衡的影响。</li>
+</ul>
+<p>而我们一般不对偏置 $b$ 进行正则化。这一项并不影响前向传播的预测值 $\hat{y}$，而他只在计算总损失和反向传播求得梯度的时候发挥作用。</p>
+<hr>
+<h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>这一步是模型真正看到错误，尝试自己学习的阶段：反向传播 (Backpropagation)。我们在反向传播的目的是通过链式法则，算出损失函数对每一层参数的梯度。</p>
+<p>在前向传播中，我们缓存了每一层的 $$z^{(l)}$$ 和 $$a^{(l)}$$。在误差计算中，我们也同时得到了输出层的误差信号 $$\partial^{(L)} &#x3D; \frac{\partial J}{\partial z^{(L)}}$$。</p>
+<p>反向传播的任务就是：</p>
 <ol>
-<li><strong>交叉验证 (Cross-Validation)</strong></li>
+<li><p>从输出层开始，将 $\partial^{(L)}$ 逐层往输入方向传递，计算出每一层的局部误差 $\partial^{(l)}$。</p>
+</li>
+<li><p>利用 $\partial^{(l)}$ 和缓存的 $a^{(l - 1)}$，计算出损失对该层参数 $W^{(l)}$ 和 $b^{(l)}$ 的梯度。</p>
+</li>
 </ol>
-<p>  如果我们想要在训练的时候直到自己学的怎么样，我们能不能用训练集？由于测试集是留到期末的，因此我们不能启封测试集。</p>
-<p>  但是我们可以做的事将训练集切一小块出来，当作临时模拟卷来用。这就是 <strong>验证集 (Validation Set)</strong> 。通过这种方式我们就可以在不碰测试集的情况下评估模型是好是坏。</p>
-<ol start="2">
-<li><strong>超参数调优 (Hyperparameter Optimization)</strong></li>
-</ol>
-<p>  模型的参数是模型自己学出来的，例如回归线中的斜率和截距。而 <strong>超参数 (Hyperparameter)</strong> 是人为设定的学习配置。例如，我们要把数据分成几类？或者学习速率要有多块？</p>
-<p>  超参数调优就是不断调整这些人为配置，直到模型在验证集上表现良好。</p>
+<p>一旦有了梯度，我们就可以用梯度下降来更新参数了。</p>
 <hr>
-<p>当模型训练好了，我们就要进入评估与预测阶段了。这时候启封测试集：</p>
-<p>我们在测试集上得出来的误差， <strong>泛化误差 (Generalization Error)</strong> ， 就被认为是模型在未来面对全新数据的真实表现。</p>
+<h4 id="误差传播"><a href="#误差传播" class="headerlink" title="误差传播"></a>误差传播</h4><p>首先我们要知道什么是局部误差。对第 $l$ 层，我们定义：</p>
+<p>$$\partial^{(l)} &#x3D; \frac{\partial J}{\partial z^{(l)}}$$</p>
+<p>它的维度与 $z^{(l)}$ 相同，表示改变该层每个神经元的净输入对最终损失的影响。</p>
+<p>我们之前推到过在误差传播的起始点，也就是输出层，误差信号 $\partial^{(L)}$ 对于回归，二分类和多分类任务都是 $\partial^{(L)} &#x3D; \hat{y} - y$。那么在隐藏层中，误差该如何逆向传播？</p>
+<p>对于 $l &#x3D; L - 1, L - 2, \ldots, 1$，我们要用 $\partial^{(l + 1)}$ 来推导出 $\partial^{(l)}$，看看根据当前层，上一层的误差是如何传递过来的。</p>
+<p>根据链式法则：</p>
+<p>$$\partial^{(l)} &#x3D; \frac{\partial J}{\partial z^{(l)}} &#x3D; \frac{\partial J}{\partial z^{(l + 1)}} \cdot \frac{\partial z^{(l + 1)}}{\partial z^{(l)}}$$</p>
+<p>我们已知：</p>
+<p>$\frac{\partial J}{\partial z^{(l + 1)}} &#x3D; \partial^{(l + 1)}$</p>
+<p>$z^{(l + 1)} &#x3D; W^{(l + 1)} a^{(l)} + b^{(l + 1)}$，所以 $\frac{\partial z^{(l + 1)}}{\partial a^{(l)}} &#x3D; (W^{(l + 1)})^T$</p>
+<p>$a^{(l)} &#x3D; \sigma(z^{(l)})$，所以$\frac{\partial a^{(l)}}{\partial z^{(l)}} &#x3D; \sigma&#39;(z^{(l)})$。你发现这是一个对角矩阵，所以我们可以直接用元素乘的方式来表示。</p>
+<p>于是我们就得到了关键的反向传播递推公式：</p>
+<p>$$\partial^{(l)} &#x3D; ((W^{(l + 1)})^T \partial^{(l + 1)}) \odot \sigma&#39;(z^{(l)})$$</p>
+<p>其中 $\odot$ 表示元素乘积，也就是逐个元素相乘。</p>
+<hr>
+<p>这个公式看起来肯定难理解，但它的含义其实很直观：</p>
+<ul>
+<li><p>$(W^{(l + 1)})^T \partial^{(l + 1)}$ 表示我们把 $l + 1$ 层的误差信号按照权重分配回给第 $l$ 层的每个神经元。一个神经元如果通过大权重连接到了一个误差很大的神经元，那么它自己也会得到一个较大的误差信号。</p>
+</li>
+<li><p>$\sigma&#39;(z^{(l)})$ 而是根据当前神经元的饱和状态来调制误差。例如如果使用ReLU激活函数，则当输入 $z &lt; 0$ 的时候导数为零，误差传递就被切断。</p>
+</li>
+</ul>
+<hr>
+<h4 id="参数梯度计算"><a href="#参数梯度计算" class="headerlink" title="参数梯度计算"></a>参数梯度计算</h4><p>这样我们就能够得出每一层的 $\partial^{(l)}$，则计算参数梯度就水到渠成。</p>
+<p>由于 $z^{(l)} &#x3D; W^{(l)} a^{(l - 1)} + b^{(l)}$，我们可以计算损失函数对权重和偏置的梯度：</p>
+<p>$$<br>\frac{\partial J}{\partial W^{(l)}} &#x3D; \frac{\partial J}{\partial z^{(l)}} \cdot \frac{\partial z^{(l)}}{\partial W^{(l)}} &#x3D; \partial^{(l)} (a^{(l - 1)})^T<br>$$</p>
+<p>$$<br>\frac{\partial J}{\partial b^{(l)}} &#x3D; \frac{\partial J}{\partial z^{(l)}} \cdot \frac{\partial z^{(l)}}{\partial b^{(l)}} &#x3D; \partial^{(l)}<br>$$</p>
+<hr>
+<h4 id="正则化-1"><a href="#正则化-1" class="headerlink" title="正则化"></a>正则化</h4><p>正则化项只依赖于权重 $W^{(l)}$，因此只会改变 $\frac{\partial J}{\partial W^{(l)}}$，不会改变 $\frac{\partial J}{\partial b^{(l)}}$ 和 $\partial^{(l)}$ 的递推关系。</p>
+<p>原来的梯度是：</p>
+<p>$$\frac{\partial J_{data}}{\partial W^{(l)}} &#x3D; \partial^{(l)} (a^{(l - 1)})^T$$</p>
+<p>而加入正则化后，我们可得：</p>
+<p>$$\frac{\partial J}{\partial W^{(l)}} &#x3D; \frac{1}{m} (\partial^{(l)} (a^{(l - 1)})^T) + \lambda W^{(l)}$$</p>
+<p>主要是看最后的 $\lambda W^{(l)}$。</p>
+<p>这样一来，在参数更新时，我们就相当于在原本梯度方向的基础上，额外施加了一个朝向0点的拉力，迫使权重变得更小：</p>
+<p>$$W^{(l)} \leftarrow W^{(l)} - \eta \left( \frac{\partial J_{data}}{\partial W^{(l)}} + \frac{\lambda}{m}W^{(l)} \right)$$</p>
+<p>$$&#x3D; (1 - \frac{\eta\lambda}{m})W^{(l)} - \eta \frac{\partial J_{data}}{\partial W^{(l)}}$$</p>
+<p>权重就会自然地向0收缩。</p>
+<hr>
+<p>来个例子吧。我们顺着刚才的那个例子来接着做。</p>
+<p><em>Generated by DeepSeek-V4-Pro</em></p>
+<p><strong>网络回顾</strong>：<br>输入 $x &#x3D; [0.5, 0.1]^T$，真实标签 $y&#x3D;1$（正类）。</p>
+<ul>
+<li>第一层：$W^{(1)} &#x3D; \begin{pmatrix}0.2 &amp; 0.4\\0.3 &amp; -0.5\end{pmatrix}, b^{(1)} &#x3D; \begin{pmatrix}0.1\\-0.2\end{pmatrix}$，激活 Sigmoid</li>
+<li>第二层：$W^{(2)} &#x3D; \begin{pmatrix}0.6 &amp; -0.1\end{pmatrix}, b^{(2)} &#x3D; [0.3]$，激活 Sigmoid</li>
+</ul>
+<p><strong>前向缓存</strong>：<br>$$<br>z^{(1)} &#x3D; \begin{pmatrix}0.24\\-0.10\end{pmatrix}, \quad<br>a^{(1)} &#x3D; \begin{pmatrix}0.560\\0.475\end{pmatrix}<br>$$<br>$$<br>z^{(2)} &#x3D; 0.5885, \quad a^{(2)} &#x3D; \hat{y} &#x3D; 0.643<br>$$</p>
+<ol>
+<li><p>输出层误差 $\delta^{(2)}$<br>二分类交叉熵 + Sigmoid， $\delta^{(2)} &#x3D; \hat{y} - y &#x3D; 0.643 - 1 &#x3D; -0.357$</p>
+</li>
+<li><p>反向递推隐藏层误差 $\delta^{(1)}$<br>公式：$\delta^{(1)} &#x3D; \left( (W^{(2)})^T \delta^{(2)} \right) \odot \sigma&#39;(z^{(1)})$</p>
+</li>
+</ol>
+<p>首先 $W^{(2)}$ 是 $1 \times 2$，其转置为 $2 \times 1$：<br>$$<br>(W^{(2)})^T &#x3D; \begin{pmatrix}0.6\\-0.1\end{pmatrix}<br>$$<br>$$<br>(W^{(2)})^T \delta^{(2)} &#x3D; \begin{pmatrix}0.6\\-0.1\end{pmatrix} \times (-0.357) &#x3D; \begin{pmatrix}-0.2142\\0.0357\end{pmatrix}<br>$$</p>
+<p>Sigmoid 导数：$\sigma&#39;(z) &#x3D; \sigma(z)(1-\sigma(z)) &#x3D; a^{(1)} \odot (1-a^{(1)})$<br>$$<br>\sigma&#39;(z^{(1)}) &#x3D; \begin{pmatrix}0.560 \times 0.440\\0.475 \times 0.525\end{pmatrix} &#x3D; \begin{pmatrix}0.2464\\0.2494\end{pmatrix}<br>$$</p>
+<p>逐元素相乘得到 $\delta^{(1)}$：<br>$$<br>\delta^{(1)} &#x3D; \begin{pmatrix}-0.2142 \times 0.2464\\0.0357 \times 0.2494\end{pmatrix} &#x3D; \begin{pmatrix}-0.0528\\0.0089\end{pmatrix}<br>$$</p>
+<ol start="3">
+<li>计算参数梯度<br><strong>对于第二层</strong>：<br>$$<br>\frac{\partial J}{\partial W^{(2)}} &#x3D; \delta^{(2)} (a^{(1)})^T &#x3D; -0.357 \times \begin{pmatrix}0.560 &amp; 0.475\end{pmatrix} &#x3D; \begin{pmatrix}-0.200 &amp; -0.170\end{pmatrix}<br>$$<br>$$<br>\frac{\partial J}{\partial b^{(2)}} &#x3D; \delta^{(2)} &#x3D; -0.357<br>$$</li>
+</ol>
+<p><strong>对于第一层</strong>：<br>$$<br>\frac{\partial J}{\partial W^{(1)}} &#x3D; \delta^{(1)} (a^{(0)})^T &#x3D; \begin{pmatrix}-0.0528\\0.0089\end{pmatrix} \begin{pmatrix}0.5 &amp; 0.1\end{pmatrix} &#x3D; \begin{pmatrix}-0.0264 &amp; -0.00528\\0.00445 &amp; 0.00089\end{pmatrix}<br>$$<br>$$<br>\frac{\partial J}{\partial b^{(1)}} &#x3D; \delta^{(1)} &#x3D; \begin{pmatrix}-0.0528\\0.0089\end{pmatrix}<br>$$</p>
+<ol start="4">
+<li>梯度下降更新参数（假设学习率 $\eta &#x3D; 0.1$）</li>
+</ol>
+<p>我们梯度下降的公式是：</p>
+<p>$$<br>\theta \leftarrow \theta - \eta \nabla_\theta J<br>$$</p>
+<p>因此：</p>
+<p>$$<br>W^{(2)} \leftarrow \begin{pmatrix}0.6 &amp; -0.1\end{pmatrix} - 0.1 \times \begin{pmatrix}-0.200 &amp; -0.170\end{pmatrix} &#x3D; \begin{pmatrix}0.62 &amp; -0.083\end{pmatrix}<br>$$<br>$$<br>b^{(2)} \leftarrow 0.3 - 0.1 \times (-0.357) &#x3D; 0.3357<br>$$<br>$$<br>W^{(1)} \leftarrow \begin{pmatrix}0.2 &amp; 0.4\\0.3 &amp; -0.5\end{pmatrix} - 0.1 \times \begin{pmatrix}-0.0264 &amp; -0.00528\\0.00445 &amp; 0.00089\end{pmatrix} &#x3D; \begin{pmatrix}0.2026 &amp; 0.4005\\0.2996 &amp; -0.5001\end{pmatrix}<br>$$<br>$$<br>b^{(1)} \leftarrow \begin{pmatrix}0.1\\-0.2\end{pmatrix} - 0.1 \times \begin{pmatrix}-0.0528\\0.0089\end{pmatrix} &#x3D; \begin{pmatrix}0.1053\\-0.2009\end{pmatrix}<br>$$</p>
+<p>如果我们此时再对这个样本做一次前向传播，会发现输出概率会向 1（正确标签）靠近——这就是学习在发生。</p>
+<hr>
+<p>你看到误差信号从输出产生，通过权重矩阵的传递，将误差从最后一层传递到前一层，同时参数梯度是利用后一层的误差信号和前一层的激活输出计算得到的。</p>
+<p>正因为这种梯度的计算是逆着网络结构的方向进行的：</p>
+<p>$$\frac{\partial J}{\partial z^{(2)}} → \frac{\partial J}{\partial z^{(1)} → \frac{\partial J}{\partial W} 和 \frac{\partial J}{\partial b}$$</p>
+<p>我们叫反向传播。</p>
+<hr>
+<p>我们不妨来看看这三步：正向传播，误差计算，反向传播，是如何形成一次完整的训练迭代的：</p>
+<ol>
+<li>取一个训练批次 batch: $(X, Y)$</li>
+<li>逐层计算 $Z^{(l)}$ , $A^{(l)}$，缓存中间值，得到预测 $\hat{Y}$</li>
+<li>计算标量损失 $J &#x3D; J_{data} + \frac{\lambda}{2m} \sum||W||^2$, 并求出输出层误差 $\partial^{(L)}$</li>
+<li>从 $l &#x3D; L - 1$ 到 1 递推 $\partial^{(l)}$，同时累积各层梯度 $\Delta_{W^{(l)}}J$, $\Delta_{b^{(l)}}J$</li>
+<li>使用优化器（例如SGD）更新参数 $W^{(l)}$ 和 $b^{(l)}$</li>
+<li>重复以上步骤，直到满足停止条件，例如损失收敛或者达到最大迭代次数。</li>
+</ol>
+<hr>
 
-
-  <div class="tag-list">
-    
-      
-      <a class="tag" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">分治法</a>
-    
-      
-      <a class="tag" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">归并排序</a>
-    
-  </div>
 
 </article>
 <div class="article-footer">
@@ -365,7 +553,7 @@
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
 <div class="widgets">
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-ML-%E5%92%8C-DL"><span class="toc-text">AI, ML 和 DL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%8A%A8%E6%9C%BA%E4%B8%8E%E5%AE%9A%E4%B9%89"><span class="toc-text">机器学习的动机与定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%94%A8%E5%9C%A8%E5%93%AA%E4%BA%86%EF%BC%9F"><span class="toc-text">机器学习用在哪了？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">机器学习的定义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">监督学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98-Classification"><span class="toc-text">分类问题 (Classification)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98-Regression"><span class="toc-text">回归问题 (Regression)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">无监督学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E9%97%AE%E9%A2%98-Clustering"><span class="toc-text">聚类问题 (Clustering)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E7%BB%B4-Dimensionality-Reduction"><span class="toc-text">降维 (Dimensionality Reduction)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0"><span class="toc-text">强化学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AF%E8%AF%AD%E4%B8%8E%E6%95%B0%E5%AD%A6%E7%AC%A6%E5%8F%B7"><span class="toc-text">术语与数学符号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%B5%81%E7%A8%8B"><span class="toc-text">机器学习流程</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">单层神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-text">多层网络的结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82%E7%BD%91%E7%BB%9C%E7%9A%84%E8%AE%AD%E7%BB%83"><span class="toc-text">多层网络的训练</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="toc-text">前向传播</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%BB%B4%E5%BA%A6"><span class="toc-text">矩阵维度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%B9%E5%A4%84%E7%90%86%E4%B8%8E%E5%90%91%E9%87%8F%E5%8C%96"><span class="toc-text">批处理与向量化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E4%B8%8E%E8%AF%AF%E5%B7%AE%E8%AE%A1%E7%AE%97"><span class="toc-text">损失函数与误差计算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E4%BB%BB%E5%8A%A1"><span class="toc-text">回归任务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1"><span class="toc-text">二分类任务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1"><span class="toc-text">多分类任务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-text">正则化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="toc-text">反向传播</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AF%E5%B7%AE%E4%BC%A0%E6%92%AD"><span class="toc-text">误差传播</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E6%A2%AF%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="toc-text">参数梯度计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96-1"><span class="toc-text">正则化</span></a></li></ol></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
@@ -788,7 +976,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1779026300974" defer></script>
+<script src="/js/main.js?v=1779026301025" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
