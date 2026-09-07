@@ -1,0 +1,1985 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Cheatsheet - Naucha</title>
+
+  
+    <meta name="description" content="Cpt2: Perceptron &amp; Adaline — Cheatsheet Perceptron：$\text{step}(z) &#x3D; \begin{cases} +1 &amp; z \geq 0 \ -1 &amp; z &lt; 0 \end{cases}$，输出离散，无梯度 Adaline：$z &#x3D; \mathbf{w}^\top \mathbf{x}$，输出">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cheatsheet">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3314/cheatsheet/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="Cpt2: Perceptron &amp; Adaline — Cheatsheet Perceptron：$\text{step}(z) &#x3D; \begin{cases} +1 &amp; z \geq 0 \ -1 &amp; z &lt; 0 \end{cases}$，输出离散，无梯度 Adaline：$z &#x3D; \mathbf{w}^\top \mathbf{x}$，输出">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-05-20T16:05:05.000Z">
+<meta property="article:modified_time" content="2026-05-20T19:14:47.277Z">
+<meta property="article:author" content="Naucha">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1788783862334">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3314/cheatsheet/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Cheatsheet","description":"Cpt2: Perceptron &amp; Adaline — Cheatsheet\nPerceptron：$\\text{step}(z) &#x3D; \\begin{cases} +1 &amp; z \\geq 0 \\ -1 &amp; z &lt; 0 \\end{cases}$，输出离散，无梯度\nAdaline：$z &#x3D; \\mathbf{w}^\\top \\mathbf{x}$...","url":"https://naughtychas.github.io/notes/COMP3314/cheatsheet/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3314" placeholder="在 COMP3314 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="分治法">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%88%86%E6%B2%BB%E6%B3%95/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        分治法
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="归并排序">
+    
+  
+  <a class="link" href="/notebooks/COMP3314/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        归并排序
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3314/cheatsheet/"><span class="title">Cheatsheet</span></a><a class="item title" href="/notes/COMP3314/cheatsheet_compact/"><span class="title">Cheatsheet (Compact)</span></a><a class="item title" href="/notes/COMP3314/cpt10/"><span class="title">Cpt10: 多层网络</span></a><a class="item title" href="/notes/COMP3314/cpt8/"><span class="title">Cpt8: 回归分析</span></a><a class="item title" href="/notes/COMP3314/cpt5/"><span class="title">Cpt5: 数据降维</span></a><a class="item title" href="/notes/COMP3314/cpt9/"><span class="title">Cpt9: 聚类分析与蔟问题</span></a><a class="item title" href="/notes/COMP3314/cpt1/"><span class="title">Cpt1: 机器学习介绍</span></a><a class="item title" href="/notes/COMP3314/cpt7/"><span class="title">Cpt7: 集成学习</span></a><a class="item title" href="/notes/COMP3314/cpt6/"><span class="title">Cpt6: 模型评估与调参</span></a><a class="item title" href="/notes/COMP3314/cpt4/"><span class="title">Cpt4: 数据预处理</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3314/">COMP3314</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-05-20T19:14:47.277Z">2026-05-21</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-05-20T16:05:05.000Z">2026-05-21</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Cheatsheet</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h4 id="Cpt2-Perceptron-Adaline-—-Cheatsheet"><a href="#Cpt2-Perceptron-Adaline-—-Cheatsheet" class="headerlink" title="Cpt2: Perceptron &amp; Adaline — Cheatsheet"></a>Cpt2: Perceptron &amp; Adaline — Cheatsheet</h4><ul>
+<li>Perceptron：$\text{step}(z) &#x3D; \begin{cases} +1 &amp; z \geq 0 \ -1 &amp; z &lt; 0 \end{cases}$，输出离散，<strong>无梯度</strong></li>
+<li>Adaline：$z &#x3D; \mathbf{w}^\top \mathbf{x}$，输出连续值，<strong>可用MSE求导</strong></li>
+</ul>
+<p><strong>误差项本质区别</strong>：</p>
+<ul>
+<li>Perceptron更新用$(y - \hat{y})$，$\hat{y} \in {\pm1}$ → 误差只取${0, \pm2}$</li>
+<li>Adaline更新用$(y - z)$，$z \in \mathbb{R}$ → 误差连续，梯度平滑</li>
+</ul>
+<p><strong>学习率$\eta$影响</strong>：</p>
+<ul>
+<li>$\eta$太小：收敛慢，训练时间长</li>
+<li>$\eta$太大：超调&#x2F;发散，Loss震荡</li>
+<li>⚡ 本章算法<strong>无自适应$\eta$</strong>，需手动调或设衰减</li>
+</ul>
+<p><strong>Batch vs SGD vs Mini-batch</strong>：</p>
+<ul>
+<li>Batch：用全部$n$样本算梯度 → 准、稳，但慢、吃内存</li>
+<li>SGD：每次用1样本 → 快、可跳出局部最优，但震荡大、需$\eta$衰减</li>
+<li>Mini-batch：用$b$样本（32&#x2F;64）→ 平衡速度+稳定性，<strong>深度学习默认</strong></li>
+<li>⚡ 增大batch size ≠ 总是更好：batch太大→梯度估计准但更新少→收敛慢；batch太小→噪声大→可能发散</li>
+</ul>
+<h3 id="Perceptron-训练流程"><a href="#Perceptron-训练流程" class="headerlink" title="Perceptron 训练流程"></a>Perceptron 训练流程</h3><ol>
+<li>初始化权重$\mathbf{w} \leftarrow \mathbf{0}$（或小随机值）</li>
+<li>对每一轮epoch：<ul>
+<li>遍历每个样本$(\mathbf{x}^{(i)}, y^{(i)})$：<ul>
+<li>计算得分$z &#x3D; \mathbf{w}^\top \mathbf{x}^{(i)}$</li>
+<li>预测$\hat{y} &#x3D; \text{step}(z)$</li>
+<li>若$\hat{y} \neq y^{(i)}$（分类错误）：<ul>
+<li>更新$\mathbf{w} \leftarrow \mathbf{w} + \eta \cdot (y^{(i)} - \hat{y}) \cdot \mathbf{x}^{(i)}$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>若本轮无错误，提前终止</li>
+</ul>
+</li>
+<li>输出最终$\mathbf{w}$</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：手动模拟时，注意$(y-\hat{y})$只取${0, \pm2}$；更新方向始终&quot;推&quot;错误样本跨过决策边界</p>
+</blockquote>
+<h3 id="Adaline-Batch-GD-流程"><a href="#Adaline-Batch-GD-流程" class="headerlink" title="Adaline + Batch GD 流程"></a>Adaline + Batch GD 流程</h3><ol>
+<li>初始化$\mathbf{w} \leftarrow \mathbf{0}$</li>
+<li>对每一轮epoch：<ul>
+<li>计算所有样本的预测$z^{(i)} &#x3D; \mathbf{w}^\top \mathbf{x}^{(i)}$</li>
+<li>计算梯度$\nabla J(\mathbf{w}) &#x3D; -\sum_{i&#x3D;1}^n (y^{(i)} - z^{(i)}) \mathbf{x}^{(i)}$</li>
+<li>统一更新$\mathbf{w} \leftarrow \mathbf{w} - \eta \cdot \nabla J(\mathbf{w})$</li>
+<li>（可选）计算$J(\mathbf{w}) &#x3D; \frac{1}{2}\sum_i (y^{(i)} - z^{(i)})^2$监控收敛</li>
+</ul>
+</li>
+<li>输出$\mathbf{w}$</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：梯度推导见下方模板；注意向量形式$\nabla J &#x3D; -X^\top(\mathbf{y} - X\mathbf{w})$可快速写答案</p>
+</blockquote>
+<h3 id="模板1：Adaline-梯度推导（⭐⭐⭐-必背）"><a href="#模板1：Adaline-梯度推导（⭐⭐⭐-必背）" class="headerlink" title="模板1：Adaline 梯度推导（⭐⭐⭐ 必背）"></a>模板1：Adaline 梯度推导（⭐⭐⭐ 必背）</h3><p>已知损失$J(\mathbf{w}) &#x3D; \frac{1}{2} \sum_{i&#x3D;1}^n (y^{(i)} - z^{(i)})^2$，其中$z^{(i)} &#x3D; \mathbf{w}^\top \mathbf{x}^{(i)}$</p>
+<p>对单个权重$w_j$求偏导：<br>$$<br>\frac{\partial J}{\partial w_j} &#x3D; \frac{\partial}{\partial w_j} \left[ \frac{1}{2} \sum_i (y^{(i)} - \mathbf{w}^\top \mathbf{x}^{(i)})^2 \right]<br>&#x3D; \sum_i (y^{(i)} - z^{(i)}) \cdot \frac{\partial}{\partial w_j} (y^{(i)} - z^{(i)})<br>$$<br>$$<br>&#x3D; \sum_i (y^{(i)} - z^{(i)}) \cdot (-\frac{\partial z^{(i)}}{\partial w_j})<br>&#x3D; \sum_i (y^{(i)} - z^{(i)}) \cdot (-x_j^{(i)})<br>&#x3D; -\sum_i (y^{(i)} - \mathbf{w}^\top \mathbf{x}^{(i)}) x_j^{(i)}<br>$$</p>
+<p>向量形式（更简洁，推荐考场写）：<br>$$<br>\nabla J(\mathbf{w}) &#x3D; -X^\top (\mathbf{y} - X\mathbf{w})<br>\quad \Rightarrow \quad<br>\mathbf{w} \leftarrow \mathbf{w} + \eta X^\top (\mathbf{y} - X\mathbf{w})<br>$$</p>
+<blockquote>
+<p>💡 链式法则通用：$\frac{\partial J}{\partial \mathbf{w}} &#x3D; \frac{\partial J}{\partial z} \cdot \frac{\partial z}{\partial \mathbf{w}}$，后续逻辑回归&#x2F;神经网络同理</p>
+</blockquote>
+<h4 id="Cpt3-Logistic-Regression-SVM-KNN-—-Cheatsheet"><a href="#Cpt3-Logistic-Regression-SVM-KNN-—-Cheatsheet" class="headerlink" title="Cpt3: Logistic Regression &#x2F; SVM &#x2F; KNN — Cheatsheet"></a>Cpt3: Logistic Regression &#x2F; SVM &#x2F; KNN — Cheatsheet</h4><p><strong>Logistic Regression 本质</strong>：</p>
+<ul>
+<li>判别式模型，直接建模 $P(y&#x3D;1|\mathbf{x};\mathbf{w}) &#x3D; \sigma(\mathbf{w}^\top \mathbf{x})$，$\sigma(z) &#x3D; \frac{1}{1+e^{-z}}$</li>
+<li>输出是<strong>概率</strong>，非硬分类；预测时通常阈值0.5二值化</li>
+<li>✅ 等价于单层神经网络 + sigmoid激活 + cross-entropy损失 → pp2-P1 Q7</li>
+</ul>
+<p><strong>Cross-Entropy vs MSE for 分类</strong>：</p>
+<ul>
+<li>CE损失：$J &#x3D; -[y \log \sigma + (1-y)\log(1-\sigma)]$</li>
+<li>梯度：$\frac{\partial J}{\partial \mathbf{w}} &#x3D; (\sigma - y)\mathbf{x}$（简洁！）</li>
+<li>MSE梯度：$(\sigma - y) \cdot \sigma(1-\sigma) \cdot \mathbf{x}$ → 多一项$\sigma(1-\sigma)$，当$\sigma$接近0&#x2F;1时梯度消失</li>
+<li>✅ CE对分类任务更友好，梯度信号强</li>
+</ul>
+<p><strong>SVM 最大间隔直觉</strong>：</p>
+<ul>
+<li>目标：找超平面$\mathbf{w}^\top \mathbf{x} + b &#x3D; 0$，使最近样本到平面距离最大</li>
+<li>几何间隔 &#x3D; $\frac{y(\mathbf{w}^\top \mathbf{x} + b)}{|\mathbf{w}|}$，最大化最小几何间隔 ⇔ 最小化$\frac{1}{2}|\mathbf{w}|^2$</li>
+<li>约束：$y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} + b) \geq 1$（函数间隔≥1）</li>
+</ul>
+<p><strong>Hinge Loss 与 0-1 Loss</strong>：</p>
+<ul>
+<li>0-1 loss：$\mathbb{I}(y \neq \hat{y})$，非凸、不可导，难优化</li>
+<li>Hinge loss：$\max(0, 1 - y(\mathbf{w}^\top \mathbf{x} + b))$，凸代理，可导（次梯度）</li>
+<li>当$y z \geq 1$时loss&#x3D;0（正确分类且间隔足够），否则线性惩罚</li>
+</ul>
+<p><strong>支持向量</strong>：</p>
+<ul>
+<li>满足$0 &lt; \alpha_i &lt; C$的样本（对偶变量），位于间隔边界上</li>
+<li>决定决策边界：$\mathbf{w} &#x3D; \sum_i \alpha_i y^{(i)} \mathbf{x}^{(i)}$，仅支持向量贡献</li>
+<li>⚡ 测试时只需计算与支持向量的内积，高效</li>
+</ul>
+<p><strong>软间隔与Slack变量</strong>：</p>
+<ul>
+<li>允许部分样本违反间隔：$y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} + b) \geq 1 - \xi_i, \xi_i \geq 0$</li>
+<li>目标：$\min \frac{1}{2}|\mathbf{w}|^2 + C \sum_i \xi_i$，$C$大→硬间隔（不容错），$C$小→软间隔（容错强）</li>
+<li>⚠️ $C$是正则化强度的<strong>倒数</strong>：$C \uparrow$ → 正则化$\downarrow$ → 易过拟合</li>
+</ul>
+<p><strong>KNN 核心特性</strong>：</p>
+<ul>
+<li>惰性学习（lazy）：无显式训练，预测时才计算</li>
+<li>距离度量：Euclidean $|\mathbf{x}-\mathbf{x}&#39;|_2$（默认）, Manhattan $|\cdot|_1$, Minkowski $|\cdot|_p$</li>
+<li>k值影响（⭐⭐⭐ 高频）：<ul>
+<li>$k&#x3D;1$：决策边界锯齿状，variance高，bias低 → 易过拟合</li>
+<li>$k&#x3D;n$：全局多数投票，boundary平滑，bias高，variance低 → 易欠拟合</li>
+<li>✅ 选k：交叉验证，通常奇数防平票</li>
+</ul>
+</li>
+</ul>
+<h3 id="Logistic-Regression-训练流程"><a href="#Logistic-Regression-训练流程" class="headerlink" title="Logistic Regression 训练流程"></a>Logistic Regression 训练流程</h3><ol>
+<li>初始化权重$\mathbf{w} \leftarrow \mathbf{0}$（或小随机值），设学习率$\eta$</li>
+<li>对每轮epoch：<ul>
+<li>对每个样本$(\mathbf{x}^{(i)}, y^{(i)})$：<ul>
+<li>计算线性得分$z^{(i)} &#x3D; \mathbf{w}^\top \mathbf{x}^{(i)}$</li>
+<li>计算概率$\sigma^{(i)} &#x3D; \frac{1}{1+e^{-z^{(i)}}}$</li>
+<li>计算梯度$\nabla J^{(i)} &#x3D; (\sigma^{(i)} - y^{(i)}) \mathbf{x}^{(i)}$</li>
+</ul>
+</li>
+<li>（Batch GD）汇总梯度：$\nabla J &#x3D; \frac{1}{n} \sum_i \nabla J^{(i)}$</li>
+<li>更新权重：$\mathbf{w} \leftarrow \mathbf{w} - \eta \nabla J$</li>
+</ul>
+</li>
+<li>预测新样本：计算$\sigma(\mathbf{w}^\top \mathbf{x})$，若$\geq 0.5$则预测+1</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：梯度形式$(\sigma-y)\mathbf{x}$与Adaline$(z-y)\mathbf{x}$结构一致，仅激活函数不同</p>
+</blockquote>
+<h3 id="SVM-训练流程（对偶问题直觉）"><a href="#SVM-训练流程（对偶问题直觉）" class="headerlink" title="SVM 训练流程（对偶问题直觉）"></a>SVM 训练流程（对偶问题直觉）</h3><ol>
+<li>构造QP问题：<ul>
+<li>目标：$\min_{\boldsymbol{\alpha}} \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j y_i y_j K(\mathbf{x}_i, \mathbf{x}_j) - \sum_i \alpha_i$</li>
+<li>约束：$0 \leq \alpha_i \leq C$, $\sum_i \alpha_i y_i &#x3D; 0$</li>
+</ul>
+</li>
+<li>用SMO等算法解出$\alpha_i$</li>
+<li>计算$\mathbf{w} &#x3D; \sum_i \alpha_i y_i \mathbf{x}_i$（仅支持向量$\alpha_i&gt;0$贡献）</li>
+<li>计算$b$：任选支持向量$(\mathbf{x}_s, y_s)$，$b &#x3D; y_s - \mathbf{w}^\top \mathbf{x}_s$</li>
+<li>预测：$f(\mathbf{x}) &#x3D; \text{sign}(\sum_i \alpha_i y_i K(\mathbf{x}_i, \mathbf{x}) + b)$</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：线性核时$K(\mathbf{x}_i,\mathbf{x}) &#x3D; \mathbf{x}_i^\top \mathbf{x}$；RBF核需记$\exp(-\gamma |\mathbf{x}_i-\mathbf{x}|^2)$</p>
+</blockquote>
+<h3 id="模板1：Logistic-Regression-梯度推导（⭐⭐⭐-必背）"><a href="#模板1：Logistic-Regression-梯度推导（⭐⭐⭐-必背）" class="headerlink" title="模板1：Logistic Regression 梯度推导（⭐⭐⭐ 必背）"></a>模板1：Logistic Regression 梯度推导（⭐⭐⭐ 必背）</h3><p>损失函数（单样本）：<br>$<br>J(\mathbf{w}) &#x3D; - \left[ y \log \sigma(z) + (1-y) \log(1-\sigma(z)) \right], \quad z &#x3D; \mathbf{w}^\top \mathbf{x}<br>$</p>
+<p>链式法则：<br>$<br>\frac{\partial J}{\partial \mathbf{w}} &#x3D; \frac{\partial J}{\partial \sigma} \cdot \frac{\partial \sigma}{\partial z} \cdot \frac{\partial z}{\partial \mathbf{w}}<br>$</p>
+<p>逐层计算：<br>$<br>\frac{\partial J}{\partial \sigma} &#x3D; -\left[ \frac{y}{\sigma} - \frac{1-y}{1-\sigma} \right] &#x3D; \frac{\sigma - y}{\sigma(1-\sigma)}<br>$</p>
+<p>$<br>\frac{\partial \sigma}{\partial z} &#x3D; \sigma(1-\sigma) \quad \text{(sigmoid导数)}<br>$</p>
+<p>$<br>\frac{\partial z}{\partial \mathbf{w}} &#x3D; \mathbf{x}<br>$</p>
+<p>相乘消去$\sigma(1-\sigma)$：<br>$<br>\frac{\partial J}{\partial \mathbf{w}} &#x3D; \frac{\sigma - y}{\sigma(1-\sigma)} \cdot \sigma(1-\sigma) \cdot \mathbf{x} &#x3D; (\sigma - y) \mathbf{x} \quad \checkmark<br>$</p>
+<blockquote>
+<p>💡 关键：$\sigma(1-\sigma)$项恰好消去，梯度简洁！多样本时取平均</p>
+</blockquote>
+<h3 id="模板2：SVM-最大间隔-⇔-最小化‖w‖²"><a href="#模板2：SVM-最大间隔-⇔-最小化‖w‖²" class="headerlink" title="模板2：SVM 最大间隔 ⇔ 最小化‖w‖²"></a>模板2：SVM 最大间隔 ⇔ 最小化‖w‖²</h3><p>目标：最大化最小几何间隔$\gamma &#x3D; \min_i \frac{y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} + b)}{|\mathbf{w}|}$</p>
+<p>等价变换：</p>
+<ol>
+<li>固定函数间隔为1（缩放$\mathbf{w},b$不影响超平面）：$y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} + b) \geq 1$</li>
+<li>几何间隔 &#x3D; $1&#x2F;|\mathbf{w}|$，最大化$1&#x2F;|\mathbf{w}|$ ⇔ 最小化$|\mathbf{w}|$</li>
+<li>为方便求导，最小化$\frac{1}{2}|\mathbf{w}|^2$（凸函数，最优解相同）</li>
+</ol>
+<p>最终QP形式：<br>$$<br>\min_{\mathbf{w},b} \frac{1}{2} |\mathbf{w}|^2 \quad \text{s.t.} \quad y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} + b) \geq 1, \forall i<br>$$</p>
+<blockquote>
+<p>💡 证明题开头先写&quot;目标：max margin ⇔ min ‖w‖&quot;，逻辑清晰</p>
+</blockquote>
+<h3 id="模板3：Hinge-Loss-次梯度推导"><a href="#模板3：Hinge-Loss-次梯度推导" class="headerlink" title="模板3：Hinge Loss 次梯度推导"></a>模板3：Hinge Loss 次梯度推导</h3><p>Hinge loss：$\ell(z) &#x3D; \max(0, 1 - y z)$, $z &#x3D; \mathbf{w}^\top \mathbf{x} + b$</p>
+<p>次梯度（因max函数在$1-yz&#x3D;0$处不可导）：<br>$$<br>\frac{\partial \ell}{\partial \mathbf{w}} &#x3D;<br>\begin{cases}<br>-y \mathbf{x} &amp; \text{if } y z &lt; 1 \quad \text{(违反间隔)} \<br>0 &amp; \text{if } y z &gt; 1 \quad \text{(满足间隔)} \<br>\text{任意} \in [-y\mathbf{x}, 0] &amp; \text{if } y z &#x3D; 1<br>\end{cases}<br>$$</p>
+<blockquote>
+<p>💡 应用：SGD更新时，仅对$yz&lt;1$的样本更新$\mathbf{w} \leftarrow \mathbf{w} + \eta y \mathbf{x}$</p>
+</blockquote>
+<h3 id="模板5：SVM-软间隔-约束与目标"><a href="#模板5：SVM-软间隔-约束与目标" class="headerlink" title="模板5：SVM 软间隔 约束与目标"></a>模板5：SVM 软间隔 约束与目标</h3><p>Primal problem with slack variables：<br>$$<br>\min_{\mathbf{w},b,\boldsymbol{\xi}} \frac{1}{2} |\mathbf{w}|^2 + C \sum_{i&#x3D;1}^n \xi_i<br>$$<br>$$<br>\text{s.t.} \quad y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} + b) \geq 1 - \xi_i, \quad \xi_i \geq 0, \quad \forall i<br>$$</p>
+<ul>
+<li>$\xi_i &#x3D; 0$：样本在间隔外或边界上（正确分类）</li>
+<li>$0 &lt; \xi_i \leq 1$：样本在间隔内但分类正确</li>
+<li>$\xi_i &gt; 1$：样本被误分类</li>
+<li>$C$控制tradeoff：$C \to \infty$ → 硬间隔；$C \to 0$ → 忽略间隔，只最小化误分类</li>
+</ul>
+<blockquote>
+<p>💡 证明题：若问&quot;为什么用$\frac{1}{2}|\mathbf{w}|^2$&quot; → 答：凸、可导、最优解相同</p>
+</blockquote>
+<h4 id="Cpt4-Data-Preprocessing-—-Cheatsheet"><a href="#Cpt4-Data-Preprocessing-—-Cheatsheet" class="headerlink" title="Cpt4: Data Preprocessing — Cheatsheet"></a>Cpt4: Data Preprocessing — Cheatsheet</h4><p><strong>缺失值处理策略对比</strong>：<br>| 方法 | 适用场景 | 优点 | 缺点 |<br>| 删除样本 | 缺失比例&lt;5%，随机缺失 | 简单直接 | 数据量减少，可能引入偏差 |<br>| 删除特征 | 某特征缺失&gt;50% | 避免插值噪声 | 丢失潜在信息 |<br>| 均值&#x2F;中位数填充 | 数值型，近似正态分布 | 保留样本量 | 低估方差，扭曲分布 |<br>| 众数&#x2F;常数填充 | 类别型 | 保持类别完整性 | 可能引入虚假模式 |<br>| 模型预测填充 | 高价值特征，缺失机制可建模 | 利用特征相关性 | 计算复杂，可能过拟合 |</p>
+<blockquote>
+<p>⚠️ 易错：填充时<strong>必须用训练集统计量</strong>（均值&#x2F;标准差），测试集用相同参数变换，否则数据泄露！</p>
+</blockquote>
+<p><strong>定序 (Ordinal) vs 定类 (Nominal) 编码</strong>：</p>
+<ul>
+<li>定序：有自然顺序（小学&lt;初中&lt;高中），映射为整数{1,2,3}，模型可学习大小关系</li>
+<li>定类：无顺序（红&#x2F;绿&#x2F;蓝），必须用<strong>独热编码 (One-Hot)</strong>，避免引入虚假顺序</li>
+<li>⚡ 独热编码后特征数 &#x3D; 类别数；若用线性模型，建议<code>drop=&#39;first&#39;</code>避免多重共线性（n类→n-1维）</li>
+</ul>
+<p><strong>Dummy Variable Trap</strong>：</p>
+<ul>
+<li>若n个类别用n个二元特征 + 截距项 → 特征线性相关（$x_1+x_2+...+x_n&#x3D;1$）→ 矩阵奇异，优化不稳定</li>
+<li>✅ 解决：drop首列，或去掉截距项（但通常drop列更稳妥）</li>
+</ul>
+<p><strong>Train&#x2F;Test Split 关键原则</strong>：</p>
+<ul>
+<li>随机划分：假设数据i.i.d.，用<code>random_state</code>保证可复现</li>
+<li>分层抽样 (<code>stratify=y</code>)：保持各类别比例一致，小样本&#x2F;不平衡数据必用</li>
+<li>时间序列数据：<strong>不能随机打乱</strong>，按时间先后划分，否则未来信息泄露</li>
+<li>典型比例：小数据(1000-)用30%测试；中大数据用10-20%；极大数据可用1-5%</li>
+</ul>
+<p><strong>特征缩放：归一化 vs 标准化</strong>（⭐⭐⭐ 高频）：<br>| 方法 | 公式 | 输出范围 | 对异常值敏感 | 适用算法 |<br>| 归一化 (Min-Max) | $x&#39; &#x3D; \frac{x-x_{\min}}{x_{\max}-x_{\min}}$ | [0,1] | ⚠️ 极敏感（极值拉偏） | 神经网络(输入[0,1])、图像处理 |<br>| 标准化 (Z-score) | $x&#39; &#x3D; \frac{x-\mu}{\sigma}$ | ℝ，均值为0方差为1 | ✅ 鲁棒（用均值&#x2F;标准差） | SVM、KNN、LR、PCA、K-means |</p>
+<blockquote>
+<p>💡 核心结论：<strong>基于距离&#x2F;梯度的算法必须缩放</strong>；树模型（决策树、RF、XGBoost）不需要（基于分裂，尺度不变）</p>
+</blockquote>
+<p><strong>L1 vs L2 正则化几何解释</strong>（⭐⭐⭐ 证明题高频）：</p>
+<ul>
+<li>L2：惩罚项$\lambda|\mathbf{w}|_2^2$，等高线为圆 → 权重向原点收缩，但<strong>很少精确为0</strong></li>
+<li>L1：惩罚项$\lambda|\mathbf{w}|_1$，等高线为菱形（有尖角）→ 优化路径易碰尖角 → <strong>产生稀疏解</strong>（部分$w_j&#x3D;0$）</li>
+<li>✅ L1用于特征选择；L2用于防止过拟合、处理多重共线性</li>
+</ul>
+<p><strong>序列后向选择 (SBS) 直觉</strong>：</p>
+<ul>
+<li>贪心算法：从d维开始，每轮剔除使性能下降最小的特征，直到剩k维</li>
+<li>优点：考虑特征交互；缺点：计算量大$O(d^2)$，可能陷入局部最优</li>
+<li>⚡ 替代：L1正则（更高效）、基于树的重要性排序</li>
+</ul>
+<h3 id="独热编码实操步骤"><a href="#独热编码实操步骤" class="headerlink" title="独热编码实操步骤"></a>独热编码实操步骤</h3><ol>
+<li>识别定类特征（无顺序的类别变量）</li>
+<li>对每个定类特征：<ul>
+<li>若用线性模型&#x2F;逻辑回归 → <code>OneHotEncoder(drop=&#39;first&#39;)</code>避免共线性</li>
+<li>若用树模型 → 可保留全部类别（树能处理冗余）</li>
+</ul>
+</li>
+<li>合并编码后的特征与原始数值特征</li>
+<li>✅ 关键：<code>encoder.fit( train_categories )</code>，<code>encoder.transform( test_categories )</code>，测试集遇到新类别需处理（设<code>handle_unknown=&#39;ignore&#39;</code>）</li>
+</ol>
+<h3 id="特征缩放标准流程"><a href="#特征缩放标准流程" class="headerlink" title="特征缩放标准流程"></a>特征缩放标准流程</h3><ol>
+<li>划分训练集&#x2F;测试集（<strong>先划分，再缩放！</strong> 防止数据泄露）</li>
+<li>对训练集：<ul>
+<li>计算每特征均值$\mu_j$、标准差$\sigma_j$（标准化）或最小&#x2F;最大值（归一化）</li>
+<li>应用变换：$x&#39;_j &#x3D; \frac{x_j - \mu_j}{\sigma_j}$</li>
+</ul>
+</li>
+<li>对测试集：<ul>
+<li><strong>必须用训练集的$\mu_j, \sigma_j$</strong> 做相同变换</li>
+</ul>
+</li>
+<li>用缩放后的数据训练模型</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：题目给两特征量纲差异大（如年龄[0,100]，收入[0,10^6]）→ 必答&quot;需标准化，否则距离&#x2F;梯度被大尺度特征主导&quot;</p>
+</blockquote>
+<h3 id="模板2：L1正则产生稀疏解的几何证明"><a href="#模板2：L1正则产生稀疏解的几何证明" class="headerlink" title="模板2：L1正则产生稀疏解的几何证明"></a>模板2：L1正则产生稀疏解的几何证明</h3><p>考虑二维情况，优化问题：<br>$$<br>\min_{\mathbf{w}} J(\mathbf{w}) \quad \text{s.t.} \quad |\mathbf{w}|_1 \leq C \quad \text{(L1)} \quad \text{or} \quad |\mathbf{w}|_2^2 \leq C \quad \text{(L2)}<br>$$</p>
+<ul>
+<li>L2约束域：$w_1^2 + w_2^2 \leq C$ → 圆，边界光滑</li>
+<li>L1约束域：$|w_1| + |w_2| \leq C$ → 菱形，顶点在坐标轴$(\pm C, 0), (0, \pm C)$</li>
+</ul>
+<p>损失函数等高线与约束域首次相切：</p>
+<ul>
+<li>圆：切点通常在象限内 → $w_1, w_2 \neq 0$</li>
+<li>菱形：切点易在顶点 → 某$w_j &#x3D; 0$ ✓</li>
+</ul>
+<blockquote>
+<p>💡 证明题开头先画约束域形状，再说明&quot;切点位置决定稀疏性&quot;</p>
+</blockquote>
+<h3 id="模板3：独热编码避免虚假顺序的代数解释"><a href="#模板3：独热编码避免虚假顺序的代数解释" class="headerlink" title="模板3：独热编码避免虚假顺序的代数解释"></a>模板3：独热编码避免虚假顺序的代数解释</h3><p>设三类别A&#x2F;B&#x2F;C，若简单映射为{1,2,3}：</p>
+<ul>
+<li>线性模型预测：$\hat{y} &#x3D; w \cdot x + b$</li>
+<li>则$\hat{y}_B - \hat{y}_A &#x3D; w(2-1) &#x3D; w$，$\hat{y}_C - \hat{y}_B &#x3D; w(3-2) &#x3D; w$</li>
+<li>→ 隐含假设&quot;B-A&quot;与&quot;C-B&quot;效应相同，但类别无顺序，此假设错误 ❌</li>
+</ul>
+<p>独热编码后：<br>$<br>\mathbf{x}_A &#x3D; [1,0,0]^\top, \mathbf{x}_B &#x3D; [0,1,0]^\top, \mathbf{x}_C &#x3D; [0,0,1]^\top<br>$<br>$<br>\hat{y} &#x3D; w_1 x_1 + w_2 x_2 + w_3 x_3 + b<br>$</p>
+<ul>
+<li>三类预测独立：$\hat{y}_A &#x3D; w_1 + b$, $\hat{y}_B &#x3D; w_2 + b$, $\hat{y}_C &#x3D; w_3 + b$</li>
+<li>无顺序约束，模型自由学习各类别效应 ✓</li>
+</ul>
+<blockquote>
+<p>💡 证明题技巧：用具体数值举例对比，直观清晰</p>
+</blockquote>
+<h4 id="Cpt5-Dimensionality-Reduction-—-Cheatsheet"><a href="#Cpt5-Dimensionality-Reduction-—-Cheatsheet" class="headerlink" title="Cpt5: Dimensionality Reduction — Cheatsheet"></a>Cpt5: Dimensionality Reduction — Cheatsheet</h4><p><strong>维度灾难 (Curse of Dimensionality)</strong>：</p>
+<ul>
+<li>随特征数$d$增加，数据在高维空间变得稀疏 → 距离度量失效（所有点对距离趋近相等）</li>
+<li>需要指数级更多样本才能维持相同密度：$n \propto r^d$</li>
+<li>✅ 影响：KNN&#x2F;K-means等基于距离的算法性能骤降；模型易过拟合（参数过多）</li>
+</ul>
+<p><strong>降维两大策略对比</strong>：<br>| 方法 | 代表算法 | 优点 | 缺点 | 适用场景 |<br>| 特征选择 (Feature Selection) | Filter(方差&#x2F;相关性), Wrapper(SBS&#x2F;SFS), Embedded(L1) | 保留原始特征可解释性；计算高效 | 可能丢失特征交互信息 | 高维稀疏数据；需要特征解释 |<br>| 特征提取 (Feature Extraction) | PCA, LDA, Autoencoder | 捕捉特征交互；可降至极低维 | 新特征无物理意义；计算复杂 | 图像&#x2F;文本等高维稠密数据 |</p>
+<p><strong>冗余特征检测</strong>：</p>
+<ul>
+<li>高相关特征：计算皮尔逊相关系数$|r| &gt; 0.9$ → 保留其一</li>
+<li>低方差特征：$\text{Var}(x_j) \approx 0$ → 几乎常数，无区分力 → 删除</li>
+<li>⚡ 注意：低方差≠无用！若与label强相关仍需保留（罕见但可能）</li>
+</ul>
+<p><strong>主成分分析 (PCA) 核心直觉</strong>（⭐⭐⭐ 高频）：</p>
+<ul>
+<li>目标：找正交基${\mathbf{u}_1, \mathbf{u}_2, ...}$，使数据投影后方差最大（保留最多信息）</li>
+<li>第一主成分$\mathbf{u}<em>1$：$\arg\max</em>{|\mathbf{u}|&#x3D;1} \text{Var}(\mathbf{u}^\top \mathbf{X})$</li>
+<li>等价视角：最小化重构误差$\sum_i |\mathbf{x}^{(i)} - \tilde{\mathbf{x}}^{(i)}|^2$</li>
+<li>✅ 两个视角数学等价（证明见模板）</li>
+</ul>
+<p><strong>PCA 前提假设</strong>：</p>
+<ul>
+<li>线性关系：主成分是原始特征的线性组合</li>
+<li>方差&#x3D;信息：假设高方差方向包含更多信号（噪声通常方差小）</li>
+<li>正交性：主成分间线性无关（协方差&#x3D;0）</li>
+<li>⚠️ 若数据有非线性流形结构 → 用Kernel PCA &#x2F; t-SNE &#x2F; UMAP</li>
+</ul>
+<p><strong>特征缩放对PCA的影响</strong>（⭐⭐⭐ 易错）：</p>
+<ul>
+<li>PCA对特征尺度敏感：大尺度特征主导方差 → 主成分偏向该方向</li>
+<li>✅ 必须先标准化：$x&#39;_j &#x3D; \frac{x_j - \mu_j}{\sigma_j}$，使各特征&quot;话语权平等&quot;</li>
+<li>⚠️ 若特征本就有物理尺度意义（如像素值[0,255]）→ 可考虑归一化而非标准化</li>
+</ul>
+<h3 id="PCA-标准流程（考场必会）"><a href="#PCA-标准流程（考场必会）" class="headerlink" title="PCA 标准流程（考场必会）"></a>PCA 标准流程（考场必会）</h3><ol>
+<li>数据预处理：<ul>
+<li>处理缺失值（删除&#x2F;填充）</li>
+<li>✅ <strong>标准化</strong>：对每特征计算$\mu_j, \sigma_j$，变换$x&#39;_j &#x3D; \frac{x_j - \mu_j}{\sigma_j}$</li>
+</ul>
+</li>
+<li>计算协方差矩阵：<ul>
+<li>$\Sigma &#x3D; \frac{1}{n} X^\top X$（$X$已中心化，即每列均值&#x3D;0）</li>
+</ul>
+</li>
+<li>特征值分解：<ul>
+<li>解$\Sigma \mathbf{u} &#x3D; \lambda \mathbf{u}$，得特征值$\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_d$和对应特征向量$\mathbf{u}_1, \mathbf{u}_2, ...$</li>
+</ul>
+</li>
+<li>选择主成分数$k$：<ul>
+<li>方法1：设定方差保留比例，如$\frac{\sum_{j&#x3D;1}^k \lambda_j}{\sum_{j&#x3D;1}^d \lambda_j} \geq 0.95$</li>
+<li>方法2：肘部法则（scree plot），选$\lambda$下降变缓处</li>
+</ul>
+</li>
+<li>投影降维：<ul>
+<li>构造投影矩阵$U_k &#x3D; [\mathbf{u}_1, \mathbf{u}_2, ..., \mathbf{u}_k] \in \mathbb{R}^{d \times k}$</li>
+<li>降维后数据$Z &#x3D; X U_k \in \mathbb{R}^{n \times k}$</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：手动计算2D→1D PCA时，先中心化→算协方差→求特征向量→投影；注意特征向量需单位化</p>
+</blockquote>
+<h3 id="降维后模型训练流程"><a href="#降维后模型训练流程" class="headerlink" title="降维后模型训练流程"></a>降维后模型训练流程</h3><ol>
+<li>在训练集上fit降维器（如PCA），记录变换参数（$\mu, \sigma, U_k$）</li>
+<li>用降维后的训练数据$Z_{\text{train}}$训练模型</li>
+<li>对测试集：<ul>
+<li>用训练集的$\mu, \sigma$标准化</li>
+<li>用训练集的$U_k$投影得$Z_{\text{test}}$</li>
+<li>用训练好的模型预测</li>
+</ul>
+</li>
+<li>✅ 防止数据泄露：降维参数必须从训练集学习！</li>
+</ol>
+<h3 id="模板1：PCA-最大方差-⇔-最小重构误差（⭐⭐⭐-必背）"><a href="#模板1：PCA-最大方差-⇔-最小重构误差（⭐⭐⭐-必背）" class="headerlink" title="模板1：PCA 最大方差 ⇔ 最小重构误差（⭐⭐⭐ 必背）"></a>模板1：PCA 最大方差 ⇔ 最小重构误差（⭐⭐⭐ 必背）</h3><p><strong>视角1：最大化投影方差</strong><br>设数据已中心化（$\sum_i \mathbf{x}^{(i)} &#x3D; \mathbf{0}$），投影方向$\mathbf{u}$（$|\mathbf{u}|&#x3D;1$）</p>
+<p>投影后方差：<br>$$<br>\text{Var} &#x3D; \frac{1}{n} \sum_{i&#x3D;1}^n (\mathbf{u}^\top \mathbf{x}^{(i)})^2 &#x3D; \mathbf{u}^\top \left( \frac{1}{n} \sum_i \mathbf{x}^{(i)} \mathbf{x}^{(i)\top} \right) \mathbf{u} &#x3D; \mathbf{u}^\top \Sigma \mathbf{u}<br>$$</p>
+<p>优化问题：$\max_{|\mathbf{u}|&#x3D;1} \mathbf{u}^\top \Sigma \mathbf{u}$</p>
+<p>拉格朗日：$\mathcal{L} &#x3D; \mathbf{u}^\top \Sigma \mathbf{u} - \lambda(\mathbf{u}^\top \mathbf{u} - 1)$</p>
+<p>求导令0：$\frac{\partial \mathcal{L}}{\partial \mathbf{u}} &#x3D; 2\Sigma \mathbf{u} - 2\lambda \mathbf{u} &#x3D; 0 \Rightarrow \Sigma \mathbf{u} &#x3D; \lambda \mathbf{u}$</p>
+<p>→ 最优$\mathbf{u}$是$\Sigma$的最大特征值对应特征向量 ✓</p>
+<p><strong>视角2：最小化重构误差</strong><br>重构数据$\tilde{\mathbf{x}}^{(i)} &#x3D; (\mathbf{u}^\top \mathbf{x}^{(i)}) \mathbf{u}$（投影再还原）</p>
+<p>重构误差：<br>$$<br>J &#x3D; \frac{1}{n} \sum_i |\mathbf{x}^{(i)} - \tilde{\mathbf{x}}^{(i)}|^2 &#x3D; \frac{1}{n} \sum_i |\mathbf{x}^{(i)}|^2 - \mathbf{u}^\top \Sigma \mathbf{u}<br>$$</p>
+<p>$\because \frac{1}{n}\sum_i |\mathbf{x}^{(i)}|^2$是常数 → $\min J \Leftrightarrow \max \mathbf{u}^\top \Sigma \mathbf{u}$ ✓</p>
+<blockquote>
+<p>💡 证明题关键：写出两视角目标函数，说明常数项等价</p>
+</blockquote>
+<h3 id="模板2：PCA-协方差矩阵特征分解推导"><a href="#模板2：PCA-协方差矩阵特征分解推导" class="headerlink" title="模板2：PCA 协方差矩阵特征分解推导"></a>模板2：PCA 协方差矩阵特征分解推导</h3><p>已知中心化数据$X \in \mathbb{R}^{n \times d}$，协方差$\Sigma &#x3D; \frac{1}{n} X^\top X$</p>
+<p>对$\Sigma$做特征分解：$\Sigma &#x3D; U \Lambda U^\top$，其中$U &#x3D; [\mathbf{u}_1, ..., \mathbf{u}_d]$正交，$\Lambda &#x3D; \text{diag}(\lambda_1, ..., \lambda_d)$</p>
+<p>投影到前$k$主成分：$Z &#x3D; X U_k$，$U_k &#x3D; [\mathbf{u}_1, ..., \mathbf{u}_k]$</p>
+<p>重构数据：$\tilde{X} &#x3D; Z U_k^\top &#x3D; X U_k U_k^\top$</p>
+<p>重构误差（Frobenius范数）：<br>$$<br>|X - \tilde{X}|<em>F^2 &#x3D; |X(I - U_k U_k^\top)|<em>F^2 &#x3D; \text{tr}((X - \tilde{X})^\top (X - \tilde{X}))<br>$$<br>$$<br>&#x3D; \text{tr}(X^\top X) - \text{tr}(U_k^\top X^\top X U_k) &#x3D; n \sum</em>{j&#x3D;1}^d \lambda_j - n \sum</em>{j&#x3D;1}^k \lambda_j &#x3D; n \sum_{j&#x3D;k+1}^d \lambda_j<br>$$</p>
+<p>→ 最小化误差 ⇔ 选最大$k$个$\lambda$ ✓</p>
+<blockquote>
+<p>💡 考场简化：写&quot;重构误差 &#x3D; 总方差 - 保留方差 &#x3D; $\sum_{j&gt;k} \lambda_j$&quot;即可</p>
+</blockquote>
+<h4 id="Cpt6-Model-Evaluation-Tuning-—-Cheatsheet"><a href="#Cpt6-Model-Evaluation-Tuning-—-Cheatsheet" class="headerlink" title="Cpt6: Model Evaluation &amp; Tuning — Cheatsheet"></a>Cpt6: Model Evaluation &amp; Tuning — Cheatsheet</h4><p><strong>混淆矩阵核心指标</strong>（⭐⭐⭐ 必背）：</p>
+<ul>
+<li>$TP$：预测正&#x2F;实际正；$TN$：预测负&#x2F;实际负；$FP$：预测正&#x2F;实际负（误报）；$FN$：预测负&#x2F;实际正（漏报）</li>
+<li>$Accuracy &#x3D; \frac{TP+TN}{TP+TN+FP+FN}$ → 类别平衡时有效，不平衡时误导性强</li>
+<li>$Precision &#x3D; \frac{TP}{TP+FP}$ → &quot;预测为正的样本中有多少真正为正&quot;，关注查准率</li>
+<li>$Recall &#x3D; \frac{TP}{TP+FN}$ → &quot;实际为正的样本中有多少被找出&quot;，关注查全率</li>
+<li>$F1 &#x3D; 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}$ → 调和平均，平衡查准查全</li>
+<li>⚠️ 调和平均特性：$F1$对低值敏感，$P$或$R$任一接近0 → $F1$接近0</li>
+</ul>
+<p><strong>ROC曲线与AUC</strong>（⭐⭐⭐ 高频）：</p>
+<ul>
+<li>$TPR &#x3D; Recall &#x3D; \frac{TP}{TP+FN}$（纵轴）；$FPR &#x3D; \frac{FP}{FP+TN}$（横轴）</li>
+<li>阈值$\theta \downarrow$ → 更多样本判为正 → $TPR \uparrow, FPR \uparrow$ → 曲线向右上移动</li>
+<li>$AUC &#x3D; \int_0^1 TPR(FPR) d(FPR)$：随机选一个正样本和一个负样本，模型给正样本打分更高的概率</li>
+<li>✅ $AUC&#x3D;0.5$：随机猜测；$AUC&#x3D;1$：完美分类；$AUC&lt;0.5$：模型反向，取反即可</li>
+<li>⚡ ROC对类别不平衡鲁棒（因TPR&#x2F;FPR分别归一化），Precision-Recall曲线更敏感</li>
+</ul>
+<p><strong>Bias-Variance分解</strong>（⭐⭐⭐ 证明题高频）：</p>
+<ul>
+<li>期望泛化误差：$\mathbb{E}[(y - f(\mathbf{x}))^2] &#x3D; \underbrace{(\mathbb{E}[f(\mathbf{x})] - y)^2}<em>{\text{Bias}^2} + \underbrace{\mathbb{E}[(f(\mathbf{x}) - \mathbb{E}[f(\mathbf{x})])^2]}</em>{\text{Variance}} + \underbrace{\sigma^2}_{\text{Irreducible noise}}$</li>
+<li>High bias（欠拟合）：模型太简单，训练&#x2F;验证误差都高，曲线接近</li>
+<li>High variance（过拟合）：模型太复杂，训练误差低，验证误差高，曲线间隙大</li>
+<li>✅ 模型复杂度$\uparrow$ → bias$\downarrow$, variance$\uparrow$ → 找平衡点</li>
+</ul>
+<p><strong>交叉验证（Cross-Validation）策略对比</strong>：<br>| 方法 | 流程 | 优点 | 缺点 | 适用场景 |<br>| Hold-out | 随机分train&#x2F;test（如7:3） | 简单快速 | 评估方差大，依赖划分 | 大数据集 |<br>| k-fold CV | 分k份，轮流做验证集，平均结果 | 评估稳定，数据利用率高 | 训练k次，计算量大 | 中小数据集（k&#x3D;5&#x2F;10） |<br>| LOOCV | $k&#x3D;n$，每次留1个做验证 | 几乎无偏，数据利用率100% | 计算量$O(n)$，方差可能大 | 极小数据集 |<br>| Stratified CV | 每fold保持类别比例 | 评估稳定，适合不平衡数据 | 实现略复杂 | 类别不平衡必用 |</p>
+<blockquote>
+<p>⚠️ 易错：CV用于<strong>模型选择&#x2F;调参</strong>，最终性能仍需在<strong>独立测试集</strong>评估，防止过拟合验证集</p>
+</blockquote>
+<p><strong>过拟合诊断与应对</strong>：</p>
+<ul>
+<li>现象：训练误差↓，验证误差↑；或训练&#x2F;验证间隙大</li>
+<li>原因：模型太复杂 &#x2F; 数据太少 &#x2F; 噪声太多 &#x2F; 特征冗余</li>
+<li>✅ 应对：① 增加数据 ② 正则化（L1&#x2F;L2）③ 降维&#x2F;特征选择 ④ 早停（early stopping）⑤ 集成（bagging降variance）</li>
+</ul>
+<p><strong>超参数调优策略</strong>：</p>
+<ul>
+<li>网格搜索（Grid Search）：穷举预定义参数组合 → 全面但计算量大</li>
+<li>随机搜索（Random Search）：随机采样参数空间 → 高效，高维空间更优</li>
+<li>贝叶斯优化：用代理模型指导搜索 → 样本效率高，但实现复杂</li>
+<li>✅ 实践：先随机搜索粗调，再网格搜索细调；用CV评估每组参数</li>
+</ul>
+<p><strong>类别不平衡处理</strong>（⭐⭐⭐ 应用题高频）：</p>
+<ul>
+<li>问题：多数类主导，少数类recall极低；accuracy虚高</li>
+<li>评估指标：用F1&#x2F;ROC-AUC&#x2F;Precision-Recall曲线，而非accuracy</li>
+<li>数据层面：① 过采样少数类（SMOTE）② 欠采样多数类 ③ 组合采样</li>
+<li>算法层面：① 类别权重（class_weight）② 阈值移动（降低正类判定阈值）③ 集成方法（EasyEnsemble）</li>
+<li>⚡ 阈值移动：原阈值0.5 → 调整为$\frac{cost_{FN}}{cost_{FP}+cost_{FN}}$，根据误分类代价优化</li>
+</ul>
+<h3 id="学习曲线绘制与解读流程"><a href="#学习曲线绘制与解读流程" class="headerlink" title="学习曲线绘制与解读流程"></a>学习曲线绘制与解读流程</h3><ol>
+<li>选择一系列训练集大小：$n_1 &lt; n_2 &lt; ... &lt; n_m$（如10%, 30%, ..., 100%）</li>
+<li>对每个$n_j$：<ul>
+<li>随机采样$n_j$个训练样本</li>
+<li>训练模型，计算训练误差$J_{train}(n_j)$</li>
+<li>在独立验证集上计算验证误差$J_{val}(n_j)$</li>
+</ul>
+</li>
+<li>绘制曲线：横轴&#x3D;$n$，纵轴&#x3D;$J$，两条曲线分别标训练&#x2F;验证</li>
+<li>解读：<ul>
+<li>两曲线都高且接近 → high bias → 换更复杂模型&#x2F;加特征</li>
+<li>训练低、验证高、间隙大 → high variance → 加数据&#x2F;正则化&#x2F;降维</li>
+<li>验证曲线随$n$下降 → 增加数据有效</li>
+</ul>
+</li>
+</ol>
+<h3 id="阈值移动优化F1流程"><a href="#阈值移动优化F1流程" class="headerlink" title="阈值移动优化F1流程"></a>阈值移动优化F1流程</h3><ol>
+<li>用模型输出概率$\sigma(\mathbf{x}) \in [0,1]$，而非硬分类</li>
+<li>遍历阈值$\theta \in [0,1]$（如步长0.01）：<ul>
+<li>对每个$\theta$：$\hat{y} &#x3D; \mathbb{I}(\sigma(\mathbf{x}) \geq \theta)$</li>
+<li>计算对应$Precision(\theta), Recall(\theta), F1(\theta)$</li>
+</ul>
+</li>
+<li>选使$F1$最大的$\theta^*$作为最终阈值</li>
+<li>✅ 应用题技巧：题目问&quot;如何优化recall&quot; → 答&quot;降低阈值，让更多样本判为正&quot;</li>
+</ol>
+<h3 id="模板2：Bias-Variance分解推导（⭐⭐⭐-高频）"><a href="#模板2：Bias-Variance分解推导（⭐⭐⭐-高频）" class="headerlink" title="模板2：Bias-Variance分解推导（⭐⭐⭐ 高频）"></a>模板2：Bias-Variance分解推导（⭐⭐⭐ 高频）</h3><p>设真实函数$y &#x3D; f^*(\mathbf{x}) + \epsilon$，$\mathbb{E}[\epsilon]&#x3D;0, \text{Var}(\epsilon)&#x3D;\sigma^2$</p>
+<p>模型$f$在训练集$\mathcal{D}$上学习，期望泛化误差：<br>$<br>\mathbb{E}_{\mathcal{D},\epsilon}[(y - f(\mathbf{x}))^2] &#x3D; \mathbb{E}[(f^* + \epsilon - f)^2]<br>$</p>
+<p>展开：<br>$<br>&#x3D; \mathbb{E}[(f^* - f)^2] + \mathbb{E}[\epsilon^2] + 2\mathbb{E}[(f^* - f)\epsilon]<br>$</p>
+<p>第三项：$\mathbb{E}[(f^* - f)\epsilon] &#x3D; \mathbb{E}[f^* - f] \cdot \mathbb{E}[\epsilon] &#x3D; 0$（$\epsilon$与$f$独立）</p>
+<p>第二项：$\mathbb{E}[\epsilon^2] &#x3D; \text{Var}(\epsilon) &#x3D; \sigma^2$（不可约误差）</p>
+<p>第一项分解：<br>$<br>\mathbb{E}[(f^* - f)^2] &#x3D; \mathbb{E}[(f - \mathbb{E}[f] + \mathbb{E}[f] - f^<em>)^2]<br>$<br>$<br>&#x3D; \underbrace{\mathbb{E}[(f - \mathbb{E}[f])^2]}_{\text{Variance}} + \underbrace{(\mathbb{E}[f] - f^</em>)^2}<em>{\text{Bias}^2} + 2\underbrace{\mathbb{E}[(f - \mathbb{E}[f])(\mathbb{E}[f] - f^*)]}</em>{&#x3D;0}<br>$</p>
+<p>→ 总误差 &#x3D; Bias² + Variance + $\sigma^2$ ✓</p>
+<blockquote>
+<p>💡 证明题开头先写&quot;目标：分解期望误差&quot;，再逐步展开，关键步骤标注&quot;交叉项&#x3D;0&quot;</p>
+</blockquote>
+<h3 id="模板5：阈值移动优化Recall的数学原理"><a href="#模板5：阈值移动优化Recall的数学原理" class="headerlink" title="模板5：阈值移动优化Recall的数学原理"></a>模板5：阈值移动优化Recall的数学原理</h3><p>设模型输出概率$\sigma$，原阈值$\theta_0&#x3D;0.5$</p>
+<p>Recall定义：$R(\theta) &#x3D; P(\sigma \geq \theta | y&#x3D;1)$</p>
+<ul>
+<li>$\theta \downarrow$ → 判定条件放宽 → 更多正样本被检出 → $R \uparrow$</li>
+<li>但同时$FP \uparrow$ → $Precision \downarrow$</li>
+</ul>
+<p>最优阈值选择：</p>
+<ul>
+<li>若目标最大化$F1$：遍历$\theta$选$\arg\max_\theta F1(\theta)$</li>
+<li>若代价敏感：设$cost_{FP}, cost_{FN}$，最小化期望代价<br>$<br>\mathbb{E}[cost] &#x3D; cost_{FP} \cdot FP(\theta) + cost_{FN} \cdot FN(\theta)<br>$<br>→ 求导或遍历找最优$\theta^*$ ✓</li>
+</ul>
+<blockquote>
+<p>💡 证明题关键：写出Recall&#x2F;Precision关于$\theta$的单调性，再结合目标函数优化</p>
+</blockquote>
+<h4 id="Cpt7-Ensemble-Learning-—-Cheatsheet"><a href="#Cpt7-Ensemble-Learning-—-Cheatsheet" class="headerlink" title="Cpt7: Ensemble Learning — Cheatsheet"></a>Cpt7: Ensemble Learning — Cheatsheet</h4><p><strong>Bagging (Bootstrap Aggregating) 直觉</strong>（⭐⭐⭐ 高频）：</p>
+<ul>
+<li>流程：有放回采样→训练多个基模型→投票&#x2F;平均聚合</li>
+<li>Bootstrap采样：$n$样本中有放回抽$n$次 → 约63.2%样本被选中，36.8%为OOB（Out-Of-Bag）</li>
+<li>✅ OOB样本可作为验证集，无需额外划分测试集</li>
+<li>主要降低<strong>variance</strong>：平均多个模型→抵消个体波动，特别适合高variance基模型（如深决策树）</li>
+<li>⚡ 并行训练：各基模型独立，可分布式加速</li>
+</ul>
+<p><strong>Boosting 核心直觉</strong>（⭐⭐⭐ 高频）：</p>
+<ul>
+<li>串行训练：每轮关注前一轮错分的样本</li>
+<li>目标：降低<strong>bias</strong>，将弱学习器提升为强学习器</li>
+<li>两类主流：<ul>
+<li>AdaBoost：调整样本权重，错分样本权重↑</li>
+<li>Gradient Boosting：拟合残差（负梯度），逐步修正</li>
+</ul>
+</li>
+</ul>
+<p><strong>AdaBoost 关键机制</strong>：</p>
+<ul>
+<li>样本权重更新：$D_{t+1}(i) &#x3D; \frac{D_t(i) \exp(-\alpha_t y_i h_t(\mathbf{x}_i))}{Z_t}$<ul>
+<li>$y_i h_t(\mathbf{x}_i) &gt; 0$（分类正确）→ 权重↓</li>
+<li>$y_i h_t(\mathbf{x}_i) &lt; 0$（分类错误）→ 权重↑</li>
+</ul>
+</li>
+<li>基模型权重：$\alpha_t &#x3D; \frac{1}{2} \ln \frac{1-\epsilon_t}{\epsilon_t}$<ul>
+<li>误差$\epsilon_t$越小 → $\alpha_t$越大 → 该模型投票权重越高</li>
+</ul>
+</li>
+<li>✅ 训练误差上界：$\prod_t 2\sqrt{\epsilon_t(1-\epsilon_t)}$，随轮数指数下降</li>
+</ul>
+<p><strong>Gradient Boosting 直觉</strong>：</p>
+<ul>
+<li>每轮拟合残差：$r_i &#x3D; y_i - F_{t-1}(\mathbf{x}_i)$（回归）或负梯度（通用）</li>
+<li>更新：$F_t(\mathbf{x}) &#x3D; F_{t-1}(\mathbf{x}) + \nu \cdot h_t(\mathbf{x})$，$\nu$为学习率（shrinkage）</li>
+<li>✅ 学习率$\nu$小→需更多轮但泛化更好；$\nu$大→易过拟合</li>
+<li>⚡ XGBoost&#x2F;LightGBM：工程优化（正则化、直方图、叶子生长等），原理同GBDT</li>
+</ul>
+<p><strong>Voting 策略对比</strong>：<br>| 策略 | 公式 | 适用场景 | 优点 |<br>| Hard Voting | $\hat{y} &#x3D; \text{mode}{h_1(\mathbf{x}), ..., h_T(\mathbf{x})}$ | 分类，基模型输出类别 | 简单直观 |<br>| Soft Voting | $\hat{y} &#x3D; \arg\max_c \frac{1}{T}\sum_t P_t(y&#x3D;c|\mathbf{x})$ | 分类，基模型输出概率 | 利用置信度，通常更优 |<br>| Average | $\hat{y} &#x3D; \frac{1}{T}\sum_t h_t(\mathbf{x})$ | 回归 | 平滑预测，降variance |<br>| Weighted | $\hat{y} &#x3D; \sum_t w_t h_t(\mathbf{x}), \sum w_t&#x3D;1$ | 已知模型性能差异 | 给强模型更高权重 |</p>
+<p><strong>集成方法偏差-方差特性</strong>（⭐⭐⭐ 证明题高频）：</p>
+<ul>
+<li>Bagging：主要降低variance，bias基本不变<ul>
+<li>适用：高variance基模型（如未剪枝树、KNN）</li>
+</ul>
+</li>
+<li>Boosting：主要降低bias，可能增加variance<ul>
+<li>适用：高bias基模型（如浅树、线性模型）</li>
+</ul>
+</li>
+<li>✅ 经验：树模型→用Random Forest（bagging）；线性模型→用GBDT（boosting）</li>
+</ul>
+<p><strong>Stacking 两层架构</strong>：</p>
+<ul>
+<li>第一层：多个基模型（可异构）输出预测</li>
+<li>第二层：Meta-learner（如LR）以第一层输出为输入，学习如何组合</li>
+<li>✅ 关键：第一层预测需用<strong>交叉验证</strong>生成，防止数据泄露</li>
+<li>⚡ 计算量大，但常获竞赛SOTA</li>
+</ul>
+<h3 id="Bagging-训练流程"><a href="#Bagging-训练流程" class="headerlink" title="Bagging 训练流程"></a>Bagging 训练流程</h3><ol>
+<li>设基学习器数量$T$，采样比例通常为100%（有放回）</li>
+<li>对$t&#x3D;1$到$T$：<ul>
+<li>从训练集有放回采样$n$样本，得$D_t$（Bootstrap样本）</li>
+<li>用$D_t$训练基模型$h_t$（通常不剪枝&#x2F;不设早停）</li>
+</ul>
+</li>
+<li>预测时：<ul>
+<li>分类：硬投票$\text{mode}{h_t(\mathbf{x})}$或软投票$\text{avg}{P_t(y|\mathbf{x})}$</li>
+<li>回归：$\text{avg}{h_t(\mathbf{x})}$</li>
+</ul>
+</li>
+<li>✅ OOB评估：对每个样本，仅用未采样到它的基模型预测，计算整体性能</li>
+</ol>
+<h3 id="Random-Forest-训练流程（Bagging-特征随机）"><a href="#Random-Forest-训练流程（Bagging-特征随机）" class="headerlink" title="Random Forest 训练流程（Bagging + 特征随机）"></a>Random Forest 训练流程（Bagging + 特征随机）</h3><ol>
+<li>设树数量$T$，每节点候选特征数$m$（分类$\approx\sqrt{d}$，回归$\approx d&#x2F;3$）</li>
+<li>对$t&#x3D;1$到$T$：<ul>
+<li>Bootstrap采样得$D_t$</li>
+<li>用$D_t$训练决策树，但每节点分裂时：<ul>
+<li>随机选$m$个特征</li>
+<li>仅在这$m$个中选最优分裂点（信息增益&#x2F;基尼指数最大）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>预测：所有树投票&#x2F;平均</li>
+<li>✅ 特征重要性计算：对每棵树，累加各特征分裂带来的不纯度下降，再跨树平均</li>
+</ol>
+<h3 id="AdaBoost-训练流程（⭐⭐⭐-必会手动模拟）"><a href="#AdaBoost-训练流程（⭐⭐⭐-必会手动模拟）" class="headerlink" title="AdaBoost 训练流程（⭐⭐⭐ 必会手动模拟）"></a>AdaBoost 训练流程（⭐⭐⭐ 必会手动模拟）</h3><ol>
+<li>初始化样本权重$D_1(i) &#x3D; 1&#x2F;n, \forall i$</li>
+<li>对$t&#x3D;1$到$T$：<ul>
+<li>用权重$D_t$训练弱学习器$h_t$（如决策树桩）</li>
+<li>计算加权误差$\epsilon_t &#x3D; \sum_{i: h_t(\mathbf{x}_i)\neq y_i} D_t(i)$</li>
+<li>计算模型权重$\alpha_t &#x3D; \frac{1}{2} \ln \frac{1-\epsilon_t}{\epsilon_t}$</li>
+<li>更新样本权重<br>$<br>D_{t+1}(i) &#x3D; \frac{D_t(i) \exp(-\alpha_t y_i h_t(\mathbf{x}<em>i))}{Z_t}<br>$<br>其中$Z_t$为归一化因子，使$\sum_i D</em>{t+1}(i)&#x3D;1$</li>
+</ul>
+</li>
+<li>最终模型：$H(\mathbf{x}) &#x3D; \text{sign}\left( \sum_{t&#x3D;1}^T \alpha_t h_t(\mathbf{x}) \right)$</li>
+<li>✅ 应用题技巧：手动计算时，注意$y_i, h_t(\mathbf{x}_i) \in {\pm1}$，$\exp(-\alpha_t y_i h_t)$正确分类时$&lt;1$（权重↓），错误时$&gt;1$（权重↑）</li>
+</ol>
+<h3 id="模板2：AdaBoost-样本权重更新推导"><a href="#模板2：AdaBoost-样本权重更新推导" class="headerlink" title="模板2：AdaBoost 样本权重更新推导"></a>模板2：AdaBoost 样本权重更新推导</h3><p>目标：解释$D_{t+1}(i) \propto D_t(i) \exp(-\alpha_t y_i h_t(\mathbf{x}_i))$的合理性</p>
+<ul>
+<li>若分类正确：$y_i h_t(\mathbf{x}_i) &#x3D; +1$ → $\exp(-\alpha_t) &lt; 1$ → 权重↓</li>
+<li>若分类错误：$y_i h_t(\mathbf{x}_i) &#x3D; -1$ → $\exp(+\alpha_t) &gt; 1$ → 权重↑</li>
+<li>归一化$Z_t$确保$\sum_i D_{t+1}(i) &#x3D; 1$</li>
+</ul>
+<p>模型权重$\alpha_t &#x3D; \frac{1}{2} \ln \frac{1-\epsilon_t}{\epsilon_t}$来源：</p>
+<ul>
+<li>最小化指数损失上界：$\sum_i D_t(i) \exp(-\alpha_t y_i h_t(\mathbf{x}_i))$</li>
+<li>对$\alpha_t$求导令0 → 解得上述$\alpha_t$ ✓</li>
+</ul>
+<h4 id="Cpt8-Regression-Analysis-—-Cheatsheet"><a href="#Cpt8-Regression-Analysis-—-Cheatsheet" class="headerlink" title="Cpt8: Regression Analysis — Cheatsheet"></a>Cpt8: Regression Analysis — Cheatsheet</h4><p><strong>线性回归核心假设</strong>（⭐⭐⭐ 高频）：</p>
+<ul>
+<li>线性关系：$y &#x3D; \mathbf{w}^\top \mathbf{x} + b + \epsilon$，$\epsilon$为噪声</li>
+<li>误差独立同分布：$\epsilon \sim \mathcal{N}(0, \sigma^2)$，均值为0、方差恒定（同方差性）</li>
+<li>特征无多重共线性：$X^\top X$可逆，否则正规方程无唯一解</li>
+<li>⚠️ 若假设违反：异方差→加权最小二乘；自相关→时间序列模型；共线性→正则化&#x2F;删除特征</li>
+</ul>
+<blockquote>
+<p>💡 关键：MSE梯度&#x3D;$( \hat{y}-y )\mathbf{x}$，MAE梯度&#x3D;$\text{sign}(\hat{y}-y)\mathbf{x}$（次梯度）</p>
+</blockquote>
+<p><strong>正则化对比：Ridge (L2) vs Lasso (L1) vs Elastic Net</strong>：<br>| 方法 | 惩罚项 | 解的特性 | 适用场景 |<br>| Ridge (L2) | $\lambda|\mathbf{w}|_2^2$ | 权重收缩但不为零；处理共线性 | 特征多且相关；防止过拟合 |<br>| Lasso (L1) | $\lambda|\mathbf{w}|_1$ | 产生稀疏解（部分$w_j&#x3D;0$）；特征选择 | 高维稀疏数据；需可解释性 |<br>| Elastic Net | $\lambda_1|\mathbf{w}|_1 + \lambda_2|\mathbf{w}|_2^2$ | 结合L1稀疏+L2稳定；处理相关特征组 | 特征高度相关且需选择 |</p>
+<blockquote>
+<p>⚠️ 易错：正则化<strong>不惩罚偏置项$b$</strong>（截距），因平移数据不应影响正则强度</p>
+</blockquote>
+<p><strong>正则化强度$\lambda$影响</strong>：</p>
+<ul>
+<li>$\lambda&#x3D;0$：无正则，等价普通最小二乘，易过拟合</li>
+<li>$\lambda \uparrow$：权重收缩↑，模型复杂度↓，bias↑, variance↓</li>
+<li>$\lambda \to \infty$：$\mathbf{w} \to \mathbf{0}$，模型退化为常数预测$\hat{y}&#x3D;\bar{y}$</li>
+<li>✅ 选$\lambda$：交叉验证，画学习曲线找验证误差最小点</li>
+</ul>
+<p><strong>多项式回归直觉</strong>：</p>
+<ul>
+<li>本质：线性回归 + 非线性特征映射$\phi(\mathbf{x}) &#x3D; [1, x, x^2, ..., x^d]^\top$</li>
+<li>仍为<strong>线性模型</strong>：对参数$\mathbf{w}$线性，可用正规方程求解</li>
+<li>高阶风险：$d \uparrow$ → 模型复杂度↑ → 易过拟合（Runge现象：边界震荡）</li>
+<li>✅ 应对：正则化 + 特征缩放（高阶项量纲差异极大！）</li>
+</ul>
+<p><strong>回归评估指标对比</strong>：<br>| 指标 | 公式 | 单位 | 优点 | 缺点 |<br>| MSE | $\frac{1}{n}\sum(y-\hat{y})^2$ | $y^2$ | 可导，优化友好 | 量纲平方，异常值敏感 |<br>| $R^2$ | $1 - \frac{\sum(y-\hat{y})^2}{\sum(y-\bar{y})^2}$ | 无单位[0,1] | 相对基准提升，跨任务可比 | 可能为负（模型比均值还差） |</p>
+<blockquote>
+<p>💡 $R^2$解释：模型解释的方差比例；$R^2&#x3D;0.8$ → 模型捕捉了80%目标变量波动</p>
+</blockquote>
+<p><strong>概率视角：MLE vs MAP</strong>（⭐⭐⭐ 证明题高频）：</p>
+<ul>
+<li>MLE（最大似然）：$\arg\max_{\mathbf{w}} P(\mathbf{y}|X,\mathbf{w})$，等价最小化MSE（当$\epsilon \sim \mathcal{N}$）</li>
+<li>MAP（最大后验）：$\arg\max_{\mathbf{w}} P(\mathbf{w}|\mathbf{y},X) \propto P(\mathbf{y}|X,\mathbf{w})P(\mathbf{w})$<ul>
+<li>若$P(\mathbf{w}) \sim \mathcal{N}(0, \tau^2 I)$ → MAP等价Ridge回归（L2正则）</li>
+<li>若$P(\mathbf{w}) \sim \text{Laplace}(0, b)$ → MAP等价Lasso回归（L1正则）</li>
+</ul>
+</li>
+<li>✅ 正则化 &#x3D; 对权重施加先验信念，防止过拟合的贝叶斯解释</li>
+</ul>
+<h3 id="线性回归-MSE-训练流程（正规方程法）"><a href="#线性回归-MSE-训练流程（正规方程法）" class="headerlink" title="线性回归 + MSE 训练流程（正规方程法）"></a>线性回归 + MSE 训练流程（正规方程法）</h3><ol>
+<li>构造设计矩阵$X \in \mathbb{R}^{n \times (d+1)}$，首列全1（对应偏置项）</li>
+<li>检查$X^\top X$是否可逆：<ul>
+<li>若可逆：直接计算$\mathbf{w} &#x3D; (X^\top X)^{-1} X^\top \mathbf{y}$</li>
+<li>若奇异（共线性）：用伪逆$\mathbf{w} &#x3D; X^\dagger \mathbf{y}$或加正则</li>
+</ul>
+</li>
+<li>预测新样本：$\hat{y} &#x3D; \mathbf{w}^\top \mathbf{x}_{\text{new}}$（$\mathbf{x}$需加首项1）</li>
+<li>✅ 应用题技巧：手动计算小矩阵时，先算$X^\top X$和$X^\top \mathbf{y}$，再解线性方程组</li>
+</ol>
+<h3 id="线性回归-SGD-训练流程"><a href="#线性回归-SGD-训练流程" class="headerlink" title="线性回归 + SGD 训练流程"></a>线性回归 + SGD 训练流程</h3><ol>
+<li>初始化$\mathbf{w} \leftarrow \mathbf{0}$（或小随机值），设学习率$\eta$、迭代轮数$T$</li>
+<li>对每轮$t&#x3D;1$到$T$：<ul>
+<li>随机打乱数据（或随机采样mini-batch）</li>
+<li>对每个样本$(\mathbf{x}^{(i)}, y^{(i)})$：<ul>
+<li>计算预测$\hat{y}^{(i)} &#x3D; \mathbf{w}^\top \mathbf{x}^{(i)}$</li>
+<li>计算梯度$\nabla J^{(i)} &#x3D; (\hat{y}^{(i)} - y^{(i)}) \mathbf{x}^{(i)}$（MSE损失）</li>
+<li>更新$\mathbf{w} \leftarrow \mathbf{w} - \eta \cdot \nabla J^{(i)}$</li>
+</ul>
+</li>
+<li>（可选）$\eta$衰减：$\eta_t &#x3D; \eta_0 &#x2F; (1 + \gamma t)$</li>
+</ul>
+</li>
+<li>输出最终$\mathbf{w}$</li>
+<li>✅ 应用题技巧：手动模拟时，注意梯度符号$(\hat{y}-y)$，更新方向&quot;推&quot;预测靠近真实值</li>
+</ol>
+<h3 id="Ridge-Lasso-训练流程对比"><a href="#Ridge-Lasso-训练流程对比" class="headerlink" title="Ridge&#x2F;Lasso 训练流程对比"></a>Ridge&#x2F;Lasso 训练流程对比</h3><p><strong>Ridge (L2)</strong>：</p>
+<ul>
+<li>正规方程：$\mathbf{w} &#x3D; (X^\top X + \lambda I)^{-1} X^\top \mathbf{y}$（$I$首元素0，不惩罚偏置）</li>
+<li>梯度下降：$\nabla J &#x3D; (\hat{\mathbf{y}} - \mathbf{y})^\top X + \lambda \mathbf{w}$，更新$\mathbf{w} \leftarrow \mathbf{w} - \eta \nabla J$</li>
+</ul>
+<p><strong>Lasso (L1)</strong>：</p>
+<ul>
+<li>无闭式解，需用次梯度法&#x2F;坐标下降&#x2F;近端梯度</li>
+<li>次梯度：$\partial |w_j| &#x3D; \begin{cases} +1 &amp; w_j&gt;0 \ -1 &amp; w_j&lt;0 \ [-1,1] &amp; w_j&#x3D;0 \end{cases}$</li>
+<li>更新：$w_j \leftarrow \text{SoftThreshold}(w_j - \eta \cdot \frac{\partial J}{\partial w_j}, \eta\lambda)$<ul>
+<li>$\text{SoftThreshold}(z, \gamma) &#x3D; \text{sign}(z) \cdot \max(|z|-\gamma, 0)$</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>💡 应用题技巧：题目问&quot;为何Lasso能特征选择&quot; → 答&quot;软阈值操作将小权重精确置零&quot;</p>
+</blockquote>
+<h3 id="多项式回归实操流程"><a href="#多项式回归实操流程" class="headerlink" title="多项式回归实操流程"></a>多项式回归实操流程</h3><ol>
+<li>特征映射：对原始特征$x$，构造$\phi(x) &#x3D; [1, x, x^2, ..., x^d]^\top$</li>
+<li>✅ <strong>必须特征缩放</strong>：高阶项量纲差异极大（如$x \in [0,1]$，$x^{10} \in [0,10^{-10}]$）</li>
+<li>用$\phi(\mathbf{x})$作为新输入，训练线性回归（可加正则防过拟合）</li>
+<li>预测时：新样本先映射$\phi(\mathbf{x}_{\text{new}})$，再用训练好的$\mathbf{w}$预测</li>
+<li>✅ 选阶数$d$：交叉验证，画训练&#x2F;验证误差曲线，选验证误差最小且未上升的$d$</li>
+</ol>
+<h3 id="模板1：MSE损失梯度推导（⭐⭐⭐-必背）"><a href="#模板1：MSE损失梯度推导（⭐⭐⭐-必背）" class="headerlink" title="模板1：MSE损失梯度推导（⭐⭐⭐ 必背）"></a>模板1：MSE损失梯度推导（⭐⭐⭐ 必背）</h3><p>损失函数（单样本）：$J(\mathbf{w}) &#x3D; \frac{1}{2}(y - \mathbf{w}^\top \mathbf{x})^2$</p>
+<p>对权重向量$\mathbf{w}$求梯度：<br>$<br>\nabla_{\mathbf{w}} J &#x3D; \frac{\partial}{\partial \mathbf{w}} \left[ \frac{1}{2}(y - \mathbf{w}^\top \mathbf{x})^2 \right]<br>&#x3D; (y - \mathbf{w}^\top \mathbf{x}) \cdot \frac{\partial}{\partial \mathbf{w}}(y - \mathbf{w}^\top \mathbf{x})<br>$<br>$<br>&#x3D; (y - \hat{y}) \cdot (-\mathbf{x}) &#x3D; (\hat{y} - y) \mathbf{x} \quad \checkmark<br>$</p>
+<p>多样本MSE：$J &#x3D; \frac{1}{2n} \sum_i (y^{(i)} - \mathbf{w}^\top \mathbf{x}^{(i)})^2$<br>$<br>\nabla J &#x3D; \frac{1}{n} \sum_i (\hat{y}^{(i)} - y^{(i)}) \mathbf{x}^{(i)} &#x3D; \frac{1}{n} X^\top (\hat{\mathbf{y}} - \mathbf{y})<br>$</p>
+<blockquote>
+<p>💡 关键：梯度形式$(\hat{y}-y)\mathbf{x}$，与逻辑回归$(\sigma-y)\mathbf{x}$结构一致，仅预测函数不同</p>
+</blockquote>
+<h3 id="模板2：正规方程推导（最小二乘闭式解）"><a href="#模板2：正规方程推导（最小二乘闭式解）" class="headerlink" title="模板2：正规方程推导（最小二乘闭式解）"></a>模板2：正规方程推导（最小二乘闭式解）</h3><p>目标：$\min_{\mathbf{w}} J(\mathbf{w}) &#x3D; \frac{1}{2} |\mathbf{y} - X\mathbf{w}|^2$</p>
+<p>展开：<br>$<br>J(\mathbf{w}) &#x3D; \frac{1}{2} (\mathbf{y} - X\mathbf{w})^\top (\mathbf{y} - X\mathbf{w}) &#x3D; \frac{1}{2} (\mathbf{y}^\top \mathbf{y} - 2\mathbf{y}^\top X\mathbf{w} + \mathbf{w}^\top X^\top X \mathbf{w})<br>$</p>
+<p>对$\mathbf{w}$求导（矩阵微积分）：<br>$<br>\frac{\partial J}{\partial \mathbf{w}} &#x3D; -X^\top \mathbf{y} + X^\top X \mathbf{w}<br>$</p>
+<p>令梯度&#x3D;0：<br>$<br>X^\top X \mathbf{w} &#x3D; X^\top \mathbf{y} \quad \Rightarrow \quad \mathbf{w} &#x3D; (X^\top X)^{-1} X^\top \mathbf{y} \quad \checkmark<br>$</p>
+<blockquote>
+<p>💡 证明题关键：写出展开式 + 矩阵求导规则$\frac{\partial}{\partial \mathbf{w}}(\mathbf{w}^\top A \mathbf{w}) &#x3D; 2A\mathbf{w}$（$A$对称）</p>
+</blockquote>
+<h3 id="模板3：Ridge回归正规方程推导"><a href="#模板3：Ridge回归正规方程推导" class="headerlink" title="模板3：Ridge回归正规方程推导"></a>模板3：Ridge回归正规方程推导</h3><p>目标：$\min_{\mathbf{w}} J(\mathbf{w}) &#x3D; \frac{1}{2} |\mathbf{y} - X\mathbf{w}|^2 + \frac{\lambda}{2} |\mathbf{w}|^2$（不惩罚偏置时，$\mathbf{w}$不含$b$）</p>
+<p>求导：<br>$<br>\frac{\partial J}{\partial \mathbf{w}} &#x3D; -X^\top \mathbf{y} + X^\top X \mathbf{w} + \lambda \mathbf{w} &#x3D; 0<br>$<br>$<br>\Rightarrow (X^\top X + \lambda I) \mathbf{w} &#x3D; X^\top \mathbf{y} \quad \Rightarrow \quad \mathbf{w} &#x3D; (X^\top X + \lambda I)^{-1} X^\top \mathbf{y} \quad \checkmark<br>$</p>
+<blockquote>
+<p>💡 关键：$\lambda I$使矩阵正定，即使$X^\top X$奇异也可逆，解决共线性问题</p>
+</blockquote>
+<h4 id="Cpt9-Clustering-—-Cheatsheet"><a href="#Cpt9-Clustering-—-Cheatsheet" class="headerlink" title="Cpt9: Clustering — Cheatsheet"></a>Cpt9: Clustering — Cheatsheet</h4><p><strong>聚类本质</strong>：</p>
+<ul>
+<li>无监督学习：无标签$y$，目标发现数据内在结构&#x2F;相似性分组</li>
+<li>探索性工具：同一数据可因特征&#x2F;算法&#x2F;参数不同产生不同划分，无唯一&quot;正确答案&quot;</li>
+<li>评估困难：无ground truth → 用内部指标（SSE&#x2F;轮廓系数）或外部指标（若已知标签）</li>
+</ul>
+<p><strong>四种簇类型对比</strong>（⭐⭐⭐ 高频）：<br>| 类型 | 定义 | 代表算法 | 优点 | 缺点 |<br>| Well-Separated | 任意点到本簇点距离 &lt; 到它簇点距离 | 基于距离阈值 | 几何直观，边界清晰 | 仅适用明显分离的簇 |<br>| Center-Based | 点到簇中心(质心&#x2F;medoid)距离最近 | K-Means, K-Medoids | 计算高效，适合球形簇 | 假设簇为凸&#x2F;球形，难处理非凸 |<br>| Contiguity-Based | 点通过&quot;近邻链&quot;连通即同簇 | Single-Linkage, DBSCAN(部分) | 可捕捉任意形状(如U形) | 易被噪声&quot;搭桥&quot;导致错误合并 |<br>| Density-Based | 高密度区域为簇，低密度为噪声&#x2F;边界 | DBSCAN, OPTICS | 抗噪声强，可发现任意形状+噪声 | 参数敏感(ε, MinPts)，难处理密度差异大 |</p>
+<p><strong>K-Means核心特性</strong>（⭐⭐⭐ 必背）：</p>
+<ul>
+<li>中心簇定义 + Partitional算法 + 优化SSE目标</li>
+<li>收敛性：每轮迭代$J &#x3D; \sum_n |\mathbf{x}<em>n - \boldsymbol{\mu}</em>{z_n}|^2$单调不增，且有下界0 → 必收敛（但可能局部最优）</li>
+<li>对初始化敏感：不同种子→不同局部最优；需多轮重启&#x2F;智能初始化</li>
+<li>假设簇为球形+等方差+等密度 → 难处理：大小差异大&#x2F;非凸&#x2F;密度不均的簇</li>
+</ul>
+<p><strong>初始化优化策略</strong>：</p>
+<ul>
+<li>Multiple Runs：随机种子重复$N$次，选SSE最小结果 → 简单但计算量大</li>
+<li>Farthest-First Traversal：先选1个随机点，后续每次选&quot;距已选中心最远&quot;的点 → 强制中心分散</li>
+<li>Hierarchical Pre-clustering：小样本上跑层次聚类得$k$个初始中心 → 平衡质量+效率</li>
+<li>✅ K-Means++：概率采样，距离已选中心越远的点被选概率越高 → 理论保证近似最优</li>
+</ul>
+<p><strong>空簇处理</strong>：</p>
+<ul>
+<li>原因：初始中心落在稀疏区，所有点被其他簇&quot;吸走&quot;</li>
+<li>修复：① 找SSE最大簇，将其最远点提拔为新中心 ② 随机重选中心 ③ 直接删除该簇（$k$减1）</li>
+</ul>
+<p><strong>链接准则（Linkage Criteria）对比</strong>（⭐⭐⭐ 高频）：<br>| 准则 | 簇间距离定义 | 形状偏好 | 抗噪声 | 计算复杂度 |<br>| MIN (Single) | $\min_{i\in C_p, j\in C_q} d(i,j)$ | 任意形状（链式） | ⚠️ 极弱（噪声易搭桥） | $O(n^2)$ |<br>| MAX (Complete) | $\max_{i\in C_p, j\in C_q} d(i,j)$ | 紧凑球形 | ✅ 强（边缘点拉高距离） | $O(n^2)$ |<br>| Group Average | $\frac{1}{|C_p||C_q|}\sum_{i,j} d(i,j)$ | 较紧凑球形 | ✅ 中等（平均稀释噪声） | $O(n^2)$ |<br>| Ward&#39;s Method | $\Delta SSE &#x3D; SSE_{merge} - (SSE_p + SSE_q)$ | 球形+等方差 | ✅ 强（类似K-Means） | $O(n^2)$ |</p>
+<blockquote>
+<p>💡 MIN易产生&quot;链式效应&quot;（chaining），MAX易过度分割，Ward与K-Means目标一致</p>
+</blockquote>
+<p><strong>层次聚类树状图（Dendrogram）解读</strong>：</p>
+<ul>
+<li>叶子&#x3D;原始样本，内部节点&#x3D;簇合并事件，纵轴&#x3D;合并时距离&#x2F;相似度</li>
+<li>切割高度$\leftrightarrow$簇数$k$：高切割→$k$小（粗粒度），低切割→$k$大（细粒度）</li>
+<li>✅ 优势：解耦&quot;聚类过程&quot;与&quot;$k$选择&quot;，支持多尺度探索</li>
+</ul>
+<p><strong>二分K-Means（Bisecting K-Means）</strong>：</p>
+<ul>
+<li>分治策略：初始全数据为1簇 → 选SSE最大簇用$k&#x3D;2$K-Means二分 → 重复至$k$簇</li>
+<li>优点：① 减少初始化敏感（每次仅二分）② 自然生成层次树 ③ 可中途停止得任意$k$</li>
+<li>✅ 本质：层次聚类框架 + K-Means作为二分器</li>
+</ul>
+<p><strong>预处理&#x2F;后处理关键点</strong>：</p>
+<ul>
+<li>预处理：① 特征缩放（距离算法必做！）② 去除离群点（3σ&#x2F;可视化）</li>
+<li>后处理：① 剔除小簇（噪声）② 分裂高SSE簇（内部不紧凑）③ 合并近中心簇（过度分割）</li>
+</ul>
+<h3 id="K-Means-标准流程（⭐⭐⭐-必会手动模拟）"><a href="#K-Means-标准流程（⭐⭐⭐-必会手动模拟）" class="headerlink" title="K-Means 标准流程（⭐⭐⭐ 必会手动模拟）"></a>K-Means 标准流程（⭐⭐⭐ 必会手动模拟）</h3><ol>
+<li>输入：数据$X$，簇数$k$，最大迭代$T$</li>
+<li>初始化：选$k$个初始中心$\boldsymbol{\mu}_1^{(0)}, ..., \boldsymbol{\mu}_k^{(0)}$（随机&#x2F;智能）</li>
+<li>迭代$t&#x3D;1$到$T$：<ul>
+<li><strong>分配步</strong>：对每个点$\mathbf{x}_n$，找最近中心$z_n &#x3D; \arg\min_j |\mathbf{x}_n - \boldsymbol{\mu}_j^{(t-1)}|^2$</li>
+<li><strong>更新步</strong>：对每个簇$j$，重算中心$\boldsymbol{\mu}<em>j^{(t)} &#x3D; \frac{1}{|C_j|} \sum</em>{n: z_n&#x3D;j} \mathbf{x}_n$</li>
+<li><strong>收敛判断</strong>：若$\sum_j |\boldsymbol{\mu}_j^{(t)} - \boldsymbol{\mu}_j^{(t-1)}|^2 &lt; \epsilon$，提前终止</li>
+</ul>
+</li>
+<li>输出：簇分配${z_n}$，中心${\boldsymbol{\mu}_j}$，SSE&#x3D;$\sum_n |\mathbf{x}<em>n - \boldsymbol{\mu}</em>{z_n}|^2$</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：手动计算时，先画点+初始中心→算距离分配→重算中心→迭代1-2轮；注意欧氏距离公式</p>
+</blockquote>
+<h3 id="Agglomerative-Hierarchical-Clustering-流程"><a href="#Agglomerative-Hierarchical-Clustering-流程" class="headerlink" title="Agglomerative Hierarchical Clustering 流程"></a>Agglomerative Hierarchical Clustering 流程</h3><ol>
+<li>初始化：每个点为独立簇，计算$N \times N$距离矩阵$D$</li>
+<li>While 簇数$&gt; 1$:<ul>
+<li>按链接准则（MIN&#x2F;MAX&#x2F;Avg&#x2F;Ward）找距离最近的两个簇$C_p, C_q$</li>
+<li>合并$C_p \cup C_q \to C_{new}$</li>
+<li>更新距离矩阵：计算$C_{new}$与其他簇的距离（依准则不同公式不同）</li>
+</ul>
+</li>
+<li>输出：树状图（记录每次合并的簇对+距离）</li>
+<li>切割：在高度$h$处水平切树，得$k$个簇</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：手动模拟时用表格记录每步簇合并；MIN只需记最近点对，Ward需算SSE增量</p>
+</blockquote>
+<h3 id="Bisecting-K-Means-流程"><a href="#Bisecting-K-Means-流程" class="headerlink" title="Bisecting K-Means 流程"></a>Bisecting K-Means 流程</h3><ol>
+<li>初始化：所有数据为1个簇，加入待分裂队列</li>
+<li>While 簇数$&lt; k$:<ul>
+<li>从队列选SSE最大的簇$C$</li>
+<li>在$C$上运行$k&#x3D;2$的K-Means（可多轮重启选最优）</li>
+<li>将$C$分裂为$C_1, C_2$，加入队列</li>
+</ul>
+</li>
+<li>输出：$k$个簇</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：题目问&quot;如何减少K-Means初始化敏感&quot; → 答&quot;用Bisecting K-Means分治策略&quot;</p>
+</blockquote>
+<h3 id="模板1：K-Means-目标函数与梯度推导（⭐⭐⭐-高频）"><a href="#模板1：K-Means-目标函数与梯度推导（⭐⭐⭐-高频）" class="headerlink" title="模板1：K-Means 目标函数与梯度推导（⭐⭐⭐ 高频）"></a>模板1：K-Means 目标函数与梯度推导（⭐⭐⭐ 高频）</h3><p>目标函数（distortion）：<br>$$<br>J &#x3D; \frac{1}{N} \sum_{n&#x3D;1}^N |\mathbf{x}<em>n - \boldsymbol{\mu}</em>{z_n}|^2 &#x3D; \frac{1}{N} \sum_{j&#x3D;1}^k \sum_{n: z_n&#x3D;j} |\mathbf{x}_n - \boldsymbol{\mu}_j|^2<br>$$</p>
+<p><strong>固定分配$z_n$，对$\boldsymbol{\mu}_j$求导</strong>：<br>$$<br>\frac{\partial J}{\partial \boldsymbol{\mu}<em>j} &#x3D; \frac{2}{N} \sum</em>{n: z_n&#x3D;j} (\boldsymbol{\mu}_j - \mathbf{x}<em>n)<br>$$<br>令梯度&#x3D;0：<br>$$<br>\sum</em>{n: z_n&#x3D;j} (\boldsymbol{\mu}_j - \mathbf{x}_n) &#x3D; 0 \Rightarrow \boldsymbol{\mu}<em>j &#x3D; \frac{1}{|C_j|} \sum</em>{n: z_n&#x3D;j} \mathbf{x}_n \quad \checkmark<br>$$<br>→ 最优中心&#x3D;簇内点均值</p>
+<p><strong>固定中心$\boldsymbol{\mu}_j$，优化分配$z_n$</strong>：<br>$$<br>z_n &#x3D; \arg\min_j |\mathbf{x}_n - \boldsymbol{\mu}_j|^2 \quad \text{(最近中心分配)} \quad \checkmark<br>$$</p>
+<blockquote>
+<p>💡 证明题关键：分两步优化（坐标下降），交替固定一方求另一方最优</p>
+</blockquote>
+<h3 id="模板2：K-Means-收敛性证明思路"><a href="#模板2：K-Means-收敛性证明思路" class="headerlink" title="模板2：K-Means 收敛性证明思路"></a>模板2：K-Means 收敛性证明思路</h3><ol>
+<li>定义势函数$J^{(t)} &#x3D; \sum_n |\mathbf{x}<em>n - \boldsymbol{\mu}</em>{z_n}^{(t)}|^2$</li>
+<li>分配步：固定$\boldsymbol{\mu}^{(t-1)}$，选$z_n$最小化每项 → $J$不增</li>
+<li>更新步：固定$z_n$，选$\boldsymbol{\mu}^{(t)}$为均值（模板1） → $J$不增</li>
+<li>$J \geq 0$有下界 → 单调有界序列必收敛 ✓</li>
+</ol>
+<blockquote>
+<p>💡 证明题技巧：写&quot;交替优化+势函数单调有界&quot;，无需展开细节</p>
+</blockquote>
+<h3 id="模板3：Ward-s-Method-的SSE增量推导"><a href="#模板3：Ward-s-Method-的SSE增量推导" class="headerlink" title="模板3：Ward&#39;s Method 的SSE增量推导"></a>模板3：Ward&#39;s Method 的SSE增量推导</h3><p>合并簇$C_p, C_q \to C_{new}$，SSE增量：<br>$$<br>\Delta SSE &#x3D; SSE_{new} - (SSE_p + SSE_q)<br>$$<br>其中$SSE_p &#x3D; \sum_{i \in C_p} |\mathbf{x}_i - \boldsymbol{\mu}_p|^2$</p>
+<p>展开可得（简化版）：<br>$$<br>\Delta SSE &#x3D; \frac{|C_p||C_q|}{|C_p|+|C_q|} |\boldsymbol{\mu}_p - \boldsymbol{\mu}_q|^2<br>$$</p>
+<p>→ Ward准则等价于：优先合并&quot;质心近+簇大小适中&quot;的簇对 ✓</p>
+<blockquote>
+<p>💡 证明题关键：写出$\Delta SSE$定义，代入均值公式化简，得距离加权形式</p>
+</blockquote>
+<h3 id="模板5：特征缩放对K-Means的影响证明"><a href="#模板5：特征缩放对K-Means的影响证明" class="headerlink" title="模板5：特征缩放对K-Means的影响证明"></a>模板5：特征缩放对K-Means的影响证明</h3><p>设两特征$x_1 \in [0,1]$, $x_2 \in [0,1000]$，未缩放时欧氏距离：<br>$$<br>d(\mathbf{x},\mathbf{x}&#39;) &#x3D; \sqrt{(x_1-x_1&#39;)^2 + (x_2-x_2&#39;)^2} \approx |x_2-x_2&#39;| \quad (\text{因}~1000^2 \gg 1^2)<br>$$<br>→ 距离由$x_2$主导，$x_1$信息丢失 ❌</p>
+<p>标准化后$x&#39;_j &#x3D; \frac{x_j - \mu_j}{\sigma_j}$，$\text{Var}(x&#39;_1)&#x3D;\text{Var}(x&#39;_2)&#x3D;1$：<br>$$<br>d&#39;(\mathbf{x},\mathbf{x}&#39;) &#x3D; \sqrt{(x&#39;_1-x&#39;_1&#39;)^2 + (x&#39;_2-x&#39;_2&#39;)^2}<br>$$<br>→ 两特征平等贡献距离 ✓</p>
+<blockquote>
+<p>💡 证明题关键：写未缩放时距离近似式，说明主导特征问题；标准化后方差相等→公平</p>
+</blockquote>
+<h2 id="💡-证明题赖皮大法（考场保命）"><a href="#💡-证明题赖皮大法（考场保命）" class="headerlink" title="💡 证明题赖皮大法（考场保命）"></a>💡 证明题赖皮大法（考场保命）</h2><ol>
+<li><p><strong>看到&quot;证明K-Means中心更新公式&quot;</strong> → 立即写：</p>
+<ul>
+<li>目标：$\min_{\boldsymbol{\mu}<em>j} \sum</em>{n \in C_j} |\mathbf{x}_n - \boldsymbol{\mu}_j|^2$</li>
+<li>求导：$\frac{\partial}{\partial \boldsymbol{\mu}_j} &#x3D; 2\sum (\boldsymbol{\mu}_j - \mathbf{x}_n) &#x3D; 0$</li>
+<li>解得：$\boldsymbol{\mu}_j &#x3D; \frac{1}{|C_j|}\sum \mathbf{x}_n$ ✓</li>
+</ul>
+</li>
+<li><p><strong>看到&quot;解释K-Means为何收敛&quot;</strong> → 立即写：</p>
+<ul>
+<li>定义势函数$J &#x3D; \sum |\mathbf{x}<em>n - \boldsymbol{\mu}</em>{z_n}|^2$</li>
+<li>分配步+更新步均使$J$不增（坐标下降）</li>
+<li>$J \geq 0$有下界 → 单调有界必收敛 ✓</li>
+</ul>
+</li>
+<li><p><strong>看到&quot;比较MIN vs MAX linkage&quot;</strong> → 立即写：</p>
+<ul>
+<li>MIN：$d &#x3D; \min_{i,j} d(i,j)$ → 链式效应，抗噪差，可捕非凸</li>
+<li>MAX：$d &#x3D; \max_{i,j} d(i,j)$ → 偏好球形，抗噪好，易过度分割</li>
+<li>画图辅助：三点共线说明MIN搭桥，紧凑簇说明MAX保守</li>
+</ul>
+</li>
+<li><p><strong>看到&quot;为何聚类前要特征缩放&quot;</strong> → 立即写：</p>
+<ul>
+<li>未缩放时大尺度特征主导距离：$d \approx |x_{\text{large}} - x&#39;_{\text{large}}|$</li>
+<li>标准化后各特征方差&#x3D;1 → 距离公平反映各维度差异 ✓</li>
+</ul>
+</li>
+<li><p><strong>卡住时</strong>：先写目标函数（如$J&#x3D;\sum |\mathbf{x}-\boldsymbol{\mu}|^2$）+ 优化变量（如对$\boldsymbol{\mu}$求导）+ 关键结论（如&quot;均值最优&quot;），步骤分稳拿</p>
+</li>
+</ol>
+<h4 id="Cpt10-Multi-layer-Networks-—-Cheatsheet"><a href="#Cpt10-Multi-layer-Networks-—-Cheatsheet" class="headerlink" title="Cpt10: Multi-layer Networks — Cheatsheet"></a>Cpt10: Multi-layer Networks — Cheatsheet</h4><p><strong>神经网络核心优势</strong>：</p>
+<ul>
+<li>万能近似定理：单隐藏层+足够神经元+非线性激活 → 可近似任意连续函数</li>
+<li>层次特征学习：浅层学边缘&#x2F;纹理，深层学语义&#x2F;对象组合 → 端到端特征提取</li>
+<li>✅ 关键：非线性激活函数是表达力的来源；全线性网络&#x3D;单层线性变换（矩阵可合并）</li>
+</ul>
+<p><strong>激活函数对比</strong>（⭐⭐⭐ 必背）：<br>| 函数 | 公式 | 导数 | 优点 | 缺点 | 适用场景 |<br>| Sigmoid | $\sigma(z)&#x3D;\frac{1}{1+e^{-z}}$ | $\sigma(1-\sigma)$ | 输出(0,1)，概率解释 | 梯度消失($|z|$大时)，非0中心化 | 输出层(二分类) |<br>| Tanh | $\tanh(z)&#x3D;\frac{e^z-e^{-z}}{e^z+e^{-z}}$ | $1-\tanh^2$ | 0中心化，收敛略快 | 梯度消失仍存在 | 隐藏层(历史用法) |<br>| ReLU | $\max(0,z)$ | $\mathbb{I}(z&gt;0)$ | 计算快，缓解梯度消失，稀疏激活 | $z&lt;0$时梯度&#x3D;0（&quot;神经元死亡&quot;） | ✅ 隐藏层默认首选 |<br>| Leaky ReLU | $\max(\alpha z, z), \alpha\approx0.01$ | $\mathbb{I}(z&gt;0)+\alpha\mathbb{I}(z&lt;0)$ | 解决死亡神经元 | 多一超参$\alpha$ | ReLU效果不佳时备选 |</p>
+<blockquote>
+<p>💡 关键：输出层激活依任务定——二分类Sigmoid，多分类Softmax，回归Linear&#x2F;无激活</p>
+</blockquote>
+<p><strong>前向传播直觉</strong>：</p>
+<ul>
+<li>层内：$\mathbf{z}^{[l]} &#x3D; W^{[l]}\mathbf{a}^{[l-1]} + \mathbf{b}^{[l]}$（线性变换）</li>
+<li>激活：$\mathbf{a}^{[l]} &#x3D; g^{[l]}(\mathbf{z}^{[l]})$（非线性）</li>
+<li>链式传递：输入→隐藏层→...→输出，每层提取更抽象特征</li>
+<li>✅ 计算图视角：前向&#x3D;从叶到根求值；反向&#x3D;从根到叶求梯度</li>
+</ul>
+<p><strong>反向传播核心思想</strong>（⭐⭐⭐ 证明题高频）：</p>
+<ul>
+<li>链式法则递归应用：$\frac{\partial J}{\partial W^{[l]}} &#x3D; \frac{\partial J}{\partial \mathbf{z}^{[l]}} \cdot \frac{\partial \mathbf{z}^{[l]}}{\partial W^{[l]}}$</li>
+<li>误差信号$\delta^{[l]} &#x3D; \frac{\partial J}{\partial \mathbf{z}^{[l]}}$从输出层反向传播</li>
+<li>关键递推：$\delta^{[l]} &#x3D; ((W^{[l+1]})^\top \delta^{[l+1]}) \odot g&#39;^{[l]}(\mathbf{z}^{[l]})$</li>
+<li>✅ 记忆口诀：&quot;后层误差×权重转置×当前激活导数&quot;</li>
+</ul>
+<p><strong>梯度消失&#x2F;爆炸问题</strong>：</p>
+<ul>
+<li>消失：深层网络中，$\prod \sigma&#39;(z)$或$\prod |W|$过小 → 浅层梯度≈0 → 参数不更新<ul>
+<li>原因：Sigmoid&#x2F;Tanh导数≤0.25；权重初始化过小</li>
+<li>解决：ReLU + Xavier&#x2F;He初始化 + BatchNorm + 残差连接</li>
+</ul>
+</li>
+<li>爆炸：$\prod |W|$过大 → 梯度数值溢出<ul>
+<li>解决：梯度裁剪（$|\mathbf{g}| &gt; \theta$时缩放）+ 权重正则</li>
+</ul>
+</li>
+</ul>
+<p><strong>权重初始化策略</strong>（⭐⭐⭐ 易错）：</p>
+<ul>
+<li>全零初始化：对称性→所有神经元学相同特征 → ❌ 禁用</li>
+<li>随机小值：$\mathcal{N}(0, 0.01)$，简单但深层仍可能消失&#x2F;爆炸</li>
+<li>Xavier (Glorot)：$W \sim \mathcal{N}(0, \sqrt{2&#x2F;(n_{in}+n_{out})})$，适合Tanh&#x2F;Sigmoid</li>
+<li>He初始化：$W \sim \mathcal{N}(0, \sqrt{2&#x2F;n_{in}})$，✅ ReLU专属，补偿$z&lt;0$时梯度&#x3D;0</li>
+<li>✅ 原则：保持每层激活&#x2F;梯度方差≈1，信号稳定传播</li>
+</ul>
+<p><strong>正则化在NN中的应用</strong>：</p>
+<ul>
+<li>L2正则：损失加$\frac{\lambda}{2}|W|^2$ → 梯度更新$W \leftarrow (1-\eta\lambda)W - \eta\nabla J$（权重衰减）</li>
+<li>Dropout：训练时以概率$p$随机屏蔽神经元 → 测试时权重×$p$（或训练时激活÷$p$）<ul>
+<li>直觉：防止神经元共适应，等价集成学习</li>
+<li>⚠️ 仅训练时用，测试时关闭</li>
+</ul>
+</li>
+<li>Early Stopping：监控验证误差，不再下降时提前终止 → 防止过拟合</li>
+<li>Batch Normalization：每层输入标准化$\hat{x}&#x3D;\frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}$，再仿射变换$\gamma\hat{x}+\beta$<ul>
+<li>优点：加速收敛，允许更大$\eta$，轻微正则效果</li>
+<li>⚠️ 训练&#x2F;测试时$\mu,\sigma$计算方式不同（测试用移动平均）</li>
+</ul>
+</li>
+</ul>
+<p><strong>损失函数选择</strong>：</p>
+<ul>
+<li>二分类：Cross-Entropy $J &#x3D; -[y\log\hat{y} + (1-y)\log(1-\hat{y})]$，输出层Sigmoid</li>
+<li>多分类：Categorical CE $J &#x3D; -\sum_c y_c \log \hat{y}_c$，输出层Softmax</li>
+<li>回归：MSE $J &#x3D; \frac{1}{2}|\mathbf{y}-\hat{\mathbf{y}}|^2$，输出层Linear&#x2F;无激活</li>
+<li>✅ 关键：输出层激活+损失函数需匹配，确保梯度简洁（如Softmax+CE梯度&#x3D;$( \hat{y}-y )$）</li>
+</ul>
+<h3 id="前向传播标准流程（-L-层网络）"><a href="#前向传播标准流程（-L-层网络）" class="headerlink" title="前向传播标准流程（$L$层网络）"></a>前向传播标准流程（$L$层网络）</h3><ol>
+<li>输入：$\mathbf{a}^{[0]} &#x3D; \mathbf{x}$（单样本或batch $X$）</li>
+<li>对层$l&#x3D;1$到$L$:<ul>
+<li>线性：$\mathbf{z}^{[l]} &#x3D; W^{[l]}\mathbf{a}^{[l-1]} + \mathbf{b}^{[l]}$</li>
+<li>激活：$\mathbf{a}^{[l]} &#x3D; g^{[l]}(\mathbf{z}^{[l]})$</li>
+<li>✅ 缓存：存$\mathbf{z}^{[l]}, \mathbf{a}^{[l-1]}$供反向用</li>
+</ul>
+</li>
+<li>输出：$\hat{\mathbf{y}} &#x3D; \mathbf{a}^{[L]}$</li>
+<li>计算损失$J(\hat{\mathbf{y}}, \mathbf{y})$</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：手动计算时，按层逐步写$\mathbf{z}, \mathbf{a}$；注意矩阵维度：$W^{[l]} \in \mathbb{R}^{n_l \times n_{l-1}}$</p>
+</blockquote>
+<h3 id="反向传播标准流程（⭐⭐⭐-必会手动推导）"><a href="#反向传播标准流程（⭐⭐⭐-必会手动推导）" class="headerlink" title="反向传播标准流程（⭐⭐⭐ 必会手动推导）"></a>反向传播标准流程（⭐⭐⭐ 必会手动推导）</h3><ol>
+<li>计算输出层误差：<ul>
+<li>若输出层Sigmoid+CE：$\delta^{[L]} &#x3D; \mathbf{a}^{[L]} - \mathbf{y}$（简洁！）</li>
+<li>若MSE：$\delta^{[L]} &#x3D; (\mathbf{a}^{[L]} - \mathbf{y}) \odot g&#39;^{[L]}(\mathbf{z}^{[L]})$</li>
+</ul>
+</li>
+<li>对层$l&#x3D;L-1$ downto $1$:<ul>
+<li>误差传播：$\delta^{[l]} &#x3D; ((W^{[l+1]})^\top \delta^{[l+1]}) \odot g&#39;^{[l]}(\mathbf{z}^{[l]})$</li>
+<li>梯度计算：<ul>
+<li>$\frac{\partial J}{\partial W^{[l]}} &#x3D; \delta^{[l]} (\mathbf{a}^{[l-1]})^\top$</li>
+<li>$\frac{\partial J}{\partial \mathbf{b}^{[l]}} &#x3D; \delta^{[l]}$（若batch则求和&#x2F;平均）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>参数更新（梯度下降）：<ul>
+<li>$W^{[l]} \leftarrow W^{[l]} - \eta \cdot \frac{\partial J}{\partial W^{[l]}}$</li>
+<li>$\mathbf{b}^{[l]} \leftarrow \mathbf{b}^{[l]} - \eta \cdot \frac{\partial J}{\partial \mathbf{b}^{[l]}}$</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>💡 应用题技巧：手动推导时，先写标量链式法则，再推广到向量；注意$\odot$是逐元素乘，$\cdot$是矩阵乘</p>
+</blockquote>
+<h3 id="Dropout-训练-测试流程"><a href="#Dropout-训练-测试流程" class="headerlink" title="Dropout 训练&#x2F;测试流程"></a>Dropout 训练&#x2F;测试流程</h3><p><strong>训练时</strong>：</p>
+<ol>
+<li>对每层$l$（应用Dropout的层）：<ul>
+<li>生成掩码$\mathbf{m}^{[l]} \sim \text{Bernoulli}(p)$（$p$&#x3D;保留概率）</li>
+<li>屏蔽：$\tilde{\mathbf{a}}^{[l]} &#x3D; \mathbf{a}^{[l]} \odot \mathbf{m}^{[l]}$</li>
+<li>缩放：$\tilde{\mathbf{a}}^{[l]} \leftarrow \tilde{\mathbf{a}}^{[l]} &#x2F; p$（Inverse Dropout，保持期望不变）</li>
+</ul>
+</li>
+<li>用$\tilde{\mathbf{a}}^{[l]}$作为下一层输入</li>
+</ol>
+<p><strong>测试时</strong>：</p>
+<ul>
+<li>不使用Dropout，直接用原始$\mathbf{a}^{[l]}$</li>
+<li>✅ 若训练时未做Inverse Dropout，则测试时激活×$p$</li>
+</ul>
+<blockquote>
+<p>💡 应用题技巧：题目问&quot;Dropout测试时为何不用&quot; → 答&quot;训练时随机屏蔽模拟集成，测试时用全网络得稳定预测&quot;</p>
+</blockquote>
+<h3 id="模板1：反向传播链式法则推导（⭐⭐⭐-必背，pp2-P5原题）"><a href="#模板1：反向传播链式法则推导（⭐⭐⭐-必背，pp2-P5原题）" class="headerlink" title="模板1：反向传播链式法则推导（⭐⭐⭐ 必背，pp2-P5原题）"></a>模板1：反向传播链式法则推导（⭐⭐⭐ 必背，pp2-P5原题）</h3><p>设3层网络：输入$\mathbf{x}$，隐藏层$\mathbf{h}&#x3D;\sigma(V\mathbf{x})$，输出$\mathbf{z}&#x3D;W\mathbf{h}$，损失$J&#x3D;\frac{1}{2}|\mathbf{y}-\mathbf{z}|^2$</p>
+<p><strong>Step 1: 输出层梯度</strong><br>$<br>\frac{\partial J}{\partial \mathbf{z}} &#x3D; \mathbf{z} - \mathbf{y} \quad \text{(MSE导数)}<br>$<br>$<br>\frac{\partial J}{\partial W} &#x3D; \frac{\partial J}{\partial \mathbf{z}} \cdot \frac{\partial \mathbf{z}}{\partial W} &#x3D; (\mathbf{z}-\mathbf{y}) \mathbf{h}^\top \quad \checkmark<br>$</p>
+<p><strong>Step 2: 隐藏层误差传播</strong><br>$<br>\frac{\partial J}{\partial \mathbf{h}} &#x3D; \frac{\partial J}{\partial \mathbf{z}} \cdot \frac{\partial \mathbf{z}}{\partial \mathbf{h}} &#x3D; W^\top (\mathbf{z}-\mathbf{y})<br>$<br>$<br>\frac{\partial J}{\partial V} &#x3D; \frac{\partial J}{\partial \mathbf{h}} \odot \sigma&#39;(\mathbf{g}) \cdot \frac{\partial \mathbf{g}}{\partial V}, \quad \mathbf{g}&#x3D;V\mathbf{x}<br>$<br>$<br>&#x3D; [W^\top (\mathbf{z}-\mathbf{y}) \odot \sigma&#39;(\mathbf{g})] \mathbf{x}^\top \quad \checkmark<br>$</p>
+<blockquote>
+<p>💡 关键：$\frac{\partial \mathbf{z}}{\partial W} &#x3D; \mathbf{h}^\top$（外积），$\odot$用于激活导数逐元素乘</p>
+</blockquote>
+<h3 id="模板5：Batch-Normalization-前向-反向公式"><a href="#模板5：Batch-Normalization-前向-反向公式" class="headerlink" title="模板5：Batch Normalization 前向&#x2F;反向公式"></a>模板5：Batch Normalization 前向&#x2F;反向公式</h3><p><strong>前向（训练时）</strong>：<br>$<br>\mu &#x3D; \frac{1}{m}\sum_i x_i, \quad \sigma^2 &#x3D; \frac{1}{m}\sum_i (x_i - \mu)^2<br>$<br>$<br>\hat{x}_i &#x3D; \frac{x_i - \mu}{\sqrt{\sigma^2 + \epsilon}}, \quad y_i &#x3D; \gamma \hat{x}_i + \beta<br>$</p>
+<p><strong>反向（关键梯度）</strong>：<br>$<br>\frac{\partial J}{\partial \gamma} &#x3D; \sum_i \frac{\partial J}{\partial y_i} \hat{x}_i, \quad \frac{\partial J}{\partial \beta} &#x3D; \sum_i \frac{\partial J}{\partial y_i}<br>$<br>$<br>\frac{\partial J}{\partial \hat{x}_i} &#x3D; \frac{\partial J}{\partial y_i} \gamma<br>$<br>$<br>\frac{\partial J}{\partial \sigma^2} &#x3D; \sum_i \frac{\partial J}{\partial \hat{x}_i} \cdot (x_i - \mu) \cdot \left(-\frac{1}{2}(\sigma^2+\epsilon)^{-3&#x2F;2}\right)<br>$<br>$<br>\frac{\partial J}{\partial \mu} &#x3D; \sum_i \frac{\partial J}{\partial \hat{x}_i} \cdot \left(-\frac{1}{\sqrt{\sigma^2+\epsilon}}\right) + \frac{\partial J}{\partial \sigma^2} \cdot \frac{-2}{m}\sum_i (x_i - \mu)<br>$<br>$<br>\frac{\partial J}{\partial x_i} &#x3D; \frac{\partial J}{\partial \hat{x}_i} \cdot \frac{1}{\sqrt{\sigma^2+\epsilon}} + \frac{\partial J}{\partial \sigma^2} \cdot \frac{2(x_i-\mu)}{m} + \frac{\partial J}{\partial \mu} \cdot \frac{1}{m}<br>$</p>
+<blockquote>
+<p>💡 考场简化：记$\frac{\partial J}{\partial \gamma}, \frac{\partial J}{\partial \beta}$简洁形式，其余写&quot;链式法则递归计算&quot;</p>
+</blockquote>
+<h2 id="💡-证明题赖皮大法（考场保命）-1"><a href="#💡-证明题赖皮大法（考场保命）-1" class="headerlink" title="💡 证明题赖皮大法（考场保命）"></a>💡 证明题赖皮大法（考场保命）</h2><ol>
+<li><p><strong>看到&quot;推导反向传播梯度&quot;</strong> → 立即写：</p>
+<ul>
+<li>输出层：$\delta^{[L]} &#x3D; \frac{\partial J}{\partial \mathbf{z}^{[L]}}$（依损失+激活写简洁形式）</li>
+<li>递推：$\delta^{[l]} &#x3D; ((W^{[l+1]})^\top \delta^{[l+1]}) \odot g&#39;^{[l]}(\mathbf{z}^{[l]})$</li>
+<li>梯度：$\frac{\partial J}{\partial W^{[l]}} &#x3D; \delta^{[l]} (\mathbf{a}^{[l-1]})^\top$, $\frac{\partial J}{\partial \mathbf{b}^{[l]}} &#x3D; \delta^{[l]}$</li>
+</ul>
+</li>
+<li><p><strong>看到&quot;证明Softmax+CE梯度简洁&quot;</strong> → 立即写：</p>
+<ul>
+<li>$\frac{\partial J}{\partial z_i} &#x3D; \sum_k \frac{\partial J}{\partial \hat{y}_k} \frac{\partial \hat{y}_k}{\partial z_i}$</li>
+<li>代入$\frac{\partial J}{\partial \hat{y}_k} &#x3D; -y_k&#x2F;\hat{y}_k$, $\frac{\partial \hat{y}_k}{\partial z_i} &#x3D; \hat{y}<em>k(\delta</em>{ki}-\hat{y}_i)$</li>
+<li>化简得$\hat{y}_i - y_i$ ✓</li>
+</ul>
+</li>
+<li><p><strong>看到&quot;解释梯度消失原因&quot;</strong> → 立即写：</p>
+<ul>
+<li>深层中$\frac{\partial J}{\partial W^{[1]}} \propto \prod_{l} \frac{\partial \mathbf{a}^{[l]}}{\partial \mathbf{z}^{[l]}} \frac{\partial \mathbf{z}^{[l]}}{\partial \mathbf{a}^{[l-1]}}$</li>
+<li>Sigmoid导数≤0.25，$|W|&lt;1$ → 乘积指数衰减 → 浅层梯度≈0</li>
+<li>解决：ReLU(导数0&#x2F;1) + He初始化 + BatchNorm</li>
+</ul>
+</li>
+<li><p><strong>看到&quot;为何用He初始化&quot;</strong> → 立即写：</p>
+<ul>
+<li>ReLU: $a&#x3D;\max(0,z)$，$\mathbb{E}[a^2] &#x3D; \frac{1}{2}\mathbb{E}[z^2]$（因$z&lt;0$时$a&#x3D;0$）</li>
+<li>令$\text{Var}(z) &#x3D; 2&#x2F;n_{in}$ → $\text{Var}(a) \approx \text{Var}(x)$，信号稳定 ✓</li>
+</ul>
+</li>
+<li><p><strong>卡住时</strong>：先写目标（如&quot;求$\partial J&#x2F;\partial W$&quot;) + 链式法则框架 + 关键中间量定义（如$\delta &#x3D; \partial J&#x2F;\partial \mathbf{z}$），最后补结论，步骤分稳拿</p>
+</li>
+</ol>
+
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt2-Perceptron-Adaline-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt2: Perceptron &amp; Adaline — Cheatsheet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Perceptron-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B"><span class="toc-text">Perceptron 训练流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Adaline-Batch-GD-%E6%B5%81%E7%A8%8B"><span class="toc-text">Adaline + Batch GD 流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF1%EF%BC%9AAdaline-%E6%A2%AF%E5%BA%A6%E6%8E%A8%E5%AF%BC%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E5%BF%85%E8%83%8C%EF%BC%89"><span class="toc-text">模板1：Adaline 梯度推导（⭐⭐⭐ 必背）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt3-Logistic-Regression-SVM-KNN-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt3: Logistic Regression &#x2F; SVM &#x2F; KNN — Cheatsheet</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Logistic-Regression-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B"><span class="toc-text">Logistic Regression 训练流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SVM-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B%EF%BC%88%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E7%9B%B4%E8%A7%89%EF%BC%89"><span class="toc-text">SVM 训练流程（对偶问题直觉）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF1%EF%BC%9ALogistic-Regression-%E6%A2%AF%E5%BA%A6%E6%8E%A8%E5%AF%BC%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E5%BF%85%E8%83%8C%EF%BC%89"><span class="toc-text">模板1：Logistic Regression 梯度推导（⭐⭐⭐ 必背）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF2%EF%BC%9ASVM-%E6%9C%80%E5%A4%A7%E9%97%B4%E9%9A%94-%E2%87%94-%E6%9C%80%E5%B0%8F%E5%8C%96%E2%80%96w%E2%80%96%C2%B2"><span class="toc-text">模板2：SVM 最大间隔 ⇔ 最小化‖w‖²</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF3%EF%BC%9AHinge-Loss-%E6%AC%A1%E6%A2%AF%E5%BA%A6%E6%8E%A8%E5%AF%BC"><span class="toc-text">模板3：Hinge Loss 次梯度推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF5%EF%BC%9ASVM-%E8%BD%AF%E9%97%B4%E9%9A%94-%E7%BA%A6%E6%9D%9F%E4%B8%8E%E7%9B%AE%E6%A0%87"><span class="toc-text">模板5：SVM 软间隔 约束与目标</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt4-Data-Preprocessing-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt4: Data Preprocessing — Cheatsheet</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8B%AC%E7%83%AD%E7%BC%96%E7%A0%81%E5%AE%9E%E6%93%8D%E6%AD%A5%E9%AA%A4"><span class="toc-text">独热编码实操步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E7%BC%A9%E6%94%BE%E6%A0%87%E5%87%86%E6%B5%81%E7%A8%8B"><span class="toc-text">特征缩放标准流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF2%EF%BC%9AL1%E6%AD%A3%E5%88%99%E4%BA%A7%E7%94%9F%E7%A8%80%E7%96%8F%E8%A7%A3%E7%9A%84%E5%87%A0%E4%BD%95%E8%AF%81%E6%98%8E"><span class="toc-text">模板2：L1正则产生稀疏解的几何证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF3%EF%BC%9A%E7%8B%AC%E7%83%AD%E7%BC%96%E7%A0%81%E9%81%BF%E5%85%8D%E8%99%9A%E5%81%87%E9%A1%BA%E5%BA%8F%E7%9A%84%E4%BB%A3%E6%95%B0%E8%A7%A3%E9%87%8A"><span class="toc-text">模板3：独热编码避免虚假顺序的代数解释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt5-Dimensionality-Reduction-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt5: Dimensionality Reduction — Cheatsheet</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PCA-%E6%A0%87%E5%87%86%E6%B5%81%E7%A8%8B%EF%BC%88%E8%80%83%E5%9C%BA%E5%BF%85%E4%BC%9A%EF%BC%89"><span class="toc-text">PCA 标准流程（考场必会）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E7%BB%B4%E5%90%8E%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B"><span class="toc-text">降维后模型训练流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF1%EF%BC%9APCA-%E6%9C%80%E5%A4%A7%E6%96%B9%E5%B7%AE-%E2%87%94-%E6%9C%80%E5%B0%8F%E9%87%8D%E6%9E%84%E8%AF%AF%E5%B7%AE%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E5%BF%85%E8%83%8C%EF%BC%89"><span class="toc-text">模板1：PCA 最大方差 ⇔ 最小重构误差（⭐⭐⭐ 必背）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF2%EF%BC%9APCA-%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5%E7%89%B9%E5%BE%81%E5%88%86%E8%A7%A3%E6%8E%A8%E5%AF%BC"><span class="toc-text">模板2：PCA 协方差矩阵特征分解推导</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt6-Model-Evaluation-Tuning-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt6: Model Evaluation &amp; Tuning — Cheatsheet</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF%E7%BB%98%E5%88%B6%E4%B8%8E%E8%A7%A3%E8%AF%BB%E6%B5%81%E7%A8%8B"><span class="toc-text">学习曲线绘制与解读流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%88%E5%80%BC%E7%A7%BB%E5%8A%A8%E4%BC%98%E5%8C%96F1%E6%B5%81%E7%A8%8B"><span class="toc-text">阈值移动优化F1流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF2%EF%BC%9ABias-Variance%E5%88%86%E8%A7%A3%E6%8E%A8%E5%AF%BC%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E9%AB%98%E9%A2%91%EF%BC%89"><span class="toc-text">模板2：Bias-Variance分解推导（⭐⭐⭐ 高频）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF5%EF%BC%9A%E9%98%88%E5%80%BC%E7%A7%BB%E5%8A%A8%E4%BC%98%E5%8C%96Recall%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="toc-text">模板5：阈值移动优化Recall的数学原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt7-Ensemble-Learning-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt7: Ensemble Learning — Cheatsheet</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bagging-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B"><span class="toc-text">Bagging 训练流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Random-Forest-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B%EF%BC%88Bagging-%E7%89%B9%E5%BE%81%E9%9A%8F%E6%9C%BA%EF%BC%89"><span class="toc-text">Random Forest 训练流程（Bagging + 特征随机）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AdaBoost-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E5%BF%85%E4%BC%9A%E6%89%8B%E5%8A%A8%E6%A8%A1%E6%8B%9F%EF%BC%89"><span class="toc-text">AdaBoost 训练流程（⭐⭐⭐ 必会手动模拟）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF2%EF%BC%9AAdaBoost-%E6%A0%B7%E6%9C%AC%E6%9D%83%E9%87%8D%E6%9B%B4%E6%96%B0%E6%8E%A8%E5%AF%BC"><span class="toc-text">模板2：AdaBoost 样本权重更新推导</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt8-Regression-Analysis-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt8: Regression Analysis — Cheatsheet</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-MSE-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B%EF%BC%88%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B3%95%EF%BC%89"><span class="toc-text">线性回归 + MSE 训练流程（正规方程法）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-SGD-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B"><span class="toc-text">线性回归 + SGD 训练流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ridge-Lasso-%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B%E5%AF%B9%E6%AF%94"><span class="toc-text">Ridge&#x2F;Lasso 训练流程对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92%E5%AE%9E%E6%93%8D%E6%B5%81%E7%A8%8B"><span class="toc-text">多项式回归实操流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF1%EF%BC%9AMSE%E6%8D%9F%E5%A4%B1%E6%A2%AF%E5%BA%A6%E6%8E%A8%E5%AF%BC%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E5%BF%85%E8%83%8C%EF%BC%89"><span class="toc-text">模板1：MSE损失梯度推导（⭐⭐⭐ 必背）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF2%EF%BC%9A%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%8E%A8%E5%AF%BC%EF%BC%88%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AD%E5%BC%8F%E8%A7%A3%EF%BC%89"><span class="toc-text">模板2：正规方程推导（最小二乘闭式解）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF3%EF%BC%9ARidge%E5%9B%9E%E5%BD%92%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%8E%A8%E5%AF%BC"><span class="toc-text">模板3：Ridge回归正规方程推导</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt9-Clustering-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt9: Clustering — Cheatsheet</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K-Means-%E6%A0%87%E5%87%86%E6%B5%81%E7%A8%8B%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E5%BF%85%E4%BC%9A%E6%89%8B%E5%8A%A8%E6%A8%A1%E6%8B%9F%EF%BC%89"><span class="toc-text">K-Means 标准流程（⭐⭐⭐ 必会手动模拟）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Agglomerative-Hierarchical-Clustering-%E6%B5%81%E7%A8%8B"><span class="toc-text">Agglomerative Hierarchical Clustering 流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bisecting-K-Means-%E6%B5%81%E7%A8%8B"><span class="toc-text">Bisecting K-Means 流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF1%EF%BC%9AK-Means-%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0%E4%B8%8E%E6%A2%AF%E5%BA%A6%E6%8E%A8%E5%AF%BC%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E9%AB%98%E9%A2%91%EF%BC%89"><span class="toc-text">模板1：K-Means 目标函数与梯度推导（⭐⭐⭐ 高频）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF2%EF%BC%9AK-Means-%E6%94%B6%E6%95%9B%E6%80%A7%E8%AF%81%E6%98%8E%E6%80%9D%E8%B7%AF"><span class="toc-text">模板2：K-Means 收敛性证明思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF3%EF%BC%9AWard-s-Method-%E7%9A%84SSE%E5%A2%9E%E9%87%8F%E6%8E%A8%E5%AF%BC"><span class="toc-text">模板3：Ward&#39;s Method 的SSE增量推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF5%EF%BC%9A%E7%89%B9%E5%BE%81%E7%BC%A9%E6%94%BE%E5%AF%B9K-Means%E7%9A%84%E5%BD%B1%E5%93%8D%E8%AF%81%E6%98%8E"><span class="toc-text">模板5：特征缩放对K-Means的影响证明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%A1-%E8%AF%81%E6%98%8E%E9%A2%98%E8%B5%96%E7%9A%AE%E5%A4%A7%E6%B3%95%EF%BC%88%E8%80%83%E5%9C%BA%E4%BF%9D%E5%91%BD%EF%BC%89"><span class="toc-text">💡 证明题赖皮大法（考场保命）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cpt10-Multi-layer-Networks-%E2%80%94-Cheatsheet"><span class="toc-text">Cpt10: Multi-layer Networks — Cheatsheet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%A0%87%E5%87%86%E6%B5%81%E7%A8%8B%EF%BC%88-L-%E5%B1%82%E7%BD%91%E7%BB%9C%EF%BC%89"><span class="toc-text">前向传播标准流程（$L$层网络）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%A0%87%E5%87%86%E6%B5%81%E7%A8%8B%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E5%BF%85%E4%BC%9A%E6%89%8B%E5%8A%A8%E6%8E%A8%E5%AF%BC%EF%BC%89"><span class="toc-text">反向传播标准流程（⭐⭐⭐ 必会手动推导）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dropout-%E8%AE%AD%E7%BB%83-%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="toc-text">Dropout 训练&#x2F;测试流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF1%EF%BC%9A%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99%E6%8E%A8%E5%AF%BC%EF%BC%88%E2%AD%90%E2%AD%90%E2%AD%90-%E5%BF%85%E8%83%8C%EF%BC%8Cpp2-P5%E5%8E%9F%E9%A2%98%EF%BC%89"><span class="toc-text">模板1：反向传播链式法则推导（⭐⭐⭐ 必背，pp2-P5原题）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF5%EF%BC%9ABatch-Normalization-%E5%89%8D%E5%90%91-%E5%8F%8D%E5%90%91%E5%85%AC%E5%BC%8F"><span class="toc-text">模板5：Batch Normalization 前向&#x2F;反向公式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%A1-%E8%AF%81%E6%98%8E%E9%A2%98%E8%B5%96%E7%9A%AE%E5%A4%A7%E6%B3%95%EF%BC%88%E8%80%83%E5%9C%BA%E4%BF%9D%E5%91%BD%EF%BC%89-1"><span class="toc-text">💡 证明题赖皮大法（考场保命）</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1788783862337" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
