@@ -1,0 +1,1186 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Chapter 1: 简单入门 - Naucha</title>
+
+  
+    <meta name="description" content="什么是操作系统？操作系统 (Operating System, OS) 是一个程序，它的作用是控制其他应用程序的运行，有点像一个管家，负责管理其他程序如何使用机器。 操作系统不是什么神秘的漂浮在CPU上面的东西，反而我们需要强调，操作系统本质上就是个程序。 假如我们在电脑上运行了不少软件，例如 Chrome, Edge, 网易云， Minecraft，这些都叫做 应用程序 (Application">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chapter 1: 简单入门">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3230/chapter1/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="什么是操作系统？操作系统 (Operating System, OS) 是一个程序，它的作用是控制其他应用程序的运行，有点像一个管家，负责管理其他程序如何使用机器。 操作系统不是什么神秘的漂浮在CPU上面的东西，反而我们需要强调，操作系统本质上就是个程序。 假如我们在电脑上运行了不少软件，例如 Chrome, Edge, 网易云， Minecraft，这些都叫做 应用程序 (Application">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-09-09T13:28:00.000Z">
+<meta property="article:modified_time" content="2026-09-10T08:32:22.453Z">
+<meta property="article:author" content="Naucha">
+<meta property="article:tag" content="计算机&#x2F;操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  <meta name="keywords" content="">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1789029181914">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3230/chapter1/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 1: 简单入门","description":"什么是操作系统？操作系统 (Operating System, OS) 是一个程序，它的作用是控制其他应用程序的运行，有点像一个管家，负责管理其他程序如何使用机器。\n操作系统不是什么神秘的漂浮在CPU上面的东西，反而我们需要强调，操作系统本质上就是个程序。\n假如我们在电脑上运行了不少软件，例如 Chrome, Edge, 网易云， Minecraft，这些都叫做 应用程序 (Applicat...","url":"https://naughtychas.github.io/notes/COMP3230/chapter1/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3230/chapter1/"><span class="title">Chapter 1: 简单入门</span></a><a class="item title" href="/notes/COMP3230/begin/"><span class="title">COMP3230 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-09-10T08:32:22.453Z">2026-09-10</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-09-09T13:28:00.000Z">2026-09-09</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 1: 简单入门</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="什么是操作系统？"><a href="#什么是操作系统？" class="headerlink" title="什么是操作系统？"></a>什么是操作系统？</h2><p><strong>操作系统 (Operating System, OS)</strong> 是一个程序，它的作用是控制其他应用程序的运行，有点像一个管家，负责管理其他程序如何使用机器。</p>
+<p>操作系统不是什么神秘的漂浮在CPU上面的东西，反而我们需要强调，操作系统本质上就是个程序。</p>
+<p>假如我们在电脑上运行了不少软件，例如 Chrome, Edge, 网易云， Minecraft，这些都叫做 <strong>应用程序 (Application Programs)</strong>。OS和他们只有职位和能力上的区别。</p>
+<h3 id="操作系统解决的问题"><a href="#操作系统解决的问题" class="headerlink" title="操作系统解决的问题"></a>操作系统解决的问题</h3><p>假设你的电脑只有一个 CPU 单核可用，但是现在有四个程序都想运行。例如网易云，VS Code，Edge和Minecraft。那么，CPU该决定此时到底应该执行谁？</p>
+<p>CPU 不可能在同一个瞬间真的执行四条完全不同的指令流，因此OS必须决定做下面这样一件事：</p>
+<p>让网易云跑一会 -&gt; 暂停网易云 -&gt; 跑一会VS Code -&gt; 暂停 VS Code ...</p>
+<p>如果CPU切换的足够快，我们作为用户就会感觉，这些程序都在同时运行。</p>
+<hr>
+<p>从上面，我们就能看出OS的第一个主要用法了：</p>
+<p><strong>OS第一作用：管理有限的计算资源</strong></p>
+<p>其中，我们说计算资源，一般指的是 CPU时间，内存空间，存储空间，文件系统等这些进程需要执行时，吃掉的资源。</p>
+<p>OS的一大任务就是要在 <u>资源请求冲突的情况下，让资源的分配尽可能公平，同时最大化资源效率</u>。</p>
+<p>这里的 “资源请求冲突” 是什么意思？假如说在同一时刻，Edge说需要一些CPU时间，Minecraft也说需要，那么现在CPU时间就是一个有限资源。同时不只是CPU时间，程序运行还需要内存呢，不同的程序需要去抢你机器上比金子还贵的内存空间。</p>
+<p>所以简单来说，就是将有限的资源平衡高效地分配给多个需求方。</p>
+<hr>
+<p>OS的第二个重要职务是：</p>
+<p><strong>充当其他应用程序和硬件之间的通讯桥梁</strong></p>
+<p>具体来说，OS会将硬件层与其他应用程序隔离开，统一管理，随后将硬件能力通过API的方式为其他程序开放。其他的程序可以向OS来请求服务和资源。</p>
+<p>怎么理解呢？如果我们在没有OS的情况下，想要新建文件写入硬盘。那么你就需要知道你目前机子上的SSD的通讯方式：什么型号？控制器寄存器地址在哪？我应该发什么硬件命令？这些对你来说是非常痛苦的。</p>
+<p>但今天你在python写一行 <code>open(&quot;xxx&quot;, &quot;w&quot;)</code> 就能够操作OS，与硬盘交互来打开某个文件。一切都这么简单，你甚至不需要知道硬盘的型号。由于OS在中间充当通讯桥梁，应用程序直接能看到OS开放的 file, process, socket, memory等接口，调用了就能使用硬件资源，多省事。</p>
+<hr>
+<h3 id="操作系统的四大服务"><a href="#操作系统的四大服务" class="headerlink" title="操作系统的四大服务"></a>操作系统的四大服务</h3><p>所以，我们可以将操作系统做的事情总结为四大服务：</p>
+<ol>
+<li>让应用程序能够正常运行</li>
+<li>让运行中的应用程序能够使用，并共享内存</li>
+<li>让应用程序之间能够彼此交互</li>
+<li>让应用程序访问并共享存储空间中存储的数据。</li>
+</ol>
+<p>至于具体对应的后端原理，我们会在后面的章节中展开。</p>
+<hr>
+<h3 id="我们在研究什么问题？"><a href="#我们在研究什么问题？" class="headerlink" title="我们在研究什么问题？"></a>我们在研究什么问题？</h3><p>在这门课中，我们研究的不是 “操作系统为什么这么干”？这个答案太显而易见了，系统更加容易使用就是目标。</p>
+<p>但是，你有没有想过，OS通过什么 <strong>机制(Mechanism)</strong> 和 <strong>策略(Policies)</strong> 来达成这些目标？在给定同样目标情况下，我们如何做到高效？我们需要什么硬件支持？</p>
+<p>机制在这里决定的就是 “系统能怎么做”，策略就是 “系统决定怎么做”。例如OS有能力暂停A进程去执行B，这叫机制。那么我们该什么时候暂停A，接下来放行B还是C？每个进程跑多久？这是策略决定的。</p>
+<p>所以记住操作系统有什么功能，对学习这门课没什么太大帮助。我们想要关心的是，这些功能在底层是怎么被实现出来的。例如，</p>
+<ul>
+<li>怎么让多个进程共享 CPU？</li>
+<li>怎么限制程序做危险操作？</li>
+<li>怎么让很多进程共享 memory？</li>
+<li>怎么让共享数据不被同时写坏？</li>
+<li>怎么让磁盘访问更快？</li>
+</ul>
+<p>这些才是正儿八经的内容。</p>
+<hr>
+<h2 id="进程与处理器调控"><a href="#进程与处理器调控" class="headerlink" title="进程与处理器调控"></a>进程与处理器调控</h2><p>一个 <strong>进程 (Process)</strong>，你可以理解为一个 “正在运行的程序”。</p>
+<p>程序，例如你电脑上安装的steam.exe，静静的放在硬盘里，纯粹的静态代码和文件。这个叫做 <strong>程序 (Program)</strong>。但一旦这个程序开始双击运行，你启动了他的一个实例，他真的要吃计算资源了。这就叫一个进程。</p>
+<p>那么OS管的是什么？当一个进程运行时，OS需要为他调配资源；当一个进程结束后，OS的任务就是把分配出去的资源收回来。否则一个程序关掉以后，它的内存、文件句柄等资源还永久霸着，那系统很快就废了。</p>
+<p>而且一个典型系统中可能存在很多进程。有些叫做 <strong>用户进程(User Process)</strong> ，有些是系统的 <strong>系统&#x2F;内核进程 (OS &#x2F; Kernel Process)</strong> ，它们可能在一个或多个 CPU&#x2F;core 上并行运行。这个看一看就行，后面会讲到的。</p>
+<hr>
+<p>那么问题来了，操作系统怎样 <strong>管理并控制软件进程</strong> ？</p>
+<p>刚才我们已经知道系统里可能有很多 process。在一个活跃系统中，你能看见：</p>
+<p>这个 process 在运行，那个 process 在等 I&#x2F;O，另一个 process 暂时没拿到 CPU，还有一个已经结束</p>
+<p>OS 得维护它们的状态。因此OS发现，我不能够仅仅让程序去跑，还要必须 <u>持续追踪、控制它们</u>。</p>
+<hr>
+<p>那么，我们怎么确保每个进程都乖乖的，不会把整个硬件系统搞乱？ <strong>我们如何处理应用程序的命令权限</strong> ？</p>
+<p>同时，才做系统还能够控制进程能够做哪些系统级别的操作。如果普通程序能够执行任何硬件操作：</p>
+<blockquote>
+<p>Program A:<br>“我要直接改磁盘。”</p>
+<p>Program B:<br>“我要随便访问一个物理内存地址。”</p>
+<p>Program C:<br>“我要把网络设备重新配置一下。”</p>
+</blockquote>
+<p>那整个晋西北都乱成一锅粥了。所以这里开始出现一个以后非常核心的想法：<strong>普通应用程序不能够拥有机器的全部权限</strong>。</p>
+<p>但你不给人家权限，人家也确实需要用啊？例如Edge，作为一个浏览器当然需要读文件，访问网络，申请内存，使用设备，我们该怎么办？详见一会会讲到的System Call。</p>
+<hr>
+<p>第三个问题：<strong>如何让每个程序都能感觉自己在 “畅通无阻的运行”？</strong></p>
+<p>我们一开始就说过，只要切的够快，A,B,C都各跑一点，进程就会感觉我拥有整个CPU计算使用权的感觉。虽然说，一个CPU正在被很多进程共享，但每个进程看起来的视角就是 “我有 CPU 可以执行我的代码”。如果你学过OOP，这样的抽象思路对你来说大概会很熟悉吧。</p>
+<hr>
+<p>最后， <strong>OS如何重新取得CPU的控制权？</strong></p>
+<p>这个问题更深入一些。因为我们之前说过，OS也是一个应用程序，CPU一视同仁，有时候OS也是需要让开，允许其他进程执行。</p>
+<p>如果OS批准了进程A运行，按照算法分配了10ms的 CPU 时间。OS约定进程A运行10ms后，将CPU还给OS，听起来一切都很美好。</p>
+<p>但如果A是恶意程序，里面写了个 while(true)，你该怎么办？所以OS很明显，不能够依赖程序自己乖乖的将CPU交回来，否则任意进程都可以把整个系统占死。</p>
+<p>因此，<strong>即使正在运行的进程不配合，OS 也能强制重新获得 CPU 控制权</strong> 。对于如何实现，暂且不表，不过我们要先记住这个事。</p>
+<hr>
+<h2 id="内存调控"><a href="#内存调控" class="headerlink" title="内存调控"></a>内存调控</h2><p>在冯诺依曼架构的计算机下，一个正在运行的进程，它的指令和数据都一定处于内存中，CPU才能够执行它。我们说的 “内存”，在这里涵盖缓存和内存。</p>
+<p>在之前计组我们就知道，计算机如果要执行某个操作，需要将指令从硬盘中捞到内存中，随后还要决定是否写入CPU缓存。但问题出现了：<strong>内存空间是有限的，但很多进程会同时运行</strong>。OS需要决定哪些内容需要存在内存中，哪些被踢出去。</p>
+<p>如果A，B，C三个进程各要 4, 3, 5 GB的数据，加起来OS要分配的空间就来到了12GB。但假如我们机器只有8GB，OS就需要必须解决谁有权利留在内存里。这样做的目标，就是最优化CPU的利用率，同时也能让进程的调度在用户侧表现得尽可能快。</p>
+<p>为什么说是优化CPU利用率？是因为我们尽量 <em>别让 CPU 因为缺数据、缺可运行任务而闲着</em>。用户侧的相应，代指的是：<em>用户点了东西以后，别等半天才有反应</em>。</p>
+<p>你也喜欢一句话总结吗？太好了！总之就是</p>
+<blockquote>
+<p><strong>在有限 RAM 下，OS 怎么组织运行中的程序，既保证能运行，又尽量高效、响应快。</strong></p>
+</blockquote>
+<hr>
+<p>那么，<strong>OS如何为不同的进程分配同一个物理内存池？</strong></p>
+<p>虽然大家都在枪同一块RAM，且虽然真实物理内存是共享的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ A ][ B ][ OS ][ C ][ free ... ]</span><br></pre></td></tr></table></figure>
+
+<p>但是A进程不应该想B在哪个物理地址，OS在哪，且我是不是要避开别人的地址？</p>
+<p>OS的工作就是提供一种抽象，为每一个进程分配一块它的独立内存空间。<strong>在物理上这些内存共享，但是逻辑上尽量让每个进程感觉自己有独立空间</strong> 。</p>
+<hr>
+<p>同时，我们如何保证 <strong>应用程序该如何访问内存空间？</strong></p>
+<p>我们当然不想让进程A有权限写入进程B声明的内存空间。如果A正在处理你的银行密码，B是一个随便下载的软件正在运行。如果B可以随意选择写入任意内存地址，那这简直胡闹了。</p>
+<p>因此，OS不仅要为每个进程分配内存，还需要保证每个进程 <strong>只能碰你被允许碰的内存地址</strong>。</p>
+<hr>
+<p>那么如果 <strong>总进程所需要的内存，超过了物理内存大小怎么办</strong> ？</p>
+<p>听说过虚拟内存吗？当你的RAM不够，OS会把一部分暂时不着急用的一部分内容，放到更大但写入读取更慢的二级存储，往往是你的SSD或者机械硬盘，需要时再拿回来。<strong>OS用慢但大的存储，去缓解快但小的内存不足。</strong></p>
+<hr>
+<p>最后，<strong>OS如何管理空闲内存空间？如果我们真的没内存可用了，OS该怎么办？</strong></p>
+<p>OS还需要管理并记住，哪些RAM已经被占用了，哪些可用，且哪些RAM可以被回收器回收。</p>
+<p>一般来说如果要没内存了，OS会尝试从一些进程那里安全收回一些RAM。</p>
+<hr>
+<p>因此，内存管理方面，OS至少需要做：</p>
+<ul>
+<li><strong>内存分配 (Allocation)</strong>：决定给谁内存，怎么给？</li>
+<li><strong>内存追踪 (Tracking)</strong>：追踪谁正在用哪些内存，这些内存现在用的什么情况？</li>
+<li><strong>内存保护 (Protection)</strong>：谁不能够去碰哪些内存，将进程访问内存地址的权限框起来。</li>
+<li><strong>内存回收 (Reclamation)</strong>：决定哪些内存可以被回收，以再次分配</li>
+<li><strong>内存过量使用管理 (Oversubscription handling)</strong>：如果总需求大于目前的物理内存大小，OS该如何调控？</li>
+</ul>
+<hr>
+<p>这就是内存管理。在一个有限的物理内存池中，有很多的进程都需要用内存。OS要解决</p>
+<ol>
+<li>怎么分</li>
+<li>怎么隔离</li>
+<li>怎么制造 private memory 的抽象</li>
+<li>RAM 不够时怎么办</li>
+<li>怎么回收</li>
+</ol>
+<hr>
+<h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><p>我们在用电脑的时候，不是说我们只能在一件事做完之后，才能再做下一件吧。</p>
+<p><strong>并发 (Concurrency)</strong> 就是这样一个描述多个执行任务在时间上重叠推进，交互的词语。实际上，OS 自己内部也不是永远“一件事情做完，再做下一件”的，这样效率就有点太难看了。</p>
+<p>虽然我们之前讨论，内存管理决定A和B的数据应当独立管理，但是当并发进程出现时，很多时候你需要实现进程与进程之间的信息交换。这样，你就不可避免地需要让A和B同时共享某些数据。</p>
+<p>那么问题来了，我们如何保证 <strong>它们同时访问时不会把数据弄坏</strong>？</p>
+<p>假设OS内部有一个变量，叫做 <code>opencount</code>。每次有人调用一个函数 <code>open()</code>，这个变量就+1。</p>
+<p>如果有两个进程几乎同时调用 <code>open()</code>，因为系统中断可能在任意时候发生，所以对这个共享变量的更新就可能受到干扰；因此OS内核内部的进程列表、分页表等数据结构都必须非常小心地用同步基元访问。</p>
+<p>假设 <code>opencount = 10</code>，A要加1。但在底层，整个流程大概分三步：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 读 opencount</span><br><span class="line">2. 算 +1</span><br><span class="line">3. 写回 opencount</span><br></pre></td></tr></table></figure>
+
+<p>如果A现在 read 10，还没写回，B就触发了他的流程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">B read 10</span><br><span class="line">B computes 11</span><br><span class="line">B writes 11</span><br></pre></td></tr></table></figure>
+
+<p>然后切回A：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A had already read 10</span><br><span class="line">A computes 11</span><br><span class="line">A writes 11</span><br></pre></td></tr></table></figure>
+
+<p>最后你会发现 <code>opencount = 11</code>，这很显然是出错了，正确值应当是12。</p>
+<p>所以OS需要协商不同的进程在使用同一个数据的时候，该如何协商，按照什么顺序去修改数据。</p>
+<hr>
+<h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><p>物理磁盘的底层不是分我们可见的 xxx.txt 管理的。我们熟知的文件，在底层存在不同的存储介质，不同的扇区，块和不同地址。搞半天还要自己拼。</p>
+<p>OS中负责管理存储的部分叫做 <strong>文件系统 (File System)</strong>，它负责把用户创建的数据可靠且高效地存到磁盘上。</p>
+<p>所以我们的 xxx.txt ，就是文件系统提供的一个抽象层及。file，directory，filename都是文件系统抽象出来的概念。当我们调用 打开 report.pdf 时，文件系统就需要懂得：</p>
+<blockquote>
+<p>它的数据实际存在哪里？<br>哪些 disk blocks 属于它？<br>怎么找到？<br>怎么读？</p>
+</blockquote>
+<hr>
+<p>所以文件系统要做什么具体的活？</p>
+<p>首先，它该如何管理存储空间？我们创建一个新文件，它应该找那些存储单元？我们删除一个文件，空出来的空间如何管理？</p>
+<p>因此文件系统也需要一个类似于内存分配的机制。同样需要检测空余&#x2F;占用的空间，哪个file占哪些位置？删除之后如何收回？</p>
+<hr>
+<p>第二，我们该如何实现文件系统的数据结构？换句话说，给定一个文件名，我们如何完美读取这个文件的内容？</p>
+<p>由于我们给定的是一个抽象文件，文件系统需要搞清楚，它应该去存储的哪些地方找数据？因此，文件系统本身必须在硬盘上维护元数据和数据结构。</p>
+<hr>
+<p>第三关乎性能。我们该如何降低整个存储系统的读写频率，以达到更高的性能？要知道外存的性能不是很理想，所以我们能否减少实际的硬盘访问次数，让每次访问都更高效；或者单纯让整个文件系统看起来更快？</p>
+<hr>
+<p>纵观进程，内存，并发和文件管理，OS现在在这四个维度上做的事情都挺统一的。</p>
+<ul>
+<li>进程：多个进程如何共享CPU？</li>
+<li>内存：多个进程如何共享有限物理内存？</li>
+<li>并发：多个进程如何安全共享共有数据？</li>
+<li>文件：多个进程如何可靠高效使用存储系统？</li>
+</ul>
+<p>本质上都在研究 <strong>共享，抽象，控制，保护，效率</strong> ，仅仅是要管理的目标不同。</p>
+<hr>
+<h2 id="操作系统的终极目标"><a href="#操作系统的终极目标" class="headerlink" title="操作系统的终极目标"></a>操作系统的终极目标</h2><p>就是确保四个维度最大化：</p>
+<ul>
+<li>易用性：系统作为一个界面，对用户和开发者，乃至应用程序来说是否易用？</li>
+<li>效率：系统如何调配资源，才能让整个系统的运行速度更快，或者在其他方面特调最佳体验？</li>
+<li>安全性与可靠性：系统如何使用各种硬件配置，各种奇技淫巧来做到系统的稳定不出错，同时做到尽可能安全？</li>
+<li>泛用性：系统能否运行在各种不同的硬件配置下，且都能最大限度发挥最强大的资源调配能力？</li>
+</ul>
+<p>不过不同的目标之间甚至会互相冲突。例如更强的隔离性会让安全性更强，但某种程度上会增加检查和切换开销。更复杂的抽象会提升泛用性和易用性，但是会牺牲一部分的性能。</p>
+<p>这就是为什么不同的操作系统架构设计会有所权衡，而不是说有一个所谓 “万金油” 架构。</p>
+<hr>
+<h2 id="操作系统架构"><a href="#操作系统架构" class="headerlink" title="操作系统架构"></a>操作系统架构</h2><p>随着操作系统不断变复杂，它需要支持越来越多的软件、硬件和系统服务。要是所有东西都随便堆在一起，最后维护起来大概会变成屎山中的屎山。</p>
+<p>所以，操作系统架构 (OS Architecture) 研究的，就是 <strong>操作系统内部的各种功能组件应该如何组织？它们之间应该如何通信？哪些组件应该拥有较高权限？</strong></p>
+<p>课件特别指出，OS architecture 一方面负责组织操作系统的各个功能组件，另一方面还要决定每个组件在什么 Privilege Level（权限级别） 下执行。</p>
+<p>这节课主要介绍四种架构：</p>
+<ul>
+<li>Monolithic Architecture</li>
+<li>Layered Architecture</li>
+<li>Microkernel Architecture</li>
+<li>Modular Approach</li>
+</ul>
+<p>在进入它们之前，我们需要先搞清楚两个非常重要的概念：</p>
+<h3 id="User-Mode-和-Kernel-Mode"><a href="#User-Mode-和-Kernel-Mode" class="headerlink" title="User Mode 和 Kernel Mode"></a>User Mode 和 Kernel Mode</h3><p><strong>系统内核 (Kernel)</strong> 不等于整个 OS。在一个操作系统中，并不是所有“系统相关程序”都拥有最高权限。</p>
+<p>课件给出的结构大概可以理解成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Applications / Shell</span><br><span class="line">↓</span><br><span class="line">Libraries / APIs / Utilities</span><br><span class="line">↓</span><br><span class="line">Kernel</span><br><span class="line">↓</span><br><span class="line">Hardware</span><br></pre></td></tr></table></figure>
+
+<p>其中，Kernel才是 OS 的核心部分。它负责管理资源，并且直接和硬件交互。另一方面，像一些 工具与服务程序本身并不直接操作硬件，而是利用 kernel 提供的功能。</p>
+<p>例如课件列出的，Windows系统下的：chkdsk，format，ps都属于 non-kernel programs。所以：Operating System 不能与 Kernel划等号。</p>
+<p><strong>Kernel 是 OS 中处于核心特权位置、负责资源管理以及硬件控制的部分。</strong></p>
+<hr>
+<p>CPU 至少支持两种运行模式。一个叫 User Mode，另一个叫Kernel Mode。这并不是 OS 自己随便规定的“软件规范”，而实际上是 CPU 提供的硬件权限机制。</p>
+<h4 id="Kernel-Mode"><a href="#Kernel-Mode" class="headerlink" title="Kernel Mode"></a>Kernel Mode</h4><p>当 CPU 正在执行 OS kernel 时，它工作的模式就在 Kernel Mode。 aka Privileged Mode &#x2F;Supervisor Mode。它拥有最高的权限等级，可以执行机器能够执行的全部指令。</p>
+<p>也就是说：Kernel 可以执行一些普通应用没有权力执行的系统级操作。</p>
+<h4 id="User-Mode"><a href="#User-Mode" class="headerlink" title="User Mode"></a>User Mode</h4><p>而当CPU正在执行普通程序时，它处于User Mode。User Mode 权限更低，只允许执行机器所有命令的一个受限子集。但也不要误解成：“User Mode 很废，只能做很少的事情。”</p>
+<p>实际上应用的大多数计算都可以直接在 User Mode 完成。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = b + c;</span><br><span class="line"></span><br><span class="line">if (x &gt; y) &#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for (...) &#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种牵扯算术，比较，分支，或者程序访问自己允许访问的内存地址时都可以直接执行。</p>
+<p>所以User Mode 限制的是危险和需要高权限的操作，而不是普通计算能力。</p>
+<p>之所以这么设计，是为了安全性考虑。如果所有应用都能够执行任意高级指令，那么：Chrome随便控制你的硬盘，Minecraft随便改分页表，某个恶意软件随便干废你的硬盘，整个系统的 安全性就不存在了。</p>
+<p>所以，普通程序可以自由计算，但是 <strong>涉及全局资源和危险系统状态的时候，必须交给 Kernel</strong>。</p>
+<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>问题来了：普通 application 没有最高权限，但是它又确实需要执行打开文件，访问磁盘，I&#x2F;O，使用系统资源等其他操作，难不成不给它用了？</p>
+<p>应用可以向 OS 发出一个正式请求，请求调用相应的Kernel能力，这就是 <strong>系统调用 (System Call)</strong></p>
+<p>系统调用是应用向 OS 请求资源或服务的机制，同时，所有系统调用构成了应用与 OS 服务之间的接口。</p>
+<p>执行过程大概是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">应用</span><br><span class="line">User Mode</span><br><span class="line">↓</span><br><span class="line">系统调用</span><br><span class="line">↓</span><br><span class="line">Trap into Kernel</span><br><span class="line">↓</span><br><span class="line">Kernel Mode</span><br><span class="line">↓</span><br><span class="line">执行对应的 Kernel 函数</span><br><span class="line">↓</span><br><span class="line">Return-from-trap</span><br><span class="line">↓</span><br><span class="line">应用</span><br><span class="line">User Mode</span><br></pre></td></tr></table></figure>
+
+<p>这里的 trap 可以理解为一种，CPU 从 User Mode 受控地切换进入 Kernel Mode 的一种机制。</p>
+<p>不是说通过trap，应用就可以随便跳进 Kernel 的任意代码，而是说CPU通过特殊指令来进入预先规定好的 kernel 进入点。执行完之后，再通过 return-from-trap 回到 User Mode。</p>
+<hr>
+<p>所以现在我们终于可以建立一个很重要的执行模型，也就是说，CPU 并不是一直在运行 OS。</p>
+<p>有时 CPU → User Mode → 执行应用</p>
+<p>有时 CPU → Kernel Mode → 执行 Kernel</p>
+<p>应用绝大多数时间可以在User Mode里面自己计算。只有当：需要 OS 层面的内容需求时，才通过系统调用进入 kernel。</p>
+<p>总而言之，CPU 可以直接执行应用的 user-mode 代码。当只有需要特殊服务时，才会切到 Kernel Mode。</p>
+<hr>
+<h3 id="Monolithic-Architecture"><a href="#Monolithic-Architecture" class="headerlink" title="Monolithic Architecture"></a>Monolithic Architecture</h3><p>我们首先来看最直接的一种设计：<strong>Monolithic Architecture（单体式架构）</strong></p>
+<p>单体式架构中，几乎所有主要 OS 部件都直接放在 kernel 中。整个 OS kernel 更像一个巨大的库，而且这些组件之间没有非常严格的模块边界。</p>
+<p>这是LLM画的一个图例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Application</span><br><span class="line">↓ System Call</span><br><span class="line"></span><br><span class="line">========================</span><br><span class="line">Kernel</span><br><span class="line"></span><br><span class="line">Process Management</span><br><span class="line">Memory Management</span><br><span class="line">File System</span><br><span class="line">Device Management</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">Component A</span><br><span class="line">可以直接 call Component B</span><br><span class="line"></span><br><span class="line">Component B</span><br><span class="line">可以直接访问共享数据结构</span><br><span class="line"></span><br><span class="line">========================</span><br><span class="line"></span><br><span class="line">Hardware</span><br></pre></td></tr></table></figure>
+
+<p>由于全部都在同一个 kernel 中，一个部件可以很方便地通过函数调用直接和另一个部件通信。而且由于大家在同一个大程序里，数据结构也很容易共享。</p>
+<p>单体式结构的首要优点就是快，效率高。假设文件系统需要使用硬盘驱动，由于他们都在一个Kernel中，文件系统可以直接通过函数调用的方式找到硬盘驱动，直接通讯后硬盘驱动去调用硬盘。由于大家都是邻居，没有太多额外的通信边界，因此开销就很小。这就是为什么单体式架构的OS往往具有很高的性能。</p>
+<p>但问题就是：大家关系太亲密了。高性能是用很弱的组件边界换来的。在传统 monolithic structure 里：</p>
+<ul>
+<li>组件可以直接和硬件交互</li>
+<li>重要的结构性系统代码实现可能散布在 kernel 各处</li>
+<li>组件可以直接访问其他组件的数据或方法</li>
+<li>一个组件的修改可能影响其他组件</li>
+<li>一个组件的 bug 可能破坏另一个组件</li>
+</ul>
+<p>因为大家都住一个屋里，性能当然不错。但某个室友发疯的时候：整个屋子一起遭殃。</p>
+<p>因此，单体式结构的设计就是 <strong>使用较弱的隔离性，换取更直接的组件通信和更高性能。</strong></p>
+<hr>
+<h3 id="Layered-Architecture"><a href="#Layered-Architecture" class="headerlink" title="Layered Architecture"></a>Layered Architecture</h3><p>既然 Monolithic 的问题是 “所有组件都能随便碰彼此”，一个很自然的回应就是：那我们把上下级关系规定死。这就是 <strong>多层式结构 (Layered Architecture)</strong>。</p>
+<p>它把执行相似功能、承担相似角色的组件收进同一个 module，然后一层一层叠上去，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Layer 4</span><br><span class="line">Application-facing Services</span><br><span class="line">↓</span><br><span class="line">Layer 3</span><br><span class="line">File System</span><br><span class="line">↓</span><br><span class="line">Layer 2</span><br><span class="line">I/O Services</span><br><span class="line">↓</span><br><span class="line">Layer 1</span><br><span class="line">Hardware-related Services</span><br><span class="line">↓</span><br><span class="line">Layer 0</span><br><span class="line">Hardware</span><br></pre></td></tr></table></figure>
+
+<p>最关键的一条限制是：<strong>每一层只允许和它紧邻的上下层通信</strong>。</p>
+<p>所以 Layer 4 不能突然把 Layer 3，Layer 2，Layer 1 全部绕开，直接跳下去访问 hardware，它必须按规定一层一层走下去。</p>
+<p>这样一来，系统的结构就清楚很多。因为每一层的责任都很明确，construction 和 debugging 都会简单很多。课件甚至指出，我们可以从最低层开始往上 debug：先确认 Layer 0 是对的，再加入 Layer 1 确认，再加 Layer 2 ...... 一层一层把系统搭出来。</p>
+<p>Layered Architecture 还顺手带来了一个很重要的软件工程概念：<strong>Information Hiding</strong>。</p>
+<p>上层只需要知道 “下一层向我提供什么 interface”，而不需要知道下一层内部到底怎么实现。例如 Layer 3 只知道 <code>lower_layer.read()</code>，至于 lower_layer 内部到底是查缓存还是翻磁盘，它并不关心。</p>
+<p>所以只要 interface 不变，下面从 Implementation A 换成 Implementation B，上层理论上都不需要修改。</p>
+<p>这其实和我们在 OOP 里学到的 Abstraction，Encapsulation，Information Hiding 是同一套逻辑。</p>
+<hr>
+<p>但严格分层也不是白送的。</p>
+<p>一个 application request 可能要 Layer 5 -&gt; Layer 4 -&gt; Layer 3 -&gt; Layer 2 -&gt; Layer 1 -&gt; Hardware 一路走完才算完成，绕的路明显变多。课件因此直接指出，Layered systems 的 efficiency 可能比 monolithic kernel 更低。</p>
+<p>所以又是一个对照：Monolithic 更直接，更快，但内部关系更乱；Layered 结构清楚，容易维护，但可能需要绕更多路。</p>
+<h3 id="Virtual-Machine"><a href="#Virtual-Machine" class="headerlink" title="Virtual Machine"></a>Virtual Machine</h3><p>课件随后用 Virtual Machine 作为 Layered Approach 的一个例子。</p>
+<p>里面有一个核心组件叫 <strong>Virtual Machine Monitor (VMM)</strong>，也叫 <strong>Hypervisor</strong>。Hypervisor 干的事情，其实和我们之前学过的很多 OS 抽象很像：把一套真实硬件，包装成多个 “看起来像独立机器” 的虚拟环境。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">             VM 1</span><br><span class="line">             OS 1</span><br><span class="line"></span><br><span class="line">Real HW -&gt; Hypervisor -&gt; VM 2</span><br><span class="line">                        OS 2</span><br><span class="line"></span><br><span class="line">                        VM 3</span><br><span class="line">                        OS 3</span><br></pre></td></tr></table></figure>
+
+<p>真实情况是 CPU 只有这一套，Memory 只有这一套，Disk 也是这一套，但是每个 Virtual Machine 里面的 OS 都会感觉 “我下面有一台自己的机器”。</p>
+<p>所以课件用了一个特别好记的说法：<strong>Hypervisor essentially serves as an OS for OSs</strong>。</p>
+<p>仔细看你会发现，这和之前的 OS 抽象套路一模一样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1 CPU</span><br><span class="line">-&gt; 多个 Process 感觉自己都能运行</span><br><span class="line"></span><br><span class="line">一池 Physical Memory</span><br><span class="line">-&gt; 每个 Process 感觉自己有独立的 Memory Space</span><br><span class="line"></span><br><span class="line">一台 Physical Machine</span><br><span class="line">-&gt; 多个 OS 感觉自己都有一台 Machine</span><br></pre></td></tr></table></figure>
+
+<p>OS 真的很喜欢制造这种 “其实没有，但是我让你感觉你有” 的东西。</p>
+<h3 id="Microkernel-Architecture"><a href="#Microkernel-Architecture" class="headerlink" title="Microkernel Architecture"></a>Microkernel Architecture</h3><p>然后我们来到了另一个非常重要的思想：Microkernel。它几乎是从 Monolithic architecture 的问题反向推出来的。</p>
+<p>Monolithic 会把大量组件放进 kernel，privileged code 越多，高性能是拿到了，但 bug 的影响范围也巨大。于是 Microkernel 提出：我们为什么不尽量少往 kernel 里面放东西？</p>
+<p>课件的定义是：<strong>尽可能把 functionality 从 kernel space 移到 user-space processes 中</strong>，而这些 processes 被称为 <strong>servers</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">User Space</span><br><span class="line"></span><br><span class="line">Application</span><br><span class="line">File Server</span><br><span class="line">Other Servers</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">========================</span><br><span class="line"></span><br><span class="line">Kernel</span><br><span class="line"></span><br><span class="line">bare essentials</span><br><span class="line"></span><br><span class="line">========================</span><br><span class="line"></span><br><span class="line">Hardware</span><br></pre></td></tr></table></figure>
+
+<p>Kernel 里只保留 bare essentials，也就是最基本、确实必须以高权限运行的东西。</p>
+<p>这样做的最大好处就是 <strong>隔离</strong>。如果某个 File Server BOOM 了，由于它只是一个 user-space process，File Server crash 并不等于整个 kernel 一起 crash，至少从架构设计目标上，它的故障影响范围会小很多。</p>
+<p>因此课件给出的优点包括 Extensible，Portable，Scalable，More Secure，More Reliable。其中最重要的原因其实就是一句话：<strong>less code is running in kernel mode</strong>。这非常符合我们之前一直说的原则，privilege 越高，代码越危险，所以 privileged code 越少，potential blast radius 就越小。</p>
+<hr>
+<p>但是事情又回到了 trade-off。</p>
+<p>假设 file system 被放到了 user space，它就不能再像 Monolithic 一样 File System -&gt; direct function call -&gt; Disk Driver 叫一声就完事，而是不同 user-space server 之间需要 <strong>Message Exchange</strong>，而这些 communication 又需要 kernel 的帮助。</p>
+<p>于是一次请求可能变成 Application -&gt; Kernel -&gt; File Server -&gt; Kernel -&gt; Other Server ...，多绕了好几趟，这就产生额外的 communication overhead。</p>
+<p>所以 Monolithic 和 Microkernel 几乎形成一个非常漂亮的对照：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Monolithic</span><br><span class="line"></span><br><span class="line">more code in kernel</span><br><span class="line">-&gt; direct communication</span><br><span class="line">-&gt; high performance</span><br><span class="line">-&gt; larger failure impact</span><br><span class="line"></span><br><span class="line">Microkernel</span><br><span class="line"></span><br><span class="line">less code in kernel</span><br><span class="line">-&gt; stronger isolation</span><br><span class="line">-&gt; better reliability</span><br><span class="line">-&gt; more communication overhead</span><br></pre></td></tr></table></figure>
+
+<p>这里不存在 “哪个绝对先进？”，只有：你愿意把系统设计往哪个目标偏？</p>
+<h3 id="Modular-Approach"><a href="#Modular-Approach" class="headerlink" title="Modular Approach"></a>Modular Approach</h3><p>最后一个架构是现实中非常重要的：<strong>Modular Approach</strong>。</p>
+<p>这个思路就非常现实主义了。Monolithic 性能很好，但是内部太乱；Layered 很整洁，但是约束有时太死；Microkernel 隔离很好，但是 communication overhead 又明显。那能不能保留 Monolithic kernel 的性能，同时把 kernel 内部组织得更模块化？</p>
+<p>课件指出，<strong>大多数现代 OS 仍然整体采用 Monolithic architecture，但内部使用 Kernel Modules</strong>。于是整个 kernel 变成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Kernel</span><br><span class="line"></span><br><span class="line">├── Module A</span><br><span class="line">├── Module B</span><br><span class="line">├── Module C</span><br><span class="line">├── Module D</span><br><span class="line">└── ...</span><br></pre></td></tr></table></figure>
+
+<p>每个主要组件被分开实现成一个 module，但本质上整个 kernel 就是这些 modules 的集合。</p>
+<p>它和 Layered 很像，因为大家都有明确的组件和明确的 interface。但 Layered 很严格，Layer 4 只能找 Layer 3，Layer 3 只能找 Layer 2 &#x2F; 4；Modular Approach 就自由得多，课件明确说 <strong>any module can call any other module</strong>，所以 Module A -&gt; Module C，Module C -&gt; Module B，Module B -&gt; Module D 都可以，只要按照 well-defined interface 来就行。因此 Modular 比 Layered 灵活。</p>
+<p>它和 Microkernel 的区别也很清楚：Modular kernel 的 component 仍然都在 kernel 中，所以不同 module 之间 Module A -&gt; direct kernel call -&gt; Module B，不需要像 user-space servers 一样频繁进行 message passing。课件因此说，communication between modules is more efficient because they are all in kernel。</p>
+<p>于是它在相当程度上同时获得了 Monolithic 的 efficiency 和 Layered &#x2F; Modular design 的 clear interfaces。</p>
+<p>Module 还有一个很爽的能力：<strong>Dynamically Loadable Modules</strong>。某些 feature 需要就 load，不需要就不加载，这样只需要把真正需要的 module 放进 memory。于是节省了 memory，组件可以独立修改，新 module 更容易加入，整体 extensibility 也更好。课件给出的例子包括 Solaris，Linux 和 traditional Unix kernels。</p>
+<h3 id="四种架构的本质区别"><a href="#四种架构的本质区别" class="headerlink" title="四种架构的本质区别"></a>四种架构的本质区别</h3><p>到这里，这四种架构可以压缩成一段段对照：</p>
+<p>Monolithic 把大量 OS 组件放在同一个 kernel 里，换来高性能和直接调用，代价是隔离弱、故障影响大、难维护；Layered 让系统严格分层、只与相邻层通信，换来清晰、易 debug 和 information hiding，代价是请求可能经过很多层；Microkernel 让 kernel 只保留必要功能、其余移到 user-space server，换来隔离、安全、可靠、易扩展，代价是 message passing overhead；Modular 则是在 monolithic kernel 内部划分 kernel modules，算是性能和模块化之间的折中，但 module 仍然运行在 kernel 里，所以故障隔离要弱于 microkernel。</p>
+<p>不过现实中的 OS 并不是在上面四个里四选一，真实系统经常会混合使用不同架构思想。课件最后展示 Windows，Linux，macOS 和 Android 的 architecture diagram，就是让我们看到真实 OS 内部通常远比理论分类复杂。最后的 Summary 也明确指出，现代 OS 往往仍然以 Monolithic approach 为基础，同时引入 Layers 和 Kernel Modules 来提升 extensibility。</p>
+<p>所以真正应该理解的是：OS Architecture 并不是选一个名字贴上去，而是在 performance，isolation，reliability，maintainability，extensibility 之间不断权衡。</p>
+<h2 id="Chapter-1-小结"><a href="#Chapter-1-小结" class="headerlink" title="Chapter 1 小结"></a>Chapter 1 小结</h2><p>整个 Chapter 1 其实都围绕一个很统一的问题：我们有一堆有限、复杂、而且需要很多程序共享的 Hardware Resource，OS 到底应该怎么把它们管好？</p>
+<p>CPU 只有这么多，所以 OS 要调度 Process；Physical Memory 只有这么大，所以 OS 要分配、隔离、回收 Memory；不同 Execution Flow 要共享数据，所以 OS 要解决 Concurrency；硬盘底层又不好用，所以 OS 给我们抽象出 File System。与此同时，OS 还不能为了方便就把整个机器的权限全部送给 Application，所以又需要 User Mode，Kernel Mode 和 System Call 来控制权限边界。</p>
+<hr>
+<p>最后 Kernel 自己越来越复杂，我们又开始研究：Kernel 里面到底应该放多少东西？Component 之间到底应该靠多近？我们愿意拿多少性能去换多少隔离性？这才有了 Monolithic，Layered，Microkernel 和 Modular 这些 Architecture。</p>
+<p>所以如果真的要用几个词概括这一章，大概就是：</p>
+<blockquote>
+<p><strong>Resource Management &#x2F; Abstraction &#x2F; Protection &#x2F; Isolation &#x2F; Efficiency &#x2F; Trade-off</strong></p>
+</blockquote>
+<p>后面的 OS 内容，基本都会继续围着这几个东西打转。</p>
+</article>
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="toc-text">什么是操作系统？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">操作系统解决的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9B%9B%E5%A4%A7%E6%9C%8D%E5%8A%A1"><span class="toc-text">操作系统的四大服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%9C%A8%E7%A0%94%E7%A9%B6%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-text">我们在研究什么问题？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%A4%84%E7%90%86%E5%99%A8%E8%B0%83%E6%8E%A7"><span class="toc-text">进程与处理器调控</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E8%B0%83%E6%8E%A7"><span class="toc-text">内存调控</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91"><span class="toc-text">并发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="toc-text">文件管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%88%E6%9E%81%E7%9B%AE%E6%A0%87"><span class="toc-text">操作系统的终极目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="toc-text">操作系统架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#User-Mode-%E5%92%8C-Kernel-Mode"><span class="toc-text">User Mode 和 Kernel Mode</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Kernel-Mode"><span class="toc-text">Kernel Mode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#User-Mode"><span class="toc-text">User Mode</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">系统调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Monolithic-Architecture"><span class="toc-text">Monolithic Architecture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Layered-Architecture"><span class="toc-text">Layered Architecture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Virtual-Machine"><span class="toc-text">Virtual Machine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Microkernel-Architecture"><span class="toc-text">Microkernel Architecture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Modular-Approach"><span class="toc-text">Modular Approach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E7%A7%8D%E6%9E%B6%E6%9E%84%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB"><span class="toc-text">四种架构的本质区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-1-%E5%B0%8F%E7%BB%93"><span class="toc-text">Chapter 1 小结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1789029181916" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
