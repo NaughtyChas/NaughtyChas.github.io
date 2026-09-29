@@ -1,0 +1,1249 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Chapter 2A: 基础C语言与Linux - Naucha</title>
+
+  
+    <meta name="description" content="这节 Tutorial 其实没讲多少新的 OS 理论。前半段是把 Lecture 里面的 Process、System Call、Signal 这些东西重新串了一遍，后半段大半时间都在确认一件事：我们至少有足够的 Linux 和 C 语言基础，不至于后面写 OS 代码的时候先被 Pointer 和 Segmentation Fault 送走。 所以真正值得留下来的东西也就三块：几个很容易混的 OS">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chapter 2A: 基础C语言与Linux">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3230/chapter2A/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="这节 Tutorial 其实没讲多少新的 OS 理论。前半段是把 Lecture 里面的 Process、System Call、Signal 这些东西重新串了一遍，后半段大半时间都在确认一件事：我们至少有足够的 Linux 和 C 语言基础，不至于后面写 OS 代码的时候先被 Pointer 和 Segmentation Fault 送走。 所以真正值得留下来的东西也就三块：几个很容易混的 OS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-09-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-29T16:07:13.167Z">
+<meta property="article:author" content="Naucha">
+<meta property="article:tag" content="计算机&#x2F;操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  <meta name="keywords" content="">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1790698047071">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3230/chapter2A/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 2A: 基础C语言与Linux","description":"这节 Tutorial 其实没讲多少新的 OS 理论。前半段是把 Lecture 里面的 Process、System Call、Signal 这些东西重新串了一遍，后半段大半时间都在确认一件事：我们至少有足够的 Linux 和 C 语言基础，不至于后面写 OS 代码的时候先被 Pointer 和 Segmentation Fault 送走。\n所以真正值得留下来的东西也就三块：几个很容易混的...","url":"https://naughtychas.github.io/notes/COMP3230/chapter2A/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3230" placeholder="在 COMP3230 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3230/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="计算机">
+    
+  
+  <a class="link" href="/notebooks/COMP3230/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        计算机
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="计算机/操作系统">
+    
+  
+  <a class="link" href="/notebooks/COMP3230/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        操作系统
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3230/chapter2A/"><span class="title">Chapter 2A: 基础C语言与Linux</span></a><a class="item title" href="/notes/COMP3230/chapter2/"><span class="title">Chapter 2: 进程</span></a><a class="item title" href="/notes/COMP3230/chapter1/"><span class="title">Chapter 1: 简单入门</span></a><a class="item title" href="/notes/COMP3230/begin/"><span class="title">COMP3230 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3230/">COMP3230</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-09-29T16:07:13.167Z">2026-09-30</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-09-28T16:00:00.000Z">2026-09-29</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 2A: 基础C语言与Linux</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>这节 Tutorial 其实没讲多少新的 OS 理论。前半段是把 Lecture 里面的 Process、System Call、Signal 这些东西重新串了一遍，后半段大半时间都在确认一件事：我们至少有足够的 Linux 和 C 语言基础，不至于后面写 OS 代码的时候先被 Pointer 和 Segmentation Fault 送走。</p>
+<p>所以真正值得留下来的东西也就三块：<strong>几个很容易混的 OS 概念、Linux 下的基本工作流，以及写 Systems Programming 需要的 C 语言基础</strong>。</p>
+<hr>
+<h2 id="Mode-Switch-和-Context-Switch"><a href="#Mode-Switch-和-Context-Switch" class="headerlink" title="Mode Switch 和 Context Switch"></a>Mode Switch 和 Context Switch</h2><p>先补一个 Lecture 里面已经有概念、但还没正式起名字的东西：<strong>Context Switch（上下文切换）</strong>。</p>
+<p>我们之前说过，一个 CPU Core 需要在 A、B、C 等不同 Process 之间飞快切换。但 CPU 当然不能只说一句“A 你先下去，B 你上来”就完事了——它里面还有 Program Counter、各种 Registers、Stack Pointer 等等一堆属于 A 当前执行状态的东西。所以真正切的时候，流程大概是这样：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Suspend A</span><br><span class="line">↓</span><br><span class="line">Save A&#x27;s execution context</span><br><span class="line">↓</span><br><span class="line">Scheduler 选择 B</span><br><span class="line">↓</span><br><span class="line">Restore B&#x27;s execution context</span><br><span class="line">↓</span><br><span class="line">Continue B</span><br></pre></td></tr></table></figure>
+
+<p>这就是 <strong>Context Switch</strong>：把 CPU 目前代表的“运行现场”，从一个 Process 换成另一个 Process。</p>
+<p>这也解释了为什么之前 PCB 里面一定要保存 Program Counter 和 Register Context。A 被踹下 CPU 的时候先把现场存进 PCB，下一次 Scheduler 把 A 叫回来，再把这些东西恢复回 CPU。于是虽然底下大家抢的是同一个 CPU，每一个 Process 看起来却都像：</p>
+<blockquote>
+<p>我有一颗属于自己的 CPU，并且每次回来还能从上次停的地方继续。</p>
+</blockquote>
+<p>这就是 CPU 虚拟化的一部分，下一个 Lecture 会讲。</p>
+<hr>
+<p>不过要注意，<strong>Mode Switch ≠ Context Switch</strong>，这个非常容易混。假设 Process A 执行了一句 <code>read(...)</code>，它通过 System Call 进入 Kernel，整个过程是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Process A · User Mode</span><br><span class="line">        ↓</span><br><span class="line">System Call</span><br><span class="line">        ↓</span><br><span class="line">Process A · Kernel Mode</span><br><span class="line">        ↓</span><br><span class="line">Return</span><br><span class="line">        ↓</span><br><span class="line">Process A · User Mode</span><br></pre></td></tr></table></figure>
+
+<p>从头到尾还是 A，变的只是 User Mode 和 Kernel Mode，所以这叫 <strong>Mode Switch</strong>。而如果发生的是下面这种，才是真的从 A 换成了 B：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Process A</span><br><span class="line">↓</span><br><span class="line">Kernel 保存 A 的 Context</span><br><span class="line">↓</span><br><span class="line">Scheduler 选择 B</span><br><span class="line">↓</span><br><span class="line">恢复 B 的 Context</span><br><span class="line">↓</span><br><span class="line">Process B</span><br></pre></td></tr></table></figure>
+
+<p>一句话概括：Mode Switch 关心的是“CPU 现在是什么权限？”，Context Switch 关心的是“CPU 现在在帮哪个 Process 干活？”。这两个东西甚至可以同时发生。例如 A 调用 <code>read()</code>，先发生一次 Mode Switch 进入 Kernel，结果 Kernel 一看你要的数据硬盘还没读完，先旁边等着，于是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A → Blocked</span><br><span class="line">↓</span><br><span class="line">Scheduler 选择 B</span><br><span class="line">↓</span><br><span class="line">B Running</span><br></pre></td></tr></table></figure>
+
+<p>这时候又发生了一次 Context Switch。所以 <strong>System Call 一定意味着进入 Kernel 的 Mode Switch，但不一定意味着 Context Switch</strong>。</p>
+<hr>
+<h2 id="Interrupt-和-Signal-也不是一回事"><a href="#Interrupt-和-Signal-也不是一回事" class="headerlink" title="Interrupt 和 Signal 也不是一回事"></a>Interrupt 和 Signal 也不是一回事</h2><p>第二组特别容易混的概念是 <strong>Interrupt ≠ Signal</strong>。</p>
+<p>Interrupt 面对的是 <strong>CPU &#x2F; Kernel</strong>。当 Hardware 或者 CPU 上发生某个需要 OS 处理的事件时，它会通过 Interrupt 把 CPU 的控制权带回 Kernel：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Hardware / CPU Event</span><br><span class="line">↓</span><br><span class="line">Interrupt</span><br><span class="line">↓</span><br><span class="line">Kernel</span><br></pre></td></tr></table></figure>
+
+<p>比如 Timer 到时间了、Disk I&#x2F;O 完成了、Keyboard 来了输入、CPU 发生 Exception，走的都是这条路。这其实也回答了第一章留下的那个问题：一个 Process 写了 <code>while(true)</code> 死活不肯把 CPU 交回来，OS 怎么办？答案是 Timer Interrupt 到点之后，CPU 照样会进入 Kernel，Process 配不配合并不重要。</p>
+<hr>
+<p>而 Signal 面对的是 <strong>Process</strong>。它是 Kernel 在通知某个 Process：兄弟，出事了。常见的几个是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SIGINT</span><br><span class="line">→ Ctrl-C</span><br><span class="line"></span><br><span class="line">SIGSEGV</span><br><span class="line">→ Invalid Memory Access</span><br><span class="line"></span><br><span class="line">SIGCHLD</span><br><span class="line">→ Child Process 状态发生变化</span><br></pre></td></tr></table></figure>
+
+<p>所以有时候一个完整流程甚至是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Hardware Event</span><br><span class="line">↓</span><br><span class="line">Interrupt</span><br><span class="line">↓</span><br><span class="line">Kernel</span><br><span class="line">↓</span><br><span class="line">Signal</span><br><span class="line">↓</span><br><span class="line">Process</span><br></pre></td></tr></table></figure>
+
+<p>例如你按下 <code>Ctrl-C</code>，底层先由一个 Hardware Event 让 Kernel 得到控制，随后 Kernel 再向 Foreground Process 发送 <code>SIGINT</code>。一句话：<strong>Interrupt 把 Kernel 叫过来，Signal 把 Process 叫过来。</strong></p>
+<hr>
+<h2 id="Linux-环境"><a href="#Linux-环境" class="headerlink" title="Linux 环境"></a>Linux 环境</h2><h3 id="一些真的会用到的-Linux-命令"><a href="#一些真的会用到的-Linux-命令" class="headerlink" title="一些真的会用到的 Linux 命令"></a>一些真的会用到的 Linux 命令</h3><p>文件操作无非是 <code>pwd</code>、<code>ls -l</code>、<code>cd</code>、<code>mkdir</code>、<code>cp</code>、<code>mv</code>、<code>rm</code>、<code>cat</code> 这几个，Process 方面则是 <code>ps</code>、<code>pstree</code>、<code>top</code>、<code>kill</code>。它们和 Lecture 里学的东西直接对应：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ps / pstree</span><br><span class="line">→ 看 Process</span><br><span class="line"></span><br><span class="line">top</span><br><span class="line">→ 看正在运行的 Process 和资源使用</span><br><span class="line"></span><br><span class="line">kill</span><br><span class="line">→ 给 Process 发 Signal</span><br></pre></td></tr></table></figure>
+
+<p>另外 <code>man</code> 一定要会，尤其是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">man 2 open</span><br><span class="line">man 3 <span class="built_in">printf</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的数字不是版本号，Section 2 是 System Calls，Section 3 是 Library Functions。所以 <code>man 2 open</code> 查的是 Kernel 提供的 System Call 接口，<code>man 3 printf</code> 查的是 C Library 里面的 <code>printf()</code>。这也再次说明：<strong>Library Function 和 System Call 不是一层东西</strong>。</p>
+<hr>
+<h2 id="Pipe、Redirection-和-Background-Process"><a href="#Pipe、Redirection-和-Background-Process" class="headerlink" title="Pipe、Redirection 和 Background Process"></a>Pipe、Redirection 和 Background Process</h2><p>Linux Shell 里面有三个以后经常会碰到的东西。</p>
+<p>首先是 Pipe：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep ssh</span><br></pre></td></tr></table></figure>
+
+<p><code>|</code> 表示把前一个 Command 的 Output 作为后一个 Command 的 Input。所以上面这句就是先 <code>ps -ef</code> 列出 Processes，再交给 <code>grep ssh</code> 只筛选包含 ssh 的内容。</p>
+<hr>
+<p>Redirection 则是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./program &gt; output.txt</span><br></pre></td></tr></table></figure>
+
+<p>表示不要把 Standard Output 打印到 Terminal，而是写入 <code>output.txt</code>。</p>
+<p>如果在命令最后加一个 <code>&amp;</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./program &amp;</span><br></pre></td></tr></table></figure>
+
+<p>就表示把程序放到 Background 执行。正常情况下 Shell 启动一个程序以后要等它结束：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Shell</span><br><span class="line">↓</span><br><span class="line">Program Running</span><br><span class="line">↓</span><br><span class="line">Program Finished</span><br><span class="line">↓</span><br><span class="line">Shell 继续接受输入</span><br></pre></td></tr></table></figure>
+
+<p>但放后台之后：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Shell 启动 Program</span><br><span class="line">├─ Program 自己在后台继续跑</span><br><span class="line">└─ Shell 马上回来</span><br></pre></td></tr></table></figure>
+
+<p>于是你还能继续输入别的 Command。几个东西甚至可以叠起来：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./program &gt; log.txt 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>意思是 stdout 进 <code>log.txt</code>，stderr 和 stdout 去同一个地方，整条命令放后台。也就是：<strong>后台运行这个程序，并且把正常输出和错误输出全部扔进 <code>log.txt</code></strong>。</p>
+<hr>
+<h1 id="C-for-Operating-Systems"><a href="#C-for-Operating-Systems" class="headerlink" title="C for Operating Systems"></a>C for Operating Systems</h1><p>这部分大多数都是 C 语言基础。但 OS 代码和普通 Algorithm 题不太一样：你会大量直接碰 Memory、Pointer、Buffer、Struct 和 System API。所以这里真正需要建立的是一个意识——**这块 Memory 在哪？谁拥有它？这个 Pointer 现在指向什么？这块 Memory 还能活多久？**只要这几个问题开始含糊，Segmentation Fault 一般就在来的路上。</p>
+<hr>
+<h2 id="编译-C"><a href="#编译-C" class="headerlink" title="编译 C"></a>编译 C</h2><p>最简单的方式是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.c -o hello</span><br><span class="line">./hello</span><br></pre></td></tr></table></figure>
+
+<p>这门课更建议：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -Wextra -g program.c -o program</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>-Wall</code> 打开常见 Warning，<code>-Wextra</code> 打开更多 Warning，<code>-g</code> 加上 Debug Information，<code>-o</code> 指定 Output Filename。</p>
+<p>C 里面一个很重要的 Mindset 是 <strong>编译通过 ≠ 正确</strong>。有三种事情不要混：Compiler Error 是根本编不过，Compiler Warning 是编得过、但 Compiler 觉得你八成有点问题，Runtime Error 则是编译完全成功、跑起来才炸。尤其是 C，后两种多得很。</p>
+<hr>
+<h2 id="Make-不是-Compiler"><a href="#Make-不是-Compiler" class="headerlink" title="Make 不是 Compiler"></a>Make 不是 Compiler</h2><p>项目稍微大一点之后，你可能会有 <code>main.c</code>、<code>parser.c</code>、<code>util.c</code> 一堆文件，每次都手动 <code>gcc main.c parser.c util.c -o program</code> 很烦，所以有了 <strong>Makefile</strong>。例如：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">program: main.o parser.o util.o</span></span><br><span class="line">	gcc main.o parser.o util.o -o program</span><br></pre></td></tr></table></figure>
+
+<p>它描述的是 <code>program</code> 依赖 <code>main.o</code>、<code>parser.o</code> 和 <code>util.o</code>。然后你执行 <code>make</code>，<code>make</code> 会自己判断哪些 Compilation Command 需要重新运行。所以不要搞混：<strong>GCC 负责真正的编译工作，Make 负责管理 Build Dependency，并决定该跑哪些 Command</strong>。</p>
+<hr>
+<h2 id="Type-和-sizeof"><a href="#Type-和-sizeof" class="headerlink" title="Type 和 sizeof()"></a>Type 和 sizeof()</h2><p>Systems Programming 里面经常看到 <code>char</code>、<code>int</code>、<code>long</code>、<code>size_t</code>、<code>ssize_t</code>、<code>pid_t</code> 这些类型，重点不是现在把每一种背下来，而是<strong>不要自己猜 Type 到底几个 Byte</strong>。</p>
+<p>比如不要写：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *a = <span class="built_in">malloc</span>(<span class="number">10</span> * <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这等于在硬编码“int 一定是 4 Bytes”。更好的写法是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *a = <span class="built_in">malloc</span>(<span class="number">10</span> * <span class="keyword">sizeof</span>(*a));</span><br></pre></td></tr></table></figure>
+
+<p>意思是给我 10 个 <code>a</code> 指向类型的空间，到底多大让 Compiler 自己算。</p>
+<hr>
+<h2 id="Pointer：本质就是-Address"><a href="#Pointer：本质就是-Address" class="headerlink" title="Pointer：本质就是 Address"></a>Pointer：本质就是 Address</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span> *p = &amp;x;</span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>x</code> 是一个 int，<code>&amp;x</code> 是 x 的地址，<code>p</code> 是保存 x 地址的变量，<code>*p</code> 则是去 p 保存的地址，把里面那个 int 拿出来。假如 x 存在 <code>0x1000</code>，那么 <code>p = 0x1000</code>，<code>*p = 42</code>。</p>
+<p>所以 <code>*p = 100;</code> 不是把 <code>p</code> 改成 100，而是顺着 p 找到它指向的 Memory，把那里的内容改成 100，于是最后 <code>x == 100</code>。</p>
+<hr>
+<h2 id="Pointer-存在，不代表它指向的东西存在"><a href="#Pointer-存在，不代表它指向的东西存在" class="headerlink" title="Pointer 存在，不代表它指向的东西存在"></a>Pointer 存在，不代表它指向的东西存在</h2><p>这个非常重要。<code>int *p;</code> 只代表我声明了一个能够保存 <code>int</code> 地址的 Pointer，<strong>它没有顺便给你 Allocate 一个 int</strong>，此时 <code>p</code> 甚至可能只是某个 Garbage Address。如果直接 <code>*p = 10;</code>，相当于随便抽一个不知道哪来的地址往里面写 10，那整个晋西北马上乱成一锅粥。</p>
+<p>相比之下，<code>int *p = NULL;</code> 至少明确告诉我们 p 目前没有指向一个 Valid Object，所以可以：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (p != <span class="literal">NULL</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, *p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但你当然不能 <code>*p = 10;</code>，因为 NULL 仍然不是一个可以 Dereference 的地址。一句话：<strong>Declaring a pointer does not allocate memory.</strong></p>
+<hr>
+<h2 id="Array-和-Pointer"><a href="#Array-和-Pointer" class="headerlink" title="Array 和 Pointer"></a>Array 和 Pointer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">4</span>] = &#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Array 里面的元素在 Memory 中是连续存放的，所以 <code>a[2]</code> 和 <code>*(a + 2)</code> 拿到的都是 30，也就是 <code>a[i] == *(a + i)</code>。但是不要因此直接把 “Array &#x3D; Pointer” 写进脑子，它们关系非常近，但不是同一个概念。</p>
+<h3 id="Pointer-Arithmetic"><a href="#Pointer-Arithmetic" class="headerlink" title="Pointer Arithmetic"></a>Pointer Arithmetic</h3><p>假设有一个 <code>int *p</code>，那么 <code>p + 1</code> 并不是地址数字单纯加 1 Byte，而是移动到“下一个 int”的地址。所以如果 <code>sizeof(int) = 4</code>、<code>p = 0x1000</code>，那么 <code>p + 1 = 0x1004</code>，<code>p + 2 = 0x1008</code>。<strong>Pointer Arithmetic 按照它指向的 Type 作为移动单位。</strong></p>
+<hr>
+<h2 id="C-永远-Pass-by-Value"><a href="#C-永远-Pass-by-Value" class="headerlink" title="C 永远 Pass by Value"></a>C 永远 Pass by Value</h2><p>这也是很经典的坑。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> tmp = x;</span><br><span class="line">    x = y;</span><br><span class="line">    y = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用 <code>swap(a, b)</code> 之后 <code>a</code> 和 <code>b</code> 不会真的 Swap，因为函数只是修改了 <code>x</code> 和 <code>y</code> 这两个 Copies。但如果把地址传进去：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> tmp = *x;</span><br><span class="line">    *x = *y;</span><br><span class="line">    *y = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再调用 <code>swap(&amp;a, &amp;b)</code>，这次 <code>x</code> 指向 a 的地址，<code>y</code> 指向 b 的地址，修改 <code>*x</code> 实际上就是通过地址直接修改 Caller 的 <code>a</code>。这里依旧没有什么真正的 “Pass by Reference”，C 还是在 <strong>Pass by Value</strong>，只不过这一次 Copy 过去的 Value 恰好是一个 Address。</p>
+<hr>
+<h2 id="为什么-OS-API-一堆-Pointer？"><a href="#为什么-OS-API-一堆-Pointer？" class="headerlink" title="为什么 OS API 一堆 Pointer？"></a>为什么 OS API 一堆 Pointer？</h2><p>看看 POSIX 的 <code>read()</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> <span class="title function_">read</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *buf, <span class="type">size_t</span> count)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>为什么 <code>buf</code> 非得是个 Pointer？因为 <code>read()</code> 需要把从文件或者设备读出来的数据，写回 Caller 拥有的一块 Memory：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> buffer[<span class="number">128</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> n = read(fd, buffer, <span class="keyword">sizeof</span>(buffer));</span><br></pre></td></tr></table></figure>
+
+<p><code>buffer</code> 把自己的地址交给 <code>read()</code>，随后 <code>read()</code> 才能往里面塞数据。这就是为什么 Systems Programming 到处都是 Pointer——<strong>函数经常需要访问，甚至修改 Caller 拥有的 Memory</strong>。</p>
+<hr>
+<h2 id="C-String-就是-Character-Array"><a href="#C-String-就是-Character-Array" class="headerlink" title="C String 就是 Character Array"></a>C String 就是 Character Array</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> s[] = <span class="string">&quot;hello&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Memory 里面真正放的是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;h&#x27; &#x27;e&#x27; &#x27;l&#x27; &#x27;l&#x27; &#x27;o&#x27; &#x27;\0&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>最后这个 <code>&#39;\0&#39;</code> 叫做 <strong>NULL Terminator</strong>。所以 <code>strlen(&quot;hello&quot;)</code> 返回 5，但实际 Storage 需要 6 Bytes，因为 <code>\0</code> 自己也占位置。</p>
+<p>很多 C String Function 根本不知道你的 Array 有多长，它们的逻辑差不多就是一直往后读，什么时候看到 <code>&#39;\0&#39;</code> 就认为 String 结束了。所以如果你把 Terminator 搞没了，它就有机会一路读到天涯海角。</p>
+<p>常见的 String Operation 有 <code>strlen()</code>、<code>strcmp()</code>、<code>strcpy()</code>、<code>strcat()</code>，而 <code>memcpy()</code>、<code>memset()</code> 更偏 Raw Memory Operation。简单来说，String Function 把 Memory 理解成 <code>&#39;\0&#39;</code> 结尾的字符串，Memory Function 眼里就是一坨 Raw Bytes。</p>
+<hr>
+<h2 id="char-和-char"><a href="#char-和-char" class="headerlink" title="char [] 和 char *"></a><code>char []</code> 和 <code>char *</code></h2><p>这两个也很容易看起来一样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> a[] = <span class="string">&quot;hello&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里得到的是一个 Writable Array，所以 <code>a[0] = &#39;H&#39;;</code> 没问题。但是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *b = <span class="string">&quot;hello&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>b</code> 指向 String Literal，就不要依赖 <code>b[0] = &#39;H&#39;;</code> 这种东西能正常工作。所以如果你明确需要一个能够被修改的 String Buffer，那就 Allocate 一个 Array 或者其他 Writable Memory。</p>
+<hr>
+<h2 id="argc-和-argv"><a href="#argc-和-argv" class="headerlink" title="argc 和 argv"></a>argc 和 argv</h2><p>如果 <code>main</code> 的签名是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br></pre></td></tr></table></figure>
+
+<p>然后 Shell 执行 <code>./program input.txt 10</code>，那么：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">argc = 3</span><br><span class="line"></span><br><span class="line">argv[0] = &quot;./program&quot;</span><br><span class="line">argv[1] = &quot;input.txt&quot;</span><br><span class="line">argv[2] = &quot;10&quot;</span><br></pre></td></tr></table></figure>
+
+<p>注意最后的 <code>&quot;10&quot;</code> 仍然是 String，它不是 Integer <code>10</code>。也就是说 Command-Line Argument 刚进程序的时候全部都是字符串，需要数字的话还得自己 Convert。</p>
+<hr>
+<h2 id="struct：把相关-State-绑在一起"><a href="#struct：把相关-State-绑在一起" class="headerlink" title="struct：把相关 State 绑在一起"></a>struct：把相关 State 绑在一起</h2><p>OS 代码里这个东西出现得非常多，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">process</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> pid;</span><br><span class="line">    <span class="type">int</span> state;</span><br><span class="line">    <span class="type">char</span> name[<span class="number">32</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">process</span> <span class="title">p</span>;</span></span><br><span class="line">p.pid = <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果拿的是 Pointer：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">process</span> *<span class="title">ptr</span> =</span> &amp;p;</span><br><span class="line">ptr-&gt;pid = <span class="number">456</span>;</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>ptr-&gt;pid</code> 等价于 <code>(*ptr).pid</code>。</p>
+<p>为什么 OS 这么喜欢 Struct？因为 Process、File、Socket、Memory Region、Page Table Entry 这些东西都有一大坨相关 State 需要绑在一起。我们之前讲的 PCB，在真实 OS 里面当然不可能只是课堂上的一个框框，例如 Linux 会用类似 <code>task_struct</code> 这样的巨大 Struct 去描述 Process &#x2F; Task。所以以后看到 <code>struct xxx *p;</code>，先别把它看成 C 语言语法题，真正应该问的是：<strong>这个 Struct 在模拟什么 OS Entity？里面保存了什么 State？</strong></p>
+<hr>
+<h2 id="Dynamic-Memory"><a href="#Dynamic-Memory" class="headerlink" title="Dynamic Memory"></a>Dynamic Memory</h2><p>最常见的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *a = <span class="built_in">malloc</span>(<span class="number">10</span> * <span class="keyword">sizeof</span>(*a));</span><br></pre></td></tr></table></figure>
+
+<p>在 Heap 上申请 10 个 int，然后把起始地址塞进 <code>a</code>。用完：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">free</span>(a);</span><br><span class="line">a = <span class="literal">NULL</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个比 <code>malloc()</code> 语法本身重要得多的问题：<strong>谁拥有这块 Memory？它应该活多久？最后谁负责 Free？</strong> 只要一个 Allocation 的 Ownership 和 Lifetime 说不清楚，Memory Bug 一般也不远了。</p>
+<p>四个基本 API 分别是：<code>malloc()</code> 负责 Allocate，初始内容不保证是什么；<code>calloc()</code> 是 Allocate + Zero Initialize；<code>realloc()</code> 用来 Resize，注意地址可能会变；<code>free()</code> 则负责 Release。特别是 <code>realloc()</code> 并不保证原地扩容，它完全可能把整块 Memory 搬到一个新的 Address。</p>
+<hr>
+<h2 id="C-的-Memory-死亡四件套"><a href="#C-的-Memory-死亡四件套" class="headerlink" title="C 的 Memory 死亡四件套"></a>C 的 Memory 死亡四件套</h2><h3 id="Uninitialized-Pointer"><a href="#Uninitialized-Pointer" class="headerlink" title="Uninitialized Pointer"></a>Uninitialized Pointer</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line">*p = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Pointer 里面是未知地址，然后你还 Dereference。</p>
+<hr>
+<h3 id="Memory-Leak"><a href="#Memory-Leak" class="headerlink" title="Memory Leak"></a>Memory Leak</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="built_in">malloc</span>(<span class="number">100</span>);</span><br><span class="line"><span class="comment">// 忘记 free(p)</span></span><br></pre></td></tr></table></figure>
+
+<p>这块 Memory 已经没有用了，但是你一直没还。</p>
+<hr>
+<h3 id="Use-After-Free"><a href="#Use-After-Free" class="headerlink" title="Use After Free"></a>Use After Free</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">free</span>(p);</span><br><span class="line">*p = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>p</code> 这个变量可能还留着原来的地址数字，但是<strong>那个 Memory Object 已经死了</strong>，这个地址已经不再属于你。</p>
+<hr>
+<h3 id="Out-of-Bounds"><a href="#Out-of-Bounds" class="headerlink" title="Out of Bounds"></a>Out of Bounds</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">10</span>];</span><br><span class="line">a[<span class="number">10</span>] = <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<p>合法 Index 只有 0 到 9，<code>10</code> 已经出去了。</p>
+<hr>
+<p>这四种错误看起来不同，本质上其实都是一件事情：<strong>程序脑子里对 Memory 的理解，和这块 Memory 真实的有效范围 &#x2F; Lifetime 对不上了</strong>。Uninitialized Pointer 是从来就不知道地址是否合法，Use After Free 是以前合法、现在死了，Out of Bounds 则是起点合法、但算出去的地址越界了。</p>
+<p>C 不会一路牵着你的手告诉你“亲，这里是不是有点危险？”，很多时候它直接让你写，然后某个不知道什么时候冒出：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Segmentation Fault</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Preprocessor-和-Macro"><a href="#Preprocessor-和-Macro" class="headerlink" title="Preprocessor 和 Macro"></a>Preprocessor 和 Macro</h2><p>在真正 Compiler 开始编译之前，C 还有一层：<strong>Preprocessor</strong>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE 1024</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> DEBUG</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;x = %d\n&quot;</span>, x);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -DDEBUG program.c -o program</span><br></pre></td></tr></table></figure>
+
+<p>定义 <code>DEBUG</code>，于是 Debug 版本和正常版本可以选择性 Compile 不同代码。</p>
+<p>Macro 有一个很经典的坑：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> SQUARE(x) x * x</span></span><br></pre></td></tr></table></figure>
+
+<p>假如写 <code>SQUARE(1 + 2)</code>，Preprocessor 大概只是老老实实替换成 <code>1 + 2 * 1 + 2</code>，结果当然不是 9。所以至少应该：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> SQUARE(x) ((x) * (x))</span></span><br></pre></td></tr></table></figure>
+
+<p>这也说明 Macro 更接近 <strong>Source Code 层面的文本展开</strong>，而不是一个正常的 Function Call。</p>
+<hr>
+<h1 id="Debugging"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</h1><p>C 程序炸掉的时候，最垃圾的 Debug 方法就是“我觉得可能是这里，改一下试试”“还不行？那我再加个 if”。不要这样。</p>
+<p>比较正常的思路是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Reproduce</span><br><span class="line">↓</span><br><span class="line">找到第一次出现错误 State 的位置</span><br><span class="line">↓</span><br><span class="line">Inspect</span><br><span class="line">↓</span><br><span class="line">理解为什么 State 会错</span><br><span class="line">↓</span><br><span class="line">Fix Root Cause</span><br></pre></td></tr></table></figure>
+
+<p>而不是哪一行最后 Crash 就强行把哪一行按住。</p>
+<p>编译的时候留 Debug Information：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -Wextra -g program.c -o program</span><br></pre></td></tr></table></figure>
+
+<p>然后可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb ./program</span><br></pre></td></tr></table></figure>
+
+<p>常见操作是 <code>break</code>、<code>run</code>、<code>next</code>、<code>step</code>、<code>continue</code>、<code>print</code>、<code>backtrace</code>。VS Code 里面的 Breakpoint、Step Over、Step Into、Variables、Call Stack，本质上干的是同一套事情。</p>
+<hr>
+<h2 id="看到-Segmentation-Fault-怎么办？"><a href="#看到-Segmentation-Fault-怎么办？" class="headerlink" title="看到 Segmentation Fault 怎么办？"></a>看到 Segmentation Fault 怎么办？</h2><p>首先，<strong>Segmentation Fault 只是症状</strong>，不要看到这句话就立刻开始随机修改代码。先想几个最高频的问题：是不是 Dereference 了 NULL？是不是用了 Uninitialized Pointer？Array 是不是越界了？String Buffer 是不是写爆了？是不是 Use After Free？是不是传错 Pointer 了？</p>
+<p>然后：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gdb ./program</span><br><span class="line">run</span><br><span class="line">bt</span><br></pre></td></tr></table></figure>
+
+<p>先看 Backtrace，找到真正 Crash 的 Frame 以后：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">frame 0</span><br><span class="line"><span class="built_in">print</span> variable</span><br></pre></td></tr></table></figure>
+
+<p>去检查相关 Pointer 和 State。最后真正要找的是<strong>哪个 Invalid Memory Access 发生了</strong>，而且 Root Cause 不一定就在 Crash 那一行。例如你可能很早以前 <code>free(p);</code>，几十行以后才 <code>*p = 10;</code>，最后在这里 Crash。所以 <strong>Crash Location ≠ Root Cause Location</strong>，这个意识以后写 C 非常重要。</p>
+<hr>
+<h1 id="Tutorial-1-Takeaway"><a href="#Tutorial-1-Takeaway" class="headerlink" title="Tutorial 1 Takeaway"></a>Tutorial 1 Takeaway</h1><p>这节 Tutorial 虽然有 41 页，但真正值得带走的东西其实没有看起来那么恐怖。</p>
+<p>OS 这边主要补了三个辨析：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">System Call</span><br><span class="line">→ Application 请求 Kernel Service</span><br><span class="line"></span><br><span class="line">Mode Switch</span><br><span class="line">→ User / Kernel 权限发生变化</span><br><span class="line"></span><br><span class="line">Context Switch</span><br><span class="line">→ CPU 正在执行的 Process 发生变化</span><br><span class="line"></span><br><span class="line">Interrupt</span><br><span class="line">→ Event 把 CPU / Kernel 叫过来</span><br><span class="line"></span><br><span class="line">Signal</span><br><span class="line">→ Kernel 通知 Process</span><br></pre></td></tr></table></figure>
+
+<p>Linux 这边重点是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">最终一定在 Grading Environment 测试</span><br><span class="line"></span><br><span class="line">man 2</span><br><span class="line">→ System Call</span><br><span class="line"></span><br><span class="line">man 3</span><br><span class="line">→ Library Function</span><br><span class="line"></span><br><span class="line">|</span><br><span class="line">→ Pipe</span><br><span class="line"></span><br><span class="line">&gt;</span><br><span class="line">→ Output Redirection</span><br><span class="line"></span><br><span class="line">&amp;</span><br><span class="line">→ Background Process</span><br></pre></td></tr></table></figure>
+
+<p>而 C 语言这边，真正贯穿后面所有东西的一句话是：<strong>永远搞清楚 Address、Ownership、Lifetime 和 Boundary</strong>。</p>
+<p>Pointer 指到哪？这块 Memory 是谁 Allocate 的？现在还活着吗？谁负责 Free？这个地址还在合法范围内吗？这些问题如果始终能答上来，绝大多数 C 语言 Memory Bug 其实都不会显得特别神秘。</p>
+
+
+  <div class="tag-list">
+    
+      
+      <a class="tag" href="/notebooks/COMP3230/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">计算机/操作系统</a>
+    
+  </div>
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mode-Switch-%E5%92%8C-Context-Switch"><span class="toc-text">Mode Switch 和 Context Switch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Interrupt-%E5%92%8C-Signal-%E4%B9%9F%E4%B8%8D%E6%98%AF%E4%B8%80%E5%9B%9E%E4%BA%8B"><span class="toc-text">Interrupt 和 Signal 也不是一回事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-%E7%8E%AF%E5%A2%83"><span class="toc-text">Linux 环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%9C%9F%E7%9A%84%E4%BC%9A%E7%94%A8%E5%88%B0%E7%9A%84-Linux-%E5%91%BD%E4%BB%A4"><span class="toc-text">一些真的会用到的 Linux 命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pipe%E3%80%81Redirection-%E5%92%8C-Background-Process"><span class="toc-text">Pipe、Redirection 和 Background Process</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-for-Operating-Systems"><span class="toc-text">C for Operating Systems</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91-C"><span class="toc-text">编译 C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Make-%E4%B8%8D%E6%98%AF-Compiler"><span class="toc-text">Make 不是 Compiler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Type-%E5%92%8C-sizeof"><span class="toc-text">Type 和 sizeof()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pointer%EF%BC%9A%E6%9C%AC%E8%B4%A8%E5%B0%B1%E6%98%AF-Address"><span class="toc-text">Pointer：本质就是 Address</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pointer-%E5%AD%98%E5%9C%A8%EF%BC%8C%E4%B8%8D%E4%BB%A3%E8%A1%A8%E5%AE%83%E6%8C%87%E5%90%91%E7%9A%84%E4%B8%9C%E8%A5%BF%E5%AD%98%E5%9C%A8"><span class="toc-text">Pointer 存在，不代表它指向的东西存在</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Array-%E5%92%8C-Pointer"><span class="toc-text">Array 和 Pointer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pointer-Arithmetic"><span class="toc-text">Pointer Arithmetic</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E6%B0%B8%E8%BF%9C-Pass-by-Value"><span class="toc-text">C 永远 Pass by Value</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-OS-API-%E4%B8%80%E5%A0%86-Pointer%EF%BC%9F"><span class="toc-text">为什么 OS API 一堆 Pointer？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-String-%E5%B0%B1%E6%98%AF-Character-Array"><span class="toc-text">C String 就是 Character Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#char-%E5%92%8C-char"><span class="toc-text">char [] 和 char *</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#argc-%E5%92%8C-argv"><span class="toc-text">argc 和 argv</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#struct%EF%BC%9A%E6%8A%8A%E7%9B%B8%E5%85%B3-State-%E7%BB%91%E5%9C%A8%E4%B8%80%E8%B5%B7"><span class="toc-text">struct：把相关 State 绑在一起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dynamic-Memory"><span class="toc-text">Dynamic Memory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E7%9A%84-Memory-%E6%AD%BB%E4%BA%A1%E5%9B%9B%E4%BB%B6%E5%A5%97"><span class="toc-text">C 的 Memory 死亡四件套</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Uninitialized-Pointer"><span class="toc-text">Uninitialized Pointer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-Leak"><span class="toc-text">Memory Leak</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Use-After-Free"><span class="toc-text">Use After Free</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Out-of-Bounds"><span class="toc-text">Out of Bounds</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Preprocessor-%E5%92%8C-Macro"><span class="toc-text">Preprocessor 和 Macro</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Debugging"><span class="toc-text">Debugging</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9C%8B%E5%88%B0-Segmentation-Fault-%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-text">看到 Segmentation Fault 怎么办？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tutorial-1-Takeaway"><span class="toc-text">Tutorial 1 Takeaway</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1790698047073" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
