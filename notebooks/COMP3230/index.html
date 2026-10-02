@@ -39,7 +39,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1790698047219">
+  <link rel="stylesheet" href="/css/main.css?v=1790943158328">
 
 
   
@@ -163,7 +163,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3230/chapter2A/"><span class="title">Chapter 2A: 基础C语言与Linux</span></a><a class="item title" href="/notes/COMP3230/chapter2/"><span class="title">Chapter 2: 进程</span></a><a class="item title" href="/notes/COMP3230/chapter1/"><span class="title">Chapter 1: 简单入门</span></a><a class="item title" href="/notes/COMP3230/begin/"><span class="title">COMP3230 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3230/chapter3/"><span class="title">Chapter 3: CPU 虚拟化</span></a><a class="item title" href="/notes/COMP3230/chapter2A/"><span class="title">Chapter 2A: 基础C语言与Linux</span></a><a class="item title" href="/notes/COMP3230/chapter2/"><span class="title">Chapter 2: 进程</span></a><a class="item title" href="/notes/COMP3230/chapter1/"><span class="title">Chapter 1: 简单入门</span></a><a class="item title" href="/notes/COMP3230/begin/"><span class="title">COMP3230 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -294,6 +294,39 @@
     <span class="cap" id="post-meta">
       <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
       <time datetime="2026-09-29T16:07:13.167Z">2026-09-30</time>
+    </span>
+    
+      
+        <span class="cap breadcrumb" >
+          <span class="tag">计算机/操作系统</span>
+        </span>
+      
+    
+  </div>
+</article>
+
+    </a>
+  
+    <a
+      class="post-card post"
+      href="/notes/COMP3230/chapter3/"
+    >
+      
+<article class="md-text">
+  
+  <h2 class="post-title">Chapter 3: CPU 虚拟化</h2>
+  <div class="excerpt">
+    <p>
+      
+        之前我们已经知道，一个 Process 本质上就是正在执行中的 Program。但一台单核 CPU 在某一瞬间实际上只能执行一个 Process，于是马上会出现一个问题：如果系统里同时有几十个 Process，为什么我们平时完全感觉不到“只有一个人在...
+      
+    </p>
+  </div>
+  <div class="meta cap">
+    
+    <span class="cap" id="post-meta">
+      <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
+      <time datetime="2026-10-02T12:12:22.199Z">2026-10-02</time>
     </span>
     
       
@@ -736,7 +769,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1790698047220" defer></script>
+<script src="/js/main.js?v=1790943158329" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
