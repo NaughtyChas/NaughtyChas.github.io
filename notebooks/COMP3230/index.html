@@ -39,7 +39,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1790943158328">
+  <link rel="stylesheet" href="/css/main.css?v=1791205039562">
 
 
   
@@ -163,7 +163,7 @@
   </widget>
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3230/chapter3/"><span class="title">Chapter 3: CPU 虚拟化</span></a><a class="item title" href="/notes/COMP3230/chapter2A/"><span class="title">Chapter 2A: 基础C语言与Linux</span></a><a class="item title" href="/notes/COMP3230/chapter2/"><span class="title">Chapter 2: 进程</span></a><a class="item title" href="/notes/COMP3230/chapter1/"><span class="title">Chapter 1: 简单入门</span></a><a class="item title" href="/notes/COMP3230/begin/"><span class="title">COMP3230 序言</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3230/chapter4/"><span class="title">Chapter 4: 进程调度</span></a><a class="item title" href="/notes/COMP3230/chapter3/"><span class="title">Chapter 3: CPU 虚拟化</span></a><a class="item title" href="/notes/COMP3230/chapter2A/"><span class="title">Chapter 2A: 基础C语言与Linux</span></a><a class="item title" href="/notes/COMP3230/chapter2/"><span class="title">Chapter 2: 进程</span></a><a class="item title" href="/notes/COMP3230/chapter1/"><span class="title">Chapter 1: 简单入门</span></a><a class="item title" href="/notes/COMP3230/begin/"><span class="title">COMP3230 序言</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -327,6 +327,39 @@
     <span class="cap" id="post-meta">
       <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
       <time datetime="2026-10-02T12:12:22.199Z">2026-10-02</time>
+    </span>
+    
+      
+        <span class="cap breadcrumb" >
+          <span class="tag">计算机/操作系统</span>
+        </span>
+      
+    
+  </div>
+</article>
+
+    </a>
+  
+    <a
+      class="post-card post"
+      href="/notes/COMP3230/chapter4/"
+    >
+      
+<article class="md-text">
+  
+  <h2 class="post-title">Chapter 4: 进程调度</h2>
+  <div class="excerpt">
+    <p>
+      
+        上一章我们解决了 CPU 怎么从 Process A 真正切换到 Process B：Context Switch 提供 Mechanism，保存 A 的 Execution Context，再恢复 B 的 Context。但是会切还不够，因为 Ke...
+      
+    </p>
+  </div>
+  <div class="meta cap">
+    
+    <span class="cap" id="post-meta">
+      <svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg>
+      <time datetime="2026-10-05T12:56:49.465Z">2026-10-05</time>
     </span>
     
       
@@ -769,7 +802,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1790943158329" defer></script>
+<script src="/js/main.js?v=1791205039563" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {

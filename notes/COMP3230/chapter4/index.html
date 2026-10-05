@@ -1,0 +1,1227 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Chapter 4: 进程调度 - Naucha</title>
+
+  
+    <meta name="description" content="上一章我们解决了 CPU 怎么从 Process A 真正切换到 Process B：Context Switch 提供 Mechanism，保存 A 的 Execution Context，再恢复 B 的 Context。但是会切还不够，因为 Kernel 每次拿回 CPU 以后还必须回答一个问题：下一个到底应该运行谁？ 这就是 Processor Scheduling。Scheduler 负责">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chapter 4: 进程调度">
+<meta property="og:url" content="https://naughtychas.github.io/notes/COMP3230/chapter4/">
+<meta property="og:site_name" content="Naucha">
+<meta property="og:description" content="上一章我们解决了 CPU 怎么从 Process A 真正切换到 Process B：Context Switch 提供 Mechanism，保存 A 的 Execution Context，再恢复 B 的 Context。但是会切还不够，因为 Kernel 每次拿回 CPU 以后还必须回答一个问题：下一个到底应该运行谁？ 这就是 Processor Scheduling。Scheduler 负责">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+<meta property="article:published_time" content="2026-10-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-05T12:56:49.465Z">
+<meta property="article:author" content="Naucha">
+<meta property="article:tag" content="计算机&#x2F;操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
+  
+  
+  
+  <meta name="keywords" content="">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1791205039391">
+
+
+  
+    <link rel="shortcut icon" href="/imgs/avatar.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://naughtychas.github.io/notes/COMP3230/chapter4/","author":{"@type":"Person","name":"Naucha","sameAs":[],"image":"/imgs/avatar.jpg"},"name":"Chapter 4: 进程调度","description":"上一章我们解决了 CPU 怎么从 Process A 真正切换到 Process B：Context Switch 提供 Mechanism，保存 A 的 Execution Context，再恢复 B 的 Context。但是会切还不够，因为 Kernel 每次拿回 CPU 以后还必须回答一个问题：下一个到底应该运行谁？\n这就是 Processor Scheduling。Scheduler...","url":"https://naughtychas.github.io/notes/COMP3230/chapter4/"}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="page" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/imgs/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Naucha</div><div class="sub normal cap">Nauchariyo</div><div class="sub hover cap" style="opacity:0"> testing</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>博客</span></a><a class="nav-item active" title="笔记" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/notebooks/COMP3230" placeholder="在 COMP3230 中搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <widget class="widget-wrapper post-list">
+    <div class="widget-header dis-select">
+      <span class="name">标签</span>
+    </div>
+    <div class="widget-body fs14 tag-tree">
+      
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="">
+    
+  
+  <a class="link" href="/notebooks/COMP3230/">
+    <span class="toc-text">
+      
+        所有笔记
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+      
+        
+  
+  
+  
+  
+  <div class="tag-subtree parent-tag" data-tag="计算机">
+    
+  
+  <a class="link" href="/notebooks/COMP3230/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">
+    <span class="toc-text">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        计算机
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+      
+  
+    
+  
+  
+  
+  
+  <div class="tag-subtree leaf-tag" data-tag="计算机/操作系统">
+    
+  
+  <a class="link" href="/notebooks/COMP3230/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+    <span class="toc-text" style="padding-left: 0.875rem;">
+      
+        
+        <span class="tagcon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m14.092 10.75l-.75 2.5H9.908l.75-2.5z"/><path fill="currentColor" fill-rule="evenodd" d="M3.464 3.464C2 4.93 2 7.286 2 12s0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464m7.752 2.818a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.465a.75.75 0 0 1 1.436.43l-.61 2.035H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.465a.75.75 0 0 1 .934-.503" clip-rule="evenodd"/></svg></span>
+        操作系统
+      
+    </span>
+    <span class="toc-text tag-switcher-wrapper">
+      <span class="tag-switcher" />
+    </span>
+  </a>
+
+    
+  </div>
+
+  
+
+    
+  </div>
+
+      
+    </div>
+  </widget>
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/notes/COMP3230/chapter4/"><span class="title">Chapter 4: 进程调度</span></a><a class="item title" href="/notes/COMP3230/chapter3/"><span class="title">Chapter 3: CPU 虚拟化</span></a><a class="item title" href="/notes/COMP3230/chapter2A/"><span class="title">Chapter 2A: 基础C语言与Linux</span></a><a class="item title" href="/notes/COMP3230/chapter2/"><span class="title">Chapter 2: 进程</span></a><a class="item title" href="/notes/COMP3230/chapter1/"><span class="title">Chapter 1: 简单入门</span></a><a class="item title" href="/notes/COMP3230/begin/"><span class="title">COMP3230 序言</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NaughtyChas" target="_blank" rel="external nofollow noopener noreferrer"><i class="fa-brands fa-github"></i></a><a class="social" href="https://osu.ppy.sh/users/15349720" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://i.ppy.sh/84650abbb8bc7fcbfa58f6941ac6c2d00ef4a5bd/68747470733a2f2f6f73752e7070792e73682f77696b692f696d616765732f4272616e645f6964656e746974795f67756964656c696e65732f696d672f75736167652d73696e676c652d636f6c6f75722e706e67"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span>
+<a class="cap breadcrumb" href="/notebooks/">笔记本</a>
+
+
+  <span class="sep"></span>
+  <a class="cap breadcrumb" href="/notebooks/COMP3230/">COMP3230</a>
+
+</div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-10-05T12:56:49.465Z">2026-10-05</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-10-04T16:00:00.000Z">2026-10-05</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Chapter 4: 进程调度</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>上一章我们解决了 <strong>CPU 怎么从 Process A 真正切换到 Process B</strong>：Context Switch 提供 Mechanism，保存 A 的 Execution Context，再恢复 B 的 Context。但是会切还不够，因为 Kernel 每次拿回 CPU 以后还必须回答一个问题：下一个到底应该运行谁？</p>
+<p>这就是 <strong>Processor Scheduling</strong>。Scheduler 负责从能够运行的 Process &#x2F; Thread 中选出下一位，并决定它什么时候运行、运行多久。Scheduling Policy 会直接影响用户感受到的响应速度、CPU 利用效率，以及整个系统单位时间内能完成多少工作；更重要的是，上一章已经知道 Process Switching 并不是免费的，所以“什么时候换人、换给谁”本身也会影响整体性能。</p>
+<p>可以继续沿用之前的 Mechanism &#x2F; Policy 区别：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Context Switch</span><br><span class="line">→ Mechanism</span><br><span class="line">→ “怎么从A切到B？”</span><br><span class="line"></span><br><span class="line">Scheduling</span><br><span class="line">→ Policy</span><br><span class="line">→ “为什么下一位偏偏是B？”</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Scheduling-有不止一层"><a href="#Scheduling-有不止一层" class="headerlink" title="Scheduling 有不止一层"></a>Scheduling 有不止一层</h2><p>不是所有 Process 创建之后都会直接扔进 Ready Queue 等 CPU。OS 里面实际上可以把 Scheduling 分成三个层级。</p>
+<p><strong>Long-term &#x2F; Job Scheduling</strong> 负责决定新的 Job &#x2F; Process 是否应该进入系统，因此它控制同一时间系统里有多少 Process，也就是 <strong>Degree of Multiprogramming</strong>。<strong>Medium-term Scheduling</strong> 则决定哪些 Process 暂时可以继续参与 CPU 竞争，并涉及 Process 的 swapping in&#x2F;out，用来响应系统负载变化。最后才是这一章真正重点研究的 <strong>Short-term Scheduling</strong>：当前有一堆 Ready Process，下一个到底跑谁。所以后面的 FIFO、SJF、RR、MLFQ，基本都属于最后这一层。</p>
+<hr>
+<h1 id="Scheduling-的基础概念"><a href="#Scheduling-的基础概念" class="headerlink" title="Scheduling 的基础概念"></a>Scheduling 的基础概念</h1><h2 id="CPU-bound-和-I-O-bound"><a href="#CPU-bound-和-I-O-bound" class="headerlink" title="CPU-bound 和 I&#x2F;O-bound"></a>CPU-bound 和 I&#x2F;O-bound</h2><p>不同 Process 使用 CPU 的行为差异很大。<strong>CPU-bound &#x2F; Compute-bound Process</strong> 拿到 CPU 以后通常会把分给自己的 Processor Time 几乎全部吃完，只有到了 Quantum 结束、完成计算或者其他原因才释放 CPU。另一边的 <strong>I&#x2F;O-bound Process</strong> 通常只运行很短一段时间，就会发起 I&#x2F;O Request 然后 Blocked，把 CPU 交出去。换一个更直观的说法：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CPU-bound</span><br><span class="line">→ CPU 更快，它会明显更快</span><br><span class="line"></span><br><span class="line">I/O-bound</span><br><span class="line">→ I/O subsystem 更快，它会明显更快</span><br></pre></td></tr></table></figure>
+
+<p>这个区别后面尤其重要，因为 Interactive &#x2F; I&#x2F;O-bound Process 通常更加在乎“你能不能赶紧让我运行一下”，而 Long CPU-bound Process 更关心的往往是“最后到底多久能把我的活全部做完”。这两个目标不是同一个东西。</p>
+<hr>
+<h2 id="Turnaround-Time"><a href="#Turnaround-Time" class="headerlink" title="Turnaround Time"></a>Turnaround Time</h2><p>Turnaround Time 衡量一个 Process 从进入系统到彻底完成一共经历了多久：</p>
+<p>[<br>T*{turnaround}&#x3D;T*{completion}-T_{arrival}<br>]</p>
+<p>例如某 Process 在 <code>t=2</code> 到达，在 <code>t=10</code> 完成，那么：</p>
+<p>[<br>T_{turnaround}&#x3D;10-2&#x3D;8<br>]</p>
+<p>这个 8 里面可能包含真正使用 CPU 的时间，也包含各种等待，所以它衡量的是<strong>从来了到干完，总共多久</strong>。Scheduling 一般希望尽可能降低 Average Turnaround Time。</p>
+<hr>
+<h2 id="Waiting-Time"><a href="#Waiting-Time" class="headerlink" title="Waiting Time"></a>Waiting Time</h2><p><strong>Waiting Time</strong> 专门指 Process 在 <strong>Ready Queue</strong> 里等待 CPU 的累计时间，也就是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Ready，但是没有拿到 CPU</span><br><span class="line">→ Waiting Time</span><br></pre></td></tr></table></figure>
+
+<p>如果 Process 已经 Blocked，在等 Disk I&#x2F;O，那么这不是“等 Scheduler 给 CPU”，所以不算这里的 Ready Queue Waiting Time。</p>
+<hr>
+<h2 id="Response-Time"><a href="#Response-Time" class="headerlink" title="Response Time"></a>Response Time</h2><p>Response Time 衡量的是<strong>从 Process 到达，到它第一次真正拿到 CPU</strong> 之间隔了多久：</p>
+<p>[<br>T*{response}&#x3D;T*{first\ run}-T_{arrival}<br>]</p>
+<p>这个 Metric 对于 Interactive Task 特别重要。例如一个程序可能 Response Time 只有 0.1s，Turnaround Time 却有 30s：虽然整个任务需要 30 秒才结束，但你点下按钮 0.1 秒就开始有反应，用户依然会感觉系统很流畅。反过来，一个任务可能总共 20 秒完成，但前 10 秒完全没反应，用户首先会怀疑软件已经寄了。所以不要混：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Turnaround</span><br><span class="line">→ “多久全部做完？”</span><br><span class="line"></span><br><span class="line">Response</span><br><span class="line">→ “多久第一次理我？”</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Throughput-和-Fairness"><a href="#Throughput-和-Fairness" class="headerlink" title="Throughput 和 Fairness"></a>Throughput 和 Fairness</h2><p><strong>Throughput</strong> 就是单位时间平均完成多少 Job：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">10 秒完成 5 个 Job</span><br><span class="line">→ 0.5 jobs/sec</span><br></pre></td></tr></table></figure>
+
+<p>目标自然是越高越好。另外还有 <strong>Fairness</strong>：类似等级的 Process 应该被类似对待，即使 Process Priority 不同，也不能让某个 Process 永远等不到 CPU。这种无限期推迟就是 <strong>Starvation</strong>。所以一个 Scheduler 即使 Average Turnaround 非常漂亮，也不能说“那几个倒霉蛋永远跑不到就算了，平均数还是很好看的”。OS 的 Scheduling 从来不是只优化一个 Metric，而是在多个目标之间 Trade-off。</p>
+<hr>
+<h2 id="Scheduler-什么时候出来干活"><a href="#Scheduler-什么时候出来干活" class="headerlink" title="Scheduler 什么时候出来干活"></a>Scheduler 什么时候出来干活</h2><p>Scheduler 并不是 CPU 每执行一条 Instruction 就重新算一次。它通常在系统状态发生某些重要变化时获得 Scheduling 机会，比如创建 Process、Process 退出、Process 因为 I&#x2F;O 或其他 Event 进入 Blocked、Process 进行 System Call，以及发生 Interrupt。尤其是上一章刚学完的两个：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">I/O Interrupt</span><br><span class="line">→ 原本 Blocked 的 Process 可能变成 Ready</span><br><span class="line"></span><br><span class="line">Clock Interrupt</span><br><span class="line">→ Kernel 周期性拿回 CPU</span><br><span class="line">→ Scheduler 重新考虑谁应该运行</span><br></pre></td></tr></table></figure>
+
+<p>所以现在整条链条可以写成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Timer Interrupt</span><br><span class="line">→ Mechanism：OS 重新拿回 CPU</span><br><span class="line"></span><br><span class="line">Scheduler</span><br><span class="line">→ Policy：下一位给谁？</span><br><span class="line"></span><br><span class="line">Context Switch</span><br><span class="line">→ Mechanism：真的从 A 切到 B</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Deterministic-Modeling"><a href="#Deterministic-Modeling" class="headerlink" title="Deterministic Modeling"></a>Deterministic Modeling</h2><p>后面的算法比较使用 <strong>Deterministic Modeling</strong>：给定一组事先确定好的 Workload，再比较不同算法的 Performance。为了避免 I&#x2F;O 等额外变量干扰，Lecture 先假设所有 Job 只使用 CPU，而且每个 Job 的 CPU Burst &#x2F; Runtime 事先已知；虽然现实并不成立，但是带 I&#x2F;O 的 Process 也可以暂时把每一段 CPU Burst 拆开分析。</p>
+<p>后面大部分算法都用同一组 Process：</p>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th align="right">Arrival Time</th>
+<th align="right">CPU Burst</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td align="right">0</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>B</td>
+<td align="right">2</td>
+<td align="right">6</td>
+</tr>
+<tr>
+<td>C</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>D</td>
+<td align="right">6</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>E</td>
+<td align="right">8</td>
+<td align="right">2</td>
+</tr>
+</tbody></table>
+<p>这样很好，因为 Workload 完全没变，我们只要观察<strong>换一个 Scheduling Policy，执行顺序和 Performance 为什么就变了</strong>。</p>
+<hr>
+<h1 id="经典-Scheduling-算法"><a href="#经典-Scheduling-算法" class="headerlink" title="经典 Scheduling 算法"></a>经典 Scheduling 算法</h1><h2 id="FIFO-FCFS"><a href="#FIFO-FCFS" class="headerlink" title="FIFO &#x2F; FCFS"></a>FIFO &#x2F; FCFS</h2><p>最简单的想法当然是：谁先来谁先跑。这就是 <strong>First-In-First-Out (FIFO)</strong>，也叫 <strong>First Come First Serve (FCFS)</strong>。Process 按照 Arrival Time 进入 Queue，Scheduler 每次取 Queue 最前面那个；它是 <strong>Non-preemptive</strong> 的，一个 Process 一旦获得 CPU，会一直运行到完成或者主动释放 CPU。</p>
+<p>在上面的 Workload 中，执行顺序是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0---3---------9----13-----18--20</span><br><span class="line">| A |    B     | C |  D   | E |</span><br></pre></td></tr></table></figure>
+
+<p>于是 (T_A&#x3D;3)、(T_B&#x3D;7)、(T_C&#x3D;9)、(T_D&#x3D;12)、(T_E&#x3D;12)，Average Turnaround 为：</p>
+<p>[<br>\frac{3+7+9+12+12}{5}&#x3D;8.6<br>]</p>
+<p>FIFO 最大的优点就是简单、容易实现，而且大家严格按照 Arrival Order，看起来也很公平。但是问题也非常明显：<strong>Short Job 可能被 Long CPU-bound Job 堵在后面。</strong> 比如 E 只需要 2 个 CPU Time Unit，却从 <code>t=8</code> 一直等到 <code>t=18</code> 才第一次运行，于是 (T_{response,E}&#x3D;18-8&#x3D;10)，这种对 Interactive Process 的体验非常差。</p>
+<p>所以 FIFO 的问题不是“不公平”，而是<strong>它只知道谁先来，完全不知道前面这个人到底要占 CPU 多久</strong>。</p>
+<hr>
+<h2 id="Shortest-Job-First"><a href="#Shortest-Job-First" class="headerlink" title="Shortest Job First"></a>Shortest Job First</h2><p>既然问题是 Long Job 堵着一堆 Short Job，那最自然的修法就是：每次 CPU 空下来以后，从当前 Ready Processes 里面选 CPU Burst 最短的那个。这就是 <strong>Shortest-Job-First (SJF)</strong>。它仍然是 <strong>Non-preemptive</strong>：已经上 CPU 的 Process 不会因为后来出现更短的 Job 而被赶下来。</p>
+<p>这组 Workload 里，A 在 <code>t=0</code> 运行到 3；<code>t=3</code> 时只有 B 已经到达，所以 B 只能运行到 9。虽然 C、D、E 在 B 运行期间陆续到达，但是 SJF 不能 Preempt B。到了 <code>t=9</code>，Ready Queue 里有 C: 4、D: 5、E: 2，于是 E 先上：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A: 0 → 3</span><br><span class="line">B: 3 → 9</span><br><span class="line">E: 9 → 11</span><br><span class="line">C: 11 → 15</span><br><span class="line">D: 15 → 20</span><br></pre></td></tr></table></figure>
+
+<p>Average Turnaround：</p>
+<p>[<br>\frac{3+7+11+14+3}{5}&#x3D;7.6<br>]</p>
+<p>比 FIFO 的 8.6 更好。所以 SJF 对 <strong>Average Waiting Time &#x2F; Turnaround Time</strong> 很有优势，因为它倾向于快速把 Short Job 清掉。但是不要因此理解成 Response Time 一定很好：它仍然是 Non-preemptive，如果一个 Long CPU-bound Process 已经开始运行，新来的 Interactive Job 还是只能等它结束。</p>
+<p>另外还有一个更严重的问题：<strong>Starvation</strong>。如果 Short Job 一直不断到达：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Long Job L 一直在等</span><br><span class="line">↓</span><br><span class="line">Short A 来了</span><br><span class="line">→ 跑 A</span><br><span class="line"></span><br><span class="line">Short B 来了</span><br><span class="line">→ 跑 B</span><br><span class="line"></span><br><span class="line">Short C 来了</span><br><span class="line">→ 跑 C</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>那么 L 理论上可能一直等不到 CPU。所以 SJF 可以简单理解成<strong>平均效率很好，但是太偏爱 Short Job</strong>。</p>
+<hr>
+<h2 id="Highest-Response-Ratio-Next"><a href="#Highest-Response-Ratio-Next" class="headerlink" title="Highest Response Ratio Next"></a>Highest Response Ratio Next</h2><p>SJF 的问题之一是 Long Job 等得再久也没有额外补偿，于是 <strong>Highest-Response-Ratio-Next (HRRN)</strong> 给它加了一个很漂亮的 Aging 机制。HRRN 依然是 Non-preemptive，但在每次 Scheduling Decision 时计算：</p>
+<p>[<br>Priority&#x3D;\frac{Waiting\ Time+Service\ Time}{Service\ Time}&#x3D;1+\frac{Waiting\ Time}{Service\ Time}<br>]</p>
+<p>然后选择 Priority 最高的 Process。这个公式本身已经把思想说完了：Short Job 因为 Service Time 小，本身容易得到比较高的 Ratio；但是一个 Job 如果等了非常久，Waiting Time 一涨，Priority 也跟着涨，于是最终会越来越难继续被忽略。这就是 <strong>Aging Effect</strong>，用来防止 Indefinite Postponement。</p>
+<p>例如 <code>t=9</code> 时，C 的 priority 是 ((5+4)&#x2F;4&#x3D;2.25)，D 是 ((3+5)&#x2F;5&#x3D;1.6)，E 是 ((1+2)&#x2F;2&#x3D;1.5)。所以虽然 E 最短，HRRN 还是先选已经等更久的 C。等 C 在 <code>t=13</code> 完成后，D 变成 ((7+5)&#x2F;5&#x3D;2.4)，E 变成 ((5+2)&#x2F;2&#x3D;3.5)，于是再跑 E。最后顺序是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A → B → C → E → D</span><br></pre></td></tr></table></figure>
+
+<p>Average Turnaround &#x3D; 8。HRRN 并不是说“Average Turnaround 一定比 SJF 更好”，而是<strong>愿意牺牲一点纯粹的 Short Job 优先，换取等待时间上的公平性</strong>。不过它仍然保留 SJF 的一个大问题：<strong>Non-preemptive</strong>，一旦选中了一个 Long Job，哪怕下一秒来了一个超级短的 Interactive Job，也得等。</p>
+<hr>
+<h2 id="Shortest-Time-to-Completion-First"><a href="#Shortest-Time-to-Completion-First" class="headerlink" title="Shortest Time-to-Completion First"></a>Shortest Time-to-Completion First</h2><p>既然SJF最大的问题之一是不能抢占，那我们干脆做一个 <strong>Preemptive SJF</strong>。</p>
+<p>这就是 <strong>Shortest Time-to-Completion First (STCF)</strong>。新的 Process 到达时，Scheduler 会比较当前 Running Process 和新 Process 的 <strong>Remaining Time</strong>：</p>
+<p>[<br>Remaining&#x3D;CPU\ Burst-Elapsed\ Service\ Time<br>]</p>
+<p>谁距离完成更近，就让谁运行。</p>
+<p>例如 A 在 <code>t=0</code> 开始，需要 3；<code>t=2</code> 时 B 到达，需要 6，但是 A 已经跑了 2，A remaining &#x3D; 1、B remaining &#x3D; 6，所以继续 A。<code>t=3</code> B 开始，到了 <code>t=4</code> C 到达，B remaining &#x3D; 5、C remaining &#x3D; 4，于是 Preempt B，B 从 Running 回到 Ready，C 从 Ready 变成 Running。C 跑到 <code>t=8</code> 时 E 到达，只需要 2，于是 E 运行到 10，后面再继续 B 和 D：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0–3   A</span><br><span class="line">3–4   B</span><br><span class="line">4–8   C</span><br><span class="line">8–10  E</span><br><span class="line">10–15 B</span><br><span class="line">15–20 D</span><br></pre></td></tr></table></figure>
+
+<p>Average Turnaround：</p>
+<p>[<br>\frac{3+13+4+14+2}{5}&#x3D;7.2<br>]</p>
+<p>Response Time 也相当好：A&#x3D;0、B&#x3D;1、C&#x3D;0、D&#x3D;9、E&#x3D;0。但 STCF 同样没有免费午餐，因为 Long Process 不仅可能一直等，还可能反复被新来的 Short Job 抢走：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">终于开始跑</span><br><span class="line">↓</span><br><span class="line">Short Job 来了</span><br><span class="line">→ 被抢</span><br><span class="line"></span><br><span class="line">又开始跑</span><br><span class="line">↓</span><br><span class="line">又来一个 Short Job</span><br><span class="line">→ 再被抢</span><br></pre></td></tr></table></figure>
+
+<p>所以 Long Job 的 Waiting Time Variance 可能比 SJF 还大。另外每一次 Preemption 都有可能带来新的 Context Switch，而上一章已经告诉我们 Context Switch 并不是零成本。课件甚至指出，一个新来的 Short Job 可能去抢占一个马上就要结束的 Process，结果为了省一点 Runtime 反而多付了一次 Switch Cost。</p>
+<hr>
+<h2 id="Round-Robin"><a href="#Round-Robin" class="headerlink" title="Round Robin"></a>Round Robin</h2><p>前面 SJF &#x2F; STCF 都建立在一个非常强的假设上：我们提前知道 Process 还需要多少 CPU Time。现实里 OS 通常并不知道。于是 <strong>Round Robin (RR)</strong> 换了一个完全不同的思路：既然不知道你还要多久，那就所有人轮流来。</p>
+<p>Ready Queue 仍然按照 FIFO 组织，新 Process 放到队尾，但是每个 Process 一次最多只能运行固定长度的 <strong>Time Quantum &#x2F; Time Slice</strong>。如果 Quantum 用完 Process 还没完成，就 Preempt 它并放回 Ready Queue 尾部，接下来运行下一个。所以调度从：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A 跑完 → B 跑完 → C 跑完</span><br></pre></td></tr></table></figure>
+
+<p>变成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A 跑 1 个 Quantum</span><br><span class="line">→ B 跑 1 个 Quantum</span><br><span class="line">→ C 跑 1 个 Quantum</span><br><span class="line">→ A 再回来</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>课件的例子设置 Quantum&#x3D;1，最后 RR 的 Average Turnaround 反而到了 10.8，比 FIFO、SJF、HRRN 和 STCF 都差，但是 Average Response Time 只有 0.8，是这几个例子里面最漂亮的。这正好说明 RR 的目标不同：<strong>它愿意牺牲 Turnaround，换 Responsiveness 和 Fairness。</strong> 大家不一定很快做完，但是几乎所有人都能很快摸到 CPU。</p>
+<hr>
+<h3 id="Quantum-的大小"><a href="#Quantum-的大小" class="headerlink" title="Quantum 的大小"></a>Quantum 的大小</h3><p>RR 真正的难点不是算法，而是 Quantum Size。如果 Quantum 非常大，大部分 Process 一次上 CPU 就直接跑完，RR 最终会退化成 FIFO。反过来，如果 Quantum 特别小：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">A</span><br><span class="line">→ switch</span><br><span class="line">B</span><br><span class="line">→ switch</span><br><span class="line">C</span><br><span class="line">→ switch</span><br><span class="line">A</span><br><span class="line">→ switch</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>Response 非常漂亮，但是系统大量时间都花在 Context Switching，而不是 Application 真正的 Useful Computation。所以 Quantum 需要一个 Middle Ground：够短，使 Interactive Request 尽快得到响应；也要够长，不至于整个 CPU 都在 Save &#x2F; Restore Context。课件的思路是，Quantum 最好长到 Interactive Process 通常有机会在用完之前发出 I&#x2F;O Request，而 Long Process 仍然能获得大部分 Processor Time。</p>
+<hr>
+<h2 id="SJF-和-RR-的两难"><a href="#SJF-和-RR-的两难" class="headerlink" title="SJF 和 RR 的两难"></a>SJF 和 RR 的两难</h2><p>到现在为止我们手里有两条路线：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SJF / STCF</span><br><span class="line">→ Turnaround 很好</span><br><span class="line">→ 但是需要提前知道 CPU Burst</span><br><span class="line"></span><br><span class="line">RR</span><br><span class="line">→ Response 很好</span><br><span class="line">→ 不需要提前知道 CPU Burst</span><br><span class="line">→ 但是 Turnaround 不漂亮</span><br></pre></td></tr></table></figure>
+
+<p>于是课件第 26 页提出真正的 Crux：<strong>有没有一种 Scheduler 能够像 RR 一样给 Interactive Job 很好的 Response，同时像 SJF &#x2F; STCF 一样偏爱 Short Job，而且还不需要事先知道 CPU Burst？</strong> 答案就是 <strong>MLFQ</strong>。</p>
+<hr>
+<h1 id="MLFQ"><a href="#MLFQ" class="headerlink" title="MLFQ"></a>MLFQ</h1><h2 id="Priority"><a href="#Priority" class="headerlink" title="Priority"></a>Priority</h2><p>在进入 MLFQ 之前，先补一个概念：<strong>Priority Scheduling</strong>。可以给每个 Process &#x2F; Thread 一个 Priority Number，Scheduler 优先选择更高 Priority 的 Task。Priority 可以是 <strong>Static</strong>，也可以是 <strong>Dynamic</strong>。Static Priority 在生命周期内不改变，实现简单、Overhead 低，但是无法响应环境变化，而且 Low-priority Process 可能 Starvation；Dynamic Priority 可以跟着系统状态变化，但是 Scheduler 每次做决定时要重新维护 Priority，因此 Overhead 更高。MLFQ 接下来做的，就是一个很典型的 <strong>Dynamic Priority</strong> 系统。</p>
+<hr>
+<h2 id="Multilevel-Feedback-Queue"><a href="#Multilevel-Feedback-Queue" class="headerlink" title="Multilevel Feedback Queue"></a>Multilevel Feedback Queue</h2><p><strong>Multilevel Feedback Queue (MLFQ)</strong> 有多个不同 Priority 的 Ready Queue。Scheduler 永远先选择最高 Priority 的非空 Queue，只有上层全部为空才会运行下面的 Queue；同一个 Priority Queue 内部使用 Round Robin。Process 的 Priority 不是固定的，而是根据 Runtime Behavior 动态调整，课件图里画成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">High Priority</span><br><span class="line">Q8</span><br><span class="line">Q7</span><br><span class="line">Q6</span><br><span class="line">Q5</span><br><span class="line">Q4</span><br><span class="line">Q3</span><br><span class="line">Q2</span><br><span class="line">Q1</span><br><span class="line">Low Priority</span><br></pre></td></tr></table></figure>
+
+<p>不过“8 层”只是这个例子，不是 MLFQ 规定必须有 8 层，Queue 数量本身就是后面要配置的参数。MLFQ 真正聪明的地方是：<strong>我不知道你未来需要多少 CPU，但我可以根据你过去怎么使用 CPU 来猜你是什么 Process。</strong></p>
+<hr>
+<h3 id="基本-Priority-Rule"><a href="#基本-Priority-Rule" class="headerlink" title="基本 Priority Rule"></a>基本 Priority Rule</h3><p>新 Process 刚进系统时直接放到最高 Priority Queue。如果一个 Process 把整个 Quantum 全部用完，就 Preempt 它并降到下一层 Queue；如果 Process 在 Quantum 结束前主动 Relinquish CPU，例如去等待 I&#x2F;O，就留在当前 Priority。这其实是在根据行为分类。</p>
+<p>一个 Process 每次拿到 CPU 都是给多少吃多少，那它很像 Long &#x2F; CPU-bound Job，Priority 会越来越低；另一个 Process 拿到 CPU 只跑 20ms 就请求 I&#x2F;O 然后 Blocked，那它很像 Interactive &#x2F; I&#x2F;O-bound Process，所以系统不惩罚它，让它继续留在 High Priority。MLFQ 并不直接问“你是不是 Interactive”，而是在观察“你过去拿到 CPU 之后是什么行为”，然后用 History 预测 Future Behavior。</p>
+<hr>
+<h3 id="MLFQ-in-Action"><a href="#MLFQ-in-Action" class="headerlink" title="MLFQ in Action"></a>MLFQ in Action</h3><p>课件给了两个 Process。<code>P0</code> 是 Long Process，在 <code>t=0</code> 到达；<code>P1</code> 是 Interactive Process，在 <code>t=200</code> 到达，每次只使用 CPU 20 Time Units，然后 Blocked 等待 I&#x2F;O 100 Time Units。每层 Quantum &#x3D; 50。</p>
+<p>P0 从最高 Priority 开始，连续用满 50 就被逐层降下去：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Q8</span><br><span class="line">↓ 用满 50</span><br><span class="line">Q7</span><br><span class="line">↓ 用满 50</span><br><span class="line">Q6</span><br><span class="line">↓</span><br><span class="line">Q5</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>因为它一直表现得“给我多少 CPU 我都吃掉”，所以系统逐渐把它识别成 Long CPU-bound Process。P1 后来进入 Q8，拿到 CPU 只用 20 就去 I&#x2F;O，因为 (20 &lt; Quantum\ 50)，所以 P1 不会被 Demote，I&#x2F;O 完成回来以后仍然处于 High Priority，于是它每次醒来都能很快得到 CPU。最终效果就是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Interactive / short-burst Job</span><br><span class="line">→ 倾向停留在 High Priority</span><br><span class="line"></span><br><span class="line">Long CPU-bound Job</span><br><span class="line">→ 逐步沉到 Low Priority</span><br></pre></td></tr></table></figure>
+
+<p>于是 MLFQ 在不知道 CPU Burst 的情况下，试图近似出 SJF &#x2F; STCF “偏爱 Short Job”的效果，同时保留 Interactive Responsiveness。</p>
+<hr>
+<h2 id="MLFQ-也会被玩坏"><a href="#MLFQ-也会被玩坏" class="headerlink" title="MLFQ 也会被玩坏"></a>MLFQ 也会被玩坏</h2><p>第一个问题还是 <strong>Starvation</strong>。如果 High-priority Queue 永远有大量 Interactive Process，也就是 Q8 一直非空，那最下面的 CPU-bound Job 可能永远没有机会运行。</p>
+<p>第二个问题更搞笑：Process 可能 <strong>Game the Scheduler</strong>。如果 Quantum &#x3D; 50，而且规则只是“用完整个 50 就降级、没用完就不降级”，那一个坏 Process 完全可以跑 49 就主动放 CPU，下次再跑 49 再放，一直假装自己是 Interactive Process，从而偷走大量 High-priority CPU Time。</p>
+<p>第三个问题是 Process Behavior 会变化。一个 Process 前半生可能是 CPU-bound，因此早就沉到 Lowest Queue，后来却突然进入 Interactive Phase；但是如果 Scheduler 只记住它过去很 CPU-hungry，那它就很难重新被当成 Interactive Process。</p>
+<hr>
+<h2 id="给-MLFQ-打补丁"><a href="#给-MLFQ-打补丁" class="headerlink" title="给 MLFQ 打补丁"></a>给 MLFQ 打补丁</h2><p>首先解决 Starvation 和 Behavior Change，办法是 <strong>Periodic Priority Boost</strong>：每隔固定时间 S，就把所有 Process 全部送回最高 Priority Queue。这样 Bottom Queue 里的 Long Job 至少周期性得到机会，同时一个以前 CPU-bound、后来变 Interactive 的 Process 也可以重新证明自己。</p>
+<hr>
+<p>然后解决 Gaming。不能只判断“这一次有没有用完整个 Quantum”，而是要累计这个 Process 在某一 Priority Level 已经使用了多少 CPU Time：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Process 在这一层的 CPU Usage</span><br><span class="line">→ 累计</span><br><span class="line"></span><br><span class="line">达到这一层 Time Allotment</span><br><span class="line">→ Demote</span><br></pre></td></tr></table></figure>
+
+<p>于是跑 49 再 yield 再跑 1，总共还是 50，照样降级。没有达到 Allotment 的 Process 则继续留在当前 Priority，并不是自动 Upgrade。</p>
+<hr>
+<p>另外，不同 Priority Level 还可以设置不同长度的 Quantum。High-priority Queue 使用 Short Time Slice，保证 Interactive Response；越往低 Priority，Quantum 越长，让 Long CPU-bound Process 一次多跑一点，减少 Context Switch Overhead。课件给的思路就是 Lower Queue 逐层增加 Quantum。所以 MLFQ 最终形成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">High Priority</span><br><span class="line">→ Short Quantum</span><br><span class="line">→ Interactive Response</span><br><span class="line"></span><br><span class="line">Low Priority</span><br><span class="line">→ Long Quantum</span><br><span class="line">→ Long-job Efficiency</span><br></pre></td></tr></table></figure>
+
+<p>它是一个典型的 <strong>Adaptive Mechanism</strong>：根据 Process 行为不断调整 Priority，因此对 Environment 变化更加敏感，但当然也付出更多 Scheduling Overhead。与此同时它留下很多 Configuration Problem：到底几层 Queue？每层 Quantum 多长？多久 Boost 一次？这些没有天然唯一答案。</p>
+<p>顺带一提，MLFQ 最早由 Corbató 等人在 1962 年的 CTSS 中描述，相关的 Time-sharing &#x2F; Multics 工作后来使 Fernando Corbató 获得 ACM Turing Award，不是诺贝尔奖。</p>
+<hr>
+<h1 id="Fair-Share-和-Lottery"><a href="#Fair-Share-和-Lottery" class="headerlink" title="Fair Share 和 Lottery"></a>Fair Share 和 Lottery</h1><h2 id="Fair-Share-Scheduling"><a href="#Fair-Share-Scheduling" class="headerlink" title="Fair Share Scheduling"></a>Fair Share Scheduling</h2><p>到这里前面的算法基本都在做 Process 和 Process 之间怎么公平。但如果 User A 只开 1 个 Process，User B 开 100 个 Process，然后 Scheduler 公平地给 101 个 Process 一人一份 CPU：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">User A</span><br><span class="line">→ 1/101</span><br><span class="line"></span><br><span class="line">User B</span><br><span class="line">→ 100/101</span><br></pre></td></tr></table></figure>
+
+<p>那 B 只需要疯狂开 Process，就可以把系统抢走。所以 <strong>Fair Share Scheduling (FSS)</strong> 把 Fairness 的单位从 Process 提升到了 <strong>User &#x2F; Group</strong>。不同 User &#x2F; Group 被分配 Weight，代表它们应该获得总 CPU Resource 的多少比例；Scheduler 监控实际 Resource Usage，已经超过 Fair Share 的后面少给一点，低于 Fair Share 的则多给一点。例如 User A 和 User B 的 weight 都是 1，那 A 应该长期得到 50%，B 也应该长期得到 50%；B 内部就算开 10 个 Process，也只是 10 个人瓜分 B 自己的 50%，而不是凭空把 CPU Share 放大 10 倍。</p>
+<hr>
+<h2 id="Lottery-Scheduling"><a href="#Lottery-Scheduling" class="headerlink" title="Lottery Scheduling"></a>Lottery Scheduling</h2><p>一个很有意思的 Proportional Share 实现是 <strong>Lottery Scheduling</strong>，核心思想是给 Process &#x2F; User &#x2F; Group 分配 Lottery Tickets。例如 A 的 fair share 是 75%，那就给 A 75 张 ticket；B 的 fair share 是 25%，就给 B 25 张。每次 Scheduling 时随机抽一张 Ticket，谁拿着 Winning Ticket 谁获得 CPU。单次当然不保证 A 一定 75%、B 一定 25%，可能连续五次都是 B，但是长期来看：</p>
+<p>[<br>P(A)&#x3D;0.75,\qquad P(B)&#x3D;0.25<br>]</p>
+<p>所以 Resource Consumption 会逐渐趋近 Ticket Ratio。课件的例子就是 A 有 75 张、B 有 25 张，Scheduler 每次在 0–99 中产生 Random Number，根据号码落在哪个区间决定赢家。这里需要注意，<strong>Random 不是 Fairness 的来源，Ticket Distribution 才是</strong>，Random Lottery 只是实现预定 Share 的一种机制。</p>
+<hr>
+<h1 id="Multiprocessor-Scheduling"><a href="#Multiprocessor-Scheduling" class="headerlink" title="Multiprocessor Scheduling"></a>Multiprocessor Scheduling</h1><p>前面基本都默认一个 Core 一次只有一个 Process。但是现实系统通常有多个 Core，于是 Scheduler 除了回答“下一位是谁”，还要多回答一个问题：<strong>它在哪颗 Core 上运行？</strong></p>
+<hr>
+<h2 id="Single-Queue-Scheduling"><a href="#Single-Queue-Scheduling" class="headerlink" title="Single-Queue Scheduling"></a>Single-Queue Scheduling</h2><p>最简单的方法就是所有 Core 共用一个 Global Ready Queue：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Ready Queue:</span><br><span class="line">A B C D E F G ...</span><br><span class="line"></span><br><span class="line">CPU0</span><br><span class="line">→ 从这里拿</span><br><span class="line"></span><br><span class="line">CPU1</span><br><span class="line">→ 也从这里拿</span><br></pre></td></tr></table></figure>
+
+<p>这个设计简单，但是有两个严重问题。</p>
+<hr>
+<h3 id="Shared-Queue-Contention"><a href="#Shared-Queue-Contention" class="headerlink" title="Shared Queue Contention"></a>Shared Queue Contention</h3><p>多个 Core 可能同时修改同一个 Ready Queue，比如 CPU0 和 CPU1 同时说要 dequeue head。如果没有 Synchronization，Queue Data Structure 可能直接损坏，所以对 Shared Queue 的 Access 必须保护。随着 Core 数量上升，同时抢 Queue 的人变多，Lock Contention 就会上升，Performance 随之下降，这就是课件说的 Poor Scalability。</p>
+<p>注意这里 Lock 的核心对象是 <strong>Shared Scheduling Queue Data Structure</strong>，不是把整个 Process、Registers、Memory Space 全部锁起来。</p>
+<hr>
+<h3 id="Cache-Affinity"><a href="#Cache-Affinity" class="headerlink" title="Cache Affinity"></a>Cache Affinity</h3><p>另一个问题叫 <strong>Cache Affinity</strong>。假设 Process A 刚才一直在 Core 0 运行，那么 Core 0 的 CPU Cache 里通常已经有很多 A 最近执行的 Instructions 和最近使用的数据，所以 A 下一次继续跑 Core 0，很多内容可以直接 Cache Hit。但 Single Queue 可能让 A 从 Core0 跑到 Core1、Core3 再回到 Core0，这样 A 每次换 Core，新 Core 的 Cache 里可能都没有它的 Working Set，又得重新加载，增加 Cache Miss &#x2F; Reload Overhead。所以这里讨论的不是“Register 内容更多”，也不是 Disk I&#x2F;O，而是<strong>尽可能让 Process 继续使用已经对它比较热的 CPU Cache</strong>。</p>
+<hr>
+<h2 id="Multi-Queue-Scheduling"><a href="#Multi-Queue-Scheduling" class="headerlink" title="Multi-Queue Scheduling"></a>Multi-Queue Scheduling</h2><p>为了减少 Shared Queue Contention 和改善 Cache Affinity，一个自然的办法是 <strong>One Scheduling Queue Per Core</strong>。例如 CPU0 的 Queue 放 A、C、E，CPU1 的 Queue 放 B、D、F。新 Job 进入系统以后，根据某个 Heuristic 分配到一个 Queue，例如 Random 或者选当前 Job 较少的 Queue。这样每个 Core 主要管理自己的 Queue，Shared Queue Contention 少很多，Process 也更容易留在同一个 Core，Cache Affinity 更好。但是这又引入一个经典问题。</p>
+<p>这就是 <strong>Load Imbalance</strong>。</p>
+<hr>
+<h3 id="一核有难，多核围观"><a href="#一核有难，多核围观" class="headerlink" title="一核有难，多核围观"></a>一核有难，多核围观</h3><p>假设 CPU0 的 Queue 里只有 A，CPU1 的 Queue 里排着 B、D、F。A 跑完以后 CPU0 就 Idle 了，而 CPU1 从 B 到 D 再到 F 忙到爆，于是虽然系统还有空闲计算资源，却因为 Queue 之间不平衡而浪费掉。一个解决方案就是 <strong>Work Stealing</strong>：某个 Queue 发现自己没什么 Job 时，偶尔去看看别人的 Queue，如果发现别人明显更忙，就偷一个或多个 Job 回来运行，比如从 Q2 的 B、D、F、G 里偷走 F 放到 Q1，这样重新平衡各 Core 的 Load。但新的问题又来了：多久检查一次？多少 Job 算“负载低”？别人比我多多少才值得偷？检查太频繁，本身就有 Scheduling Overhead；检查太少，Load Imbalance 可能持续很久。所以课件最后直接说，Finding the right threshold remains a black art。</p>
+<hr>
+<h1 id="Linux-Scheduler-案例"><a href="#Linux-Scheduler-案例" class="headerlink" title="Linux Scheduler 案例"></a>Linux Scheduler 案例</h1><p>这一部分 Lecture 明确写了 <strong>Not for examination</strong>，所以理解思想即可，不需要背实现。</p>
+<p>Linux Scheduling 本身是 <strong>Preemptive, Priority-based</strong>，并区分 Real-time 和 Non-real-time 两类 Priority Class。Real-time Priority 从 1 到 99，数值越高 Priority 越高。<code>SCHED_FIFO</code> 让同 Priority 下的 Real-time Process 按照 FIFO 运行；<code>SCHED_RR</code> 则让同 Priority Real-time Process 使用 Round Robin。课件还指出，Real-time Process 可能无限推迟 Normal Process，因此 Normal User 不能随意创建 Real-time Process。</p>
+<hr>
+<h2 id="Completely-Fair-Scheduler"><a href="#Completely-Fair-Scheduler" class="headerlink" title="Completely Fair Scheduler"></a>Completely Fair Scheduler</h2><p>对于 Non-real-time Process，课件介绍了 Linux 的 <strong>Completely Fair Scheduler (CFS)</strong>。它不试图提前分类“你是 Interactive”还是“你是 CPU-bound”，而是假设大家一开始都一样，核心目标是<strong>尽可能公平地分 Processor Time</strong>。如果当前有 <code>nr</code> 个 Runnable Process，并且大家 Weight 一样，那么理想上每个 Process 应该获得大约：</p>
+<p>[<br>\frac{1}{nr}<br>]</p>
+<p>的 CPU 资源；更高 Priority 可以通过更大的 Weight 获得更大 Share。课件先想象一颗“不现实的完美 CPU”：所有 Process 可以同时运行，每个人直接获得自己那一部分 Processor Power。但真实 Core 一次只能跑一个 Process，所以 CFS 需要记录每个 Task 已经“公平地消费了多少 CPU”。</p>
+<p>这个量叫 <strong>Virtual Runtime</strong>。Process 运行时，CFS 根据其 Execution Duration、Runnable Processes 和 Priority 等因素更新 Virtual Runtime，数值越大就可以理解为“你目前已经吃过比较多 CPU 了”。于是 Scheduling Decision 就非常直接：<strong>选择 Virtual Runtime 最小的 Runnable Process</strong>，也就是优先让“目前吃 CPU 最少的人”补回来。Runnable Tasks 按照 Virtual Runtime 存放在一个 <strong>Red-Black Tree</strong> 中，因为 Tree 按照 Virtual Runtime 排序，所以最左边就是当前 Virtual Runtime 最小、最需要 CPU 的 Task；Red-Black Tree 提供大约 (O(\log n)) 的操作复杂度。</p>
+<p>这一部分不用考试，所以知道 CFS 大致就是 Track virtual runtime、谁吃 CPU 最少优先补谁、并用 Red-Black Tree 快速找最小值，就已经够了。</p>
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这一章实际上一直在围绕几个互相冲突的目标做 Trade-off：<strong>Turnaround</strong> 希望 Job 尽快完成，<strong>Response</strong> 希望 Interactive Job 赶紧得到 CPU，<strong>Throughput</strong> 希望单位时间完成更多 Job，<strong>Fairness</strong> 要求不能有人永远饿死，而 <strong>Overhead</strong> 又提醒我们不能为了调度本身浪费太多 CPU。不同算法只是在这些目标里选了不同的立场。</p>
+<p>FIFO 最简单，只按 Arrival Order 排队，于是 Short Job 可能被前面的 Long Job 堵死。SJF 把 Short Job 提前，Average Waiting &#x2F; Turnaround 很好看，代价是 Long Job 可能 Starvation，而且必须知道 Burst。HRRN 相当于 SJF 加上 Aging，把 Waiting Time 也算进 Priority，缓解了 Starvation，但它仍然是 Non-preemptive。STCF 则把 SJF 变成 Preemptive，新来的 Short Job 可以直接抢 CPU，Response 和 Turnaround 可能更好，代价是 Context Switch 更多、Long Job 更惨。</p>
+<p>RR 换了一条路，用固定的 Time Quantum 轮流跑，Response 和 Fairness 很好，但 Turnaround 可能变差，Quantum 太小 Switch 爆炸、太大又退化回 FIFO。MLFQ 干脆用多级 Dynamic Priority Queue，根据 Runtime Behavior 猜 Process 类型，让 Interactive 留在高层、CPU-bound 逐渐下沉，再用 Priority Boost 防 Starvation、用 CPU Allotment 防 Gaming。</p>
+<p>另外要记得，前面所有算法都把每个 Process 当作独立个体，所以当 Process 数量成为武器时，Fair Share 就把公平的单位提升到 User &#x2F; Group；而当“每个 Job 应该拿多少”不想精确计算时，Lottery Scheduling 用 Ticket 的<strong>概率</strong>来实现长期 Proportional Share。到了 Multicore，问题进一步从“谁运行？”变成“谁运行，而且在哪颗 Core 运行？”。Single Queue 简单，但是有 Shared Queue Contention 和 Cache Affinity 问题；Multi Queue 改善 Scalability 和 Cache Locality，却产生 Load Imbalance，于是再通过 Work Stealing 重新平衡。</p>
+
+
+  <div class="tag-list">
+    
+      
+      <a class="tag" href="/notebooks/COMP3230/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">计算机/操作系统</a>
+    
+  </div>
+
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="NaughtyChas/NaughtyChas.github.io" data-repo-id="R_kgDOHzXKqQ" data-category="Announcements" data-category-id="DIC_kwDOHzXKqc4CmXAk" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a><a href="/notebooks/">笔记本</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends/">友链</a></div><div class="sitemap-group"><span class="fs15">关于</span><a href="/about/">关于博主</a></div></div><div class="text"><p>本站由 <a href="/">Naucha</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scheduling-%E6%9C%89%E4%B8%8D%E6%AD%A2%E4%B8%80%E5%B1%82"><span class="toc-text">Scheduling 有不止一层</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Scheduling-%E7%9A%84%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-text">Scheduling 的基础概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU-bound-%E5%92%8C-I-O-bound"><span class="toc-text">CPU-bound 和 I&#x2F;O-bound</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Turnaround-Time"><span class="toc-text">Turnaround Time</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Waiting-Time"><span class="toc-text">Waiting Time</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Response-Time"><span class="toc-text">Response Time</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Throughput-%E5%92%8C-Fairness"><span class="toc-text">Throughput 和 Fairness</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scheduler-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%87%BA%E6%9D%A5%E5%B9%B2%E6%B4%BB"><span class="toc-text">Scheduler 什么时候出来干活</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deterministic-Modeling"><span class="toc-text">Deterministic Modeling</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8-Scheduling-%E7%AE%97%E6%B3%95"><span class="toc-text">经典 Scheduling 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FIFO-FCFS"><span class="toc-text">FIFO &#x2F; FCFS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shortest-Job-First"><span class="toc-text">Shortest Job First</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Highest-Response-Ratio-Next"><span class="toc-text">Highest Response Ratio Next</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shortest-Time-to-Completion-First"><span class="toc-text">Shortest Time-to-Completion First</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Round-Robin"><span class="toc-text">Round Robin</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Quantum-%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="toc-text">Quantum 的大小</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SJF-%E5%92%8C-RR-%E7%9A%84%E4%B8%A4%E9%9A%BE"><span class="toc-text">SJF 和 RR 的两难</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MLFQ"><span class="toc-text">MLFQ</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Priority"><span class="toc-text">Priority</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multilevel-Feedback-Queue"><span class="toc-text">Multilevel Feedback Queue</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC-Priority-Rule"><span class="toc-text">基本 Priority Rule</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MLFQ-in-Action"><span class="toc-text">MLFQ in Action</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MLFQ-%E4%B9%9F%E4%BC%9A%E8%A2%AB%E7%8E%A9%E5%9D%8F"><span class="toc-text">MLFQ 也会被玩坏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99-MLFQ-%E6%89%93%E8%A1%A5%E4%B8%81"><span class="toc-text">给 MLFQ 打补丁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Fair-Share-%E5%92%8C-Lottery"><span class="toc-text">Fair Share 和 Lottery</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Fair-Share-Scheduling"><span class="toc-text">Fair Share Scheduling</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lottery-Scheduling"><span class="toc-text">Lottery Scheduling</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Multiprocessor-Scheduling"><span class="toc-text">Multiprocessor Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Single-Queue-Scheduling"><span class="toc-text">Single-Queue Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Shared-Queue-Contention"><span class="toc-text">Shared Queue Contention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cache-Affinity"><span class="toc-text">Cache Affinity</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multi-Queue-Scheduling"><span class="toc-text">Multi-Queue Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E6%A0%B8%E6%9C%89%E9%9A%BE%EF%BC%8C%E5%A4%9A%E6%A0%B8%E5%9B%B4%E8%A7%82"><span class="toc-text">一核有难，多核围观</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-Scheduler-%E6%A1%88%E4%BE%8B"><span class="toc-text">Linux Scheduler 案例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Completely-Fair-Scheduler"><span class="toc-text">Completely Fair Scheduler</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1791205039395" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #giscus');
+  util.viewportLazyload(el, load_discus, false);
+
+  function load_discus() {
+    if (!el) return;
+    try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      const script = document.createElement('script');
+      script.async = true;
+      for (const key of Object.keys(el.attributes)) {
+        const attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+    },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.typesetPromise().then(() => {
+          const math = document.querySelectorAll("mjx-container");
+          math.forEach((element) => {
+            if (element.parentNode) {
+              element.parentNode.classList.add("has-jax");
+            }
+          });
+        });
+      },
+    },
+  };
+</script>
+
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
