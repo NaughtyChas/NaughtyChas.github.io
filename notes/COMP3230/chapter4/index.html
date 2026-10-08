@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://naughtychas.github.io/imgs/avatar.jpg">
 <meta property="article:published_time" content="2026-10-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-10-05T12:56:49.465Z">
+<meta property="article:modified_time" content="2026-10-08T11:30:45.096Z">
 <meta property="article:author" content="Naucha">
 <meta property="article:tag" content="计算机&#x2F;操作系统">
 <meta name="twitter:card" content="summary">
@@ -42,7 +42,7 @@
   <!-- feed -->
   
 
-  <link rel="stylesheet" href="/css/main.css?v=1791205039391">
+  <link rel="stylesheet" href="/css/main.css?v=1791459065472">
 
 
   
@@ -186,7 +186,7 @@
   <a class="cap breadcrumb" href="/notebooks/COMP3230/">COMP3230</a>
 
 </div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-10-05T12:56:49.465Z">2026-10-05</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-10-04T16:00:00.000Z">2026-10-05</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2026-10-08T11:30:45.096Z">2026-10-08</time></span><span class="sep updated"></span><span class="text updated">发布于：<time datetime="2026-10-04T16:00:00.000Z">2026-10-05</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -212,9 +212,9 @@
 <p>这个区别后面尤其重要，因为 Interactive &#x2F; I&#x2F;O-bound Process 通常更加在乎“你能不能赶紧让我运行一下”，而 Long CPU-bound Process 更关心的往往是“最后到底多久能把我的活全部做完”。这两个目标不是同一个东西。</p>
 <hr>
 <h2 id="Turnaround-Time"><a href="#Turnaround-Time" class="headerlink" title="Turnaround Time"></a>Turnaround Time</h2><p>Turnaround Time 衡量一个 Process 从进入系统到彻底完成一共经历了多久：</p>
-<p>[<br>T*{turnaround}&#x3D;T*{completion}-T_{arrival}<br>]</p>
+<p>$$<br>T_{turnaround}&#x3D;T_{completion}-T_{arrival}<br>$$</p>
 <p>例如某 Process 在 <code>t=2</code> 到达，在 <code>t=10</code> 完成，那么：</p>
-<p>[<br>T_{turnaround}&#x3D;10-2&#x3D;8<br>]</p>
+<p>$$<br>T_{turnaround}&#x3D;10-2&#x3D;8<br>$$</p>
 <p>这个 8 里面可能包含真正使用 CPU 的时间，也包含各种等待，所以它衡量的是<strong>从来了到干完，总共多久</strong>。Scheduling 一般希望尽可能降低 Average Turnaround Time。</p>
 <hr>
 <h2 id="Waiting-Time"><a href="#Waiting-Time" class="headerlink" title="Waiting Time"></a>Waiting Time</h2><p><strong>Waiting Time</strong> 专门指 Process 在 <strong>Ready Queue</strong> 里等待 CPU 的累计时间，也就是：</p>
@@ -223,7 +223,7 @@
 <p>如果 Process 已经 Blocked，在等 Disk I&#x2F;O，那么这不是“等 Scheduler 给 CPU”，所以不算这里的 Ready Queue Waiting Time。</p>
 <hr>
 <h2 id="Response-Time"><a href="#Response-Time" class="headerlink" title="Response Time"></a>Response Time</h2><p>Response Time 衡量的是<strong>从 Process 到达，到它第一次真正拿到 CPU</strong> 之间隔了多久：</p>
-<p>[<br>T*{response}&#x3D;T*{first\ run}-T_{arrival}<br>]</p>
+<p>$$<br>T_{response}&#x3D;T_{first\ run}-T_{arrival}<br>$$</p>
 <p>这个 Metric 对于 Interactive Task 特别重要。例如一个程序可能 Response Time 只有 0.1s，Turnaround Time 却有 30s：虽然整个任务需要 30 秒才结束，但你点下按钮 0.1 秒就开始有反应，用户依然会感觉系统很流畅。反过来，一个任务可能总共 20 秒完成，但前 10 秒完全没反应，用户首先会怀疑软件已经寄了。所以不要混：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Turnaround</span><br><span class="line">→ “多久全部做完？”</span><br><span class="line"></span><br><span class="line">Response</span><br><span class="line">→ “多久第一次理我？”</span><br></pre></td></tr></table></figure>
 
@@ -282,9 +282,9 @@
 <p>在上面的 Workload 中，执行顺序是：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0---3---------9----13-----18--20</span><br><span class="line">| A |    B     | C |  D   | E |</span><br></pre></td></tr></table></figure>
 
-<p>于是 (T_A&#x3D;3)、(T_B&#x3D;7)、(T_C&#x3D;9)、(T_D&#x3D;12)、(T_E&#x3D;12)，Average Turnaround 为：</p>
-<p>[<br>\frac{3+7+9+12+12}{5}&#x3D;8.6<br>]</p>
-<p>FIFO 最大的优点就是简单、容易实现，而且大家严格按照 Arrival Order，看起来也很公平。但是问题也非常明显：<strong>Short Job 可能被 Long CPU-bound Job 堵在后面。</strong> 比如 E 只需要 2 个 CPU Time Unit，却从 <code>t=8</code> 一直等到 <code>t=18</code> 才第一次运行，于是 (T_{response,E}&#x3D;18-8&#x3D;10)，这种对 Interactive Process 的体验非常差。</p>
+<p>于是 $T_A&#x3D;3$、$T_B&#x3D;7$、$T_C&#x3D;9$、$T_D&#x3D;12$、$T_E&#x3D;12$，Average Turnaround 为：</p>
+<p>$$<br>\frac{3+7+9+12+12}{5}&#x3D;8.6<br>$$</p>
+<p>FIFO 最大的优点就是简单、容易实现，而且大家严格按照 Arrival Order，看起来也很公平。但是问题也非常明显：<strong>Short Job 可能被 Long CPU-bound Job 堵在后面。</strong> 比如 E 只需要 2 个 CPU Time Unit，却从 <code>t=8</code> 一直等到 <code>t=18</code> 才第一次运行，于是 $T_{response,E}&#x3D;18-8&#x3D;10$，这种对 Interactive Process 的体验非常差。</p>
 <p>所以 FIFO 的问题不是“不公平”，而是<strong>它只知道谁先来，完全不知道前面这个人到底要占 CPU 多久</strong>。</p>
 <hr>
 <h2 id="Shortest-Job-First"><a href="#Shortest-Job-First" class="headerlink" title="Shortest Job First"></a>Shortest Job First</h2><p>既然问题是 Long Job 堵着一堆 Short Job，那最自然的修法就是：每次 CPU 空下来以后，从当前 Ready Processes 里面选 CPU Burst 最短的那个。这就是 <strong>Shortest-Job-First (SJF)</strong>。它仍然是 <strong>Non-preemptive</strong>：已经上 CPU 的 Process 不会因为后来出现更短的 Job 而被赶下来。</p>
@@ -292,7 +292,7 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A: 0 → 3</span><br><span class="line">B: 3 → 9</span><br><span class="line">E: 9 → 11</span><br><span class="line">C: 11 → 15</span><br><span class="line">D: 15 → 20</span><br></pre></td></tr></table></figure>
 
 <p>Average Turnaround：</p>
-<p>[<br>\frac{3+7+11+14+3}{5}&#x3D;7.6<br>]</p>
+<p>$$<br>\frac{3+7+11+14+3}{5}&#x3D;7.6<br>$$</p>
 <p>比 FIFO 的 8.6 更好。所以 SJF 对 <strong>Average Waiting Time &#x2F; Turnaround Time</strong> 很有优势，因为它倾向于快速把 Short Job 清掉。但是不要因此理解成 Response Time 一定很好：它仍然是 Non-preemptive，如果一个 Long CPU-bound Process 已经开始运行，新来的 Interactive Job 还是只能等它结束。</p>
 <p>另外还有一个更严重的问题：<strong>Starvation</strong>。如果 Short Job 一直不断到达：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Long Job L 一直在等</span><br><span class="line">↓</span><br><span class="line">Short A 来了</span><br><span class="line">→ 跑 A</span><br><span class="line"></span><br><span class="line">Short B 来了</span><br><span class="line">→ 跑 B</span><br><span class="line"></span><br><span class="line">Short C 来了</span><br><span class="line">→ 跑 C</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
@@ -300,22 +300,22 @@
 <p>那么 L 理论上可能一直等不到 CPU。所以 SJF 可以简单理解成<strong>平均效率很好，但是太偏爱 Short Job</strong>。</p>
 <hr>
 <h2 id="Highest-Response-Ratio-Next"><a href="#Highest-Response-Ratio-Next" class="headerlink" title="Highest Response Ratio Next"></a>Highest Response Ratio Next</h2><p>SJF 的问题之一是 Long Job 等得再久也没有额外补偿，于是 <strong>Highest-Response-Ratio-Next (HRRN)</strong> 给它加了一个很漂亮的 Aging 机制。HRRN 依然是 Non-preemptive，但在每次 Scheduling Decision 时计算：</p>
-<p>[<br>Priority&#x3D;\frac{Waiting\ Time+Service\ Time}{Service\ Time}&#x3D;1+\frac{Waiting\ Time}{Service\ Time}<br>]</p>
+<p>$$<br>Priority&#x3D;\frac{Waiting\ Time+Service\ Time}{Service\ Time}&#x3D;1+\frac{Waiting\ Time}{Service\ Time}<br>$$</p>
 <p>然后选择 Priority 最高的 Process。这个公式本身已经把思想说完了：Short Job 因为 Service Time 小，本身容易得到比较高的 Ratio；但是一个 Job 如果等了非常久，Waiting Time 一涨，Priority 也跟着涨，于是最终会越来越难继续被忽略。这就是 <strong>Aging Effect</strong>，用来防止 Indefinite Postponement。</p>
-<p>例如 <code>t=9</code> 时，C 的 priority 是 ((5+4)&#x2F;4&#x3D;2.25)，D 是 ((3+5)&#x2F;5&#x3D;1.6)，E 是 ((1+2)&#x2F;2&#x3D;1.5)。所以虽然 E 最短，HRRN 还是先选已经等更久的 C。等 C 在 <code>t=13</code> 完成后，D 变成 ((7+5)&#x2F;5&#x3D;2.4)，E 变成 ((5+2)&#x2F;2&#x3D;3.5)，于是再跑 E。最后顺序是：</p>
+<p>例如 <code>t=9</code> 时，C 的 priority 是 $(5+4)&#x2F;4&#x3D;2.25$，D 是 $(3+5)&#x2F;5&#x3D;1.6$，E 是 $(1+2)&#x2F;2&#x3D;1.5$。所以虽然 E 最短，HRRN 还是先选已经等更久的 C。等 C 在 <code>t=13</code> 完成后，D 变成 $(7+5)&#x2F;5&#x3D;2.4$，E 变成 $(5+2)&#x2F;2&#x3D;3.5$，于是再跑 E。最后顺序是：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A → B → C → E → D</span><br></pre></td></tr></table></figure>
 
 <p>Average Turnaround &#x3D; 8。HRRN 并不是说“Average Turnaround 一定比 SJF 更好”，而是<strong>愿意牺牲一点纯粹的 Short Job 优先，换取等待时间上的公平性</strong>。不过它仍然保留 SJF 的一个大问题：<strong>Non-preemptive</strong>，一旦选中了一个 Long Job，哪怕下一秒来了一个超级短的 Interactive Job，也得等。</p>
 <hr>
 <h2 id="Shortest-Time-to-Completion-First"><a href="#Shortest-Time-to-Completion-First" class="headerlink" title="Shortest Time-to-Completion First"></a>Shortest Time-to-Completion First</h2><p>既然SJF最大的问题之一是不能抢占，那我们干脆做一个 <strong>Preemptive SJF</strong>。</p>
 <p>这就是 <strong>Shortest Time-to-Completion First (STCF)</strong>。新的 Process 到达时，Scheduler 会比较当前 Running Process 和新 Process 的 <strong>Remaining Time</strong>：</p>
-<p>[<br>Remaining&#x3D;CPU\ Burst-Elapsed\ Service\ Time<br>]</p>
+<p>$$<br>Remaining&#x3D;CPU\ Burst-Elapsed\ Service\ Time<br>$$</p>
 <p>谁距离完成更近，就让谁运行。</p>
 <p>例如 A 在 <code>t=0</code> 开始，需要 3；<code>t=2</code> 时 B 到达，需要 6，但是 A 已经跑了 2，A remaining &#x3D; 1、B remaining &#x3D; 6，所以继续 A。<code>t=3</code> B 开始，到了 <code>t=4</code> C 到达，B remaining &#x3D; 5、C remaining &#x3D; 4，于是 Preempt B，B 从 Running 回到 Ready，C 从 Ready 变成 Running。C 跑到 <code>t=8</code> 时 E 到达，只需要 2，于是 E 运行到 10，后面再继续 B 和 D：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0–3   A</span><br><span class="line">3–4   B</span><br><span class="line">4–8   C</span><br><span class="line">8–10  E</span><br><span class="line">10–15 B</span><br><span class="line">15–20 D</span><br></pre></td></tr></table></figure>
 
 <p>Average Turnaround：</p>
-<p>[<br>\frac{3+13+4+14+2}{5}&#x3D;7.2<br>]</p>
+<p>$$<br>\frac{3+13+4+14+2}{5}&#x3D;7.2<br>$$</p>
 <p>Response Time 也相当好：A&#x3D;0、B&#x3D;1、C&#x3D;0、D&#x3D;9、E&#x3D;0。但 STCF 同样没有免费午餐，因为 Long Process 不仅可能一直等，还可能反复被新来的 Short Job 抢走：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">终于开始跑</span><br><span class="line">↓</span><br><span class="line">Short Job 来了</span><br><span class="line">→ 被抢</span><br><span class="line"></span><br><span class="line">又开始跑</span><br><span class="line">↓</span><br><span class="line">又来一个 Short Job</span><br><span class="line">→ 再被抢</span><br></pre></td></tr></table></figure>
 
@@ -354,7 +354,7 @@
 <p>P0 从最高 Priority 开始，连续用满 50 就被逐层降下去：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Q8</span><br><span class="line">↓ 用满 50</span><br><span class="line">Q7</span><br><span class="line">↓ 用满 50</span><br><span class="line">Q6</span><br><span class="line">↓</span><br><span class="line">Q5</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
-<p>因为它一直表现得“给我多少 CPU 我都吃掉”，所以系统逐渐把它识别成 Long CPU-bound Process。P1 后来进入 Q8，拿到 CPU 只用 20 就去 I&#x2F;O，因为 (20 &lt; Quantum\ 50)，所以 P1 不会被 Demote，I&#x2F;O 完成回来以后仍然处于 High Priority，于是它每次醒来都能很快得到 CPU。最终效果就是：</p>
+<p>因为它一直表现得“给我多少 CPU 我都吃掉”，所以系统逐渐把它识别成 Long CPU-bound Process。P1 后来进入 Q8，拿到 CPU 只用 20 就去 I&#x2F;O，因为 $20 &lt; Quantum\ 50$，所以 P1 不会被 Demote，I&#x2F;O 完成回来以后仍然处于 High Priority，于是它每次醒来都能很快得到 CPU。最终效果就是：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Interactive / short-burst Job</span><br><span class="line">→ 倾向停留在 High Priority</span><br><span class="line"></span><br><span class="line">Long CPU-bound Job</span><br><span class="line">→ 逐步沉到 Low Priority</span><br></pre></td></tr></table></figure>
 
 <p>于是 MLFQ 在不知道 CPU Burst 的情况下，试图近似出 SJF &#x2F; STCF “偏爱 Short Job”的效果，同时保留 Interactive Responsiveness。</p>
@@ -382,7 +382,7 @@
 <p>那 B 只需要疯狂开 Process，就可以把系统抢走。所以 <strong>Fair Share Scheduling (FSS)</strong> 把 Fairness 的单位从 Process 提升到了 <strong>User &#x2F; Group</strong>。不同 User &#x2F; Group 被分配 Weight，代表它们应该获得总 CPU Resource 的多少比例；Scheduler 监控实际 Resource Usage，已经超过 Fair Share 的后面少给一点，低于 Fair Share 的则多给一点。例如 User A 和 User B 的 weight 都是 1，那 A 应该长期得到 50%，B 也应该长期得到 50%；B 内部就算开 10 个 Process，也只是 10 个人瓜分 B 自己的 50%，而不是凭空把 CPU Share 放大 10 倍。</p>
 <hr>
 <h2 id="Lottery-Scheduling"><a href="#Lottery-Scheduling" class="headerlink" title="Lottery Scheduling"></a>Lottery Scheduling</h2><p>一个很有意思的 Proportional Share 实现是 <strong>Lottery Scheduling</strong>，核心思想是给 Process &#x2F; User &#x2F; Group 分配 Lottery Tickets。例如 A 的 fair share 是 75%，那就给 A 75 张 ticket；B 的 fair share 是 25%，就给 B 25 张。每次 Scheduling 时随机抽一张 Ticket，谁拿着 Winning Ticket 谁获得 CPU。单次当然不保证 A 一定 75%、B 一定 25%，可能连续五次都是 B，但是长期来看：</p>
-<p>[<br>P(A)&#x3D;0.75,\qquad P(B)&#x3D;0.25<br>]</p>
+<p>$$<br>P(A)&#x3D;0.75,\qquad P(B)&#x3D;0.25<br>$$</p>
 <p>所以 Resource Consumption 会逐渐趋近 Ticket Ratio。课件的例子就是 A 有 75 张、B 有 25 张，Scheduler 每次在 0–99 中产生 Random Number，根据号码落在哪个区间决定赢家。这里需要注意，<strong>Random 不是 Fairness 的来源，Ticket Distribution 才是</strong>，Random Lottery 只是实现预定 Share 的一种机制。</p>
 <hr>
 <h1 id="Multiprocessor-Scheduling"><a href="#Multiprocessor-Scheduling" class="headerlink" title="Multiprocessor Scheduling"></a>Multiprocessor Scheduling</h1><p>前面基本都默认一个 Core 一次只有一个 Process。但是现实系统通常有多个 Core，于是 Scheduler 除了回答“下一位是谁”，还要多回答一个问题：<strong>它在哪颗 Core 上运行？</strong></p>
@@ -406,9 +406,9 @@
 <p>Linux Scheduling 本身是 <strong>Preemptive, Priority-based</strong>，并区分 Real-time 和 Non-real-time 两类 Priority Class。Real-time Priority 从 1 到 99，数值越高 Priority 越高。<code>SCHED_FIFO</code> 让同 Priority 下的 Real-time Process 按照 FIFO 运行；<code>SCHED_RR</code> 则让同 Priority Real-time Process 使用 Round Robin。课件还指出，Real-time Process 可能无限推迟 Normal Process，因此 Normal User 不能随意创建 Real-time Process。</p>
 <hr>
 <h2 id="Completely-Fair-Scheduler"><a href="#Completely-Fair-Scheduler" class="headerlink" title="Completely Fair Scheduler"></a>Completely Fair Scheduler</h2><p>对于 Non-real-time Process，课件介绍了 Linux 的 <strong>Completely Fair Scheduler (CFS)</strong>。它不试图提前分类“你是 Interactive”还是“你是 CPU-bound”，而是假设大家一开始都一样，核心目标是<strong>尽可能公平地分 Processor Time</strong>。如果当前有 <code>nr</code> 个 Runnable Process，并且大家 Weight 一样，那么理想上每个 Process 应该获得大约：</p>
-<p>[<br>\frac{1}{nr}<br>]</p>
+<p>$$<br>\frac{1}{nr}<br>$$</p>
 <p>的 CPU 资源；更高 Priority 可以通过更大的 Weight 获得更大 Share。课件先想象一颗“不现实的完美 CPU”：所有 Process 可以同时运行，每个人直接获得自己那一部分 Processor Power。但真实 Core 一次只能跑一个 Process，所以 CFS 需要记录每个 Task 已经“公平地消费了多少 CPU”。</p>
-<p>这个量叫 <strong>Virtual Runtime</strong>。Process 运行时，CFS 根据其 Execution Duration、Runnable Processes 和 Priority 等因素更新 Virtual Runtime，数值越大就可以理解为“你目前已经吃过比较多 CPU 了”。于是 Scheduling Decision 就非常直接：<strong>选择 Virtual Runtime 最小的 Runnable Process</strong>，也就是优先让“目前吃 CPU 最少的人”补回来。Runnable Tasks 按照 Virtual Runtime 存放在一个 <strong>Red-Black Tree</strong> 中，因为 Tree 按照 Virtual Runtime 排序，所以最左边就是当前 Virtual Runtime 最小、最需要 CPU 的 Task；Red-Black Tree 提供大约 (O(\log n)) 的操作复杂度。</p>
+<p>这个量叫 <strong>Virtual Runtime</strong>。Process 运行时，CFS 根据其 Execution Duration、Runnable Processes 和 Priority 等因素更新 Virtual Runtime，数值越大就可以理解为“你目前已经吃过比较多 CPU 了”。于是 Scheduling Decision 就非常直接：<strong>选择 Virtual Runtime 最小的 Runnable Process</strong>，也就是优先让“目前吃 CPU 最少的人”补回来。Runnable Tasks 按照 Virtual Runtime 存放在一个 <strong>Red-Black Tree</strong> 中，因为 Tree 按照 Virtual Runtime 排序，所以最左边就是当前 Virtual Runtime 最小、最需要 CPU 的 Task；Red-Black Tree 提供大约 $O(\log n)$ 的操作复杂度。</p>
 <p>这一部分不用考试，所以知道 CFS 大致就是 Track virtual runtime、谁吃 CPU 最少优先补谁、并用 Red-Black Tree 快速找最小值，就已经够了。</p>
 <hr>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这一章实际上一直在围绕几个互相冲突的目标做 Trade-off：<strong>Turnaround</strong> 希望 Job 尽快完成，<strong>Response</strong> 希望 Interactive Job 赶紧得到 CPU，<strong>Throughput</strong> 希望单位时间完成更多 Job，<strong>Fairness</strong> 要求不能有人永远饿死，而 <strong>Overhead</strong> 又提醒我们不能为了调度本身浪费太多 CPU。不同算法只是在这些目标里选了不同的立场。</p>
@@ -881,7 +881,7 @@
 </script>
 
 <!-- required -->
-<script src="/js/main.js?v=1791205039395" defer></script>
+<script src="/js/main.js?v=1791459065475" defer></script>
 
 <script type="text/javascript">
   const applyTheme = (theme) => {
